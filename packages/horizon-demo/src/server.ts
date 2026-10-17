@@ -1,4 +1,5 @@
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
+import { timingSafeEqual } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { isDeepStrictEqual } from 'node:util';
@@ -25,6 +26,8 @@ async function body(request: IncomingMessage): Promise<unknown> {
 export interface ServerOptions {
   role: 'prover' | 'verifier'; configPath: string; databasePath?: string;
   binary?: string; origin: string; clock?: () => number;
+  /** Optional 32-byte hexadecimal operator secret; operator routes fail closed without it. */
+  operatorToken?: string;
 }
 
 /** Two separate processes/configurations. Only the verifier process can mutate its SQLite target. */
@@ -38,6 +41,8 @@ export function createHorizonServer(options: ServerOptions) {
   let prepared: unknown;
   let preparation: Promise<unknown> | undefined;
   let inFlight = 0;
+  const operatorToken = options.operatorToken ?? process.env['HORIZON_OPERATOR_TOKEN'] ?? '';
+  const operatorRoutes = new Set(['/api/revoke', '/api/rotate-policy', '/api/reconcile']);
   const server = createServer(async (request, response) => {
     response.setHeader('X-Content-Type-Options', 'nosniff');
     response.setHeader('Referrer-Policy', 'no-referrer');
@@ -45,6 +50,14 @@ export function createHorizonServer(options: ServerOptions) {
     const origin = request.headers.origin;
     if (origin && origin !== options.origin) return send(response, 403, { error: 'ORIGIN_REJECTED' });
     if (origin) response.setHeader('Access-Control-Allow-Origin', options.origin);
+    // CORS and loopback are not operator authentication. Deny mutation endpoints by default.
+    if (operatorRoutes.has(request.url ?? '')) {
+      const supplied = request.headers['x-horizon-operator-token'];
+      const valid = typeof supplied === 'string' && /^[0-9a-f]{64}$/.test(operatorToken)
+        && /^[0-9a-f]{64}$/.test(supplied)
+        && timingSafeEqual(Buffer.from(operatorToken, 'hex'), Buffer.from(supplied, 'hex'));
+      if (!valid) return send(response, 403, { error: 'OPERATOR_AUTH_REQUIRED' });
+    }
     if (request.method === 'OPTIONS') {
       response.setHeader('Access-Control-Allow-Methods', 'POST,GET');
       response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
