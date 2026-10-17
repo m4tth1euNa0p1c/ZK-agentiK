@@ -3,7 +3,8 @@ import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const escape = text => String(text).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
-export function writeReport(directory, report) {
+export function writeReport(directory, report, artifactBase = '') {
+  if (!/^(?:\.\.\/|[a-zA-Z0-9._-]+\/)*$/.test(artifactBase)) throw new Error('Invalid artifact path');
   const data = JSON.stringify(report).replaceAll('<', '\\u003c');
   const script = `const report = ${data};
 const select = document.querySelector('#category');
@@ -26,8 +27,8 @@ select.addEventListener('change',render);render();`;
 <p class="note">La chaîne agentique MCP est testée séparément : proposition → challenge imposé → preuve → vérification → réservation → effet synthétique. Cette campagne arithmétique ne déclenche aucune mutation métier.</p></section>
 <section><h2>Domaine entier et contrôles</h2><img src="figures/coverage.png" alt="Domaine des valeurs synthétiques et couverture par famille, calculés à partir des résultats JSON"><p>Les cas u64 extrêmes sont comptés séparément de la fenêtre dessinée. Aucun graphique n'est une preuve de sécurité.</p></section>
 <section><h2>Durées observées</h2><img src="figures/verification.png" alt="Distribution empirique des durées de vérification des preuves et mutations"><p>Campagne de correction, sans protocole de benchmark isolé ni échauffement dédié : ces durées ne fondent aucun SLA ou comparaison Vega/GPU.</p></section>
-<section><h2>Cas inspectables</h2><label for="category">Famille numérique </label><select id="category"><option value="all">Toutes</option></select><p id="count"></p><div class="table"><table><thead><tr><th>ID</th><th>a</th><th>c</th><th>Prédicat</th><th>Octave / Rust</th><th>Contrôles crypto</th></tr></thead><tbody></tbody></table></div><p>Corpus complet : <a href="vectors.json">vecteurs</a>, <a href="correlation.json">corrélation</a>, <a href="verification-requests.ndjson.gz">requêtes publiques compressées</a>, <a href="verifier-results.json">résultats du vérifieur</a>.</p></section>
+<section><h2>Cas inspectables</h2><label for="category">Famille numérique </label><select id="category"><option value="all">Toutes</option></select><p id="count"></p><div class="table"><table><thead><tr><th>ID</th><th>a</th><th>c</th><th>Prédicat</th><th>Octave / Rust</th><th>Contrôles crypto</th></tr></thead><tbody></tbody></table></div><p>Corpus complet : <a href="${artifactBase}vectors.json">vecteurs</a>, <a href="${artifactBase}correlation.json">corrélation</a>, <a href="${artifactBase}verification-requests.ndjson.gz">requêtes publiques compressées</a>, <a href="${artifactBase}verifier-results.json">résultats du vérifieur</a>.</p></section>
 <section><h2>Familles adverses</h2><div class="table"><table><thead><tr><th>Test</th><th>Nombre</th><th>Acceptés</th><th>Refusés</th><th>Étape attendue</th></tr></thead><tbody>${families}</tbody></table></div></section>
-<section><h2>Limites</h2><ul>${report.limitations.map(item => `<li>${escape(item)}</li>`).join('')}</ul><p>Les signatures sont vérifiées hors circuit. Le prover connaît les deux ouvertures. Ce profil n'est pas post-quantique. Les hashes lient les fichiers, sans attester la date ni la vérité des sources. <a href="manifest.json">Manifeste des octets et des commandes</a>.</p></section>
+<section><h2>Limites</h2><ul>${report.limitations.map(item => `<li>${escape(item)}</li>`).join('')}</ul><p>Les signatures sont vérifiées hors circuit. Le prover connaît les deux ouvertures. Ce profil n'est pas post-quantique. Les hashes lient les fichiers, sans attester la date ni la vérité des sources. <a href="${artifactBase}manifest.json">Manifeste des octets et des commandes</a>.</p></section>
 <script>${script}</script></body></html>`, { flag: 'wx' });
 }

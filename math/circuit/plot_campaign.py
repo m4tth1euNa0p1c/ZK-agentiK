@@ -51,7 +51,8 @@ ax.set(xlabel="Observed verification time (ms, log scale)", ylabel="Empirical cu
 ax.set_xscale("log")
 ax.grid(alpha=.2)
 ax.legend(loc="lower right")
-fig.text(.01, .005, "Raw per-request observations; stages and accepted relations differ. No Vega or GPU comparison.", fontsize=9)
+# Keep the caveat in the title and HTML; a figure-level footer overlaps the
+# constrained-layout x label in Matplotlib 3.6.3.
 for ext in ["png", "svg"]:
     fig.savefig(out / f"verification.{ext}")
 plt.close(fig)

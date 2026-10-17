@@ -76,9 +76,13 @@ export async function runCampaign(options) {
     if (status !== 'pass') throw new Error(`Stage ${id} failed; private local diagnostic log retained.`);
   };
   const docker = (id, args, timeout = 120000) => {
+    // CAP_DAC_OVERRIDE is deliberately absent. Match the owner of Linux bind
+    // mounts instead of weakening permissions or restoring container capabilities.
+    const identity = typeof process.getuid === 'function' && typeof process.getgid === 'function'
+      ? ['--user', `${process.getuid()}:${process.getgid()}`] : [];
     try { run(id, 'docker', ['run', '--rm', '--name', container, '--network', 'none', '--read-only', '--cap-drop', 'ALL',
       '--security-opt', 'no-new-privileges', '--cpus', '2', '--memory', '2g', '--pids-limit', '128',
-      '--tmpfs', '/tmp:rw,nosuid,nodev,size=256m', ...args], timeout); }
+      '--tmpfs', '/tmp:rw,nosuid,nodev,size=256m', '-e', 'HOME=/tmp', '-e', 'XDG_CACHE_HOME=/tmp/cache', ...identity, ...args], timeout); }
     finally { capture('docker', ['rm', '-f', container]); }
   };
   try {

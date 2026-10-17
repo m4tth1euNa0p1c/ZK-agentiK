@@ -5,6 +5,13 @@ Date : **17 octobre 2026**. Base observée :
 `feat/correlated-circuit-validation`, avec modifications non commitées en cours.
 Les conclusions concernent les sources effectivement lues à cette passe, pas
 toute modification ultérieure ou une version distribuée non identifiée.
+Une lecture complémentaire du code fixé dans
+`e7fc348cc953566fc44b5cdf74e5ebf381cfd205` a contrôlé l'alignement final des IDs et
+catégories Rust sur `[a-z0-9-]{1,64}`. Le validateur distinct des noms de tests
+conserve `_`, nécessaire aux familles adverses, et reste appelé uniquement sur
+ces noms. Les nouveaux tests de parsing ont été lus ; le relecteur n'a pas
+relancé de compilation pendant la campagne. L'empreinte Rust ci-dessous a été
+actualisée pour identifier cette dernière lecture.
 
 Le relecteur est distinct des auteurs des modules Rust, oracle MATLAB/Octave et
 orchestrateur. Il est l'auteur du workflow et de sa documentation : la revue de
@@ -78,6 +85,26 @@ Pour C01, la contre-épreuve du relecteur proposant `status=failed/unknown` a
 présent à son exécution. La faiblesse de la version initiale a été établie par
 lecture source ; elle n'est pas présentée comme un exploit crypto observé.
 
+Un second avis interne, transmis par l'agent mathématique sur le code Rust,
+n'a pas identifié de blocage : appel réel à `verify`, annotation
+`expected_accept` ignorée, scalaire canonique corrompu puis re-signé,
+transplantation et contrôle de parité du candidat direct valide. L'agent de
+revue des artefacts a également rapporté l'absence de clés privées et ouvertures
+dans le corpus public du smoke. Ces avis sont attribués à leurs auteurs ; ils
+ne sont pas présentés comme des tests supplémentaires exécutés par ce relecteur.
+
+Pour `a=0` ou `c<a`, la soustraction `wrapping_sub` du candidat hostile modifie
+aussi la relation aux engagements dérivés : le refus valide la **relation
+complète**, sans isoler uniquement le comparateur de plages. Les cas `a>2^32`
+ou `c-a>=2^32` sans sous-dépassement isolent mieux la contrainte de plage.
+L'ensemble ne constitue pas une exploration exhaustive des stratégies d'un
+prover malveillant.
+
+La dernière version des self-tests de l'oracle couvre **36 entrées invalides,
+11 frontières et 4 096 paires de grille réduite**, selon l'exécution rapportée
+par son auteur. Les résultats MATLAB correspondants restent à obtenir sur
+GitHub ; la même source exécutée sous Octave ne les remplace pas.
+
 ## Couverture et limites conservées
 
 La relation BigInt utilise la formulation par intervalle ; l'oracle garde les
@@ -137,10 +164,10 @@ identifient cette passe, sans suivre automatiquement les edits ultérieurs.
 | Fichier | SHA-256 |
 | --- | --- |
 | `scripts/circuit-correlate.mjs` | `5eb07243136f8867ef3e1a610d5ca1358f29886492be618b53266cb9c6df4837` |
-| `scripts/circuit-campaign.mjs` | `5fef1aaa45520c2ebe29336b4fb8f5a13cec16bd4f0da4c75467eb905016be02` |
+| `scripts/circuit-campaign.mjs` | `07aa1b119bef2db3c87020b4fc09bc0ed305fed52a0914b4351e36adf25ad132` |
 | `.github/workflows/circuit-validation.yml` | `524e50a4149eb7aca23729965b36397e8474ae821c5d69664087c76d3fa82f13` |
 | `math/circuit/circuit_oracle.m` | `fa134dee0bb98484249abdb90dbb31cc25439e4f0874eb4aad716b490935be39` |
-| `labs/horizon/proof/src/bin/circuit_campaign.rs` | `0514b149d7b1c957ec064cbab3cc3408f5e274e8242d7a04aaff9c24da5ea17c` |
+| `labs/horizon/proof/src/bin/circuit_campaign.rs` | `1b62c042f6195f9055a72af452aef69733925f4a899c4713ddf1856cb489a654` |
 
 Aucun nouveau blocage de la campagne locale n'a été identifié après les
 corrections relues. Cela n'établit ni absence universelle de défaut, ni audit
