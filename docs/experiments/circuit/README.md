@@ -5,6 +5,10 @@ BigInt, oracle Octave, prover Rust et vérifieur Rust dans un autre processus.
 Un job MATLAB explicite ajoute une cinquième observation sur **les mêmes octets**.
 La relation reste celle de `horizon-range-v1` ; aucun nouveau protocole n'est introduit.
 
+[Résultats datés et pipelines réels](RESULTS_2026-10-17.md) ·
+[Rapport interactif](views/windows-e7fc348/report.html) ·
+[Démonstration mathématique PDF](../../whitepaper/circuit-validation.pdf).
+
 ```text
 1 <= a <= 2^32  et  0 <= c-a < 2^32
 X = A-G = (a-1)G + r_a H

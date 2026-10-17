@@ -1,0 +1,12 @@
+{
+  "schema": "circuit-reverification-v1",
+  "observed_at_utc": "2026-10-17T17:17:50.858Z",
+  "command": "node scripts/circuit-reverify.mjs docs/experiments/circuit/runs/windows-e7fc348 <new-output>",
+  "request_sha256": "332aa4087d830b646349b2cf2810357d4540f334152764df0d74961b10236b4f",
+  "request_count": 36794,
+  "accepted": 4086,
+  "rejected": 32708,
+  "status": "complete",
+  "output_sha256": "ba9f38931db596f908a7642cb32760b936b502a6db27b86058b3afca31b494c5",
+  "limitation": "Fresh verification with the same Rust implementation and synthetic trust; no fresh proving or business action"
+}

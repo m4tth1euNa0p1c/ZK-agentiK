@@ -1,0 +1,206 @@
+{
+  "schema": "circuit-local-validation-v1",
+  "observed_date": "2026-10-17",
+  "date_is_self_reported": true,
+  "scope": "Commands executed during implementation; source changes and final CI must be checked separately.",
+  "results": [
+    {
+      "id": "root-fmt",
+      "args": [
+        "scripts/cargo.mjs",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "started_at_utc": "2026-10-17T17:05:18.152Z",
+      "ended_at_utc": "2026-10-17T17:05:18.430Z",
+      "exit_code": 0
+    },
+    {
+      "id": "root-clippy",
+      "args": [
+        "scripts/cargo.mjs",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_at_utc": "2026-10-17T17:05:18.431Z",
+      "ended_at_utc": "2026-10-17T17:05:18.895Z",
+      "exit_code": 0
+    },
+    {
+      "id": "root-rust",
+      "args": [
+        "scripts/cargo.mjs",
+        "test",
+        "--workspace",
+        "--locked"
+      ],
+      "started_at_utc": "2026-10-17T17:05:18.895Z",
+      "ended_at_utc": "2026-10-17T17:05:19.564Z",
+      "exit_code": 0
+    },
+    {
+      "id": "horizon-fmt",
+      "args": [
+        "scripts/cargo.mjs",
+        "fmt",
+        "--manifest-path",
+        "labs/horizon/Cargo.toml",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "started_at_utc": "2026-10-17T17:05:19.565Z",
+      "ended_at_utc": "2026-10-17T17:05:19.806Z",
+      "exit_code": 0
+    },
+    {
+      "id": "horizon-clippy",
+      "args": [
+        "scripts/cargo.mjs",
+        "clippy",
+        "--manifest-path",
+        "labs/horizon/Cargo.toml",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "started_at_utc": "2026-10-17T17:05:19.807Z",
+      "ended_at_utc": "2026-10-17T17:05:20.738Z",
+      "exit_code": 0
+    },
+    {
+      "id": "horizon-rust",
+      "args": [
+        "scripts/cargo.mjs",
+        "test",
+        "--manifest-path",
+        "labs/horizon/Cargo.toml",
+        "--locked"
+      ],
+      "started_at_utc": "2026-10-17T17:05:20.739Z",
+      "ended_at_utc": "2026-10-17T17:05:44.279Z",
+      "exit_code": 0
+    },
+    {
+      "id": "npm-test",
+      "args": [
+        "npm-cli.js",
+        "test"
+      ],
+      "started_at_utc": "2026-10-17T17:05:44.279Z",
+      "ended_at_utc": "2026-10-17T17:05:51.863Z",
+      "exit_code": 0
+    },
+    {
+      "id": "typecheck",
+      "args": [
+        "npm-cli.js",
+        "run",
+        "typecheck"
+      ],
+      "started_at_utc": "2026-10-17T17:05:51.864Z",
+      "ended_at_utc": "2026-10-17T17:05:53.284Z",
+      "exit_code": 0
+    },
+    {
+      "id": "horizon-build",
+      "args": [
+        "npm-cli.js",
+        "run",
+        "horizon:build"
+      ],
+      "started_at_utc": "2026-10-17T17:05:53.285Z",
+      "ended_at_utc": "2026-10-17T17:05:55.306Z",
+      "exit_code": 0
+    },
+    {
+      "id": "horizon-test",
+      "args": [
+        "npm-cli.js",
+        "run",
+        "test:horizon"
+      ],
+      "started_at_utc": "2026-10-17T17:05:55.306Z",
+      "ended_at_utc": "2026-10-17T17:05:58.522Z",
+      "exit_code": 0
+    },
+    {
+      "id": "proofkit-test",
+      "args": [
+        "npm-cli.js",
+        "run",
+        "test:proofkit"
+      ],
+      "started_at_utc": "2026-10-17T17:05:58.522Z",
+      "ended_at_utc": "2026-10-17T17:06:00.558Z",
+      "exit_code": 0
+    },
+    {
+      "id": "gpu-runner-test",
+      "args": [
+        "npm-cli.js",
+        "run",
+        "test:risc0:gpu"
+      ],
+      "started_at_utc": "2026-10-17T17:06:00.558Z",
+      "ended_at_utc": "2026-10-17T17:06:01.016Z",
+      "exit_code": 0
+    },
+    {
+      "id": "circuit-test",
+      "args": [
+        "npm-cli.js",
+        "run",
+        "test:circuit"
+      ],
+      "started_at_utc": "2026-10-17T17:06:01.017Z",
+      "ended_at_utc": "2026-10-17T17:06:01.508Z",
+      "exit_code": 0
+    },
+    {
+      "id": "proofkit-check",
+      "args": [
+        "npm-cli.js",
+        "run",
+        "proofkit",
+        "--",
+        "check"
+      ],
+      "started_at_utc": "2026-10-17T17:06:01.509Z",
+      "ended_at_utc": "2026-10-17T17:06:02.550Z",
+      "exit_code": 0
+    },
+    {
+      "id": "schema-check",
+      "args": [
+        "npm-cli.js",
+        "run",
+        "schema:check"
+      ],
+      "started_at_utc": "2026-10-17T17:06:02.550Z",
+      "ended_at_utc": "2026-10-17T17:06:02.940Z",
+      "exit_code": 0
+    },
+    {
+      "id": "guest-build",
+      "args": [
+        "npm-cli.js",
+        "run",
+        "build:guest"
+      ],
+      "started_at_utc": "2026-10-17T17:06:02.940Z",
+      "ended_at_utc": "2026-10-17T17:06:03.485Z",
+      "exit_code": 0
+    }
+  ],
+  "correlation_tests_after_final_guard_changes": 8
+}

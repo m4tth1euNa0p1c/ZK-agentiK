@@ -1,0 +1,19 @@
+{
+  "schema": "circuit-ci-status-v1",
+  "commit": "e7fc348cc953566fc44b5cdf74e5ebf381cfd205",
+  "run_id": "39052615109",
+  "run_attempt": "1",
+  "cases": "4096",
+  "campaign_outcome": "failure",
+  "job_before_export": "failure",
+  "matlab_requested": true,
+  "matlab_executed_in_this_job": false,
+  "missing_public_files": [
+    "octave.json",
+    "octave-selftests.json",
+    "correlation.json",
+    "report.html",
+    "figures/plot-metadata.json"
+  ],
+  "scope": "Synthetic vectors and public receipts; process states are not cryptographic proofs."
+}

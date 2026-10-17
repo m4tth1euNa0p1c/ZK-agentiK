@@ -1,0 +1,13 @@
+{
+  "schema": "circuit-ci-status-v1",
+  "commit": "581dbeb4bf84631bcf5abb9421f706d4d586bca6",
+  "run_id": "39053041832",
+  "run_attempt": "1",
+  "cases": "4096",
+  "campaign_outcome": "success",
+  "job_before_export": "success",
+  "matlab_requested": true,
+  "matlab_executed_in_this_job": false,
+  "missing_public_files": [],
+  "scope": "Synthetic vectors and public receipts; process states are not cryptographic proofs."
+}

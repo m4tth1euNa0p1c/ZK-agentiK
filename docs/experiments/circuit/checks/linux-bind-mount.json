@@ -1,0 +1,23 @@
+{
+  "schema": "circuit-linux-permission-probe-v1",
+  "observed_date": "2026-10-17",
+  "date_is_self_reported": true,
+  "setup": "Temporary Docker volume, output subdirectory uid=1001 gid=1001 mode=0755. Volume removed after test.",
+  "image": "horizon-circuit-math:local",
+  "image_id": "sha256:498098bfc2f7bd4154dde8dd35977cb6a61a8abcaab591f1407e653a170fbb62",
+  "command": "octave --no-gui --no-history --quiet --eval \"f=fopen('/output/data/check.json','w'); assert(f>=0); fclose(f);\"",
+  "shared_flags": [
+    "--network none",
+    "--read-only",
+    "--cap-drop ALL",
+    "--tmpfs /tmp:rw,size=64m"
+  ],
+  "root_without_capabilities": {
+    "exit_code": 1,
+    "stderr": "assert (f >= 0) failed"
+  },
+  "matching_uid_1001": {
+    "exit_code": 0
+  },
+  "conclusion": "Matching output ownership fixes this isolated write failure without adding capabilities or world-write permissions."
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "circuit-matlab-ci-status-v1",
+  "commit": "581dbeb4bf84631bcf5abb9421f706d4d586bca6",
+  "run_id": "39053041832",
+  "run_attempt": "1",
+  "eligibility_outcome": "success",
+  "setup_outcome": "success",
+  "oracle_outcome": "success",
+  "correlation_outcome": "success",
+  "job_before_export": "success",
+  "requested_release": "R2026b",
+  "matlab_oracle_completed": true,
+  "scope": "Actual MATLAB execution only when oracle succeeded; no license token, cloud deployment or cryptographic audit."
+}
