@@ -116,9 +116,11 @@ test('cross-tenant configuration and unavailable crypto worker fail closed', asy
 });
 
 test('HTTP rejects disclosure downgrade, omission, alteration, substitution and concurrent replay', async () => {
+  // Sandbox operator routes must refuse unauthenticated mutations.
+
   const f = await fixture(); f.worker.close(); const origin = 'http://127.0.0.1:38080';
   const prover = createHorizonServer({ role: 'prover', configPath: f.privatePath, origin, clock: () => now });
-  const verifier = createHorizonServer({ role: 'verifier', configPath: f.publicPath, databasePath: f.database, origin, clock: () => now });
+  const verifier = createHorizonServer({ role: 'verifier', configPath: f.publicPath, databasePath: f.database, origin, operatorToken: 'b'.repeat(64), clock: () => now });
   const listen = async (app: typeof prover) => {
     await new Promise<void>(done => app.server.listen(0, '127.0.0.1', done));
     const address = app.server.address(); assert.ok(address && typeof address !== 'string'); return `http://127.0.0.1:${address.port}`;
@@ -147,7 +149,14 @@ test('HTTP rejects disclosure downgrade, omission, alteration, substitution and 
       ? { nonce: challenge['nonce'], presentation }
       : { nonce: challenge2['nonce'], presentation: proof2.body['presentation'] })));
     assert.equal(requests.filter(r => r.status === 200).length, 1); assert.equal(effects(verifier.store), 1);
-    const revoked = await post(`${v}/api/revoke`, {}); assert.equal(revoked.status, 200);
+    const blocked = await post(`${v}/api/revoke`, {}); assert.equal(blocked.status, 403);
+    const blockedRotate = await post(`${v}/api/rotate-policy`, {}); assert.equal(blockedRotate.status, 403);
+    const revokedResponse = await fetch(`${v}/api/revoke`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-horizon-operator-token': 'a'.repeat(64) }, body: '{}' });
+    assert.equal(revokedResponse.status, 403);
+    assert.equal(verifier.store.state().revoked, 0);
+    const authenticated = await fetch(`${v}/api/revoke`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-horizon-operator-token': 'b'.repeat(64) }, body: '{}' });
+    assert.equal(authenticated.status, 200);
+    assert.equal(verifier.store.state().revoked, 1);
     assert.equal((await post(`${v}/api/challenge`, {})).status, 400);
   } finally { await prover.close(); await verifier.close(); }
 });

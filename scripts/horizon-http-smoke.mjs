@@ -10,6 +10,8 @@ async function post(url, input) {
 }
 const state = async () => (await fetch(`${verifier}/api/state`)).json();
 assert.equal((await fetch(`${verifier}/unapproved-target`)).status, 404);
+assert.equal((await post(`${verifier}/api/revoke`, {})).status, 403);
+assert.equal((await post(`${verifier}/api/rotate-policy`, {})).status, 403);
 assert.equal((await fetch(`${prover}/api/execute`, { method: 'POST' })).status, 404);
 assert.equal((await fetch(`${verifier}/api/challenge`, { method: 'POST', headers: { 'Content-Type': 'application/json' },
   body: 'x'.repeat(65536) })).status, 413);
