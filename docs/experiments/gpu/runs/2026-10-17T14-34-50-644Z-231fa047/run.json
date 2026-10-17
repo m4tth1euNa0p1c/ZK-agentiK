@@ -1,0 +1,219 @@
+{
+  "schema": "risc0-gpu-experiment-v1",
+  "run_id": "2026-10-17T14-34-50-644Z-231fa047",
+  "started": "2026-10-17T14:34:50.647Z",
+  "status": "BLOCKED",
+  "container": "zk-agentik-risc0-gpu-2026-10-17t14-34-50-644z-231fa047",
+  "scenario": "critical",
+  "requested_samples": 1,
+  "cuda_base_image": "nvidia/cuda@sha256:4b9ed5fa8361736996499f64ecebf25d4ec37ff56e4d11323ccde10aa36e0c43",
+  "gpu_probe_image": "rust@sha256:82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922",
+  "risc0_version": "3.0.6",
+  "upstream_commit": "1cc70cf05033a79ebc90f07c679cb4bd1cd301b9",
+  "rust_host": "1.98.0",
+  "rust_guest": "1.97.0",
+  "cuda_arch": "sm_120",
+  "limits": {
+    "cpu": 8,
+    "memory_bytes": 12884901888,
+    "pids": 512,
+    "cargo_jobs": 4,
+    "gpu_memory_limit": null,
+    "gpu_note": "One shared desktop GPU; no hardware VRAM quota or exclusivity."
+  },
+  "commands": [
+    {
+      "id": "01-git",
+      "executable": "git",
+      "args": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "started": "2026-10-17T14:34:50.651Z",
+      "elapsed_ms": 75.3282,
+      "exit_code": 0,
+      "timed_out": false
+    },
+    {
+      "id": "02-docker-version",
+      "executable": "docker",
+      "args": [
+        "version",
+        "--format",
+        "{{json .}}"
+      ],
+      "started": "2026-10-17T14:34:50.727Z",
+      "elapsed_ms": 109.4013,
+      "exit_code": 0,
+      "timed_out": false
+    },
+    {
+      "id": "03-gpu-probe",
+      "executable": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "--gpus",
+        "all",
+        "--network",
+        "none",
+        "--read-only",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--memory",
+        "512m",
+        "--pids-limit",
+        "64",
+        "rust@sha256:82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922",
+        "nvidia-smi",
+        "--query-gpu=name,driver_version,memory.total,compute_cap",
+        "--format=csv,noheader"
+      ],
+      "started": "2026-10-17T14:34:50.839Z",
+      "elapsed_ms": 5332.213299999999,
+      "exit_code": 0,
+      "timed_out": false
+    },
+    {
+      "id": "04-build-image",
+      "executable": "docker",
+      "args": [
+        "build",
+        "--progress",
+        "plain",
+        "-t",
+        "zk-agentik-risc0-cuda:3.0.6-sm120-lab",
+        "-f",
+        "labs/risc0/gpu/Dockerfile",
+        "labs/risc0/gpu"
+      ],
+      "started": "2026-10-17T14:34:56.177Z",
+      "elapsed_ms": 108796.86469999999,
+      "exit_code": 0,
+      "timed_out": false
+    },
+    {
+      "id": "05-image-id",
+      "executable": "docker",
+      "args": [
+        "image",
+        "inspect",
+        "zk-agentik-risc0-cuda:3.0.6-sm120-lab",
+        "--format",
+        "{{json .Id}}"
+      ],
+      "started": "2026-10-17T14:36:44.977Z",
+      "elapsed_ms": 91.62850000000617,
+      "exit_code": 0,
+      "timed_out": false
+    },
+    {
+      "id": "06-create",
+      "executable": "docker",
+      "args": [
+        "run",
+        "-d",
+        "--name",
+        "zk-agentik-risc0-gpu-2026-10-17t14-34-50-644z-231fa047",
+        "--gpus",
+        "all",
+        "--label",
+        "org.zk-agentik.role=risc0-gpu-lab",
+        "--cpus",
+        "8",
+        "--memory",
+        "12g",
+        "--pids-limit",
+        "512",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--mount",
+        "type=bind,source=<repository>,target=/workspace,readonly",
+        "sha256:775e171dea914f22c7a31838ab28f277f72a283d26a8df677df30c992085cbf2",
+        "sleep",
+        "infinity"
+      ],
+      "started": "2026-10-17T14:36:45.071Z",
+      "elapsed_ms": 3727.3686000000016,
+      "exit_code": 0,
+      "timed_out": false
+    },
+    {
+      "id": "07-inspect",
+      "executable": "docker",
+      "args": [
+        "inspect",
+        "zk-agentik-risc0-gpu-2026-10-17t14-34-50-644z-231fa047"
+      ],
+      "started": "2026-10-17T14:36:48.801Z",
+      "elapsed_ms": 74.93020000000251,
+      "exit_code": 0,
+      "timed_out": false
+    },
+    {
+      "id": "08-setup-marker",
+      "executable": "docker",
+      "args": [
+        "exec",
+        "zk-agentik-risc0-gpu-2026-10-17t14-34-50-644z-231fa047",
+        "test",
+        "-f",
+        "/lab/provenance/setup-complete"
+      ],
+      "started": "2026-10-17T14:36:48.880Z",
+      "elapsed_ms": 134.03270000001066,
+      "exit_code": 1,
+      "timed_out": false
+    },
+    {
+      "id": "09-setup-cuda",
+      "executable": "docker",
+      "args": [
+        "exec",
+        "zk-agentik-risc0-gpu-2026-10-17t14-34-50-644z-231fa047",
+        "bash",
+        "/workspace/labs/risc0/gpu/setup.sh"
+      ],
+      "started": "2026-10-17T14:36:49.016Z",
+      "elapsed_ms": 575050.6417,
+      "exit_code": 137,
+      "timed_out": false
+    },
+    {
+      "id": "10-stop-retain-container",
+      "executable": "docker",
+      "args": [
+        "stop",
+        "--time",
+        "10",
+        "zk-agentik-risc0-gpu-2026-10-17t14-34-50-644z-231fa047"
+      ],
+      "started": "2026-10-17T14:46:24.071Z",
+      "elapsed_ms": 265.8135000000475,
+      "exit_code": 0,
+      "timed_out": false
+    }
+  ],
+  "source_sha256": {
+    "labs/risc0/Cargo.lock": "79b21e333fc9a8432f4a3ffa5ac554b921d9bd989165b353c3bbfdee87832f5b",
+    "labs/risc0/setup.sh": "62b5ffe595634cc2823ad8162fe70ccaea1af3fe7b522eaf4e85eb4ef9652115",
+    "labs/risc0/host/src/lib.rs": "37368312bda127f9fc5ebfcbe1f0f0e22209e4d565d69b4647c5b2e645ba3a83",
+    "labs/risc0/host/src/main.rs": "3f8c1d275d3b88af422dbacbfab90add7809af13f16d9250804425b90d9837e1",
+    "labs/risc0/methods/guest/src/main.rs": "4ef54d55b2c5ac7b576a9f7b5fd44d019f12f3818221ebfb3ee193aa5b304eef",
+    "labs/risc0/gpu/Dockerfile": "c988eecd7e4e3825277197122397d50e0d6d5419e483737c6d42ddfa5d9a4ca8",
+    "labs/risc0/gpu/setup.sh": "c9f4714f51e5623f224e839324094ce519382ada51afe0faab3f68a09935dbeb",
+    "scripts/risc0-gpu-lab.mjs": "861f768adcd5ecd42f4ede27fc2a173b03b5871529ec72450711a417840eee77"
+  },
+  "receipt_generated": false,
+  "independently_verified": false,
+  "post_quantum_end_to_end_claim": false,
+  "git_commit": "8935cc9e42dee9b2ed32207483a6f7383e37ffc4",
+  "gpu": "NVIDIA GeForce RTX 5060 Ti, 595.95, 16311 MiB, 12.0",
+  "built_image_id": "sha256:775e171dea914f22c7a31838ab28f277f72a283d26a8df677df30c992085cbf2",
+  "error": "Error: 09-setup-cuda failed; see captured stdout/stderr",
+  "finished": "2026-10-17T14:46:24.340Z"
+}

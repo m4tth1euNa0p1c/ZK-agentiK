@@ -1,0 +1,77 @@
+    Finished `bench` profile [optimized + debuginfo] target(s) in 0.07s
+     Running benches/sha256_vega_mc_zkp.rs (/lab/horizon/target/release/deps/sha256_vega_mc_zkp-8b64a130b37e2ceb)
+Gnuplot not found, using plotters backend
+Vega MC SHA-256 size=1024B num_steps=16 (= 16 compressions): proof_size=86933 bytes
+Vega MC SHA-256 size=2048B num_steps=32 (= 32 compressions): proof_size=96583 bytes
+Benchmarking vega_mc_zkp_sha256/setup/1024/t8
+Benchmarking vega_mc_zkp_sha256/setup/1024/t8: Warming up for 100.00 ms
+Benchmarking vega_mc_zkp_sha256/setup/1024/t8: Collecting 10 samples in estimated 14.805 s (165 iterations)
+Benchmarking vega_mc_zkp_sha256/setup/1024/t8: Analyzing
+vega_mc_zkp_sha256/setup/1024/t8
+                        time:   [74.881 ms 75.659 ms 76.264 ms]
+                        thrpt:  [13.112 KiB/s 13.217 KiB/s 13.354 KiB/s]
+Found 2 outliers among 10 measurements (20.00%)
+  2 (20.00%) high severe
+Benchmarking vega_mc_zkp_sha256/prep_prove/1024/t8
+Benchmarking vega_mc_zkp_sha256/prep_prove/1024/t8: Warming up for 100.00 ms
+Benchmarking vega_mc_zkp_sha256/prep_prove/1024/t8: Collecting 10 samples in estimated 12.922 s (110 iterations)
+Benchmarking vega_mc_zkp_sha256/prep_prove/1024/t8: Analyzing
+vega_mc_zkp_sha256/prep_prove/1024/t8
+                        time:   [35.031 ms 35.391 ms 35.668 ms]
+                        thrpt:  [28.036 KiB/s 28.256 KiB/s 28.546 KiB/s]
+Benchmarking vega_mc_zkp_sha256/prove/1024/t8
+Benchmarking vega_mc_zkp_sha256/prove/1024/t8: Warming up for 100.00 ms
+
+Warning: Unable to complete 10 samples in 10.0s. You may wish to increase target time to 11.9s or enable flat sampling.
+Benchmarking vega_mc_zkp_sha256/prove/1024/t8: Collecting 10 samples in estimated 11.920 s (55 iterations)
+Benchmarking vega_mc_zkp_sha256/prove/1024/t8: Analyzing
+vega_mc_zkp_sha256/prove/1024/t8
+                        time:   [51.692 ms 52.656 ms 53.251 ms]
+                        thrpt:  [18.779 KiB/s 18.991 KiB/s 19.345 KiB/s]
+Benchmarking vega_mc_zkp_sha256/verify/1024/t8
+Benchmarking vega_mc_zkp_sha256/verify/1024/t8: Warming up for 100.00 ms
+
+Warning: Unable to complete 10 samples in 10.0s. You may wish to increase target time to 10.9s or enable flat sampling.
+Benchmarking vega_mc_zkp_sha256/verify/1024/t8: Collecting 10 samples in estimated 10.879 s (55 iterations)
+Benchmarking vega_mc_zkp_sha256/verify/1024/t8: Analyzing
+vega_mc_zkp_sha256/verify/1024/t8
+                        time:   [20.018 ms 20.548 ms 21.036 ms]
+                        thrpt:  [47.537 KiB/s 48.665 KiB/s 49.954 KiB/s]
+Benchmarking vega_mc_zkp_sha256/setup/2048/t8
+Benchmarking vega_mc_zkp_sha256/setup/2048/t8: Warming up for 100.00 ms
+Benchmarking vega_mc_zkp_sha256/setup/2048/t8: Collecting 10 samples in estimated 11.107 s (110 iterations)
+Benchmarking vega_mc_zkp_sha256/setup/2048/t8: Analyzing
+vega_mc_zkp_sha256/setup/2048/t8
+                        time:   [75.025 ms 75.924 ms 77.996 ms]
+                        thrpt:  [25.642 KiB/s 26.342 KiB/s 26.658 KiB/s]
+Benchmarking vega_mc_zkp_sha256/prep_prove/2048/t8
+Benchmarking vega_mc_zkp_sha256/prep_prove/2048/t8: Warming up for 100.00 ms
+Benchmarking vega_mc_zkp_sha256/prep_prove/2048/t8: Collecting 10 samples in estimated 16.606 s (110 iterations)
+Benchmarking vega_mc_zkp_sha256/prep_prove/2048/t8: Analyzing
+vega_mc_zkp_sha256/prep_prove/2048/t8
+                        time:   [74.550 ms 75.765 ms 76.449 ms]
+                        thrpt:  [26.161 KiB/s 26.398 KiB/s 26.828 KiB/s]
+Benchmarking vega_mc_zkp_sha256/prove/2048/t8
+Benchmarking vega_mc_zkp_sha256/prove/2048/t8: Warming up for 100.00 ms
+
+Warning: Unable to complete 10 samples in 10.0s. You may wish to increase target time to 16.6s or enable flat sampling.
+Benchmarking vega_mc_zkp_sha256/prove/2048/t8: Collecting 10 samples in estimated 16.565 s (55 iterations)
+Benchmarking vega_mc_zkp_sha256/prove/2048/t8: Analyzing
+vega_mc_zkp_sha256/prove/2048/t8
+                        time:   [64.997 ms 65.836 ms 66.617 ms]
+                        thrpt:  [30.023 KiB/s 30.379 KiB/s 30.771 KiB/s]
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) high mild
+Benchmarking vega_mc_zkp_sha256/verify/2048/t8
+Benchmarking vega_mc_zkp_sha256/verify/2048/t8: Warming up for 100.00 ms
+
+Warning: Unable to complete 10 samples in 10.0s. You may wish to increase target time to 13.2s or enable flat sampling.
+Benchmarking vega_mc_zkp_sha256/verify/2048/t8: Collecting 10 samples in estimated 13.235 s (55 iterations)
+Benchmarking vega_mc_zkp_sha256/verify/2048/t8: Analyzing
+vega_mc_zkp_sha256/verify/2048/t8
+                        time:   [19.698 ms 19.885 ms 20.105 ms]
+                        thrpt:  [99.475 KiB/s 100.58 KiB/s 101.54 KiB/s]
+Found 2 outliers among 10 measurements (20.00%)
+  1 (10.00%) low mild
+  1 (10.00%) high mild
+

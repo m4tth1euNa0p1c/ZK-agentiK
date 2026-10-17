@@ -1,0 +1,33 @@
+{
+  "schema": "proofkit-run-v1",
+  "profile": "horizon",
+  "relation": "Two signed Pedersen commitments, two 32-bit ranges; Ed25519 outside the proof.",
+  "started_at_utc": "2026-10-17T15:28:10.111Z",
+  "date_is_self_reported": true,
+  "post_quantum": false,
+  "outcome": "passed",
+  "steps": [
+    {
+      "id": "build",
+      "outcome": "passed",
+      "exit_code": 0,
+      "elapsed_ms": 42948.933881
+    },
+    {
+      "id": "public-fixture",
+      "outcome": "passed",
+      "exit_code": 0,
+      "elapsed_ms": 48.26616700000159
+    },
+    {
+      "id": "synthetic-demo",
+      "outcome": "passed",
+      "exit_code": 0,
+      "elapsed_ms": 338.50626600000396
+    }
+  ],
+  "semantics": "Process outcomes only; no automatic claim promotion, percentile or semantic certification.",
+  "privacy": "Raw logs stay local under .tools; POSIX mode 0600/0700 is not a Windows ACL guarantee.",
+  "finished_at_utc": "2026-10-17T15:28:53.447Z",
+  "report": ".tools/proofkit/runs/2026-10-17T15-28-10.110Z-9f4c1329-0e9d-45bc-a2fb-8b97e470e4fe/report.json"
+}

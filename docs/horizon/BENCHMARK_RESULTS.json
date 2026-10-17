@@ -1,0 +1,2996 @@
+{
+  "format": "horizon-decision-results-v1",
+  "date": "2026-10-17",
+  "scientific_record": false,
+  "baseline_repository_commit": "d18fe65840d5f1cd9dc6155e404c942dabf2bcc7",
+  "security_scope": "Real Bulletproofs/Ed25519, adapted synthetic issuance, linkable presentations, local simulated authorization",
+  "linux_crypto": {
+    "source_before": "80b2202",
+    "source_after": "353652d",
+    "rust": "1.98.0",
+    "image": "rust@sha256:82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922",
+    "cpu": "Intel Core Ultra 7 265F",
+    "cpus_limit": 8,
+    "memory_limit_bytes": 12884901888,
+    "os": "WSL2 Linux 6.6.87.2",
+    "rustflags": "-C target-cpu=native",
+    "proof_threads": 1,
+    "samples_per_phase": 500,
+    "warmup": 30,
+    "value_cases": 5,
+    "order": "alternating A/B",
+    "cold_and_issuance": {
+      "initial_fixture_issuance_ns": [
+        195271,
+        151181,
+        168043,
+        151045,
+        156056
+      ],
+      "initial_prepare_ns": [
+        7050002,
+        5935192,
+        5896907,
+        5860115,
+        5989567
+      ],
+      "inspect_raw": "docs/horizon/raw/horizon-linux-after.json",
+      "note": "Five sequential case initializations; only the first includes lazy parameter setup. Not five independent cold processes."
+    },
+    "before_ms": {
+      "fixture_issuance": {
+        "n": 500,
+        "p50": 0.152196,
+        "p95": 0.172394,
+        "p99": 0.235046,
+        "max": 0.340753,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 0.151991,
+            "upper": 0.152493,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 0.16649,
+            "upper": 0.183651,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 0.19148,
+            "upper": 0.340753,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "parameters_standalone": {
+        "n": 500,
+        "p50": 0.966181,
+        "p95": 1.049545,
+        "p99": 1.264397,
+        "max": 1.8842,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 0.96515,
+            "upper": 0.967204,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 1.022182,
+            "upper": 1.084681,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 1.125185,
+            "upper": 1.8842,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "prepare": {
+        "n": 500,
+        "p50": 6.874695,
+        "p95": 7.470365,
+        "p99": 8.067553,
+        "max": 8.785382,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 6.856431,
+            "upper": 6.891512,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 7.292953,
+            "upper": 7.817724,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 7.959997,
+            "upper": 8.785382,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "present_b": {
+        "n": 500,
+        "p50": 0.053089,
+        "p95": 0.064923,
+        "p99": 0.08351,
+        "max": 0.216325,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 0.052854,
+            "upper": 0.053738,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 0.062473,
+            "upper": 0.068591,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 0.071546,
+            "upper": 0.216325,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "present_disclosure": {
+        "n": 500,
+        "p50": 0.154589,
+        "p95": 0.172742,
+        "p99": 0.219933,
+        "max": 0.793706,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 0.154223,
+            "upper": 0.15505,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 0.16983,
+            "upper": 0.180203,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 0.19526,
+            "upper": 0.793706,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "prove_a": {
+        "n": 500,
+        "p50": 7.266911,
+        "p95": 7.770388,
+        "p99": 8.207034,
+        "max": 9.282821,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 7.249674,
+            "upper": 7.284102,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 7.668802,
+            "upper": 7.905323,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 8.007066,
+            "upper": 9.282821,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "reject_tampered_algebraic_b": {
+        "n": 500,
+        "p50": 2.016934,
+        "p95": 2.272411,
+        "p99": 2.4518,
+        "max": 3.389677,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 2.014279,
+            "upper": 2.020033,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 2.234648,
+            "upper": 2.341261,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 2.406336,
+            "upper": 3.389677,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "serialize_a": {
+        "n": 500,
+        "p50": 0.003189,
+        "p95": 0.004217,
+        "p99": 0.004657,
+        "max": 0.049744,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 0.003126,
+            "upper": 0.003245,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 0.004114,
+            "upper": 0.004385,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 0.004517,
+            "upper": 0.049744,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "serialize_b": {
+        "n": 500,
+        "p50": 0.002625,
+        "p95": 0.004167,
+        "p99": 0.005275,
+        "max": 0.008894,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 0.002553,
+            "upper": 0.002728,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 0.003953,
+            "upper": 0.004343,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 0.004533,
+            "upper": 0.008894,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "serialize_disclosure": {
+        "n": 500,
+        "p50": 0.001939,
+        "p95": 0.00295,
+        "p99": 0.004275,
+        "max": 0.084578,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 0.001917,
+            "upper": 0.001968,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 0.002855,
+            "upper": 0.003405,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 0.003799,
+            "upper": 0.084578,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "verify_a": {
+        "n": 500,
+        "p50": 1.995372,
+        "p95": 2.219681,
+        "p99": 2.368985,
+        "max": 2.672311,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 1.990105,
+            "upper": 2.0028,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 2.185587,
+            "upper": 2.282533,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 2.349798,
+            "upper": 2.672311,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "verify_b_full": {
+        "n": 500,
+        "p50": 2.025246,
+        "p95": 2.265849,
+        "p99": 2.523452,
+        "max": 2.87328,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 2.022934,
+            "upper": 2.028886,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 2.21045,
+            "upper": 2.334215,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 2.418617,
+            "upper": 2.87328,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "verify_disclosure": {
+        "n": 500,
+        "p50": 0.222168,
+        "p95": 0.247989,
+        "p99": 0.313914,
+        "max": 0.396459,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 0.221862,
+            "upper": 0.222668,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 0.241292,
+            "upper": 0.261992,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 0.278995,
+            "upper": 0.396459,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      }
+    },
+    "after_ms": {
+      "fixture_issuance": {
+        "n": 500,
+        "p50": 0.144196,
+        "p95": 0.163612,
+        "p99": 0.238828,
+        "max": 0.460725,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 0.143983,
+            "upper": 0.144491,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 0.159457,
+            "upper": 0.177728,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 0.191716,
+            "upper": 0.460725,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "parameters_standalone": {
+        "n": 500,
+        "p50": 0.967605,
+        "p95": 1.104589,
+        "p99": 1.338932,
+        "max": 2.257949,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 0.966778,
+            "upper": 0.968882,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 1.061311,
+            "upper": 1.15715,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 1.227456,
+            "upper": 2.257949,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "prepare": {
+        "n": 500,
+        "p50": 5.871446,
+        "p95": 6.314605,
+        "p99": 6.811829,
+        "max": 7.738492,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 5.858111,
+            "upper": 5.893634,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 6.240456,
+            "upper": 6.418641,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 6.473115,
+            "upper": 7.738492,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "present_b": {
+        "n": 500,
+        "p50": 0.052956,
+        "p95": 0.064855,
+        "p99": 0.104351,
+        "max": 0.135083,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 0.052572,
+            "upper": 0.053207,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 0.062821,
+            "upper": 0.067137,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 0.070245,
+            "upper": 0.135083,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "present_disclosure": {
+        "n": 500,
+        "p50": 0.139485,
+        "p95": 0.160332,
+        "p99": 0.218305,
+        "max": 0.619063,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 0.139134,
+            "upper": 0.139798,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 0.155047,
+            "upper": 0.167392,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 0.180313,
+            "upper": 0.619063,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "prove_a": {
+        "n": 500,
+        "p50": 6.151043,
+        "p95": 6.546353,
+        "p99": 6.79916,
+        "max": 7.258222,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 6.129026,
+            "upper": 6.163924,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 6.491785,
+            "upper": 6.639487,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 6.676599,
+            "upper": 7.258222,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "reject_tampered_algebraic_b": {
+        "n": 500,
+        "p50": 1.079743,
+        "p95": 1.248485,
+        "p99": 1.384592,
+        "max": 1.49298,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 1.075241,
+            "upper": 1.083756,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 1.215586,
+            "upper": 1.297028,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 1.333476,
+            "upper": 1.49298,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "serialize_a": {
+        "n": 500,
+        "p50": 0.003232,
+        "p95": 0.004244,
+        "p99": 0.00502,
+        "max": 0.015473,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 0.003177,
+            "upper": 0.003287,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 0.00412,
+            "upper": 0.004429,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 0.004693,
+            "upper": 0.015473,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "serialize_b": {
+        "n": 500,
+        "p50": 0.002627,
+        "p95": 0.00409,
+        "p99": 0.004883,
+        "max": 0.009892,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 0.002575,
+            "upper": 0.0027,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 0.003983,
+            "upper": 0.004448,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 0.004636,
+            "upper": 0.009892,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "serialize_disclosure": {
+        "n": 500,
+        "p50": 0.001982,
+        "p95": 0.003005,
+        "p99": 0.004422,
+        "max": 0.015014,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 0.001956,
+            "upper": 0.002007,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 0.002847,
+            "upper": 0.003357,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 0.003618,
+            "upper": 0.015014,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "verify_a": {
+        "n": 500,
+        "p50": 1.066854,
+        "p95": 1.227965,
+        "p99": 1.658508,
+        "max": 2.150238,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 1.061947,
+            "upper": 1.071482,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 1.196948,
+            "upper": 1.293358,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 1.311789,
+            "upper": 2.150238,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "verify_b_full": {
+        "n": 500,
+        "p50": 1.043471,
+        "p95": 1.24692,
+        "p99": 1.414004,
+        "max": 1.637587,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 1.034987,
+            "upper": 1.055784,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 1.203023,
+            "upper": 1.291462,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 1.330637,
+            "upper": 1.637587,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "verify_disclosure": {
+        "n": 500,
+        "p50": 0.213218,
+        "p95": 0.245499,
+        "p99": 0.354331,
+        "max": 0.76913,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 0.212818,
+            "upper": 0.21402,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 0.232386,
+            "upper": 0.270383,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 0.294219,
+            "upper": 0.76913,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      }
+    },
+    "public_parameter_reuse": {
+      "unchanged_relation_and_generators": true,
+      "preoptimization_proof_verifies": true,
+      "prove_a_observed_p95_reduction_fraction": 0.15752559589044968,
+      "full_verify_b_observed_p95_reduction_fraction": 0.4496897189530281,
+      "scope": "One before/after campaign on one machine; not a universal speedup or external scientific record"
+    },
+    "proof_bytes": 672,
+    "json_envelope_bytes": {
+      "a": {
+        "n": 500,
+        "min": 3133,
+        "max": 3134,
+        "mean": 3133.86,
+        "p50": 3134,
+        "p95": 3134,
+        "p99": 3134,
+        "quantile_convention": "nearest-rank: sorted[ceil(p * n) - 1], one-based rank ceil(p*n)",
+        "confidence_method": "distribution-free binomial order-statistic interval, equal tail caps",
+        "confidence_assumptions": {
+          "requires_iid": true,
+          "iid_verified": false,
+          "population_representativeness_verified": false,
+          "ties": "conservative coverage for population quantile inf{x:F(x)>=p}",
+          "arithmetic": "IEEE-754 double recurrence; not certified numerical bounds",
+          "interpretation": "conditional on IID; not a service SLA or a maximum-latency bound",
+          "null_endpoints": "lower null means -Infinity; upper null means +Infinity"
+        },
+        "confidence_intervals": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 3134,
+            "upper": 3134,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 3134,
+            "upper": 3134,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 3134,
+            "upper": 3134,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "b": {
+        "n": 500,
+        "min": 3215,
+        "max": 3216,
+        "mean": 3215.86,
+        "p50": 3216,
+        "p95": 3216,
+        "p99": 3216,
+        "quantile_convention": "nearest-rank: sorted[ceil(p * n) - 1], one-based rank ceil(p*n)",
+        "confidence_method": "distribution-free binomial order-statistic interval, equal tail caps",
+        "confidence_assumptions": {
+          "requires_iid": true,
+          "iid_verified": false,
+          "population_representativeness_verified": false,
+          "ties": "conservative coverage for population quantile inf{x:F(x)>=p}",
+          "arithmetic": "IEEE-754 double recurrence; not certified numerical bounds",
+          "interpretation": "conditional on IID; not a service SLA or a maximum-latency bound",
+          "null_endpoints": "lower null means -Infinity; upper null means +Infinity"
+        },
+        "confidence_intervals": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 3216,
+            "upper": 3216,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 3216,
+            "upper": 3216,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 3216,
+            "upper": 3216,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "disclosure": {
+        "n": 500,
+        "min": 1970,
+        "max": 1989,
+        "mean": 1982.4600000000003,
+        "p50": 1983,
+        "p95": 1989,
+        "p99": 1989,
+        "quantile_convention": "nearest-rank: sorted[ceil(p * n) - 1], one-based rank ceil(p*n)",
+        "confidence_method": "distribution-free binomial order-statistic interval, equal tail caps",
+        "confidence_assumptions": {
+          "requires_iid": true,
+          "iid_verified": false,
+          "population_representativeness_verified": false,
+          "ties": "conservative coverage for population quantile inf{x:F(x)>=p}",
+          "arithmetic": "IEEE-754 double recurrence; not certified numerical bounds",
+          "interpretation": "conditional on IID; not a service SLA or a maximum-latency bound",
+          "null_endpoints": "lower null means -Infinity; upper null means +Infinity"
+        },
+        "confidence_intervals": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 1983,
+            "upper": 1983,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 1989,
+            "upper": 1989,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 1989,
+            "upper": 1989,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      }
+    },
+    "valid_encoding_algebraic_tamper_rejections": {
+      "before": 500,
+      "after": 500,
+      "accepted": 0
+    },
+    "cpu_cost": {
+      "before_total_user_seconds": 11.725,
+      "after_total_user_seconds": 8.93,
+      "includes": "whole campaign, all phases, warmups and serialization; not per-operation CPU cost"
+    },
+    "measured_peak_rss_bytes": null,
+    "gpu": "not used",
+    "monetary_cost": null
+  },
+  "windows_durable_path": {
+    "raw_file": "docs/horizon/raw/horizon-firewall-2026-10-17T02-19-55.801Z-c283b618-d189-4921-9cb9-350c18190761.json",
+    "environment": {
+      "platform": "win32",
+      "release": "10.0.26200",
+      "arch": "x64",
+      "cpu": "Intel(R) Core(TM) Ultra 7 265F",
+      "logical_cpus": 20,
+      "total_memory_bytes": 33984958464,
+      "node": "v24.11.1",
+      "node_versions": {
+        "node": "24.11.1",
+        "acorn": "8.15.0",
+        "ada": "3.3.0",
+        "amaro": "1.1.4",
+        "ares": "1.34.5",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "47.0",
+        "icu": "77.1",
+        "llhttp": "9.3.0",
+        "modules": "137",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.66.0",
+        "openssl": "3.5.4",
+        "simdjson": "4.0.7",
+        "simdutf": "6.4.0",
+        "sqlite": "3.50.4",
+        "tz": "2025b",
+        "undici": "7.16.0",
+        "unicode": "16.0",
+        "uv": "1.51.0",
+        "uvwasi": "0.0.23",
+        "v8": "13.6.233.10-node.28",
+        "zlib": "1.3.1-470d3a2",
+        "zstd": "1.5.7"
+      },
+      "git_head": "353652d12caf70b902c385666b6869d1b0c1b9f1",
+      "git_dirty": true,
+      "rustc_available_to_harness": null,
+      "rustc_note": "Available compiler is not asserted to be the compiler that produced the worker; executed binary SHA-256 identifies it.",
+      "artifacts_sha256": {
+        "packages/horizon-demo/dist/worker.js": "1ad791e0b437d637a4560ddcd7ec59f53b02fbdeb236bbe3608db5dd7ccc8d04",
+        "packages/horizon-demo/dist/store.js": "f3877d732a79cc5fa4eb18316da87b7fa6ce85fd824faf9d8c4cb9168c7903b3",
+        "packages/horizon-demo/dist/types.js": "e5606138906caa27114639adab236d8ffe78f5c5fc212fdfc9153e99eaafed45",
+        "labs/horizon/target/release/horizon-proof-worker.exe": "d0eebf45c330af080222911268a9de05a2bc5fbfff2545a1186126e6d869a9fc",
+        "scripts/horizon-firewall-benchmark.mjs": "df2ae0ae91e9f32bd6f0efda9dc7e2c77cc8a431ba4b82b1c7b3d700a4227860",
+        "scripts/horizon-stats.mjs": "6c49d692e93e690d07ad47b2e50967032b1e1c71009dc3b3ba1c356dc830dbbc",
+        "labs/horizon/Cargo.lock": "326f077f238678b6808c7950d41f16c68b04991356fc794b1f2416e2882a91df",
+        "package-lock.json": "dd95db9aff8bd9a9c19c17574e87207d2e64b28790c53bef5ddb0bc74e4b2ce3"
+      }
+    },
+    "timings_ms": {
+      "present_b_ipc": {
+        "n": 500,
+        "p50": 0.4548999999969965,
+        "p95": 0.7976999999991676,
+        "p99": 0.9954999999972642,
+        "max": 1.7346999999972468,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 0.43600000000014916,
+            "upper": 0.4724999999998545,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 0.7705000000005384,
+            "upper": 0.8285000000014406,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 0.8623999999999796,
+            "upper": 1.7346999999972468,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "verify_b_ipc": {
+        "n": 500,
+        "p50": 2.43920000000071,
+        "p95": 4.90440000000126,
+        "p99": 5.194900000002235,
+        "max": 6.1129000000000815,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 2.3496000000013737,
+            "upper": 2.542700000001787,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 4.815699999999197,
+            "upper": 5.053299999999581,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 5.067000000002736,
+            "upper": 6.1129000000000815,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "authorize_durable": {
+        "n": 500,
+        "p50": 7.386699999999109,
+        "p95": 8.445299999999406,
+        "p99": 11.900099999998929,
+        "max": 176.5272000000041,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 7.323499999998603,
+            "upper": 7.457600000001548,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 8.296400000000176,
+            "upper": 8.737199999995937,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 9.050400000000081,
+            "upper": 176.5272000000041,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      },
+      "verify_and_authorize_continuous": {
+        "n": 500,
+        "p50": 9.912099999999555,
+        "p95": 13.014400000000023,
+        "p99": 15.12619999999879,
+        "max": 180.31010000000242,
+        "confidence_intervals_if_iid": {
+          "p50": {
+            "probability": 0.5,
+            "confidence_level": 0.95,
+            "lower": 9.74829999999929,
+            "upper": 10.07510000000184,
+            "lower_rank": 228,
+            "upper_rank": 273,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.0220317347894637,
+              "upper": 0.0220317347894637
+            },
+            "coverage_lower_bound_if_iid": 0.9559365304210725
+          },
+          "p95": {
+            "probability": 0.95,
+            "confidence_level": 0.95,
+            "lower": 12.84650000000056,
+            "upper": 13.28440000000046,
+            "lower_rank": 465,
+            "upper_rank": 485,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.01964288732103154,
+              "upper": 0.019858377163006452
+            },
+            "coverage_lower_bound_if_iid": 0.960498735515962
+          },
+          "p99": {
+            "probability": 0.99,
+            "confidence_level": 0.95,
+            "lower": 13.494100000001708,
+            "upper": 180.31010000000242,
+            "lower_rank": 490,
+            "upper_rank": 500,
+            "lower_unbounded": false,
+            "upper_unbounded": false,
+            "finite_interval": true,
+            "insufficient_samples_for_two_finite_bounds": false,
+            "omitted_binomial_tails": {
+              "lower": 0.013243567099779478,
+              "upper": 0.006570483042414604
+            },
+            "coverage_lower_bound_if_iid": 0.9801859498578059
+          }
+        }
+      }
+    },
+    "errors": 0,
+    "authorized_synthetic_effects_including_warmup": 530,
+    "exclusions": [
+      "HTTP",
+      "network",
+      "real clients or authorities",
+      "external target",
+      "process startup",
+      "fixture issuance and proof preparation (reported separately)",
+      "database/configuration creation",
+      "challenge issuance and pre-verification store reads",
+      "post-effect assertions",
+      "database close/checkpoint",
+      "observation logging"
+    ],
+    "node_observed_max_rss_bytes": 72548352,
+    "resource_scope": "process.memoryUsage() samples of the Node coordinator, including its SQLite allocations; excludes both Rust subprocesses, filesystem cache and system memory. Observed sample maximum is not a measured process peak."
+  },
+  "vega": {
+    "source_commit": "c0ee259053cd12eaf43ed71b5cde375452b3ee4d",
+    "environment": {
+      "rust": "1.98.0",
+      "threads": 8,
+      "cpu": "Intel Core Ultra 7 265F"
+    },
+    "full_mdl_relation_reproduced": false,
+    "reason": "Public repository benchmarks only implement SHA256; not the complete credential application",
+    "criterion": [
+      {
+        "id": "vega_mc_zkp_sha256/prep_prove/1024/t8",
+        "estimates_ns": {
+          "mean": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 35005340.79454861,
+              "upper_bound": 35585292.47507142
+            },
+            "point_estimate": 35285216.96287699,
+            "standard_error": 148455.20197791242
+          },
+          "median": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 34900248.1875,
+              "upper_bound": 35719089.8125
+            },
+            "point_estimate": 35152578.06944445,
+            "standard_error": 217926.10911944194
+          },
+          "median_abs_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 63354.66799189524,
+              "upper_bound": 811292.3894945966
+            },
+            "point_estimate": 436754.0562835639,
+            "standard_error": 186773.38944758402
+          },
+          "slope": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 35030929.844827585,
+              "upper_bound": 35668319.583333336
+            },
+            "point_estimate": 35391180.82857143,
+            "standard_error": 164784.19141837646
+          },
+          "std_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 261118.50378338966,
+              "upper_bound": 614926.4432599801
+            },
+            "point_estimate": 492382.5360291274,
+            "standard_error": 90250.7305711582
+          }
+        },
+        "samples_file": "docs/horizon/raw/vega-criterion.json"
+      },
+      {
+        "id": "vega_mc_zkp_sha256/prep_prove/2048/t8",
+        "estimates_ns": {
+          "mean": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 74355316.51587301,
+              "upper_bound": 76395831.3785119
+            },
+            "point_estimate": 75410705.18295635,
+            "standard_error": 523006.9933534189
+          },
+          "median": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 74071233.25,
+              "upper_bound": 76717547.9
+            },
+            "point_estimate": 75864237.48958334,
+            "standard_error": 783146.2512713491
+          },
+          "median_abs_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 206917.75981480925,
+              "upper_bound": 2898240.296345964
+            },
+            "point_estimate": 1360649.7321311384,
+            "standard_error": 727514.8055418967
+          },
+          "slope": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 74550269.22340426,
+              "upper_bound": 76448990.90802824
+            },
+            "point_estimate": 75764628.65454546,
+            "standard_error": 485012.86843439244
+          },
+          "std_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 927167.0390559022,
+              "upper_bound": 2173272.1740972116
+            },
+            "point_estimate": 1744713.3415656465,
+            "standard_error": 313397.18081903853
+          }
+        },
+        "samples_file": "docs/horizon/raw/vega-criterion.json"
+      },
+      {
+        "id": "vega_mc_zkp_sha256/prove/1024/t8",
+        "estimates_ns": {
+          "mean": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 50508922.41333333,
+              "upper_bound": 52495283.03428571
+            },
+            "point_estimate": 51522952.16011904,
+            "standard_error": 506636.1656901094
+          },
+          "median": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 49830850.4,
+              "upper_bound": 52960897.516666666
+            },
+            "point_estimate": 52035488.41666667,
+            "standard_error": 805304.5767449668
+          },
+          "median_abs_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 215973.9034656941,
+              "upper_bound": 2854726.3577684686
+            },
+            "point_estimate": 2399766.2659156364,
+            "standard_error": 709126.6529534783
+          },
+          "slope": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 51691622.57068791,
+              "upper_bound": 53251119.48424076
+            },
+            "point_estimate": 52656103.0025974,
+            "standard_error": 402349.9660556369
+          },
+          "std_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 1027514.7629087641,
+              "upper_bound": 2043259.973715823
+            },
+            "point_estimate": 1692839.7579455157,
+            "standard_error": 257957.54201255456
+          }
+        },
+        "samples_file": "docs/horizon/raw/vega-criterion.json"
+      },
+      {
+        "id": "vega_mc_zkp_sha256/prove/2048/t8",
+        "estimates_ns": {
+          "mean": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 64878863.588345245,
+              "upper_bound": 67362299.38777778
+            },
+            "point_estimate": 65936318.03063492,
+            "standard_error": 648283.2736645701
+          },
+          "median": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 64360735,
+              "upper_bound": 66615176.62222222
+            },
+            "point_estimate": 65389805.91666667,
+            "standard_error": 596495.4519393777
+          },
+          "median_abs_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 163491.09283744884,
+              "upper_bound": 2514500.4312886917
+            },
+            "point_estimate": 1483302.577806113,
+            "standard_error": 607988.6617059296
+          },
+          "slope": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 64996588.622137405,
+              "upper_bound": 66616628.49744898
+            },
+            "point_estimate": 65835710.04415584,
+            "standard_error": 412915.125848781
+          },
+          "std_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 686111.506164103,
+              "upper_bound": 3121257.9487749203
+            },
+            "point_estimate": 2156709.427230124,
+            "standard_error": 739499.15933637
+          }
+        },
+        "samples_file": "docs/horizon/raw/vega-criterion.json"
+      },
+      {
+        "id": "vega_mc_zkp_sha256/setup/1024/t8",
+        "estimates_ns": {
+          "mean": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 74916118.67455953,
+              "upper_bound": 79411110.34470898
+            },
+            "point_estimate": 76909537.32878307,
+            "standard_error": 1168069.2309314257
+          },
+          "median": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 74341014.29761904,
+              "upper_bound": 79428108.7962963
+            },
+            "point_estimate": 75712640.6388889,
+            "standard_error": 1071770.8168541784
+          },
+          "median_abs_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 231813.2285145028,
+              "upper_bound": 4465641.336930133
+            },
+            "point_estimate": 1577064.4605181823,
+            "standard_error": 1153933.8347011944
+          },
+          "slope": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 74881193.23184358,
+              "upper_bound": 76263885.62479062
+            },
+            "point_estimate": 75658758.75844155,
+            "standard_error": 353278.68099688285
+          },
+          "std_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 942502.8836816667,
+              "upper_bound": 5129771.343657106
+            },
+            "point_estimate": 3874134.047139625,
+            "standard_error": 1134060.0269324956
+          }
+        },
+        "samples_file": "docs/horizon/raw/vega-criterion.json"
+      },
+      {
+        "id": "vega_mc_zkp_sha256/setup/2048/t8",
+        "estimates_ns": {
+          "mean": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 76392627.35715625,
+              "upper_bound": 85345963.45137501
+            },
+            "point_estimate": 80592101.87982143,
+            "standard_error": 2306131.8884987845
+          },
+          "median": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 74651102.55,
+              "upper_bound": 88495022
+            },
+            "point_estimate": 76337594.55,
+            "standard_error": 3837336.475293748
+          },
+          "median_abs_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 172575.48016491393,
+              "upper_bound": 12271715.457402252
+            },
+            "point_estimate": 2853220.1456252136,
+            "standard_error": 3678046.7639792846
+          },
+          "slope": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 75024889.71165644,
+              "upper_bound": 77996126.58405173
+            },
+            "point_estimate": 75924087.05584416,
+            "standard_error": 777915.9327223543
+          },
+          "std_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 3543412.3831258137,
+              "upper_bound": 9601587.928548608
+            },
+            "point_estimate": 7700860.795635945,
+            "standard_error": 1527715.3307320972
+          }
+        },
+        "samples_file": "docs/horizon/raw/vega-criterion.json"
+      },
+      {
+        "id": "vega_mc_zkp_sha256/verify/1024/t8",
+        "estimates_ns": {
+          "mean": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 20005449.620222222,
+              "upper_bound": 21022649.1175
+            },
+            "point_estimate": 20505493.608611114,
+            "standard_error": 259797.24769177465
+          },
+          "median": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 19831574.4,
+              "upper_bound": 21126417.65
+            },
+            "point_estimate": 20500987.645833336,
+            "standard_error": 315761.0371996979
+          },
+          "median_abs_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 134578.65747325122,
+              "upper_bound": 1487422.0477263127
+            },
+            "point_estimate": 646034.8871889208,
+            "standard_error": 341487.44295412063
+          },
+          "slope": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 20018370.836363636,
+              "upper_bound": 21036183.928030305
+            },
+            "point_estimate": 20548493.574025974,
+            "standard_error": 273780.3938764882
+          },
+          "std_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 465087.8530731748,
+              "upper_bound": 1117223.3543306154
+            },
+            "point_estimate": 867654.1782962504,
+            "standard_error": 167031.04866895793
+          }
+        },
+        "samples_file": "docs/horizon/raw/vega-criterion.json"
+      },
+      {
+        "id": "vega_mc_zkp_sha256/verify/2048/t8",
+        "estimates_ns": {
+          "mean": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 19541558.732607145,
+              "upper_bound": 20066309.578553572
+            },
+            "point_estimate": 19814850.444285713,
+            "standard_error": 134010.58160737832
+          },
+          "median": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 19627638,
+              "upper_bound": 20071705.708333336
+            },
+            "point_estimate": 19836762.883333333,
+            "standard_error": 131010.08397253844
+          },
+          "median_abs_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 48099.64500605913,
+              "upper_bound": 698244.6658536801
+            },
+            "point_estimate": 281501.4052623505,
+            "standard_error": 154951.48204349875
+          },
+          "slope": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 19697623.71674739,
+              "upper_bound": 20105487.811170213
+            },
+            "point_estimate": 19885119.093506493,
+            "standard_error": 102494.27571266505
+          },
+          "std_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 175619.71677234684,
+              "upper_bound": 625301.765229795
+            },
+            "point_estimate": 447978.03656822717,
+            "standard_error": 118106.45146777482
+          }
+        },
+        "samples_file": "docs/horizon/raw/vega-criterion.json"
+      },
+      {
+        "id": "vega_sc_sha256/prep_prove/1024/t8",
+        "estimates_ns": {
+          "mean": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 84936857.15,
+              "upper_bound": 88078013.065
+            },
+            "point_estimate": 86320008,
+            "standard_error": 816524.3693463134
+          },
+          "median": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 84541756.5,
+              "upper_bound": 87507485.75
+            },
+            "point_estimate": 85066499.5,
+            "standard_error": 850416.3434584724
+          },
+          "median_abs_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 116611.67702972889,
+              "upper_bound": 3677311.988514662
+            },
+            "point_estimate": 1270574.8340427876,
+            "standard_error": 951814.2885328665
+          },
+          "slope": null,
+          "std_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 860744.9405583986,
+              "upper_bound": 3843301.32152617
+            },
+            "point_estimate": 2737885.5163361924,
+            "standard_error": 842460.9680325649
+          }
+        },
+        "samples_file": "docs/horizon/raw/vega-criterion.json"
+      },
+      {
+        "id": "vega_sc_sha256/prep_prove/2048/t8",
+        "estimates_ns": {
+          "mean": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 254047285.7,
+              "upper_bound": 266007954.6
+            },
+            "point_estimate": 259810395.7,
+            "standard_error": 3067923.3191231056
+          },
+          "median": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 250788073,
+              "upper_bound": 271814859
+            },
+            "point_estimate": 257197383.5,
+            "standard_error": 5042268.415023616
+          },
+          "median_abs_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 2131629.6098560095,
+              "upper_bound": 16640128.338378668
+            },
+            "point_estimate": 10087557.588610053,
+            "standard_error": 4021032.616176373
+          },
+          "slope": null,
+          "std_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 5137880.629903869,
+              "upper_bound": 12015761.288671318
+            },
+            "point_estimate": 10211297.300235134,
+            "standard_error": 1600386.1663248516
+          }
+        },
+        "samples_file": "docs/horizon/raw/vega-criterion.json"
+      },
+      {
+        "id": "vega_sc_sha256/prove/1024/t8",
+        "estimates_ns": {
+          "mean": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 90993937,
+              "upper_bound": 95632179.49249999
+            },
+            "point_estimate": 93259813.8,
+            "standard_error": 1191931.7244211726
+          },
+          "median": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 89761718.5,
+              "upper_bound": 96607873
+            },
+            "point_estimate": 92746556.5,
+            "standard_error": 1897609.7214782122
+          },
+          "median_abs_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 559372.7386191487,
+              "upper_bound": 6511984.946139157
+            },
+            "point_estimate": 4472916.647189856,
+            "standard_error": 1469799.6166230675
+          },
+          "slope": null,
+          "std_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 2347816.310934378,
+              "upper_bound": 4928855.434850694
+            },
+            "point_estimate": 3982525.5405996894,
+            "standard_error": 662141.583195621
+          }
+        },
+        "samples_file": "docs/horizon/raw/vega-criterion.json"
+      },
+      {
+        "id": "vega_sc_sha256/prove/2048/t8",
+        "estimates_ns": {
+          "mean": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 219240717.3475,
+              "upper_bound": 243033000.325
+            },
+            "point_estimate": 231089742.3,
+            "standard_error": 6104188.42140138
+          },
+          "median": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 214534553,
+              "upper_bound": 252928153
+            },
+            "point_estimate": 227671657,
+            "standard_error": 11744561.651528735
+          },
+          "median_abs_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 2883349.309310317,
+              "upper_bound": 33128967.72764325
+            },
+            "point_estimate": 26541326.816797256,
+            "standard_error": 8605725.355825132
+          },
+          "slope": null,
+          "std_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 13380571.168501398,
+              "upper_bound": 24024332.96103768
+            },
+            "point_estimate": 20349701.63788887,
+            "standard_error": 2731816.586750928
+          }
+        },
+        "samples_file": "docs/horizon/raw/vega-criterion.json"
+      },
+      {
+        "id": "vega_sc_sha256/setup/1024/t8",
+        "estimates_ns": {
+          "mean": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 422301436.5,
+              "upper_bound": 449229437.2666666
+            },
+            "point_estimate": 433287589.4333333,
+            "standard_error": 7177933.07252511
+          },
+          "median": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 418673349.5,
+              "upper_bound": 437320098.6666666
+            },
+            "point_estimate": 427055852.5,
+            "standard_error": 5195266.777963921
+          },
+          "median_abs_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 2532250.608843506,
+              "upper_bound": 21978694.338700086
+            },
+            "point_estimate": 12314967.357465595,
+            "standard_error": 5045465.970273229
+          },
+          "slope": null,
+          "std_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 6250757.26122596,
+              "upper_bound": 35663836.17918989
+            },
+            "point_estimate": 23854117.15413914,
+            "standard_error": 9438383.656360084
+          }
+        },
+        "samples_file": "docs/horizon/raw/vega-criterion.json"
+      },
+      {
+        "id": "vega_sc_sha256/setup/2048/t8",
+        "estimates_ns": {
+          "mean": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 813648627.1975,
+              "upper_bound": 909531108.9
+            },
+            "point_estimate": 849137497.2,
+            "standard_error": 27457565.31422953
+          },
+          "median": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 811152410,
+              "upper_bound": 838916217
+            },
+            "point_estimate": 821783716.5,
+            "standard_error": 10496770.249330018
+          },
+          "median_abs_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 229939.3951177597,
+              "upper_bound": 36660522.347545624
+            },
+            "point_estimate": 16309298.01505208,
+            "standard_error": 11172661.171795912
+          },
+          "slope": null,
+          "std_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 10468234.890318865,
+              "upper_bound": 141217192.2304291
+            },
+            "point_estimate": 91886451.18061888,
+            "standard_error": 45838719.30502261
+          }
+        },
+        "samples_file": "docs/horizon/raw/vega-criterion.json"
+      },
+      {
+        "id": "vega_sc_sha256/verify/1024/t8",
+        "estimates_ns": {
+          "mean": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 26131314.93625,
+              "upper_bound": 30409873.87625
+            },
+            "point_estimate": 28214335.95,
+            "standard_error": 1090916.911922919
+          },
+          "median": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 24858669,
+              "upper_bound": 31568879.5
+            },
+            "point_estimate": 27767785,
+            "standard_error": 1677824.9419203138
+          },
+          "median_abs_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 1133396.9008281827,
+              "upper_bound": 6063279.399955273
+            },
+            "point_estimate": 4530571.994966269,
+            "standard_error": 1291588.3040267446
+          },
+          "slope": null,
+          "std_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 2146365.6040519397,
+              "upper_bound": 4429770.544358415
+            },
+            "point_estimate": 3637093.1066148556,
+            "standard_error": 578371.9075230404
+          }
+        },
+        "samples_file": "docs/horizon/raw/vega-criterion.json"
+      },
+      {
+        "id": "vega_sc_sha256/verify/2048/t8",
+        "estimates_ns": {
+          "mean": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 71848959.9,
+              "upper_bound": 77033824.1
+            },
+            "point_estimate": 74443798.6,
+            "standard_error": 1324042.1530914183
+          },
+          "median": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 71253639.5,
+              "upper_bound": 77750948
+            },
+            "point_estimate": 73706675,
+            "standard_error": 1438354.5727342928
+          },
+          "median_abs_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 108590.06987214088,
+              "upper_bound": 8106196.899086237
+            },
+            "point_estimate": 4060856.8952053785,
+            "standard_error": 2295870.8803159823
+          },
+          "slope": null,
+          "std_dev": {
+            "confidence_interval": {
+              "confidence_level": 0.95,
+              "lower_bound": 2439465.3269941295,
+              "upper_bound": 5629849.430997426
+            },
+            "point_estimate": 4422514.883922776,
+            "standard_error": 834034.5181735673
+          }
+        },
+        "samples_file": "docs/horizon/raw/vega-criterion.json"
+      }
+    ],
+    "proof_bytes": {
+      "mc_1024": 86933,
+      "mc_2048": 96583,
+      "sc_1024": 85948,
+      "sc_2048": 94572
+    },
+    "global_speed_comparison_permitted": false
+  },
+  "arithmetic_reuse_cost_estimates_ms": [
+    {
+      "uses": 1,
+      "a": 7.2902306160000006,
+      "b": 7.074561146000001,
+      "disclosure": 0.365295166,
+      "scope": "Derived from measured warm means; NOT executed k-use series; excludes issuance/HTTP/storage. B proves historical witness and fresh holder key, disclosure reveals witness."
+    },
+    {
+      "uses": 2,
+      "a": 14.580461232000001,
+      "b": 8.204980606,
+      "disclosure": 0.730590332,
+      "scope": "Derived from measured warm means; NOT executed k-use series; excludes issuance/HTTP/storage. B proves historical witness and fresh holder key, disclosure reveals witness."
+    },
+    {
+      "uses": 5,
+      "a": 36.451153080000005,
+      "b": 11.596238986000001,
+      "disclosure": 1.8264758300000001,
+      "scope": "Derived from measured warm means; NOT executed k-use series; excludes issuance/HTTP/storage. B proves historical witness and fresh holder key, disclosure reveals witness."
+    },
+    {
+      "uses": 10,
+      "a": 72.90230616000001,
+      "b": 17.248336286000004,
+      "disclosure": 3.6529516600000003,
+      "scope": "Derived from measured warm means; NOT executed k-use series; excludes issuance/HTTP/storage. B proves historical witness and fresh holder key, disclosure reveals witness."
+    },
+    {
+      "uses": 100,
+      "a": 729.0230616,
+      "b": 118.986087686,
+      "disclosure": 36.5295166,
+      "scope": "Derived from measured warm means; NOT executed k-use series; excludes issuance/HTTP/storage. B proves historical witness and fresh holder key, disclosure reveals witness."
+    }
+  ],
+  "goals": {
+    "crypto_function_p95_50ms_prove_10ms_verify_64KiB": "observed met on narrower relation, not comparable to Vega credentials",
+    "durable_continuous_p95_10ms": "not met",
+    "no_observed_unauthorized_effects": "adversarial tests only; not a cryptographic soundness probability estimate",
+    "validated_customer_need": false,
+    "superior_to_best_known_equivalent_reference": false
+  },
+  "uncertainties": [
+    "IID not established; quantile confidence intervals conditional",
+    "Single machine; uncontrolled system background activity",
+    "No full workload-equivalent Vega comparison",
+    "No qualified real issuer, customer economics, external audit, hardware failure or financial target",
+    "No combined Rust+Node peak memory, GPU/energy or complete monetary cost measurement"
+  ],
+  "artifacts_sha256": {
+    "docs/horizon/raw/horizon-linux-before.summary.json": "8ea554bf2f2ea87e1d5093b97960c07f56e79f36fa3db9e95d3b0a389668bada",
+    "docs/horizon/raw/horizon-linux-after.summary.json": "648c16680a1665641ebeb350ec9e60d0c5052ccf133381c6e2474c1c0bf78af4",
+    "docs/horizon/raw/horizon-linux-before.json": "6866039fb6b75b71b3e57d6ee6054f8faece08b5b44a4611390c353852b8536e",
+    "docs/horizon/raw/horizon-linux-after.json": "3244eae0b8524a72026346f0c75cde1fa7821e3370bee5ad24233eabba49c9ba",
+    "docs/horizon/raw/horizon-firewall-2026-10-17T02-19-55.801Z-c283b618-d189-4921-9cb9-350c18190761.summary.json": "4755ad05cf77d255037b7fe9ad0a7dff67e142296cbbb8e9b8236cf051dcdd74",
+    "docs/horizon/raw/horizon-firewall-2026-10-17T02-19-55.801Z-c283b618-d189-4921-9cb9-350c18190761.json": "452aead6ecfc67aa54f05c3a6699e6f458a5019fac91e903cfb4693aff349b24",
+    "docs/horizon/raw/vega-criterion.json": "3c8c1d25d3a08b6d4b8c33fe72ec26e388edf6e3c5ce20404b4d0bdfb1e947f6",
+    "labs/horizon/Cargo.lock": "326f077f238678b6808c7950d41f16c68b04991356fc794b1f2416e2882a91df",
+    "labs/horizon/reference/vega-Cargo.lock": "9ee11e35a132be1c9f247a90f9597c4b4727d3b961c9534f4c06a229571f9368",
+    "docs/horizon/raw/horizon-linux-before-time.txt": "1a890ee11bf438793dea9ea4d80960b9406065d4674e234b8869f06a93873fe4",
+    "docs/horizon/raw/horizon-linux-after-time.txt": "214842f0c1e5db0c5d9d42327b10190c24c14c7db962bbeddaf1b6c0c5c8a03a"
+  }
+}

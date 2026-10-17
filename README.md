@@ -1,152 +1,151 @@
-# ZK-agentiK
+# ZK-agentiK · Horizon & Proofkit
 
-POC expérimental de contrôle DevSecOps avant effet de bord, transporté par MCP.
-Le moteur métier est en Rust `no_std`, le SDK et la gateway en TypeScript strict.
+Un laboratoire pour créer des outils dont l'action est conditionnée par une
+vérification indépendante, avec preuves reproductibles et contrôleur durable.
+Rust pour les preuves et les politiques ; TypeScript strict pour le SDK, HTTP et MCP.
 
-**[Dossier complet des recherches, preuves et décisions](docs/README.md)** :
-sources, concurrence, revues contradictoires, sécurité, benchmarks et roadmap.
+**Statut : recherche expérimentale, données synthétiques, aucune opération financière.**
+Le profil intégré démontre une autorisation locale de sinistre. La qualification
+bancaire, la demande commerciale et la sécurité post-quantique ne sont pas établies.
 
-**Le serveur MCP de démonstration utilise un simulateur natif.** Les connecteurs
-sont des fixtures locales : aucun merge GitLab réel ni déploiement n'est effectué.
-Ses hooks SP1, RISC Zero et Magnetar renvoient explicitement `BACKEND_UNAVAILABLE`.
-Le banc séparé `labs/risc0` fournit désormais un **adaptateur Rust RISC Zero réel**,
-un guest à source signée de test et un vérifieur indépendant. Il vérifie des
-challenges historiques, sans accès aux APIs de production.
+[Démarrage développeur](packages/proofkit-sdk/README.md) ·
+[White paper PDF](docs/whitepaper/whitepaper.pdf) ·
+[Dossier de publication](docs/publication/README.md) ·
+[Recherche et historique](docs/README.md)
 
-La recherche a identifié plusieurs équivalents. La piste retenue est une
-**admission confidentielle d'artefacts entre entreprises**, à comparer aux
-solutions existantes : [analyse et contradictions](docs/06-MARKET-NICHE-AND-CHALLENGE.md).
-Ce dépôt ne revendique pas un premier standard mondial ou un marché vierge.
+Les [contrôles de publication datés](docs/publication/PUBLICATION_REVIEW_2026-10-17.md)
+relient les tests exécutés, les artefacts CI et les limites encore ouvertes.
 
-## Lancer
+## Le besoin à éprouver
 
-Prérequis : Node.js 22.14+ (24 testé), Rust via rustup, toolchain 1.93.0 et linker
-natif. Sous Windows, les outils C++ MSVC sont nécessaires. `scripts/cargo.mjs`
-retrouve aussi Cargo dans `~/.cargo/bin` lorsqu'il n'est pas encore dans PATH.
+Un délégataire et un assureur veulent vérifier qu'un montant admissible respecte
+un plafond, sans révéler ces deux valeurs au contrôleur. Horizon prouve une
+relation sur des engagements signés, puis lie l'autorisation à un dossier, un
+client, une politique et un challenge frais. Le contrôleur réserve l'opération
+durablement avant d'enregistrer l'effet synthétique.
 
-```bash
+Cette hypothèse exige un acteur autorisé à connaître les deux ouvertures et
+des émetteurs fiables. Si un verdict signé ou une divulgation acceptable suffit,
+la ZK n'est pas nécessaire. Aucun acheteur ni budget n'est validé :
+[protocole de qualification](docs/horizon/REVIEW_PROTOCOL.md),
+[alternatives et antériorités](docs/horizon/NOVELTY_AND_PRIOR_ART.md).
+
+## Exécuter une preuve réelle
+
+Node **24.11+**, Rust **1.93.0** via rustup et linker natif sont requis. Sous
+Windows : outils C++ MSVC. Docker est nécessaire aux profils math, Vega, RISC Zero
+et au déploiement isolé, pas à la démo Horizon native.
+
+```sh
 npm ci --ignore-scripts
-npm run demo
-npm run demo:critical
+npm run proofkit -- doctor
+npm run proofkit -- run horizon
 ```
 
-La première démo connecte un client MCP officiel au serveur stdio et montre
-autorisation, mauvais projet et reçu falsifié. La démo critique teste un dossier
-complet puis **23 scénarios adverses**, avec zéro merge supplémentaire.
+Le profil construit Horizon, vérifie une fixture publique puis génère une
+présentation Bulletproofs réelle pour un nouveau challenge : preuve invalide
+refusée, une écriture SQLite autorisée, rejeu refusé. Le prover et le vérifieur
+utilisent des workers distincts. Les journaux restent localement dans `.tools/`.
 
-Le profil critique couvre séparation des rôles, MFA attestée, révision approuvée,
-fraîcheur, fenêtre, scans, SBOM/provenance, récupération, canary, incident et
-arrêt d'urgence. Les seuils sont des exemples de test : [logique métier](docs/05-CRITICAL-PLATFORM-POLICY.md).
+Pour la démonstration web persistante :
 
-## Preuve RISC Zero réelle, opt-in
-
-Docker Linux doit fonctionner et disposer d'au moins 12 GiB de RAM pour le
-conteneur. La première exécution installe les outils épinglés puis compile.
-La génération CPU peut prendre plusieurs minutes par preuve.
-
-```bash
-npm run lab:risc0 -- verify
-npm run lab:risc0 -- critical 3
-npm run lab:risc0 -- denied 1
+```sh
+npm run horizon:init
+npm run horizon:serve
+# http://127.0.0.1:38080 — données synthétiques uniquement
 ```
 
-`verify` reconstruit le vérifieur et contrôle les deux preuves publiques livrées,
-sans relancer leur génération. Le banc CPU a produit quatre preuves réelles :
-154–163 s par preuve autorisante, vérification p95 13,70 ms, rejet d'un seal
-altéré p95 6,95 ms. L'objectif de 5 ms et le TTL synchrone de 30 s échouent ici.
+`init` refuse d'écraser une configuration existante. Pour Docker et l'isolation
+des secrets, suivre [le guide sandbox](docs/horizon/DEPLOYMENT.md).
 
-Les calculs de preuve s'effectuent sans réseau Docker attaché. Le runner
-exporte preuve, enveloppe, challenge public et mesures dans
-`tests/benchmarks/results/risc0/`. Un second conteneur vérifie le résultat
-autorisé avec seulement le binaire vérifieur et les artefacts publics.
-L'autorité de fixture possède une clé de test publique : aucune provenance
-fournisseur réelle n'est revendiquée. La confidentialité critique de cette
-pile reste non démontrée : [modèle et limites](docs/07-STACK-SECURITY-AND-PERFORMANCE.md),
-[résultats du banc](docs/08-RISC0-LAB-RESULTS.md).
+## Créer un outil vérifié
 
-## Serveur MCP local
+Le [SDK Proofkit](packages/proofkit-sdk/) fournit `defineVerifiedTool` : schémas
+stricts, entrées bornées, attentes fixées côté serveur, contrôle après attente,
+capacités limitées et absence de retry automatique d'une mutation ambiguë.
+Le développeur fournit les adaptateurs de preuve et de contrôle durable.
+Le SDK ne certifie pas un adaptateur arbitraire et ne génère pas un circuit sûr.
 
-Après `npm run build:rust` et `npm run build` :
+L'[exemple compilé](packages/horizon-demo/src/tool.ts) est utilisé par HTTP et
+par deux outils exposés avec le SDK MCP officiel, `horizon_issue_challenge` et
+`horizon_authorize_claim`. Pour un client MCP, après le build :
 
-```bash
-node packages/enterprise-gateway/dist/stdio.js
+```sh
+node packages/horizon-demo/dist/mcp-stdio.js <public.json> <dedicated-sandbox.sqlite>
 ```
 
-Utiliser une commande `node` et un chemin absolu vers ce fichier dans le client
-MCP. L'outil est `verifiable_gitlab_merge`, avec arguments :
+Seule la configuration **publique** entre dans ce serveur. La preuve est produite
+côté fournisseur. Ce transport n'expose ni prover privé ni administration et ne
+transforme pas le reçu HTTP/MCP en preuve de l'exécution d'une API distante.
 
-```json
-{
-  "project_id": 1,
-  "merge_request_iid": 7,
-  "head_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-}
+## Auditer les preuves
+
+```sh
+npm run proofkit -- list
+npm run proofkit -- check
+npm run proofkit -- seal evidence/manifests/my-review.json
+npm run proofkit -- verify evidence/manifests/my-review.json
 ```
 
-Définir `ZK_MCP_SCENARIO=critical` dans l'environnement du serveur pour le profil
-critique. `NODE_ENV=production` ou `ZK_MCP_MODE=production` refuse le démarrage.
-Ne jamais placer de données confidentielles dans ce simulateur : son reçu expose
-le witness. Le profil ZK futur doit fournir un véritable backend et des domaines
-fournisseur/vérifieur distincts.
+Le [registre](evidence/catalog.json) distingue démonstration mathématique,
+tests numériques, preuves cryptographiques, mesures et résultats non établis.
+Un manifeste lie les octets explicitement listés par SHA-256 ; il ne certifie
+ni leur vérité, ni leur auteur, ni une date indépendante. Les commandes,
+limites et profils sont documentés dans [Proofkit CLI](tools/proofkit/README.md).
 
-## Vérifier
+```sh
+npm run proofkit -- run math          # Octave, pas une exécution MATLAB
+npm run proofkit -- run risc0-public  # Receipts historiques, Docker préparé
+npm run proofkit -- run vega-sha256   # Opt-in long : compilation et benchmarks
+```
 
-```bash
-cargo test --workspace --locked
+La [source LaTeX](docs/whitepaper/whitepaper.tex), la bibliographie, les
+[scripts MATLAB/Octave](math/) et les rapports datés sont disponibles.
+Les [expériences GPU](docs/experiments/gpu/README.md) ont un périmètre distinct.
+`--require-post-quantum` refuse les profils livrés ; aucune protection plus faible
+n'est sélectionnée silencieusement.
+
+## Trois périmètres distincts
+
+| Périmètre | Garantie testée | Limites |
+| --- | --- | --- |
+| Horizon + Proofkit | Bulletproofs réelles, attestations synthétiques, autorisation fraîche et durable locale | Ristretto/Ed25519 classiques, métadonnées corrélables, cible SQLite locale |
+| Laboratoire RISC Zero | Receipts Succinct réels sur une politique DevSecOps signée | Source de fixture ; intégration au MCP DevSecOps non livrée |
+| MCP DevSecOps historique | Politique Rust `no_std`, liaison au contexte, refus et déduplication locale | Simulateur divulguant le witness, interdit en production |
+
+`npm run demo:critical` reste la démo du **simulateur** historique. Les backends
+non implémentés refusent explicitement l'appel. Les mesures CPU antérieures sont
+conservées avec leur configuration ; elles ne mesurent pas automatiquement les
+nouveaux transports. Vega SHA-256 et Horizon ne prouvent pas la même relation :
+aucun record comparatif n'est revendiqué.
+
+## Contribuer et personnaliser l'infrastructure
+
+```sh
 cargo fmt --all -- --check
 cargo clippy --workspace --all-targets --locked -- -D warnings
+cargo test --workspace --locked
 npm test
 npm run typecheck
-npm run schema:check
-npm run build:guest
-npm run benchmark -- --enforce-5ms
+npm run horizon:build
+npm run test:horizon
+npm run test:proofkit
+npm run test:risc0:gpu
 ```
 
-Si Cargo n'est pas dans PATH, remplacer `cargo` par `node scripts/cargo.mjs`.
-`build:guest` compile et inspecte un **ELF RISC-V nu de faisabilité**, sans
-exécution sous SP1/RISC Zero. Le benchmark mesure le simulateur Rust release
-avec IPC ; le seuil de 5 ms est un critère p95 de rejet, pas un SLA de preuve ZK.
-Résultats et limites : [rapport de validation](docs/04-VALIDATION.md).
+Voir [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md),
+[skills](.agents/skills/) et [rôles de revue](.agents/roles/).
+Le [workflow GitHub Actions réutilisable](docs/publication/GITHUB_ACTIONS.md)
+automatise les profils de preuve et un déploiement Docker éphémère sur le runner.
+Les fondations [Azure/Bicep](infra/azure/) et [GCP/Terraform](infra/gcp/)
+exposent réseau et identités configurables. Elles ont été validées localement,
+sans déploiement : [comparaison et décisions restantes](docs/publication/CLOUD_COMPARISON.md).
+IAM, clés réelles, contrôleur partagé et reprise face à une API distante restent
+à qualifier avant un runtime cloud sensible.
 
-## Structure
+Les prochaines décisions sont H11 (besoin client), H13 (sources authentiques),
+H14 (cible distante), H15 (audit externe) et H17 (exploitation). Le
+[prompt de reprise](docs/publication/NEXT_PROMPT.md) les rend testables.
 
-```text
-AGENTS.md
-.agents/skills/{zkp-riscv-guest,mcp-protocol-security,devsecops-connectors,qa-benchmark-runner}/
-.github/workflows/ci.yml
-docs/
-  01-RESEARCH-AND-GAP-ANALYSIS.md
-  02-ZK-MCP-RFC-SPEC.md
-  03-ARCHITECTURE.md
-  04-VALIDATION.md
-  05-CRITICAL-PLATFORM-POLICY.md
-  06-MARKET-NICHE-AND-CHALLENGE.md
-  07-STACK-SECURITY-AND-PERFORMANCE.md
-  08-RISC0-LAB-RESULTS.md
-  schemas/zkp-envelope.schema.json
-crates/{policy-engine-core,policy-statement,policy-guest-riscv,zkvm-bridge}/
-labs/risc0/                      # guest et adaptateur réels, vérifieur, lockfiles
-packages/{zk-mcp-sdk,enterprise-gateway}/
-tests/{fixtures,e2e-poc,benchmarks}/
-scripts/{cargo,schema,check-guest,risc0-lab}.mjs
-issues/                         # 10 tickets, 3 jalons
-```
-
-## Limites et suite
-
-Les garanties actuelles : contrôle de politique, liaison du reçu à l'action,
-rejeu et déduplication d'opération dans **une instance**, refus sur expiration,
-altération et changement de facts. Les stores mémoire disparaissent au
-redémarrage. Un scan/MFA/SBOM de fixture n'est pas une preuve d'origine.
-
-L'intégration des preuves réelles dans le serveur MCP, les attestations d'autorités, contrôleurs de promotion,
-vérifieur WASM, audit durable, recovery et Docker de production sont à construire.
-Le mode critique livré gèle les changements ordinaires pendant un incident ;
-il ne fournit pas de rollback d'urgence. Voir [les dix issues](issues/README.md).
-
-Le guest **02** et le backend **01** disposent d'un premier chemin réel de
-laboratoire. Priorités techniques : comparaison et latence **03**, fraîcheur
-**02/01**, autorités et confidentialité **07**, firewall durable **08**, puis
-intégration SDK/vérifieur **04–05**, pilote **06**, audit **09**, déploiement **10**.
-
-Licence du code de ce dépôt : MIT. Les dépendances conservent leurs licences.
+[Sécurité](SECURITY.md) · [Licence MIT](LICENSE) ·
+[Notices tierces](THIRD_PARTY_NOTICES.md) · [Citation](CITATION.cff)

@@ -1,1 +1,5 @@
 * text=auto eol=lf
+# Preserve measured output bytes, including terminal progress CRs and trailing spaces.
+docs/experiments/gpu/runs/** -text -whitespace
+docs/publication/dependencies/** -text -whitespace
+*.pdf binary

@@ -1,0 +1,35 @@
+{
+  "schema": "zk-agentik-operator-validation-v1",
+  "observed_on": "2026-10-17",
+  "timestamp_authority": "local-clock-unattested",
+  "baseline_commit": "21b6dc2884492c364988b549811f3ce4ffdb2efb",
+  "scope": "Working tree after integrating origin/feat/publication-hardening; subsequent commit fixes the delivered bytes",
+  "observer": "Executing coding agents; internal review, no external audit",
+  "checks": [
+    { "command": "npm run build", "result": "passed" },
+    { "command": "npm run typecheck", "result": "passed" },
+    { "command": "npm run test:horizon", "passed": 31, "failed": 0 },
+    { "command": "node --check packages/horizon-demo/public/app.js", "result": "passed" },
+    { "command": "actionlint 1.7.12", "result": "passed" },
+    { "command": "isolated Compose rebuild and restart", "result": "passed", "scope": "horizon-publication only; existing volume retained" },
+    { "command": "HTTP restart replay smoke with all three operator routes", "result": "passed", "effects": 1, "new_effects": 0 },
+    { "command": "read served HTML and JavaScript operator controls", "result": "passed", "scope": "Disabled controls and absent admin request handlers; not visual accessibility certification" }
+  ],
+  "operator_tests": {
+    "negative_requests": 162,
+    "routes": ["/api/revoke", "/api/rotate-policy", "/api/reconcile"],
+    "configurations": 7,
+    "rejection_http_status": 403,
+    "unchanged": ["state", "operations", "audit", "effects"],
+    "authorized_controls_tested": ["reconcile without second effect", "policy epoch rotation", "revocation"],
+    "valid_operator_token_does_not_admit_forged_proof": true
+  },
+  "docker_image": "sha256:3ca3ffaa703c6418be7870a1fe8cca456aeaedff0f8076e0ab198a03f6d6e3b6",
+  "limitations": [
+    "A shared secret is not banking IAM, identity-specific roles, TLS or hot rotation.",
+    "Only the named operator routes are authenticated by this guard.",
+    "The browser receives no operator token; the default Compose deployment leaves operator routes disabled.",
+    "No new latency benchmark. Earlier 103-test validation is preserved; Horizon now has two additional test groups.",
+    "This local record does not assert a GitHub Actions result."
+  ]
+}

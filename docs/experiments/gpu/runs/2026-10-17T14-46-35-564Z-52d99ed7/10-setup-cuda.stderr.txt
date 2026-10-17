@@ -1,0 +1,317 @@
+info: component clippy is up to date
+   Compiling policy-engine-core v0.1.0 (/lab/source/crates/policy-engine-core)
+   Compiling policy-statement v0.1.0 (/lab/source/crates/policy-statement)
+   Compiling lab-methods v0.1.0 (/lab/source/labs/risc0/methods)
+   Compiling lab-verifier v0.1.0 (/lab/source/labs/risc0/verifier)
+   Compiling lab-statement v0.1.0 (/lab/source/labs/risc0/statement)
+   Compiling zkvm-bridge v0.1.0 (/lab/source/crates/zkvm-bridge)
+   Compiling lab-host v0.1.0 (/lab/source/labs/risc0/host)
+    Finished `release` profile [optimized] target(s) in 13.42s
+warning: risc0-sys@1.5.0: kernels/zkp/cuda/fp.h: In constructor 'constexpr Fp::Fp(uint32_t, bool)':
+warning: risc0-sys@1.5.0: kernels/zkp/cuda/fp.h:82:33: warning: unused parameter 'ignore' [-Wunused-parameter]
+warning: risc0-sys@1.5.0:    82 |   __host__ __device__ constexpr Fp(uint32_t val, bool ignore) : val(val) {}
+warning: risc0-sys@1.5.0:       |                            ~~~~~^~~~~~
+warning: risc0-sys@1.5.0: kernels/zkp/cuda/fp.h: In constructor 'constexpr Fp::Fp(uint32_t, bool)':
+warning: risc0-sys@1.5.0: kernels/zkp/cuda/fp.h:82:33: warning: unused parameter 'ignore' [-Wunused-parameter]
+warning: risc0-sys@1.5.0:    82 |   __host__ __device__ constexpr Fp(uint32_t val, bool ignore) : val(val) {}
+warning: risc0-sys@1.5.0:       |                            ~~~~~^~~~~~
+warning: risc0-sys@1.5.0: kernels/zkp/cuda/fp.h: In constructor 'constexpr Fp::Fp(uint32_t, bool)':
+warning: risc0-sys@1.5.0: kernels/zkp/cuda/fp.h:82:33: warning: unused parameter 'ignore' [-Wunused-parameter]
+warning: risc0-sys@1.5.0:    82 |   __host__ __device__ constexpr Fp(uint32_t val, bool ignore) : val(val) {}
+warning: risc0-sys@1.5.0:       |                            ~~~~~^~~~~~
+warning: risc0-sys@1.5.0: kernels/zkp/cuda/fp.h: In constructor 'constexpr Fp::Fp(uint32_t, bool)':
+warning: risc0-sys@1.5.0: kernels/zkp/cuda/fp.h:82:33: warning: unused parameter 'ignore' [-Wunused-parameter]
+warning: risc0-sys@1.5.0:    82 |   __host__ __device__ constexpr Fp(uint32_t val, bool ignore) : val(val) {}
+warning: risc0-sys@1.5.0:       |                            ~~~~~^~~~~~
+warning: risc0-sys@1.5.0: kernels/zkp/cuda/kernels.cu: In function 'constexpr size_t log2Ceil(size_t)':
+warning: risc0-sys@1.5.0: kernels/zkp/cuda/kernels.cu:23:17: warning: comparison of integer expressions of different signedness: 'int' and 'size_t' {aka 'long unsigned int'} [-Wsign-compare]
+warning: risc0-sys@1.5.0:    23 |   while ((1 << r) < in) {
+warning: risc0-sys@1.5.0:       |        ~~~~~~~~~^~~~
+warning: risc0-sys@1.5.0: kernels/zkp/cuda/fp.h: In constructor 'constexpr Fp::Fp(uint32_t, bool)':
+warning: risc0-sys@1.5.0: kernels/zkp/cuda/fp.h:82:33: warning: unused parameter 'ignore' [-Wunused-parameter]
+warning: risc0-sys@1.5.0:    82 |   __host__ __device__ constexpr Fp(uint32_t val, bool ignore) : val(val) {}
+warning: risc0-sys@1.5.0:       |                            ~~~~~^~~~~~
+warning: risc0-sys@1.5.0: kernels/zkp/cuda/supra/ntt.cu: In function 'RustError::by_value sppark_init()':
+warning: risc0-sys@1.5.0: kernels/zkp/cuda/supra/ntt.cu:10:10: warning: array subscript 1 is outside array bounds of 'bb31_t [1]' [-Warray-bounds=]
+warning: risc0-sys@1.5.0:    10 |   inout[1] = fr_t(1);
+warning: risc0-sys@1.5.0: In member function '_Tp* std::__new_allocator<_Tp>::allocate(size_type, const void*) [with _Tp = bb31_t]',
+warning: risc0-sys@1.5.0:     inlined from 'static _Tp* std::allocator_traits<std::allocator<_CharT> >::allocate(allocator_type&, size_type) [with _Tp = bb31_t]' at /usr/include/c++/13/bits/alloc_traits.h:482:22,
+warning: risc0-sys@1.5.0:     inlined from 'std::_Vector_base<_Tp, _Alloc>::pointer std::_Vector_base<_Tp, _Alloc>::_M_allocate(std::size_t) [with _Tp = bb31_t; _Alloc = std::allocator<bb31_t>]' at /usr/include/c++/13/bits/stl_vector.h:381:36,
+warning: risc0-sys@1.5.0:     inlined from 'void std::vector<_Tp, _Alloc>::_M_range_initialize(_ForwardIterator, _ForwardIterator, std::forward_iterator_tag) [with _ForwardIterator = const bb31_t*; _Tp = bb31_t; _Alloc = std::allocator<bb31_t>]' at /usr/include/c++/13/bits/stl_vector.h:1691:47,
+warning: risc0-sys@1.5.0:     inlined from 'std::vector<_Tp, _Alloc>::vector(std::initializer_list<_Tp>, const allocator_type&) [with _Tp = bb31_t; _Alloc = std::allocator<bb31_t>]' at /usr/include/c++/13/bits/stl_vector.h:682:20,
+warning: risc0-sys@1.5.0:     inlined from 'RustError::by_value sppark_init()' at kernels/zkp/cuda/supra/ntt.cu:8:40:
+warning: risc0-sys@1.5.0: /usr/include/c++/13/bits/new_allocator.h:151:49: note: at offset 4 into object of size 4 allocated by 'operator new'
+warning: risc0-sys@1.5.0:   151 |         return static_cast<_Tp*>(_GLIBCXX_OPERATOR_NEW(__n * sizeof(_Tp)));
+warning: risc0-sys@1.5.0:       |                                   ~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~
+   Compiling risc0-circuit-recursion-sys v4.0.3 (/lab/upstream/risc0/circuit/recursion-sys)
+warning: risc0-circuit-recursion-sys@4.0.3: /lab/upstream/risc0/sys/kernels/zkp/cuda/fp.h: In constructor 'constexpr Fp::Fp(uint32_t, bool)':
+warning: risc0-circuit-recursion-sys@4.0.3: /lab/upstream/risc0/sys/kernels/zkp/cuda/fp.h:82:33: warning: unused parameter 'ignore' [-Wunused-parameter]
+warning: risc0-circuit-recursion-sys@4.0.3:    82 |   __host__ __device__ constexpr Fp(uint32_t val, bool ignore) : val(val) {}
+warning: risc0-circuit-recursion-sys@4.0.3:       |                            ~~~~~^~~~~~
+warning: risc0-circuit-recursion-sys@4.0.3: kernels/cuda/ffi.cu: In member function 'void HostExecContext::verifyWom(uint32_t)':
+warning: risc0-circuit-recursion-sys@4.0.3: kernels/cuda/ffi.cu:227:25: warning: unused parameter 'mode' [-Wunused-parameter]
+warning: risc0-circuit-recursion-sys@4.0.3:   227 |   void verifyWom(uint32_t mode) {
+warning: risc0-circuit-recursion-sys@4.0.3:       |                ~~~~~~~~~^~~~
+warning: risc0-circuit-recursion-sys@4.0.3: /lab/upstream/risc0/sys/kernels/zkp/cuda/fp.h: In constructor 'constexpr Fp::Fp(uint32_t, bool)':
+warning: risc0-circuit-recursion-sys@4.0.3: /lab/upstream/risc0/sys/kernels/zkp/cuda/fp.h:82:33: warning: unused parameter 'ignore' [-Wunused-parameter]
+warning: risc0-circuit-recursion-sys@4.0.3:    82 |   __host__ __device__ constexpr Fp(uint32_t val, bool ignore) : val(val) {}
+warning: risc0-circuit-recursion-sys@4.0.3:       |                            ~~~~~^~~~~~
+warning: risc0-circuit-recursion-sys@4.0.3: Killed
+warning: risc0-circuit-recursion-sys@4.0.3: ToolExecError: command did not execute successfully (status code exit status: 137): LC_ALL="C" "nvcc" "-ccbin=c++" "-Xcompiler" "-O3" "-Xcompiler" "-ffunction-sections" "-Xcompiler" "-fdata-sections" "-Xcompiler" "-fPIC" "-m64" "-I" "/lab/upstream/risc0/sys/kernels/zkp/cuda" "-I" "/lab/upstream/risc0/sys/cxx" "-I" "/usr/local/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sppark-0.1.12/sppark" "-Xcompiler" "-Wall" "-Xcompiler" "-Wextra" "-DFEATURE_BABY_BEAR" "-diag-suppress=177" "-diag-suppress=2922" "-Xcudafe" "--display_error_number" "-Xcompiler" "-Wno-missing-braces,-Wno-unused-function" "-o" "/lab/cuda-target/release/build/risc0-circuit-recursion-sys-af3d0feafe92b630/out/c1cd554380eb85a8-step_exec.o" "-c" "--device-c" "kernels/cuda/step_exec.cu"cargo:warning=/lab/upstream/risc0/sys/kernels/zkp/cuda/fp.h: In constructor 'constexpr Fp::Fp(uint32_t, bool)':
+warning: risc0-circuit-recursion-sys@4.0.3: /lab/upstream/risc0/sys/kernels/zkp/cuda/fp.h:82:33: warning: unused parameter 'ignore' [-Wunused-parameter]
+warning: risc0-circuit-recursion-sys@4.0.3:    82 |   __host__ __device__ constexpr Fp(uint32_t val, bool ignore) : val(val) {}
+warning: risc0-circuit-recursion-sys@4.0.3:       |                            ~~~~~^~~~~~
+warning: risc0-circuit-recursion-sys@4.0.3: /lab/upstream/risc0/sys/kernels/zkp/cuda/fp.h: In constructor 'constexpr Fp::Fp(uint32_t, bool)':
+warning: risc0-circuit-recursion-sys@4.0.3: /lab/upstream/risc0/sys/kernels/zkp/cuda/fp.h:82:33: warning: unused parameter 'ignore' [-Wunused-parameter]
+warning: risc0-circuit-recursion-sys@4.0.3:    82 |   __host__ __device__ constexpr Fp(uint32_t val, bool ignore) : val(val) {}
+warning: risc0-circuit-recursion-sys@4.0.3:       |                            ~~~~~^~~~~~
+warning: risc0-circuit-recursion-sys@4.0.3: /lab/upstream/risc0/sys/kernels/zkp/cuda/fp.h: In constructor 'constexpr Fp::Fp(uint32_t, bool)':
+warning: risc0-circuit-recursion-sys@4.0.3: /lab/upstream/risc0/sys/kernels/zkp/cuda/fp.h:82:33: warning: unused parameter 'ignore' [-Wunused-parameter]
+warning: risc0-circuit-recursion-sys@4.0.3:    82 |   __host__ __device__ constexpr Fp(uint32_t val, bool ignore) : val(val) {}
+warning: risc0-circuit-recursion-sys@4.0.3:       |                            ~~~~~^~~~~~
+error: failed to run custom build command for `risc0-circuit-recursion-sys v4.0.3 (/lab/upstream/risc0/circuit/recursion-sys)`
+
+Caused by:
+  process didn't exit successfully: `/lab/cuda-target/release/build/risc0-circuit-recursion-sys-0b777291354451b1/build-script-build` (exit status: 1)
+  --- stdout
+  cargo:rerun-if-changed=kernels/cxx
+  cargo:rerun-if-env-changed=RISC0_SKIP_BUILD_KERNELS
+  cargo:rerun-if-changed=kernels/cxx/extern.cpp
+  cargo:rerun-if-changed=kernels/cxx/ffi.cpp
+  cargo:rerun-if-changed=kernels/cxx/poly_fp.cpp
+  cargo:rerun-if-changed=kernels/cxx/step_compute_accum.cpp
+  cargo:rerun-if-changed=kernels/cxx/step_exec.cpp
+  cargo:rerun-if-changed=kernels/cxx/step_verify_accum.cpp
+  cargo:rerun-if-changed=kernels/cxx/step_verify_bytes.cpp
+  cargo:rerun-if-changed=kernels/cxx/step_verify_mem.cpp
+  OUT_DIR = Some(/lab/cuda-target/release/build/risc0-circuit-recursion-sys-af3d0feafe92b630/out)
+  OPT_LEVEL = Some(3)
+  TARGET = Some(x86_64-unknown-linux-gnu)
+  HOST = Some(x86_64-unknown-linux-gnu)
+  cargo:rerun-if-env-changed=CXX_x86_64-unknown-linux-gnu
+  CXX_x86_64-unknown-linux-gnu = None
+  cargo:rerun-if-env-changed=CXX_x86_64_unknown_linux_gnu
+  CXX_x86_64_unknown_linux_gnu = None
+  cargo:rerun-if-env-changed=HOST_CXX
+  HOST_CXX = None
+  cargo:rerun-if-env-changed=CXX
+  CXX = None
+  cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT
+  RUSTC_WRAPPER = None
+  cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS
+  CRATE_CC_NO_DEFAULTS = None
+  CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)
+  cargo:rerun-if-env-changed=CXXFLAGS
+  CXXFLAGS = None
+  cargo:rerun-if-env-changed=HOST_CXXFLAGS
+  HOST_CXXFLAGS = None
+  cargo:rerun-if-env-changed=CXXFLAGS_x86_64_unknown_linux_gnu
+  CXXFLAGS_x86_64_unknown_linux_gnu = None
+  cargo:rerun-if-env-changed=CXXFLAGS_x86_64-unknown-linux-gnu
+  CXXFLAGS_x86_64-unknown-linux-gnu = None
+  CARGO_ENCODED_RUSTFLAGS = Some(-Dclippy::all-Dwarnings)
+  OUT_DIR = Some(/lab/cuda-target/release/build/risc0-circuit-recursion-sys-af3d0feafe92b630/out)
+  cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT
+  cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS
+  CRATE_CC_NO_DEFAULTS = None
+  TARGET = Some(x86_64-unknown-linux-gnu)
+  CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)
+  HOST = Some(x86_64-unknown-linux-gnu)
+  cargo:rerun-if-env-changed=CXXFLAGS
+  CXXFLAGS = None
+  cargo:rerun-if-env-changed=HOST_CXXFLAGS
+  HOST_CXXFLAGS = None
+  cargo:rerun-if-env-changed=CXXFLAGS_x86_64_unknown_linux_gnu
+  CXXFLAGS_x86_64_unknown_linux_gnu = None
+  cargo:rerun-if-env-changed=CXXFLAGS_x86_64-unknown-linux-gnu
+  CXXFLAGS_x86_64-unknown-linux-gnu = None
+  OUT_DIR = Some(/lab/cuda-target/release/build/risc0-circuit-recursion-sys-af3d0feafe92b630/out)
+  cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT
+  cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS
+  CRATE_CC_NO_DEFAULTS = None
+  TARGET = Some(x86_64-unknown-linux-gnu)
+  CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)
+  HOST = Some(x86_64-unknown-linux-gnu)
+  cargo:rerun-if-env-changed=CXXFLAGS
+  CXXFLAGS = None
+  cargo:rerun-if-env-changed=HOST_CXXFLAGS
+  HOST_CXXFLAGS = None
+  cargo:rerun-if-env-changed=CXXFLAGS_x86_64_unknown_linux_gnu
+  CXXFLAGS_x86_64_unknown_linux_gnu = None
+  cargo:rerun-if-env-changed=CXXFLAGS_x86_64-unknown-linux-gnu
+  CXXFLAGS_x86_64-unknown-linux-gnu = None
+  OUT_DIR = Some(/lab/cuda-target/release/build/risc0-circuit-recursion-sys-af3d0feafe92b630/out)
+  cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT
+  cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS
+  CRATE_CC_NO_DEFAULTS = None
+  TARGET = Some(x86_64-unknown-linux-gnu)
+  CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)
+  HOST = Some(x86_64-unknown-linux-gnu)
+  cargo:rerun-if-env-changed=CXXFLAGS
+  CXXFLAGS = None
+  cargo:rerun-if-env-changed=HOST_CXXFLAGS
+  HOST_CXXFLAGS = None
+  cargo:rerun-if-env-changed=CXXFLAGS_x86_64_unknown_linux_gnu
+  CXXFLAGS_x86_64_unknown_linux_gnu = None
+  cargo:rerun-if-env-changed=CXXFLAGS_x86_64-unknown-linux-gnu
+  CXXFLAGS_x86_64-unknown-linux-gnu = None
+  OUT_DIR = Some(/lab/cuda-target/release/build/risc0-circuit-recursion-sys-af3d0feafe92b630/out)
+  cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT
+  cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS
+  CRATE_CC_NO_DEFAULTS = None
+  TARGET = Some(x86_64-unknown-linux-gnu)
+  CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)
+  HOST = Some(x86_64-unknown-linux-gnu)
+  cargo:rerun-if-env-changed=CXXFLAGS
+  CXXFLAGS = None
+  cargo:rerun-if-env-changed=HOST_CXXFLAGS
+  HOST_CXXFLAGS = None
+  cargo:rerun-if-env-changed=CXXFLAGS_x86_64_unknown_linux_gnu
+  CXXFLAGS_x86_64_unknown_linux_gnu = None
+  cargo:rerun-if-env-changed=CXXFLAGS_x86_64-unknown-linux-gnu
+  CXXFLAGS_x86_64-unknown-linux-gnu = None
+  OUT_DIR = Some(/lab/cuda-target/release/build/risc0-circuit-recursion-sys-af3d0feafe92b630/out)
+  cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT
+  cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS
+  CRATE_CC_NO_DEFAULTS = None
+  TARGET = Some(x86_64-unknown-linux-gnu)
+  CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)
+  HOST = Some(x86_64-unknown-linux-gnu)
+  cargo:rerun-if-env-changed=CXXFLAGS
+  CXXFLAGS = None
+  cargo:rerun-if-env-changed=HOST_CXXFLAGS
+  HOST_CXXFLAGS = None
+  cargo:rerun-if-env-changed=CXXFLAGS_x86_64_unknown_linux_gnu
+  CXXFLAGS_x86_64_unknown_linux_gnu = None
+  cargo:rerun-if-env-changed=CXXFLAGS_x86_64-unknown-linux-gnu
+  CXXFLAGS_x86_64-unknown-linux-gnu = None
+  exit status: 0
+  exit status: 0
+  exit status: 0
+  exit status: 0
+  exit status: 0
+  exit status: 0
+  exit status: 0
+  exit status: 0
+  cargo:rerun-if-env-changed=AR_x86_64-unknown-linux-gnu
+  AR_x86_64-unknown-linux-gnu = None
+  cargo:rerun-if-env-changed=AR_x86_64_unknown_linux_gnu
+  AR_x86_64_unknown_linux_gnu = None
+  cargo:rerun-if-env-changed=HOST_AR
+  HOST_AR = None
+  cargo:rerun-if-env-changed=AR
+  AR = None
+  cargo:rerun-if-env-changed=ARFLAGS
+  ARFLAGS = None
+  cargo:rerun-if-env-changed=HOST_ARFLAGS
+  HOST_ARFLAGS = None
+  cargo:rerun-if-env-changed=ARFLAGS_x86_64_unknown_linux_gnu
+  ARFLAGS_x86_64_unknown_linux_gnu = None
+  cargo:rerun-if-env-changed=ARFLAGS_x86_64-unknown-linux-gnu
+  ARFLAGS_x86_64-unknown-linux-gnu = None
+  cargo:rustc-link-lib=static=risc0_recursion_cpu
+  cargo:rustc-link-search=native=/lab/cuda-target/release/build/risc0-circuit-recursion-sys-af3d0feafe92b630/out
+  cargo:rerun-if-env-changed=CXXSTDLIB_x86_64-unknown-linux-gnu
+  CXXSTDLIB_x86_64-unknown-linux-gnu = None
+  cargo:rerun-if-env-changed=CXXSTDLIB_x86_64_unknown_linux_gnu
+  CXXSTDLIB_x86_64_unknown_linux_gnu = None
+  cargo:rerun-if-env-changed=HOST_CXXSTDLIB
+  HOST_CXXSTDLIB = None
+  cargo:rerun-if-env-changed=CXXSTDLIB
+  CXXSTDLIB = None
+  cargo:rustc-link-lib=stdc++
+  cargo:rerun-if-changed=kernels/cuda
+  cargo:rerun-if-env-changed=RISC0_SKIP_BUILD_KERNELS
+  cargo:rerun-if-changed=kernels/cuda/eval_check.cu
+  cargo:rerun-if-changed=kernels/cuda/ffi.cu
+  cargo:rerun-if-changed=kernels/cuda/ffi_supra.cu
+  cargo:rerun-if-changed=kernels/cuda/sppark.cu
+  cargo:rerun-if-changed=kernels/cuda/step_compute_accum.cu
+  cargo:rerun-if-changed=kernels/cuda/step_exec.cu
+  cargo:rerun-if-changed=kernels/cuda/step_verify_accum.cu
+  cargo:rerun-if-changed=kernels/cuda/step_verify_bytes.cu
+  cargo:rerun-if-changed=kernels/cuda/step_verify_mem.cu
+  cargo:rerun-if-changed=kernels/cuda
+  cargo:rerun-if-env-changed=NVCC_APPEND_FLAGS
+  cargo:rerun-if-env-changed=NVCC_PREPEND_FLAGS
+  cargo:rerun-if-env-changed=RISC0_CUDART_LINKAGE
+  cargo:rerun-if-env-changed=NVCC_CCBIN
+  cargo:rerun-if-changed=/lab/upstream/risc0/sys/kernels/zkp/cuda
+  cargo:rerun-if-changed=/lab/upstream/risc0/sys/cxx
+  cargo:rerun-if-changed=/usr/local/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sppark-0.1.12/sppark
+  OUT_DIR = Some(/lab/cuda-target/release/build/risc0-circuit-recursion-sys-af3d0feafe92b630/out)
+  OPT_LEVEL = Some(3)
+  TARGET = Some(x86_64-unknown-linux-gnu)
+  HOST = Some(x86_64-unknown-linux-gnu)
+  cargo:rerun-if-env-changed=CXX_x86_64-unknown-linux-gnu
+  CXX_x86_64-unknown-linux-gnu = None
+  cargo:rerun-if-env-changed=CXX_x86_64_unknown_linux_gnu
+  CXX_x86_64_unknown_linux_gnu = None
+  cargo:rerun-if-env-changed=HOST_CXX
+  HOST_CXX = None
+  cargo:rerun-if-env-changed=CXX
+  CXX = None
+  cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT
+  RUSTC_WRAPPER = None
+  cargo:rerun-if-env-changed=NVCC_x86_64-unknown-linux-gnu
+  NVCC_x86_64-unknown-linux-gnu = None
+  cargo:rerun-if-env-changed=NVCC_x86_64_unknown_linux_gnu
+  NVCC_x86_64_unknown_linux_gnu = None
+  cargo:rerun-if-env-changed=HOST_NVCC
+  HOST_NVCC = None
+  cargo:rerun-if-env-changed=NVCC
+  NVCC = None
+  cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS
+  CRATE_CC_NO_DEFAULTS = None
+  CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)
+  cargo:rerun-if-env-changed=CXXFLAGS
+  CXXFLAGS = None
+  cargo:rerun-if-env-changed=HOST_CXXFLAGS
+  HOST_CXXFLAGS = None
+  cargo:rerun-if-env-changed=CXXFLAGS_x86_64_unknown_linux_gnu
+  CXXFLAGS_x86_64_unknown_linux_gnu = None
+  cargo:rerun-if-env-changed=CXXFLAGS_x86_64-unknown-linux-gnu
+  CXXFLAGS_x86_64-unknown-linux-gnu = None
+  CARGO_ENCODED_RUSTFLAGS = Some(-Dclippy::all-Dwarnings)
+  cargo:warning=/lab/upstream/risc0/sys/kernels/zkp/cuda/fp.h: In constructor 'constexpr Fp::Fp(uint32_t, bool)':
+  cargo:warning=/lab/upstream/risc0/sys/kernels/zkp/cuda/fp.h:82:33: warning: unused parameter 'ignore' [-Wunused-parameter]
+  cargo:warning=   82 |   __host__ __device__ constexpr Fp(uint32_t val, bool ignore) : val(val) {}
+  cargo:warning=      |                            ~~~~~^~~~~~
+  cargo:warning=kernels/cuda/ffi.cu: In member function 'void HostExecContext::verifyWom(uint32_t)':
+  cargo:warning=kernels/cuda/ffi.cu:227:25: warning: unused parameter 'mode' [-Wunused-parameter]
+  cargo:warning=  227 |   void verifyWom(uint32_t mode) {
+  cargo:warning=      |                ~~~~~~~~~^~~~
+  cargo:warning=/lab/upstream/risc0/sys/kernels/zkp/cuda/fp.h: In constructor 'constexpr Fp::Fp(uint32_t, bool)':
+  cargo:warning=/lab/upstream/risc0/sys/kernels/zkp/cuda/fp.h:82:33: warning: unused parameter 'ignore' [-Wunused-parameter]
+  cargo:warning=   82 |   __host__ __device__ constexpr Fp(uint32_t val, bool ignore) : val(val) {}
+  cargo:warning=      |                            ~~~~~^~~~~~
+  cargo:warning=Killed
+  exit status: 0
+  exit status: 0
+  exit status: 0
+  exit status: 0
+  exit status: 0
+  exit status: 137
+  cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 137): LC_ALL="C" "nvcc" "-ccbin=c++" "-Xcompiler" "-O3" "-Xcompiler" "-ffunction-sections" "-Xcompiler" "-fdata-sections" "-Xcompiler" "-fPIC" "-m64" "-I" "/lab/upstream/risc0/sys/kernels/zkp/cuda" "-I" "/lab/upstream/risc0/sys/cxx" "-I" "/usr/local/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sppark-0.1.12/sppark" "-Xcompiler" "-Wall" "-Xcompiler" "-Wextra" "-DFEATURE_BABY_BEAR" "-diag-suppress=177" "-diag-suppress=2922" "-Xcudafe" "--display_error_number" "-Xcompiler" "-Wno-missing-braces,-Wno-unused-function" "-o" "/lab/cuda-target/release/build/risc0-circuit-recursion-sys-af3d0feafe92b630/out/c1cd554380eb85a8-step_exec.o" "-c" "--device-c" "kernels/cuda/step_exec.cu"cargo:warning=/lab/upstream/risc0/sys/kernels/zkp/cuda/fp.h: In constructor 'constexpr Fp::Fp(uint32_t, bool)':
+  cargo:warning=/lab/upstream/risc0/sys/kernels/zkp/cuda/fp.h:82:33: warning: unused parameter 'ignore' [-Wunused-parameter]
+  cargo:warning=   82 |   __host__ __device__ constexpr Fp(uint32_t val, bool ignore) : val(val) {}
+  cargo:warning=      |                            ~~~~~^~~~~~
+  cargo:warning=/lab/upstream/risc0/sys/kernels/zkp/cuda/fp.h: In constructor 'constexpr Fp::Fp(uint32_t, bool)':
+  cargo:warning=/lab/upstream/risc0/sys/kernels/zkp/cuda/fp.h:82:33: warning: unused parameter 'ignore' [-Wunused-parameter]
+  cargo:warning=   82 |   __host__ __device__ constexpr Fp(uint32_t val, bool ignore) : val(val) {}
+  cargo:warning=      |                            ~~~~~^~~~~~
+  cargo:warning=/lab/upstream/risc0/sys/kernels/zkp/cuda/fp.h: In constructor 'constexpr Fp::Fp(uint32_t, bool)':
+  cargo:warning=/lab/upstream/risc0/sys/kernels/zkp/cuda/fp.h:82:33: warning: unused parameter 'ignore' [-Wunused-parameter]
+  cargo:warning=   82 |   __host__ __device__ constexpr Fp(uint32_t val, bool ignore) : val(val) {}
+  cargo:warning=      |                            ~~~~~^~~~~~
+
+  exit status: 0
+  exit status: 0
+  exit status: 0
+
+  --- stderr
+
+
+  error occurred in cc-rs: command did not execute successfully (status code exit status: 137): LC_ALL="C" "nvcc" "-ccbin=c++" "-Xcompiler" "-O3" "-Xcompiler" "-ffunction-sections" "-Xcompiler" "-fdata-sections" "-Xcompiler" "-fPIC" "-m64" "-I" "/lab/upstream/risc0/sys/kernels/zkp/cuda" "-I" "/lab/upstream/risc0/sys/cxx" "-I" "/usr/local/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sppark-0.1.12/sppark" "-Xcompiler" "-Wall" "-Xcompiler" "-Wextra" "-DFEATURE_BABY_BEAR" "-diag-suppress=177" "-diag-suppress=2922" "-Xcudafe" "--display_error_number" "-Xcompiler" "-Wno-missing-braces,-Wno-unused-function" "-o" "/lab/cuda-target/release/build/risc0-circuit-recursion-sys-af3d0feafe92b630/out/c1cd554380eb85a8-step_exec.o" "-c" "--device-c" "kernels/cuda/step_exec.cu"
+
+

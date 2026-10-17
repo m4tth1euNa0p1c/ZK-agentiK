@@ -1,0 +1,731 @@
+{
+  "schema": "zk-agentik-ci-observation-v1",
+  "observed_at_utc": "2026-10-17T15:31:31.374Z",
+  "observer": "Internal coding agent",
+  "timestamp_authority": "local-clock-unattested; GitHub timestamps are independently queryable API observations",
+  "runs": [
+    {
+      "run": {
+        "conclusion": "success",
+        "createdAt": "2026-10-17T15:20:57Z",
+        "databaseId": 39044646338,
+        "event": "pull_request",
+        "headSha": "acc6e9832d41bfe3260cb578e4a975ff630b5100",
+        "jobs": [
+          {
+            "completedAt": "2026-10-17T15:27:42Z",
+            "conclusion": "success",
+            "databaseId": 117430845824,
+            "name": "test",
+            "startedAt": "2026-10-17T15:21:00Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completedAt": "2026-10-17T15:21:02Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-10-17T15:21:01Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:03Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "number": 2,
+                "startedAt": "2026-10-17T15:21:02Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:10Z",
+                "conclusion": "success",
+                "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+                "number": 3,
+                "startedAt": "2026-10-17T15:21:03Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:20Z",
+                "conclusion": "success",
+                "name": "Run rustup toolchain install 1.93.0 --profile minimal --component clippy --component rustfmt --target riscv32im-unknown-none-elf",
+                "number": 4,
+                "startedAt": "2026-10-17T15:21:10Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:20Z",
+                "conclusion": "success",
+                "name": "Run cargo fmt --all -- --check",
+                "number": 5,
+                "startedAt": "2026-10-17T15:21:20Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:26Z",
+                "conclusion": "success",
+                "name": "Run cargo clippy --workspace --all-targets --locked -- -D warnings",
+                "number": 6,
+                "startedAt": "2026-10-17T15:21:20Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:32Z",
+                "conclusion": "success",
+                "name": "Run cargo test --workspace --locked",
+                "number": 7,
+                "startedAt": "2026-10-17T15:21:26Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:33Z",
+                "conclusion": "success",
+                "name": "Run npm ci --ignore-scripts",
+                "number": 8,
+                "startedAt": "2026-10-17T15:21:32Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:43Z",
+                "conclusion": "success",
+                "name": "Run npm test",
+                "number": 9,
+                "startedAt": "2026-10-17T15:21:33Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:45Z",
+                "conclusion": "success",
+                "name": "Run npm run typecheck",
+                "number": 10,
+                "startedAt": "2026-10-17T15:21:43Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:45Z",
+                "conclusion": "success",
+                "name": "Run npm run schema:check",
+                "number": 11,
+                "startedAt": "2026-10-17T15:21:45Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:50Z",
+                "conclusion": "success",
+                "name": "Run npm run build:guest",
+                "number": 12,
+                "startedAt": "2026-10-17T15:21:45Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:50Z",
+                "conclusion": "success",
+                "name": "Run cargo fmt --manifest-path labs/horizon/Cargo.toml --all -- --check",
+                "number": 13,
+                "startedAt": "2026-10-17T15:21:50Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:22:09Z",
+                "conclusion": "success",
+                "name": "Run cargo clippy --manifest-path labs/horizon/Cargo.toml --all-targets --locked -- -D warnings",
+                "number": 14,
+                "startedAt": "2026-10-17T15:21:50Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:22:33Z",
+                "conclusion": "success",
+                "name": "Run cargo test --manifest-path labs/horizon/Cargo.toml --locked",
+                "number": 15,
+                "startedAt": "2026-10-17T15:22:09Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:26:59Z",
+                "conclusion": "success",
+                "name": "Audit active Rust workspaces (historical RISC Zero findings are documented)",
+                "number": 16,
+                "startedAt": "2026-10-17T15:22:33Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:27:33Z",
+                "conclusion": "success",
+                "name": "Run npm run horizon:build",
+                "number": 17,
+                "startedAt": "2026-10-17T15:26:59Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:27:36Z",
+                "conclusion": "success",
+                "name": "Run npm run test:horizon",
+                "number": 18,
+                "startedAt": "2026-10-17T15:27:33Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:27:37Z",
+                "conclusion": "success",
+                "name": "Run npm run test:proofkit",
+                "number": 19,
+                "startedAt": "2026-10-17T15:27:36Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:27:38Z",
+                "conclusion": "success",
+                "name": "Run npm run test:risc0:gpu",
+                "number": 20,
+                "startedAt": "2026-10-17T15:27:37Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:27:38Z",
+                "conclusion": "success",
+                "name": "Run npm run proofkit -- check",
+                "number": 21,
+                "startedAt": "2026-10-17T15:27:38Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:27:38Z",
+                "conclusion": "success",
+                "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+                "number": 41,
+                "startedAt": "2026-10-17T15:27:38Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:27:39Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "number": 42,
+                "startedAt": "2026-10-17T15:27:38Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:27:39Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 43,
+                "startedAt": "2026-10-17T15:27:39Z",
+                "status": "completed"
+              }
+            ],
+            "url": "https://github.com/m4tth1euNa0p1c/ZK-agentiK/actions/runs/39044646338/job/117430845824"
+          },
+          {
+            "completedAt": "2026-10-17T15:30:39Z",
+            "conclusion": "success",
+            "databaseId": 117432252773,
+            "name": "sandbox / experiment",
+            "startedAt": "2026-10-17T15:27:44Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completedAt": "2026-10-17T15:27:47Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-10-17T15:27:44Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:27:47Z",
+                "conclusion": "success",
+                "name": "Reject unreviewed profiles and deployment combinations",
+                "number": 2,
+                "startedAt": "2026-10-17T15:27:47Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:27:48Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "number": 3,
+                "startedAt": "2026-10-17T15:27:47Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:28:00Z",
+                "conclusion": "success",
+                "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+                "number": 4,
+                "startedAt": "2026-10-17T15:27:48Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:28:08Z",
+                "conclusion": "success",
+                "name": "Run rustup toolchain install 1.93.0 --profile minimal",
+                "number": 5,
+                "startedAt": "2026-10-17T15:28:00Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:28:10Z",
+                "conclusion": "success",
+                "name": "Run npm ci --ignore-scripts",
+                "number": 6,
+                "startedAt": "2026-10-17T15:28:08Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:28:53Z",
+                "conclusion": "success",
+                "name": "Run reviewed proof profile and retain public process summary",
+                "number": 7,
+                "startedAt": "2026-10-17T15:28:10Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:28:53Z",
+                "conclusion": "skipped",
+                "name": "Build and render the scientific manuscript",
+                "number": 8,
+                "startedAt": "2026-10-17T15:28:53Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:28:53Z",
+                "conclusion": "success",
+                "name": "Create fresh synthetic configuration for the isolated runner",
+                "number": 9,
+                "startedAt": "2026-10-17T15:28:53Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:30:30Z",
+                "conclusion": "success",
+                "name": "Deploy local Docker sandbox, test real proof and restart replay rejection",
+                "number": 10,
+                "startedAt": "2026-10-17T15:28:53Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:30:30Z",
+                "conclusion": "success",
+                "name": "Select public artifacts explicitly",
+                "number": 11,
+                "startedAt": "2026-10-17T15:30:30Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:30:31Z",
+                "conclusion": "success",
+                "name": "Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+                "number": 12,
+                "startedAt": "2026-10-17T15:30:30Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:30:31Z",
+                "conclusion": "success",
+                "name": "Run docker compose -f deploy/horizon/compose.yaml stop",
+                "number": 13,
+                "startedAt": "2026-10-17T15:30:31Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:30:31Z",
+                "conclusion": "success",
+                "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+                "number": 25,
+                "startedAt": "2026-10-17T15:30:31Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:30:32Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "number": 26,
+                "startedAt": "2026-10-17T15:30:31Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:30:32Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 27,
+                "startedAt": "2026-10-17T15:30:32Z",
+                "status": "completed"
+              }
+            ],
+            "url": "https://github.com/m4tth1euNa0p1c/ZK-agentiK/actions/runs/39044646338/job/117432252773"
+          }
+        ],
+        "name": "Local POC quality",
+        "status": "completed",
+        "updatedAt": "2026-10-17T15:30:40Z",
+        "url": "https://github.com/m4tth1euNa0p1c/ZK-agentiK/actions/runs/39044646338"
+      },
+      "artifacts": {
+        "total_count": 1,
+        "artifacts": [
+          {
+            "id": 12105885909,
+            "node_id": "MDg6QXJ0aWZhY3QxMjEwNTg4NTkwOQ==",
+            "name": "public-proof-horizon-39044646338-1",
+            "size_in_bytes": 318981,
+            "url": "https://api.github.com/repos/m4tth1euNa0p1c/ZK-agentiK/actions/artifacts/12105885909",
+            "archive_download_url": "https://api.github.com/repos/m4tth1euNa0p1c/ZK-agentiK/actions/artifacts/12105885909/zip",
+            "expired": false,
+            "digest": "sha256:1f848b74e2b459a4b27e5f2f52672eb745c4a5c61f418715521642bd8bb4035a",
+            "created_at": "2026-10-17T15:30:31Z",
+            "updated_at": "2026-10-17T15:30:31Z",
+            "expires_at": "2026-10-31T15:30:30Z",
+            "workflow_run": {
+              "id": 39044646338,
+              "repository_id": 1421190178,
+              "head_repository_id": 1421190178,
+              "head_branch": "feat/publication-proofkit",
+              "head_sha": "acc6e9832d41bfe3260cb578e4a975ff630b5100"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "run": {
+        "conclusion": "success",
+        "createdAt": "2026-10-17T15:20:57Z",
+        "databaseId": 39044646357,
+        "event": "pull_request",
+        "headSha": "acc6e9832d41bfe3260cb578e4a975ff630b5100",
+        "jobs": [
+          {
+            "completedAt": "2026-10-17T15:21:34Z",
+            "conclusion": "success",
+            "databaseId": 117430845698,
+            "name": "evidence",
+            "startedAt": "2026-10-17T15:21:00Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completedAt": "2026-10-17T15:21:02Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-10-17T15:21:01Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:03Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "number": 2,
+                "startedAt": "2026-10-17T15:21:02Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:15Z",
+                "conclusion": "success",
+                "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+                "number": 3,
+                "startedAt": "2026-10-17T15:21:03Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:17Z",
+                "conclusion": "success",
+                "name": "Run npm ci --ignore-scripts",
+                "number": 4,
+                "startedAt": "2026-10-17T15:21:15Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:18Z",
+                "conclusion": "success",
+                "name": "Check public evidence and append-only manifest roundtrip",
+                "number": 5,
+                "startedAt": "2026-10-17T15:21:17Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:30Z",
+                "conclusion": "success",
+                "name": "Scan fetched Git history with pinned Gitleaks",
+                "number": 6,
+                "startedAt": "2026-10-17T15:21:18Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:31Z",
+                "conclusion": "success",
+                "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+                "number": 11,
+                "startedAt": "2026-10-17T15:21:30Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:31Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "number": 12,
+                "startedAt": "2026-10-17T15:21:31Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:31Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 13,
+                "startedAt": "2026-10-17T15:21:31Z",
+                "status": "completed"
+              }
+            ],
+            "url": "https://github.com/m4tth1euNa0p1c/ZK-agentiK/actions/runs/39044646357/job/117430845698"
+          },
+          {
+            "completedAt": "2026-10-17T15:23:03Z",
+            "conclusion": "success",
+            "databaseId": 117430970417,
+            "name": "scientific / experiment",
+            "startedAt": "2026-10-17T15:21:36Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completedAt": "2026-10-17T15:21:38Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-10-17T15:21:37Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:38Z",
+                "conclusion": "success",
+                "name": "Reject unreviewed profiles and deployment combinations",
+                "number": 2,
+                "startedAt": "2026-10-17T15:21:38Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:39Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "number": 3,
+                "startedAt": "2026-10-17T15:21:38Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:48Z",
+                "conclusion": "success",
+                "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+                "number": 4,
+                "startedAt": "2026-10-17T15:21:39Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:48Z",
+                "conclusion": "skipped",
+                "name": "Run rustup toolchain install 1.93.0 --profile minimal",
+                "number": 5,
+                "startedAt": "2026-10-17T15:21:48Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:21:51Z",
+                "conclusion": "success",
+                "name": "Run npm ci --ignore-scripts",
+                "number": 6,
+                "startedAt": "2026-10-17T15:21:48Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:22:55Z",
+                "conclusion": "success",
+                "name": "Run reviewed proof profile and retain public process summary",
+                "number": 7,
+                "startedAt": "2026-10-17T15:21:51Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:22:59Z",
+                "conclusion": "success",
+                "name": "Build and render the scientific manuscript",
+                "number": 8,
+                "startedAt": "2026-10-17T15:22:55Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:22:59Z",
+                "conclusion": "skipped",
+                "name": "Create fresh synthetic configuration for the isolated runner",
+                "number": 9,
+                "startedAt": "2026-10-17T15:22:59Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:22:59Z",
+                "conclusion": "skipped",
+                "name": "Deploy local Docker sandbox, test real proof and restart replay rejection",
+                "number": 10,
+                "startedAt": "2026-10-17T15:22:59Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:22:59Z",
+                "conclusion": "success",
+                "name": "Select public artifacts explicitly",
+                "number": 11,
+                "startedAt": "2026-10-17T15:22:59Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:23:01Z",
+                "conclusion": "success",
+                "name": "Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+                "number": 12,
+                "startedAt": "2026-10-17T15:22:59Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:23:01Z",
+                "conclusion": "skipped",
+                "name": "Run docker compose -f deploy/horizon/compose.yaml stop",
+                "number": 13,
+                "startedAt": "2026-10-17T15:23:01Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:23:01Z",
+                "conclusion": "success",
+                "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+                "number": 25,
+                "startedAt": "2026-10-17T15:23:01Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:23:01Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "number": 26,
+                "startedAt": "2026-10-17T15:23:01Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-17T15:23:01Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 27,
+                "startedAt": "2026-10-17T15:23:01Z",
+                "status": "completed"
+              }
+            ],
+            "url": "https://github.com/m4tth1euNa0p1c/ZK-agentiK/actions/runs/39044646357/job/117430970417"
+          }
+        ],
+        "name": "Publication evidence",
+        "status": "completed",
+        "updatedAt": "2026-10-17T15:23:04Z",
+        "url": "https://github.com/m4tth1euNa0p1c/ZK-agentiK/actions/runs/39044646357"
+      },
+      "artifacts": {
+        "total_count": 1,
+        "artifacts": [
+          {
+            "id": 12104954959,
+            "node_id": "MDg6QXJ0aWZhY3QxMjEwNDk1NDk1OQ==",
+            "name": "public-proof-math-39044646357-1",
+            "size_in_bytes": 319649,
+            "url": "https://api.github.com/repos/m4tth1euNa0p1c/ZK-agentiK/actions/artifacts/12104954959",
+            "archive_download_url": "https://api.github.com/repos/m4tth1euNa0p1c/ZK-agentiK/actions/artifacts/12104954959/zip",
+            "expired": false,
+            "digest": "sha256:fcfa14c94ee283931ca6f45051eecfd1942b724e28e8a32997de30541d788acb",
+            "created_at": "2026-10-17T15:23:00Z",
+            "updated_at": "2026-10-17T15:23:00Z",
+            "expires_at": "2026-10-31T15:22:59Z",
+            "workflow_run": {
+              "id": 39044646357,
+              "repository_id": 1421190178,
+              "head_repository_id": 1421190178,
+              "head_branch": "feat/publication-proofkit",
+              "head_sha": "acc6e9832d41bfe3260cb578e4a975ff630b5100"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "retained_files": [
+    {
+      "path": "math/execution.json",
+      "bytes": 782,
+      "sha256": "2149353f87252d1329ef26f72a259c5aa0795617b01828114e02fc5b1825a61c"
+    },
+    {
+      "path": "math/RUN_STATUS.txt",
+      "bytes": 78,
+      "sha256": "d744b0bfbc15ca228159f739a62a4c5f408ba5b573b67dafe3cb3e441a6f0551"
+    },
+    {
+      "path": "math/commit.txt",
+      "bytes": 41,
+      "sha256": "0e0f51c917a6d1de06881fd610cd94c38f80579095798c546892c2cc64ad6ddb"
+    },
+    {
+      "path": "math/SCOPE.txt",
+      "bytes": 217,
+      "sha256": "e43e4004316c94b309ad29f3328c4cb48aec4c604abcf8766da99aa1b4564443"
+    },
+    {
+      "path": "math/octave-2026-10-17T15-21-51.256Z-45b3be90-eb81-4571-b06a-3d8f2308c9b4/20261017T152253Z.json",
+      "bytes": 2428,
+      "sha256": "77b274ec5e98e12db53390e03dfea043842ebca9f15461a77166db0b1d2f2d25"
+    },
+    {
+      "path": "math/octave-2026-10-17T15-21-51.256Z-45b3be90-eb81-4571-b06a-3d8f2308c9b4/latest.json",
+      "bytes": 97,
+      "sha256": "81e8ec0470f01a14c4f28e3d6995519932d35f484ccbc55fb2f26e729cef502e"
+    },
+    {
+      "path": "math/octave-2026-10-17T15-21-51.256Z-45b3be90-eb81-4571-b06a-3d8f2308c9b4/run.json",
+      "bytes": 2960,
+      "sha256": "fad0729cd727471094f57d532957aea14d38fad3ff618fc477a832ac94982a1a"
+    },
+    {
+      "path": "horizon/execution.json",
+      "bytes": 1048,
+      "sha256": "0ac47fbe05d928aae9614def439efa48d13ba8c91000b7ffb60fd583de58b1af"
+    },
+    {
+      "path": "horizon/RUN_STATUS.txt",
+      "bytes": 78,
+      "sha256": "4c4b2dee61c484446ce34329751a43850cfe2a0fcb6c95e7cc9db9d6d238d580"
+    },
+    {
+      "path": "horizon/commit.txt",
+      "bytes": 41,
+      "sha256": "0e0f51c917a6d1de06881fd610cd94c38f80579095798c546892c2cc64ad6ddb"
+    },
+    {
+      "path": "horizon/SCOPE.txt",
+      "bytes": 217,
+      "sha256": "e43e4004316c94b309ad29f3328c4cb48aec4c604abcf8766da99aa1b4564443"
+    },
+    {
+      "path": "horizon/sandbox.json",
+      "bytes": 200,
+      "sha256": "577cca33d17db98ee4ceed1bb60ec7f15c017a1d6ca7da7b64f5f00e6286fec1"
+    },
+    {
+      "path": "horizon/restart.json",
+      "bytes": 73,
+      "sha256": "d9d191ba586b2afdbff789eabcea38d0d316709f3fcfd25165180cdb7de5a93d"
+    },
+    {
+      "path": "horizon/independent-verification.json",
+      "bytes": 146,
+      "sha256": "affd74295aa7232ce52c32092d40d5a0ed2799c6929cfe318e97b51902b0fcf1"
+    }
+  ],
+  "limitations": [
+    "Copied public summaries and numerical JSON only; complete temporary bundles have separate GitHub retention.",
+    "All downloaded bundle file digests verified before selecting this subset. No detached signature verification.",
+    "Run headSha is the PR head; commit.txt records the merge checkout actually executed.",
+    "Process success does not certify scientific truth, elapsed-time benchmarks or production qualification.",
+    "Witness, private keys, SQLite and raw logs are excluded. The public fixture itself remains in tests/fixtures."
+  ]
+}

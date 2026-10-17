@@ -1,0 +1,8 @@
+{
+  "review_date": "2026-10-17",
+  "outcome": "CUDA compilation blocked under 12 GiB with four Cargo jobs; no GPU receipt generated",
+  "oom_evidence": "intermediate-memory.txt: oom=14, oom_kill=2; compiler stderr contains Killed and nvcc exit137 for recursion step_exec.cu",
+  "stop": "The operator stopped only this GPU container after observing the OOM counters. The setup command's final exit137 also reflects that stop and is not, alone, the OOM evidence.",
+  "source_capture_limit": "This initial run invoked setup from the read-only live repository before immutable setup snapshotting was added. source_sha256 records files at run start, not a frozen executed setup. Compiled source copies and the next attempt are separately recorded. No byte-for-byte reproduction claim.",
+  "log_redaction": "Local repository paths, including JSON-escaped Windows paths, were replaced with <repository>. No host application/process inventory was collected."
+}

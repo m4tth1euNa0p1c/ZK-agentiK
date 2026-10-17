@@ -1,0 +1,25 @@
+{
+  "schema": "horizon-whitepaper-validation-v1",
+  "generated_at_utc": "2026-10-17T14:40:09.345815+00:00",
+  "date_is_self_reported": true,
+  "signature_or_tsa": false,
+  "pdf": "docs/whitepaper/whitepaper.pdf",
+  "pdf_sha256": "9ebd63ff3fe20ebfb68ad66ae5f77ebabaafbff348712ea363b2c24395d13794",
+  "pages": 8,
+  "latex_final_warnings": 0,
+  "overfull_boxes": 0,
+  "visual_review": "All eight Poppler PNG pages inspected; no clipping, overlap, missing glyphs or unreadable tables observed.",
+  "visual_review_is_automated_proof": false,
+  "marker_helper_executed": true,
+  "command": "docker run --rm --network none --cpus 2 --memory 2g --mount type=bind,source=<repo>,target=/work horizon-math-paper:local sh /work/docs/whitepaper/build.sh",
+  "limitations": [
+    "PDF is not tagged for accessibility.",
+    "Rendering inspection does not validate cryptographic or business claims.",
+    "PDF creation timestamp is self-reported."
+  ],
+  "source_sha256": {
+    "docs/whitepaper/whitepaper.tex": "cc7c97be1e6ef85443d2633c9a5fa9f8f9a70e3a00b2888425e52c7e0dd763c7",
+    "docs/whitepaper/references.bib": "e2ec2436b9ef9d606042ba2e4e366d35a103a664526f7ada0cea4fc998e33223",
+    "docs/whitepaper/build.sh": "ac21d8a1858de0388a6e7c4158f30640c4a967d3d22692637b49c1c7896aa6d1"
+  }
+}

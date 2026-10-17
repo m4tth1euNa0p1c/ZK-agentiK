@@ -1,0 +1,506 @@
+{
+  "schema": "proofkit-catalog-v1",
+  "title": "Horizon / Proofkit : registre expérimental, sans certification sémantique",
+  "claims": [
+    {
+      "id": "horizon-conditional-mathematics",
+      "kind": "mathematical-derivation",
+      "status": "derived",
+      "relation": "Connaissance d'ouvertures de A-G et C-A dans deux plages 32 bits, liaison aux engagements signés et domaine source u64 ; 1 <= a <= 2^32, 0 <= c-a < 2^32.",
+      "limitations": [
+        "Démonstrations conditionnelles, pas preuve formelle machine ou audit de la bibliothèque.",
+        "La simple existence d'une ouverture Pedersen ne suffit pas ; connaissance extractible, binding et contrat d'émission sont requis.",
+        "Ni cumul, franchise, vérité source, anonymat, nouveauté ou sécurité post-quantique."
+      ],
+      "artifacts": [
+        "docs/whitepaper/whitepaper.tex",
+        "docs/whitepaper/references.bib",
+        "docs/whitepaper/whitepaper.pdf",
+        "docs/whitepaper/validation.json",
+        "docs/whitepaper/build.sh"
+      ],
+      "sources": [
+        {
+          "url": "https://eprint.iacr.org/2017/1066",
+          "accessed_on": "2026-10-17"
+        },
+        {
+          "url": "https://www.rfc-editor.org/rfc/rfc9496.html",
+          "accessed_on": "2026-10-17"
+        },
+        {
+          "url": "https://doi.org/10.1007/3-540-46766-1_9",
+          "accessed_on": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": "octave-integer-model",
+      "kind": "numerical-check",
+      "status": "reproduced",
+      "relation": "24 510 paires entières réduites, dix frontières u64/32 bits, 20 états et 160 transitions d'un modèle anti-rejeu abstrait.",
+      "limitations": [
+        "Exécuté sous GNU Octave 7.3.0 ; MATLAB n'a pas été exécuté.",
+        "Pas un test du logarithme discret, de Bulletproofs, du disque ou du code TypeScript.",
+        "Horodatages auto-déclarés et SHA-256 sans signature ni TSA."
+      ],
+      "artifacts": [
+        "math/horizon_checks.m",
+        "math/run_checks.m",
+        "math/run.mjs",
+        "math/Dockerfile",
+        "math/results/octave-2026-10-17T14-48-23.751Z-0f44a541-9089-42a3-9676-47d943cfaed5/run.json",
+        "math/results/octave-2026-10-17T14-48-23.751Z-0f44a541-9089-42a3-9676-47d943cfaed5/20261017T144824Z.json",
+        "math/results/octave-2026-10-17T14-48-23.751Z-0f44a541-9089-42a3-9676-47d943cfaed5/octave.log"
+      ],
+      "sources": [
+        {
+          "url": "https://www.rfc-editor.org/rfc/rfc9496.html",
+          "accessed_on": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": "horizon-public-proof",
+      "kind": "cryptographic-proof",
+      "status": "reproduced",
+      "relation": "Fixture publique historique Bulletproofs agrégée 2x32 avec deux attestations Ed25519 et autorisation du détenteur ; mode B historique.",
+      "limitations": [
+        "Sources synthétiques ; fixture historique, pas autorisation présente.",
+        "Vérification cryptographique réelle distincte de la vérification SHA-256 du registre.",
+        "Montants cachés au vérifieur, métadonnées corrélables ; aucune sécurité PQ."
+      ],
+      "artifacts": [
+        "tests/fixtures/horizon/public-presentation.json",
+        "tests/fixtures/horizon/manifest.json",
+        "labs/horizon/proof/src/lib.rs",
+        "labs/horizon/Cargo.lock",
+        "scripts/horizon-fixture.mjs"
+      ],
+      "sources": [
+        {
+          "url": "https://docs.rs/bulletproofs/5.0.0/bulletproofs/struct.RangeProof.html",
+          "accessed_on": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": "risc0-public-receipts",
+      "kind": "cryptographic-proof",
+      "status": "reproduced",
+      "relation": "Receipts RISC Zero historiques sur la politique DevSecOps signée ; acceptation critique et refus métier cryptographiquement valide.",
+      "limitations": [
+        "Relation différente d'Horizon ; pas de ratio de vitesse scientifique entre les deux.",
+        "Vérifieur de laboratoire préparé requis pour réexécuter ; un fichier absent ne sera pas simulé.",
+        "Fixture historique et signature d'autorité de démonstration ; pas dispatch ou qualification production."
+      ],
+      "artifacts": [
+        "tests/fixtures/risc0/critical-proof.json",
+        "tests/fixtures/risc0/critical-expected.json",
+        "tests/fixtures/risc0/denied-proof.json",
+        "tests/fixtures/risc0/denied-expected.json",
+        "tests/fixtures/risc0/manifest.json",
+        "scripts/risc0-lab.mjs"
+      ],
+      "sources": [
+        {
+          "url": "https://github.com/risc0/risc0/tree/v3.0.6",
+          "accessed_on": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": "horizon-cpu-observations",
+      "kind": "benchmark",
+      "status": "measured",
+      "relation": "Deux campagnes crypto Linux n=500 avant/après conservation des paramètres publics fixes, et parcours durable local Windows séparé.",
+      "limitations": [
+        "Même relation Horizon ; aucun record externe ou SLA.",
+        "IID non établi, une machine, aucune qualification matérielle de durabilité.",
+        "0,065 ms en B est une présentation signée après préparation, pas une nouvelle preuve."
+      ],
+      "artifacts": [
+        "docs/horizon/BENCHMARK_RESULTS.json",
+        "docs/horizon/raw/horizon-linux-before.json",
+        "docs/horizon/raw/horizon-linux-after.json",
+        "docs/horizon/raw/horizon-linux-before.summary.json",
+        "docs/horizon/raw/horizon-linux-after.summary.json",
+        "docs/horizon/FINAL_VERDICT.md",
+        "docs/horizon/raw/horizon-firewall-2026-10-17T02-19-55.801Z-c283b618-d189-4921-9cb9-350c18190761.json",
+        "docs/horizon/raw/horizon-firewall-2026-10-17T02-19-55.801Z-c283b618-d189-4921-9cb9-350c18190761.summary.json"
+      ],
+      "sources": []
+    },
+    {
+      "id": "vega-sha256-reference",
+      "kind": "benchmark",
+      "status": "measured",
+      "relation": "Benchmarks amont SHA-256 SC/MC au commit c0ee259053cd12eaf43ed71b5cde375452b3ee4d ; pas circuit complet de credentials.",
+      "limitations": [
+        "Estimations centrales Criterion, pas percentiles Horizon.",
+        "Relations et divulgations différentes ; aucune comparaison équivalente battant Vega.",
+        "Le profil de reproduction télécharge et compile des outils, et peut être long."
+      ],
+      "artifacts": [
+        "docs/horizon/raw/vega-criterion.json",
+        "docs/horizon/COMPETITOR_COMPARISON.md",
+        "labs/horizon/reference/vega-Cargo.lock",
+        "scripts/horizon-vega.mjs"
+      ],
+      "sources": [
+        {
+          "url": "https://github.com/microsoft/vega-prover/tree/c0ee259053cd12eaf43ed71b5cde375452b3ee4d",
+          "accessed_on": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": "gpu-horizon-speedup",
+      "kind": "limitation",
+      "status": "not-demonstrated",
+      "relation": "Aucune accélération GPU de la relation Horizon Bulletproofs n'est établie ; le laboratoire CUDA séparé utilise RISC Zero DevSecOps.",
+      "limitations": [
+        "GPU visible ou build réussi ne signifie pas preuve générée et vérifiée.",
+        "Consulter les résultats datés du laboratoire GPU ; aucune valeur manquante n'est interpolée."
+      ],
+      "artifacts": [
+        "docs/whitepaper/whitepaper.tex",
+        "docs/horizon/FINAL_VERDICT.md"
+      ],
+      "sources": []
+    },
+    {
+      "id": "end-to-end-post-quantum",
+      "kind": "limitation",
+      "status": "not-demonstrated",
+      "relation": "Aucun profil Proofkit livré ne fournit une garantie post-quantique de bout en bout.",
+      "limitations": [
+        "Pedersen/Bulletproofs et Ed25519 sont elliptiques ; un hachage dans le transcript ne change pas cette hypothèse.",
+        "ML-DSA ou SLH-DSA ne rendent pas à eux seuls la relation de preuve post-quantique.",
+        "--require-post-quantum refuse les profils avant toute exécution."
+      ],
+      "artifacts": [
+        "docs/whitepaper/whitepaper.tex",
+        "tools/proofkit/profiles.mjs"
+      ],
+      "sources": [
+        {
+          "url": "https://csrc.nist.gov/pubs/fips/204/final",
+          "accessed_on": "2026-10-17"
+        },
+        {
+          "url": "https://csrc.nist.gov/pubs/fips/205/final",
+          "accessed_on": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": "risc0-cuda-build-blocked",
+      "kind": "limitation",
+      "status": "blocked",
+      "relation": "Tentative RISC Zero 3.0.6 Succinct sur RTX 5060 Ti : compilation CUDA récursive arrêtée par OOM sous 12 GiB, avec quatre puis un job ; zéro receipt GPU.",
+      "limitations": [
+        "Aucun temps de génération ou de vérification GPU mesuré ; N=0.",
+        "Ni incompatibilité Blackwell ni gain GPU Horizon démontrés.",
+        "Premier essai avec script live, reprise avec script figé ; limites de provenance détaillées dans le rapport."
+      ],
+      "artifacts": [
+        "docs/experiments/gpu/ARTIFACT_HASHES.json",
+        "docs/experiments/gpu/README.md",
+        "docs/experiments/gpu/RESULTS_2026-10-17.md",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/01-git.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/01-git.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/02-docker-version.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/02-docker-version.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/03-gpu-probe.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/03-gpu-probe.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/04-build-image.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/04-build-image.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/05-image-id.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/05-image-id.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/06-create.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/06-create.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/07-inspect.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/07-inspect.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/08-setup-marker.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/08-setup-marker.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/09-setup-cuda.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/09-setup-cuda.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/10-stop-retain-container.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/10-stop-retain-container.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/intermediate-memory.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/review-notes.json",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/run.json",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/01-git.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/01-git.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/02-docker-version.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/02-docker-version.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/03-gpu-probe.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/03-gpu-probe.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/04-image-id.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/04-image-id.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/05-inspect.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/05-inspect.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/06-start.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/06-start.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/07-setup-marker.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/07-setup-marker.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/08-snapshot-setup.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/08-snapshot-setup.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/09-executed-setup-hash.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/09-executed-setup-hash.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/10-setup-cuda.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/10-setup-cuda.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/11-stop-retain-container.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/11-stop-retain-container.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/cpu-dev-mode-check.json",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/executed-setup.sh",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/memory-observation.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/provenance/copied-source.sha256",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/provenance/cpu-lab-built",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/provenance/gpu.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/provenance/nvcc.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/provenance/packages.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/provenance/rust-host.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/provenance/upstream-commit.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/run.json",
+        "scripts/risc0-gpu-lab.mjs",
+        "labs/risc0/gpu/setup.sh",
+        "labs/risc0/gpu/Dockerfile",
+        "labs/risc0/gpu/runner.test.mjs"
+      ],
+      "sources": [
+        {
+          "url": "https://github.com/risc0/risc0/tree/1cc70cf05033a79ebc90f07c679cb4bd1cd301b9",
+          "accessed_on": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": "verified-tool-local-authorization",
+      "kind": "adversarial-test",
+      "status": "reproduced",
+      "relation": "SDK strict partagé HTTP/MCP, vérification réelle Horizon et réservation SQLite ; 31 tests Horizon après intégration opérateur, dont 162 refus sans changement du snapshot.",
+      "limitations": [
+        "Le SDK fait confiance aux adaptateurs, au store, à la configuration et à la sélection du vérifieur.",
+        "Les 103 tests du premier relevé sont historiques à ce relevé ; deux groupes Horizon ont ensuite été ajoutés. Les temps de test ne sont pas des benchmarks de service.",
+        "Cible locale synthétique, pas exactement une fois distant, IAM bancaire, audit externe ou preuve formelle du programme."
+      ],
+      "artifacts": [
+        "packages/proofkit-sdk/README.md",
+        "packages/proofkit-sdk/package.json",
+        "packages/proofkit-sdk/src/index.ts",
+        "packages/proofkit-sdk/test/tool.test.ts",
+        "packages/proofkit-sdk/tsconfig.json",
+        "tests/horizon/crash-child.ts",
+        "tests/horizon/firewall.test.ts",
+        "tests/horizon/mcp.test.ts",
+        "tests/horizon/stats.test.mjs",
+        "tests/horizon/stdio-budget.test.ts",
+        "tests/proofkit/integrity.test.mjs",
+        "tools/proofkit/README.md",
+        "tools/proofkit/cli.mjs",
+        "tools/proofkit/lib.mjs",
+        "tools/proofkit/profiles.mjs",
+        "packages/horizon-demo/src/tool.ts",
+        "packages/horizon-demo/src/mcp.ts",
+        "packages/horizon-demo/src/mcp-stdio.ts",
+        "packages/horizon-demo/src/bounded-stdio.ts",
+        "packages/horizon-demo/src/server.ts",
+        "packages/horizon-demo/src/store.ts",
+        "packages/horizon-demo/public/app.js",
+        "packages/horizon-demo/public/index.html",
+        "scripts/horizon-http-smoke.mjs",
+        "package.json",
+        "package-lock.json",
+        "docs/publication/LOCAL_VALIDATION_2026-10-17.json",
+        "docs/publication/OPERATOR_VALIDATION_2026-10-17.json",
+        "docs/publication/INDEPENDENT_AGENT_REVIEW.md",
+        "docs/horizon/ARCHITECTURE.md",
+        "docs/horizon/THREAT_MODEL.md"
+      ],
+      "sources": []
+    },
+    {
+      "id": "dependency-qualification-open",
+      "kind": "limitation",
+      "status": "blocked",
+      "relation": "Deux dépendances Horizon corrigées ; alerte de maintenance Horizon et avis RustSec du laboratoire RISC Zero conservés. Aucun audit global sans alerte.",
+      "limitations": [
+        "Base RustSec figée, versions yanked non contrôlées dans la capture locale ; ne couvre pas les vulnérabilités inconnues, le r0vm externe ou toutes les images.",
+        "Analyse de features limitée, sans preuve générale de non-exploitabilité ; conserver les anciens lockfiles avec les campagnes historiques.",
+        "Les licences de futures distributions binaires nécessitent un inventaire propre ; le dépôt distribue ici ses sources et résultats expérimentaux."
+      ],
+      "artifacts": [
+        "docs/publication/dependencies/ARTIFACT_HASHES.json",
+        "docs/publication/dependencies/advisory-db-clean.stderr.txt",
+        "docs/publication/dependencies/advisory-db-clean.stdout.txt",
+        "docs/publication/dependencies/advisory-db-commit.stderr.txt",
+        "docs/publication/dependencies/advisory-db-commit.stdout.txt",
+        "docs/publication/dependencies/audit-horizon.stderr.txt",
+        "docs/publication/dependencies/audit-horizon.stdout.txt",
+        "docs/publication/dependencies/audit-risc0-guest.stderr.txt",
+        "docs/publication/dependencies/audit-risc0-guest.stdout.txt",
+        "docs/publication/dependencies/audit-risc0.stderr.txt",
+        "docs/publication/dependencies/audit-risc0.stdout.txt",
+        "docs/publication/dependencies/audit-root.stderr.txt",
+        "docs/publication/dependencies/audit-root.stdout.txt",
+        "docs/publication/dependencies/capture-provenance.json",
+        "docs/publication/dependencies/cargo-horizon-after.json",
+        "docs/publication/dependencies/cargo-horizon.json",
+        "docs/publication/dependencies/cargo-risc0-after.json",
+        "docs/publication/dependencies/cargo-risc0-guest-after.json",
+        "docs/publication/dependencies/cargo-risc0-guest.json",
+        "docs/publication/dependencies/cargo-risc0.json",
+        "docs/publication/dependencies/cargo-root-after.json",
+        "docs/publication/dependencies/cargo-root.json",
+        "docs/publication/dependencies/historical-public-fixture.stderr.txt",
+        "docs/publication/dependencies/historical-public-fixture.stdout.txt",
+        "docs/publication/dependencies/horizon-before.lock",
+        "docs/publication/dependencies/horizon-clear-graph.stderr.txt",
+        "docs/publication/dependencies/horizon-clear-graph.stdout.txt",
+        "docs/publication/dependencies/horizon-proof-before.toml",
+        "docs/publication/dependencies/horizon-rand-features.stderr.txt",
+        "docs/publication/dependencies/horizon-rand-features.stdout.txt",
+        "docs/publication/dependencies/horizon-unsound-policy.stderr.txt",
+        "docs/publication/dependencies/horizon-unsound-policy.stdout.txt",
+        "docs/publication/dependencies/reachability-evidence.json",
+        "docs/publication/dependencies/real-proof-demo.stderr.txt",
+        "docs/publication/dependencies/real-proof-demo.stdout.txt",
+        "docs/publication/dependencies/risc0-guest-tracing-features.stderr.txt",
+        "docs/publication/dependencies/risc0-guest-tracing-features.stdout.txt",
+        "docs/publication/dependencies/risc0-host-rsa-graph.stderr.txt",
+        "docs/publication/dependencies/risc0-host-rsa-graph.stdout.txt",
+        "docs/publication/dependencies/risc0-host-rzup-features.stderr.txt",
+        "docs/publication/dependencies/risc0-host-rzup-features.stdout.txt",
+        "docs/publication/dependencies/risc0-host-tracing-features.stderr.txt",
+        "docs/publication/dependencies/risc0-host-tracing-features.stdout.txt",
+        "docs/publication/dependencies/risc0-host-tracing-graph.stderr.txt",
+        "docs/publication/dependencies/risc0-host-tracing-graph.stdout.txt",
+        "docs/publication/DEPENDENCY_REVIEW.md",
+        "Cargo.lock",
+        "labs/horizon/Cargo.lock",
+        "labs/horizon/proof/Cargo.toml",
+        "labs/risc0/Cargo.lock",
+        "labs/risc0/methods/guest/Cargo.lock",
+        "THIRD_PARTY_NOTICES.md",
+        "LICENSE",
+        "docs/publication/checks/npm-audit-2026-10-17.json"
+      ],
+      "sources": []
+    },
+    {
+      "id": "cloud-deployment-not-executed",
+      "kind": "deployment",
+      "status": "not-demonstrated",
+      "relation": "Comparaison Azure/GCP et fondations réseau/identité validées localement ; aucun déploiement cloud effectué.",
+      "limitations": [
+        "Compilation Bicep et validation Terraform ne prouvent pas les permissions, politiques ou disponibilités d’un abonnement réel.",
+        "Pas de runtime qualifié, IAM bancaire, KMS compatible validé, restauration distribuée ni coût commercial mesuré.",
+        "Ed25519 logiciel GCP ne signifie pas Ed25519 HSM ; le profil elliptique reste classique."
+      ],
+      "artifacts": [
+        "infra/azure/README.md",
+        "infra/azure/main.bicep",
+        "infra/gcp/.gitignore",
+        "infra/gcp/.terraform.lock.hcl",
+        "infra/gcp/README.md",
+        "infra/gcp/main.tf",
+        "infra/gcp/outputs.tf",
+        "infra/gcp/variables.tf",
+        "infra/gcp/versions.tf",
+        "docs/publication/CLOUD_COMPARISON.md",
+        "docs/publication/VALIDATION.md",
+        ".github/workflows/ci.yml",
+        ".github/workflows/evidence.yml",
+        ".github/workflows/proof-sandbox.yml",
+        "docs/publication/GITHUB_ACTIONS.md"
+      ],
+      "sources": []
+    },
+    {
+      "id": "buyer-and-production-validation-open",
+      "kind": "limitation",
+      "status": "not-demonstrated",
+      "relation": "Hypothèse d’autorisation confidentielle de sinistre délégué ; acheteur, budget, émissions réelles et qualification de production non établis.",
+      "limitations": [
+        "Aucun entretien ou accord de client inventé ; la ZK doit être abandonnée si une attestation signée plus simple satisfait les exigences.",
+        "Le prédicat montant/plafond ne couvre ni cumul, franchise, fraude, provisions ou vérité des données.",
+        "Les rôles et skills sont des instructions portables ; leurs revues ne remplacent pas un audit externe."
+      ],
+      "artifacts": [
+        "README.md",
+        "SECURITY.md",
+        "CONTRIBUTING.md",
+        "CITATION.cff",
+        "AGENTS.md",
+        "docs/publication/CLAIMS.md",
+        "docs/publication/README.md",
+        "docs/publication/RELEASE_CHECKLIST.md",
+        "docs/publication/NEXT_PROMPT.md",
+        "docs/horizon/BUSINESS_CASE.md",
+        "docs/horizon/REVIEW_PROTOCOL.md",
+        "docs/horizon/NOVELTY_AND_PRIOR_ART.md",
+        "docs/horizon/DEPLOYMENT.md",
+        "issues/horizon/NEXT_EXPERIMENTS.md",
+        ".agents/roles/README.md",
+        ".agents/roles/claim-challenger.md",
+        ".agents/roles/cloud-boundary-reviewer.md",
+        ".agents/roles/release-reviewer.md",
+        ".agents/roles/scientific-author.md",
+        ".agents/skills/cloud-proof-infrastructure/SKILL.md",
+        ".agents/skills/cloud-proof-infrastructure/agents/openai.yaml",
+        ".agents/skills/devsecops-connectors/SKILL.md",
+        ".agents/skills/evidence-publication/SKILL.md",
+        ".agents/skills/evidence-publication/agents/openai.yaml",
+        ".agents/skills/mcp-protocol-security/SKILL.md",
+        ".agents/skills/proof-workflow-automation/SKILL.md",
+        ".agents/skills/proof-workflow-automation/agents/openai.yaml",
+        ".agents/skills/qa-benchmark-runner/SKILL.md",
+        ".agents/skills/scientific-whitepaper/SKILL.md",
+        ".agents/skills/scientific-whitepaper/agents/openai.yaml",
+        ".agents/skills/zkp-riscv-guest/SKILL.md"
+      ],
+      "sources": []
+    },
+    {
+      "id": "github-actions-local-reproduction",
+      "kind": "deployment",
+      "status": "reproduced",
+      "relation": "Deux workflows et quatre jobs réussis sur le candidat acc6e98 : 105 tests, preuve Horizon et sandbox Docker avec rejeu après redémarrage, Octave/PDF et contrôle du registre.",
+      "limitations": [
+        "Déploiement éphémère sur le runner GitHub, sans Azure/GCP ou production. Les dates et états API ne constituent pas un horodatage TSA des assertions scientifiques.",
+        "Les appels workflow_call ont été exécutés ; workflow_dispatch n’a pas été exécuté dans ce relevé.",
+        "Les résumés de processus, JSON numériques et observations sont conservés ; les bundles complets GitHub ont une rétention de 14 jours.",
+        "Aucun benchmark de latence n’est déduit du temps de CI ; les preuves publiques historiques ne sont pas des autorisations fraîches.",
+        "Un scan de secrets et une revue d’agent ne prouvent pas l’absence de vulnérabilité ni la qualification du produit."
+      ],
+      "artifacts": [
+        "docs/publication/checks/ci-candidate-acc6e98/horizon/commit.txt",
+        "docs/publication/checks/ci-candidate-acc6e98/horizon/execution.json",
+        "docs/publication/checks/ci-candidate-acc6e98/horizon/independent-verification.json",
+        "docs/publication/checks/ci-candidate-acc6e98/horizon/restart.json",
+        "docs/publication/checks/ci-candidate-acc6e98/horizon/RUN_STATUS.txt",
+        "docs/publication/checks/ci-candidate-acc6e98/horizon/sandbox.json",
+        "docs/publication/checks/ci-candidate-acc6e98/horizon/SCOPE.txt",
+        "docs/publication/checks/ci-candidate-acc6e98/math/commit.txt",
+        "docs/publication/checks/ci-candidate-acc6e98/math/execution.json",
+        "docs/publication/checks/ci-candidate-acc6e98/math/octave-2026-10-17T15-21-51.256Z-45b3be90-eb81-4571-b06a-3d8f2308c9b4/20261017T152253Z.json",
+        "docs/publication/checks/ci-candidate-acc6e98/math/octave-2026-10-17T15-21-51.256Z-45b3be90-eb81-4571-b06a-3d8f2308c9b4/latest.json",
+        "docs/publication/checks/ci-candidate-acc6e98/math/octave-2026-10-17T15-21-51.256Z-45b3be90-eb81-4571-b06a-3d8f2308c9b4/run.json",
+        "docs/publication/checks/ci-candidate-acc6e98/math/RUN_STATUS.txt",
+        "docs/publication/checks/ci-candidate-acc6e98/math/SCOPE.txt",
+        "docs/publication/checks/ci-candidate-acc6e98/observation.json",
+        "docs/publication/checks/ci-candidate-acc6e98/test-counts.json",
+        "docs/publication/checks/gitleaks-2026-10-17.json",
+        "docs/publication/PUBLICATION_REVIEW_2026-10-17.md",
+        ".github/workflows/ci.yml",
+        ".github/workflows/evidence.yml",
+        ".github/workflows/proof-sandbox.yml",
+        "docs/publication/GITHUB_ACTIONS.md",
+        "evidence/README.md"
+      ],
+      "sources": []
+    }
+  ]
+}

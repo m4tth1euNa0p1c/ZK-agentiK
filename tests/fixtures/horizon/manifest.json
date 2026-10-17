@@ -1,0 +1,8 @@
+{
+  "source_commit": "80b2202",
+  "role": "Public synthetic pre-optimization interoperability vector; not a current authorization",
+  "file": "tests/fixtures/horizon/public-presentation.json",
+  "sha256": "1cd722cda2ffab4e90db0fe85c00d25c20ae52b52149d6f8f47c7af7788f2ffd",
+  "contains_private_keys": false,
+  "contains_witness": false
+}

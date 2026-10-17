@@ -1,0 +1,11 @@
+clear_on_drop v0.2.5
+└── bulletproofs v5.0.0
+    ├── bulletproofs feature "default"
+    │   └── horizon-proof v0.1.0 (<repository>\labs\horizon\proof)
+    │       └── horizon-proof feature "default" (command-line)
+    ├── bulletproofs feature "rand"
+    │   └── bulletproofs feature "std"
+    │       └── bulletproofs feature "default" (*)
+    ├── bulletproofs feature "std" (*)
+    └── bulletproofs feature "thiserror"
+        └── bulletproofs feature "std" (*)

@@ -1,0 +1,13 @@
+{
+  "profile": "horizon-range-v1",
+  "proof": "real Bulletproofs + Ed25519",
+  "source_data": "synthetic",
+  "action": "record_claim_authorization (local SQLite)",
+  "independent_verifier": true,
+  "unauthorized_effects": 0,
+  "authorized_effects": 1,
+  "disclosure_downgrade_rejected": true,
+  "alteration_rejected": true,
+  "replay_rejected": true,
+  "artifacts_local_only": "<temporary-local-directory>"
+}

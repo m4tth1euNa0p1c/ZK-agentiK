@@ -1,0 +1,353 @@
+{
+  "date": "2026-10-17T15:00:56.902Z",
+  "audit_tool": "cargo-audit0.22.2",
+  "database_commit": "64f92cdc64401fab47baa10e2e11fe382aa57155",
+  "no_fetch": true,
+  "yanked_checked": false,
+  "root_node": "v24.11.1",
+  "hashes": {
+    "Cargo.lock": "d4368b2e6d12e885a0450bd17f0944ab70d697d6b847dbc6f76eaecd630a6595",
+    "labs/horizon/Cargo.lock": "ad2bc6af625f216870143d54765e910330e9e1e5728261ca1e38928c85dceed9",
+    "labs/horizon/proof/Cargo.toml": "5dc6d891bc59aafcc223ee2afefd194e15526d89a877821194fb82a0cb174408",
+    "labs/risc0/Cargo.lock": "79b21e333fc9a8432f4a3ffa5ac554b921d9bd989165b353c3bbfdee87832f5b",
+    "labs/risc0/methods/guest/Cargo.lock": "ca706946111f19d3935cfd2bde5d415815dd43d5afe4e58727777376ff7df594",
+    "docs/publication/dependencies/horizon-before.lock": "326f077f238678b6808c7950d41f16c68b04991356fc794b1f2416e2882a91df"
+  },
+  "records": [
+    {
+      "id": "audit-root",
+      "command": [
+        "<repository>\\.tools\\cargo-audit\\bin\\cargo-audit.exe",
+        "audit",
+        "--json",
+        "--no-fetch",
+        "--no-yanked",
+        "--db",
+        ".tools/rustsec-advisory-db",
+        "--file",
+        "Cargo.lock"
+      ],
+      "started_at": "2026-10-17T15:00:50.854Z",
+      "finished_at": "2026-10-17T15:00:51.154Z",
+      "exit_code": 0,
+      "allowed_exit_codes": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "audit-horizon",
+      "command": [
+        "<repository>\\.tools\\cargo-audit\\bin\\cargo-audit.exe",
+        "audit",
+        "--json",
+        "--no-fetch",
+        "--no-yanked",
+        "--db",
+        ".tools/rustsec-advisory-db",
+        "--file",
+        "labs/horizon/Cargo.lock"
+      ],
+      "started_at": "2026-10-17T15:00:51.155Z",
+      "finished_at": "2026-10-17T15:00:51.466Z",
+      "exit_code": 0,
+      "allowed_exit_codes": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "audit-risc0",
+      "command": [
+        "<repository>\\.tools\\cargo-audit\\bin\\cargo-audit.exe",
+        "audit",
+        "--json",
+        "--no-fetch",
+        "--no-yanked",
+        "--db",
+        ".tools/rustsec-advisory-db",
+        "--file",
+        "labs/risc0/Cargo.lock"
+      ],
+      "started_at": "2026-10-17T15:00:51.468Z",
+      "finished_at": "2026-10-17T15:00:51.733Z",
+      "exit_code": 1,
+      "allowed_exit_codes": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "audit-risc0-guest",
+      "command": [
+        "<repository>\\.tools\\cargo-audit\\bin\\cargo-audit.exe",
+        "audit",
+        "--json",
+        "--no-fetch",
+        "--no-yanked",
+        "--db",
+        ".tools/rustsec-advisory-db",
+        "--file",
+        "labs/risc0/methods/guest/Cargo.lock"
+      ],
+      "started_at": "2026-10-17T15:00:51.734Z",
+      "finished_at": "2026-10-17T15:00:52.001Z",
+      "exit_code": 1,
+      "allowed_exit_codes": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "horizon-unsound-policy",
+      "command": [
+        "<repository>\\.tools\\cargo-audit\\bin\\cargo-audit.exe",
+        "audit",
+        "--json",
+        "--deny",
+        "unsound",
+        "--no-fetch",
+        "--no-yanked",
+        "--db",
+        ".tools/rustsec-advisory-db",
+        "--file",
+        "labs/horizon/Cargo.lock"
+      ],
+      "started_at": "2026-10-17T15:00:52.002Z",
+      "finished_at": "2026-10-17T15:00:52.269Z",
+      "exit_code": 0,
+      "allowed_exit_codes": [
+        0
+      ]
+    },
+    {
+      "id": "horizon-clear-graph",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "scripts/cargo.mjs",
+        "tree",
+        "--locked",
+        "--manifest-path",
+        "labs/horizon/Cargo.toml",
+        "-e",
+        "features",
+        "-i",
+        "clear_on_drop"
+      ],
+      "started_at": "2026-10-17T15:00:52.269Z",
+      "finished_at": "2026-10-17T15:00:52.455Z",
+      "exit_code": 0,
+      "allowed_exit_codes": [
+        0
+      ]
+    },
+    {
+      "id": "horizon-rand-features",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "scripts/cargo.mjs",
+        "tree",
+        "--locked",
+        "--manifest-path",
+        "labs/horizon/Cargo.toml",
+        "-e",
+        "features",
+        "-i",
+        "rand"
+      ],
+      "started_at": "2026-10-17T15:00:52.455Z",
+      "finished_at": "2026-10-17T15:00:52.627Z",
+      "exit_code": 0,
+      "allowed_exit_codes": [
+        0
+      ]
+    },
+    {
+      "id": "risc0-host-tracing-graph",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "scripts/cargo.mjs",
+        "tree",
+        "--locked",
+        "--manifest-path",
+        "labs/risc0/Cargo.toml",
+        "--target",
+        "x86_64-unknown-linux-gnu",
+        "-e",
+        "features",
+        "-i",
+        "tracing-subscriber@0.2.25"
+      ],
+      "started_at": "2026-10-17T15:00:52.627Z",
+      "finished_at": "2026-10-17T15:00:54.667Z",
+      "exit_code": 0,
+      "allowed_exit_codes": [
+        0
+      ]
+    },
+    {
+      "id": "risc0-host-tracing-features",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "scripts/cargo.mjs",
+        "tree",
+        "--locked",
+        "--manifest-path",
+        "labs/risc0/Cargo.toml",
+        "--target",
+        "x86_64-unknown-linux-gnu",
+        "-e",
+        "normal,build",
+        "-i",
+        "tracing-subscriber@0.2.25",
+        "--format",
+        "{p} features=[{f}]"
+      ],
+      "started_at": "2026-10-17T15:00:54.667Z",
+      "finished_at": "2026-10-17T15:00:55.048Z",
+      "exit_code": 0,
+      "allowed_exit_codes": [
+        0
+      ]
+    },
+    {
+      "id": "risc0-host-rsa-graph",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "scripts/cargo.mjs",
+        "tree",
+        "--locked",
+        "--manifest-path",
+        "labs/risc0/Cargo.toml",
+        "--target",
+        "x86_64-unknown-linux-gnu",
+        "-e",
+        "features",
+        "-i",
+        "rsa"
+      ],
+      "started_at": "2026-10-17T15:00:55.049Z",
+      "finished_at": "2026-10-17T15:00:55.437Z",
+      "exit_code": 0,
+      "allowed_exit_codes": [
+        0
+      ]
+    },
+    {
+      "id": "risc0-host-rzup-features",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "scripts/cargo.mjs",
+        "tree",
+        "--locked",
+        "--manifest-path",
+        "labs/risc0/Cargo.toml",
+        "--target",
+        "x86_64-unknown-linux-gnu",
+        "-e",
+        "normal,build",
+        "-i",
+        "rzup",
+        "--format",
+        "{p} features=[{f}]"
+      ],
+      "started_at": "2026-10-17T15:00:55.437Z",
+      "finished_at": "2026-10-17T15:00:55.837Z",
+      "exit_code": 0,
+      "allowed_exit_codes": [
+        0
+      ]
+    },
+    {
+      "id": "risc0-guest-tracing-features",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "scripts/cargo.mjs",
+        "tree",
+        "--locked",
+        "--manifest-path",
+        "labs/risc0/methods/guest/Cargo.toml",
+        "--target",
+        "riscv32im-risc0-zkvm-elf",
+        "-e",
+        "normal,build",
+        "-i",
+        "tracing-subscriber@0.2.25",
+        "--format",
+        "{p} features=[{f}]"
+      ],
+      "started_at": "2026-10-17T15:00:55.837Z",
+      "finished_at": "2026-10-17T15:00:56.246Z",
+      "exit_code": 0,
+      "allowed_exit_codes": [
+        0
+      ]
+    },
+    {
+      "id": "historical-public-fixture",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "scripts/horizon-fixture.mjs",
+        "verify"
+      ],
+      "started_at": "2026-10-17T15:00:56.246Z",
+      "finished_at": "2026-10-17T15:00:56.365Z",
+      "exit_code": 0,
+      "allowed_exit_codes": [
+        0
+      ]
+    },
+    {
+      "id": "real-proof-demo",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "scripts/horizon.mjs",
+        "demo"
+      ],
+      "started_at": "2026-10-17T15:00:56.365Z",
+      "finished_at": "2026-10-17T15:00:56.694Z",
+      "exit_code": 0,
+      "allowed_exit_codes": [
+        0
+      ]
+    },
+    {
+      "id": "advisory-db-commit",
+      "command": [
+        "git",
+        "-C",
+        ".tools/rustsec-advisory-db",
+        "log",
+        "-1",
+        "--format=%H %cI"
+      ],
+      "started_at": "2026-10-17T15:00:56.694Z",
+      "finished_at": "2026-10-17T15:00:56.740Z",
+      "exit_code": 0,
+      "allowed_exit_codes": [
+        0
+      ]
+    },
+    {
+      "id": "advisory-db-clean",
+      "command": [
+        "git",
+        "-C",
+        ".tools/rustsec-advisory-db",
+        "status",
+        "--porcelain"
+      ],
+      "started_at": "2026-10-17T15:00:56.740Z",
+      "finished_at": "2026-10-17T15:00:56.900Z",
+      "exit_code": 0,
+      "allowed_exit_codes": [
+        0
+      ]
+    }
+  ],
+  "repository_base_commit": "8935cc9e42dee9b2ed32207483a6f7383e37ffc4",
+  "redactions": [
+    "absolute repository and user profile paths replaced",
+    "real-proof-demo artifacts_local_only temporary directory replaced; no result values changed"
+  ]
+}

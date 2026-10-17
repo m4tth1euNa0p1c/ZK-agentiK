@@ -1,0 +1,73 @@
+{
+  "schema": "horizon-math-run-v1",
+  "started_at_utc": "2026-10-17T15:21:51.256Z",
+  "date_is_self_reported": true,
+  "third_party_timestamp_or_signature": false,
+  "runtime": "GNU Octave",
+  "matlab_executed": false,
+  "status": "pass",
+  "commands": [
+    [
+      "docker",
+      "build",
+      "--progress",
+      "plain",
+      "-t",
+      "horizon-math-paper:local",
+      "-f",
+      "<MATH>/Dockerfile",
+      "<MATH>"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--network",
+      "none",
+      "--cpus",
+      "2",
+      "--memory",
+      "2g",
+      "--mount",
+      "type=bind,source=<MATH>,target=/src,readonly",
+      "--mount",
+      "type=bind,source=<OUTPUT>,target=/out",
+      "-e",
+      "HORIZON_MATH_OUTPUT_DIR=/out",
+      "horizon-math-paper:local",
+      "octave",
+      "--no-gui",
+      "--no-history",
+      "--quiet",
+      "/src/run_checks.m"
+    ]
+  ],
+  "source_mount_readonly": true,
+  "network": "none",
+  "cpus": 2,
+  "memory": "2g",
+  "external_inputs": "None; constants, domain and finite model are embedded in horizon_checks.m.",
+  "sha256": {
+    "math/Dockerfile": "df996a296e164aa0408b312c3a882d7ad098148d3b3835a9a29ae95e36d79065",
+    "math/horizon_checks.m": "376f3638bc182257c99bcb8d22c9a0d8e27168d61f76a3b365346dd7311fc029",
+    "math/run_checks.m": "2b1b9680251714420c6e8336065950d70c48e8bc3ad5e90a5fcf33f8882a77ed",
+    "math/run.mjs": "f0fb37ca34410a53014e16f137e5a92bb3f7b8618053166b8c7a20f20f595800",
+    "math/results/octave-2026-10-17T15-21-51.256Z-45b3be90-eb81-4571-b06a-3d8f2308c9b4/build.log": "3867072c8e983c3f2f77f9f2cd9c21ace8940bb31dd3f1a4d5a4ab929b72fc7b",
+    "math/results/octave-2026-10-17T15-21-51.256Z-45b3be90-eb81-4571-b06a-3d8f2308c9b4/octave.log": "96de7c407f38c4e6e84a90c47c9d9591e0e4d8b50395909878e18c3797fcb289",
+    "math/results/octave-2026-10-17T15-21-51.256Z-45b3be90-eb81-4571-b06a-3d8f2308c9b4/20261017T152253Z.json": "77b274ec5e98e12db53390e03dfea043842ebca9f15461a77166db0b1d2f2d25"
+  },
+  "image_id": "sha256:f4d0b92f828dfcffbbf6646df6f783995dd73439dbf77b99d07880832ceadd5d",
+  "result": "math/results/octave-2026-10-17T15-21-51.256Z-45b3be90-eb81-4571-b06a-3d8f2308c9b4/20261017T152253Z.json",
+  "runtime_version": "7.3.0",
+  "container_packages": "lmodern\t2.005-1\noctave\t7.3.0-2\npoppler-utils\t22.12.0-2+deb12u3\npython3\t3.11.2-1+b1\ntexlive-binaries\t2022.20220321.62855-5.1+deb12u2\ntexlive-fonts-recommended\t2022.20230122-3\ntexlive-latex-base\t2022.20230122-3\ntexlive-latex-recommended\t2022.20230122-3",
+  "finished_at_utc": "2026-10-17T15:22:55.249Z",
+  "limitations": [
+    "Numerical evidence and finite abstract model, not a cryptographic or machine-checked proof.",
+    "No MATLAB execution, security audit, third-party timestamp or signature.",
+    "Base digest pinned; apt versions are recorded, not snapshot-pinned."
+  ],
+  "path_placeholders": {
+    "<MATH>": "Repository math directory",
+    "<OUTPUT>": "This new run directory"
+  }
+}

@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "Si vous réutilisez ce laboratoire ou ses résultats, citez le logiciel et précisez le commit ainsi que le profil expérimental."
+type: software
+title: "ZK-agentiK: laboratoire de preuves spécialisées et d'autorisation d'outils agents"
+authors:
+  - name: "ZK-agentiK contributors"
+repository-code: "https://github.com/m4tth1euNa0p1c/ZK-agentiK"
+license: MIT
+abstract: "Laboratoire expérimental de politiques déterministes, preuves spécialisées Horizon et adaptateurs d'autorisation pour outils agents. Les résultats locaux ne constituent ni qualification de production, ni audit cryptographique indépendant, ni conformité réglementaire."
+keywords:
+  - zero-knowledge
+  - authorization
+  - reproducible-research
+  - model-context-protocol

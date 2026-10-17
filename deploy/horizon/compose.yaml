@@ -1,0 +1,129 @@
+name: horizon-sandbox
+
+# Run `npm run horizon:init` on the host first. The image contains code only.
+# Optional HORIZON_PRIVATE_CONFIG / HORIZON_PUBLIC_CONFIG values are absolute
+# host paths. Defaults resolve relative to this compose.yaml, not the shell cwd.
+# No Docker socket, witness directory or host source tree is mounted.
+x-runtime: &runtime
+  image: zk-agentik/horizon-demo:local
+  platform: linux/amd64
+  build:
+    context: ../..
+    dockerfile: deploy/horizon/Dockerfile
+    target: runtime
+  init: true
+  user: "1000:1000"
+  read_only: true
+  cap_drop:
+    - ALL
+  security_opt:
+    - no-new-privileges:true
+  tmpfs:
+    - /tmp:rw,noexec,nosuid,size=32m,mode=1777
+  cpus: "2.0"
+  mem_limit: 1g
+  memswap_limit: 1g
+  pids_limit: 128
+  restart: "no"
+  stop_grace_period: 10s
+  networks:
+    - sandbox
+  logging:
+    driver: json-file
+    options:
+      max-size: 5m
+      max-file: "2"
+  # An HTTP liveness check, not an end-to-end cryptographic health assertion.
+  healthcheck:
+    test:
+      - CMD
+      - node
+      - -e
+      - "fetch('http://127.0.0.1:'+process.env.PORT+'/health',{signal:AbortSignal.timeout(2000)}).then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+    interval: 15s
+    timeout: 3s
+    retries: 3
+    start_period: 10s
+
+services:
+  prover:
+    <<: *runtime
+    # A Linux bind preserves host UID/mode. Match its non-root owner to read
+    # private.json (0600); do not make private material world-readable.
+    user: "${HORIZON_PROVER_UID:-1000}:1000"
+    command: ["prover", "/config/private.json"]
+    environment:
+      PORT: "38081"
+      HORIZON_BIND: "0.0.0.0"
+      HORIZON_ORIGIN: "http://127.0.0.1:38080"
+    volumes:
+      - type: bind
+        source: "${HORIZON_PRIVATE_CONFIG:-../../.tools/horizon/demo/private.json}"
+        target: /config/private.json
+        read_only: true
+        bind:
+          create_host_path: false
+
+  verifier:
+    <<: *runtime
+    command: ["verifier", "/config/public.json"]
+    environment:
+      PORT: "38080"
+      HORIZON_BIND: "0.0.0.0"
+      HORIZON_ORIGIN: "http://127.0.0.1:38080"
+      HORIZON_DB: "/data/authorization.sqlite"
+    volumes:
+      - type: bind
+        source: "${HORIZON_PUBLIC_CONFIG:-../../.tools/horizon/demo/public.json}"
+        target: /config/public.json
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: volume
+        source: verifier-data
+        target: /data
+
+  # Docker Desktop does not publish ports from an internal-only bridge. This
+  # stateless relay alone joins the entry bridge; neither backend gains egress.
+  # Upstreams and paths are hard-coded in relay.mjs, never chosen by callers.
+  relay:
+    <<: *runtime
+    entrypoint: ["node", "/app/deploy/horizon/relay.mjs"]
+    command: []
+    cpus: "0.5"
+    mem_limit: 128m
+    memswap_limit: 128m
+    pids_limit: 64
+    environment:
+      NODE_OPTIONS: "--max-old-space-size=64"
+    networks:
+      - entry
+      - sandbox
+    ports:
+      - "127.0.0.1:38080:38080"
+      - "127.0.0.1:38081:38081"
+    depends_on:
+      prover:
+        condition: service_healthy
+      verifier:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "Promise.all([38080,38081].map(p=>fetch('http://127.0.0.1:'+p+'/health',{signal:AbortSignal.timeout(2000)}))).then(rs=>process.exit(rs.every(r=>r.ok)?0:1)).catch(()=>process.exit(1))"
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+networks:
+  entry:
+    driver: bridge
+  sandbox:
+    driver: bridge
+    internal: true
+
+volumes:
+  verifier-data:

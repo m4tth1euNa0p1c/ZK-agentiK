@@ -1,0 +1,12 @@
+{
+  "name": "@zk-agentik/proofkit-sdk",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Experimental toolkit for bounded, verifier-controlled tools with explicit authorization adapters",
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=24.11" },
+  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
+  "files": ["dist", "README.md"],
+  "dependencies": { "zod": "4.6.7" }
+}

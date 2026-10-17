@@ -1,0 +1,12 @@
+tracing-subscriber v0.2.25 features=[]
+└── ark-relations v0.5.1 features=[std,tracing-subscriber]
+    ├── ark-crypto-primitives v0.5.0 features=[merlin,snark,sponge,std]
+    │   └── ark-groth16 v0.5.0 features=[std]
+    │       └── risc0-groth16 v3.0.5 features=[std]
+    │           └── risc0-zkvm v3.0.6 features=[client,disable-dev-mode,std]
+    │               ├── lab-host v0.1.0 (<repository>\labs\risc0\host) features=[]
+    │               └── lab-verifier v0.1.0 (<repository>\labs\risc0\verifier) features=[]
+    │                   └── lab-host v0.1.0 (<repository>\labs\risc0\host) features=[]
+    ├── ark-groth16 v0.5.0 features=[std] (*)
+    └── ark-snark v0.5.1 features=[]
+        └── ark-crypto-primitives v0.5.0 features=[merlin,snark,sponge,std] (*)

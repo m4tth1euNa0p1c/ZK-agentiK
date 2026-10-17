@@ -1,7 +1,11 @@
 name: Local POC quality
 on:
   push:
+    branches: [main]
   pull_request:
+concurrency:
+  group: quality-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
@@ -12,7 +16,7 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: '24'
+          node-version: '24.11.1'
           cache: npm
       - run: rustup toolchain install 1.93.0 --profile minimal --component clippy --component rustfmt --target riscv32im-unknown-none-elf
       - run: cargo fmt --all -- --check
@@ -23,3 +27,22 @@ jobs:
       - run: npm run typecheck
       - run: npm run schema:check
       - run: npm run build:guest
+      - run: cargo fmt --manifest-path labs/horizon/Cargo.toml --all -- --check
+      - run: cargo clippy --manifest-path labs/horizon/Cargo.toml --all-targets --locked -- -D warnings
+      - run: cargo test --manifest-path labs/horizon/Cargo.toml --locked
+      - name: Audit active Rust workspaces (historical RISC Zero findings are documented)
+        run: |
+          cargo install cargo-audit --version 0.22.2 --locked
+          cargo audit --file Cargo.lock --deny unsound
+          cargo audit --file labs/horizon/Cargo.lock --deny unsound
+      - run: npm run horizon:build
+      - run: npm run test:horizon
+      - run: npm run test:proofkit
+      - run: npm run test:risc0:gpu
+      - run: npm run proofkit -- check
+  sandbox:
+    needs: test
+    uses: ./.github/workflows/proof-sandbox.yml
+    with:
+      profile: horizon
+      deploy_sandbox: true

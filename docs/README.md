@@ -6,6 +6,23 @@ pas une nouvelle vérification de l'état du marché ou des publications.
 
 ## Parcours de lecture
 
+**Finition publique et SDK : [dossier de publication](publication/README.md).**
+[White paper](whitepaper/whitepaper.pdf), [mathématiques](../math/),
+[registre d'artefacts](../evidence/), [outillage Proofkit](../tools/proofkit/README.md)
+et [comparaison Azure/GCP](publication/CLOUD_COMPARISON.md). Ce dossier ajoute
+ses observations datées sans remplacer les campagnes historiques ci-dessous.
+
+**Nouvelle campagne du 17 octobre : [Horizon](horizon/FINAL_VERDICT.md).**
+Recherche contradictoire banque/assurance, reproduction Vega SHA-256, preuve
+spécialisée réelle, optimisation mesurée et sandbox durable. Son énoncé diffère
+du guest RISC Zero historique. [Méthode et données](horizon/BENCHMARK_METHODOLOGY.md),
+[relation](horizon/FORMAL_STATEMENT.md), [application](horizon/DEPLOYMENT.md).
+
+[Inventaire vérifié au commit 684b567](horizon/INVENTORY_2026-10-17.md) et
+[protocole de qualification H11](horizon/REVIEW_PROTOCOL.md) : bilan figé,
+revue métier/sécurité, alternatives et critères de décision. Aucun entretien
+client n'est déclaré réalisé par ces documents.
+
 | Document | Contenu et portée |
 | --- | --- |
 | [01 — Recherche initiale et analyse d'écart](01-RESEARCH-AND-GAP-ANALYSIS.md) | Magnetar, BinarySpartan, Spartan, Lasso, SP1, RISC Zero, Jolt et MCP ; liens vers les sources primaires et limites des annonces |
@@ -20,7 +37,8 @@ pas une nouvelle vérification de l'état du marché ou des publications.
 Les rapports sont des synthèses de recherche, avec leurs sources et leurs
 limites. Les articles et codes tiers liés conservent leurs licences respectives.
 La recherche initiale est conservée comme historique ; le rapport 08 décrit le
-dernier état expérimental du backend réel.
+dernier état expérimental de ce backend RISC Zero. Le laboratoire Horizon
+constitue une expérience supplémentaire sur une relation spécialisée différente.
 
 ## Conclusions conservées
 
@@ -36,7 +54,8 @@ dernier état expérimental du backend réel.
   un objectif de 5 ms ni un challenge synchrone de 30 s.
 - La confidentialité critique, les sources authentiques, la durabilité,
   l'intégration au firewall et le fonctionnement en crise restent à qualifier.
-  Aucun benchmark GPU n'a été réalisé.
+  Aucun benchmark GPU n'avait été réalisé dans cette campagne historique ;
+  consulter les [tentatives GPU ultérieures](experiments/gpu/README.md).
 
 ## Code et éléments de reproduction
 

@@ -1,0 +1,1340 @@
+{
+  "source_commit": "c0ee259053cd12eaf43ed71b5cde375452b3ee4d",
+  "rust_host": "1.98.0",
+  "threads": 8,
+  "cpu": "Intel Core Ultra 7 265F",
+  "container_cpus": 8,
+  "memory_limit_bytes": 12884901888,
+  "rustflags": "-C target-cpu=native",
+  "scope": "Unmodified official SHA-256 SC and MC benchmarks. Not the complete mDL relation. Criterion samples are iteration batches, not individual request latency.",
+  "rows": [
+    {
+      "benchmark": {
+        "group_id": "vega_mc_zkp_sha256",
+        "function_id": "prep_prove/1024/t8",
+        "value_str": null,
+        "throughput": {
+          "Bytes": 1024
+        },
+        "full_id": "vega_mc_zkp_sha256/prep_prove/1024/t8",
+        "directory_name": "vega_mc_zkp_sha256/prep_prove_1024_t8",
+        "title": "vega_mc_zkp_sha256/prep_prove/1024/t8"
+      },
+      "sample": {
+        "sampling_mode": "Linear",
+        "iters": [
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          14,
+          16,
+          18,
+          20
+        ],
+        "times": [
+          69916915,
+          141087551,
+          217119085,
+          278479681,
+          346579325,
+          419886435,
+          495587866,
+          571505437,
+          630598831,
+          716507797
+        ]
+      },
+      "estimates": {
+        "mean": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 35005340.79454861,
+            "upper_bound": 35585292.47507142
+          },
+          "point_estimate": 35285216.96287699,
+          "standard_error": 148455.20197791242
+        },
+        "median": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 34900248.1875,
+            "upper_bound": 35719089.8125
+          },
+          "point_estimate": 35152578.06944445,
+          "standard_error": 217926.10911944194
+        },
+        "median_abs_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 63354.66799189524,
+            "upper_bound": 811292.3894945966
+          },
+          "point_estimate": 436754.0562835639,
+          "standard_error": 186773.38944758402
+        },
+        "slope": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 35030929.844827585,
+            "upper_bound": 35668319.583333336
+          },
+          "point_estimate": 35391180.82857143,
+          "standard_error": 164784.19141837646
+        },
+        "std_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 261118.50378338966,
+            "upper_bound": 614926.4432599801
+          },
+          "point_estimate": 492382.5360291274,
+          "standard_error": 90250.7305711582
+        }
+      }
+    },
+    {
+      "benchmark": {
+        "group_id": "vega_mc_zkp_sha256",
+        "function_id": "prep_prove/2048/t8",
+        "value_str": null,
+        "throughput": {
+          "Bytes": 2048
+        },
+        "full_id": "vega_mc_zkp_sha256/prep_prove/2048/t8",
+        "directory_name": "vega_mc_zkp_sha256/prep_prove_2048_t8",
+        "title": "vega_mc_zkp_sha256/prep_prove/2048/t8"
+      },
+      "sample": {
+        "sampling_mode": "Linear",
+        "iters": [
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          14,
+          16,
+          18,
+          20
+        ],
+        "times": [
+          155660981,
+          289367013,
+          452105728,
+          613885867,
+          749002420,
+          878906694,
+          1037901126,
+          1222040325,
+          1376546231,
+          1534350958
+        ]
+      },
+      "estimates": {
+        "mean": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 74355316.51587301,
+            "upper_bound": 76395831.3785119
+          },
+          "point_estimate": 75410705.18295635,
+          "standard_error": 523006.9933534189
+        },
+        "median": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 74071233.25,
+            "upper_bound": 76717547.9
+          },
+          "point_estimate": 75864237.48958334,
+          "standard_error": 783146.2512713491
+        },
+        "median_abs_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 206917.75981480925,
+            "upper_bound": 2898240.296345964
+          },
+          "point_estimate": 1360649.7321311384,
+          "standard_error": 727514.8055418967
+        },
+        "slope": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 74550269.22340426,
+            "upper_bound": 76448990.90802824
+          },
+          "point_estimate": 75764628.65454546,
+          "standard_error": 485012.86843439244
+        },
+        "std_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 927167.0390559022,
+            "upper_bound": 2173272.1740972116
+          },
+          "point_estimate": 1744713.3415656465,
+          "standard_error": 313397.18081903853
+        }
+      }
+    },
+    {
+      "benchmark": {
+        "group_id": "vega_mc_zkp_sha256",
+        "function_id": "prove/1024/t8",
+        "value_str": null,
+        "throughput": {
+          "Bytes": 1024
+        },
+        "full_id": "vega_mc_zkp_sha256/prove/1024/t8",
+        "directory_name": "vega_mc_zkp_sha256/prove_1024_t8",
+        "title": "vega_mc_zkp_sha256/prove/1024/t8"
+      },
+      "sample": {
+        "sampling_mode": "Linear",
+        "iters": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "times": [
+          49310162,
+          97999964,
+          150856871,
+          207501974,
+          251757694,
+          313998095,
+          367407797,
+          430420921,
+          469759350,
+          535887792
+        ]
+      },
+      "estimates": {
+        "mean": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 50508922.41333333,
+            "upper_bound": 52495283.03428571
+          },
+          "point_estimate": 51522952.16011904,
+          "standard_error": 506636.1656901094
+        },
+        "median": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 49830850.4,
+            "upper_bound": 52960897.516666666
+          },
+          "point_estimate": 52035488.41666667,
+          "standard_error": 805304.5767449668
+        },
+        "median_abs_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 215973.9034656941,
+            "upper_bound": 2854726.3577684686
+          },
+          "point_estimate": 2399766.2659156364,
+          "standard_error": 709126.6529534783
+        },
+        "slope": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 51691622.57068791,
+            "upper_bound": 53251119.48424076
+          },
+          "point_estimate": 52656103.0025974,
+          "standard_error": 402349.9660556369
+        },
+        "std_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 1027514.7629087641,
+            "upper_bound": 2043259.973715823
+          },
+          "point_estimate": 1692839.7579455157,
+          "standard_error": 257957.54201255456
+        }
+      }
+    },
+    {
+      "benchmark": {
+        "group_id": "vega_mc_zkp_sha256",
+        "function_id": "prove/2048/t8",
+        "value_str": null,
+        "throughput": {
+          "Bytes": 2048
+        },
+        "full_id": "vega_mc_zkp_sha256/prove/2048/t8",
+        "directory_name": "vega_mc_zkp_sha256/prove_2048_t8",
+        "title": "vega_mc_zkp_sha256/prove/2048/t8"
+      },
+      "sample": {
+        "sampling_mode": "Linear",
+        "iters": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "times": [
+          64360735,
+          142725934,
+          192608544,
+          259206840,
+          331808414,
+          394269200,
+          449842907,
+          520544628,
+          605684461,
+          659320798
+        ]
+      },
+      "estimates": {
+        "mean": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 64878863.588345245,
+            "upper_bound": 67362299.38777778
+          },
+          "point_estimate": 65936318.03063492,
+          "standard_error": 648283.2736645701
+        },
+        "median": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 64360735,
+            "upper_bound": 66615176.62222222
+          },
+          "point_estimate": 65389805.91666667,
+          "standard_error": 596495.4519393777
+        },
+        "median_abs_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 163491.09283744884,
+            "upper_bound": 2514500.4312886917
+          },
+          "point_estimate": 1483302.577806113,
+          "standard_error": 607988.6617059296
+        },
+        "slope": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 64996588.622137405,
+            "upper_bound": 66616628.49744898
+          },
+          "point_estimate": 65835710.04415584,
+          "standard_error": 412915.125848781
+        },
+        "std_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 686111.506164103,
+            "upper_bound": 3121257.9487749203
+          },
+          "point_estimate": 2156709.427230124,
+          "standard_error": 739499.15933637
+        }
+      }
+    },
+    {
+      "benchmark": {
+        "group_id": "vega_mc_zkp_sha256",
+        "function_id": "setup/1024/t8",
+        "value_str": null,
+        "throughput": {
+          "Bytes": 1024
+        },
+        "full_id": "vega_mc_zkp_sha256/setup/1024/t8",
+        "directory_name": "vega_mc_zkp_sha256/setup_1024_t8",
+        "title": "vega_mc_zkp_sha256/setup/1024/t8"
+      },
+      "sample": {
+        "sampling_mode": "Linear",
+        "iters": [
+          3,
+          6,
+          9,
+          12,
+          15,
+          18,
+          21,
+          24,
+          27,
+          30
+        ],
+        "times": [
+          256044722,
+          494640856,
+          663287840,
+          887039614,
+          1148237499,
+          1353398876,
+          1570003276,
+          1788858952,
+          2063234023,
+          2287093645
+        ]
+      },
+      "estimates": {
+        "mean": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 74916118.67455953,
+            "upper_bound": 79411110.34470898
+          },
+          "point_estimate": 76909537.32878307,
+          "standard_error": 1168069.2309314257
+        },
+        "median": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 74341014.29761904,
+            "upper_bound": 79428108.7962963
+          },
+          "point_estimate": 75712640.6388889,
+          "standard_error": 1071770.8168541784
+        },
+        "median_abs_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 231813.2285145028,
+            "upper_bound": 4465641.336930133
+          },
+          "point_estimate": 1577064.4605181823,
+          "standard_error": 1153933.8347011944
+        },
+        "slope": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 74881193.23184358,
+            "upper_bound": 76263885.62479062
+          },
+          "point_estimate": 75658758.75844155,
+          "standard_error": 353278.68099688285
+        },
+        "std_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 942502.8836816667,
+            "upper_bound": 5129771.343657106
+          },
+          "point_estimate": 3874134.047139625,
+          "standard_error": 1134060.0269324956
+        }
+      }
+    },
+    {
+      "benchmark": {
+        "group_id": "vega_mc_zkp_sha256",
+        "function_id": "setup/2048/t8",
+        "value_str": null,
+        "throughput": {
+          "Bytes": 2048
+        },
+        "full_id": "vega_mc_zkp_sha256/setup/2048/t8",
+        "directory_name": "vega_mc_zkp_sha256/setup_2048_t8",
+        "title": "vega_mc_zkp_sha256/setup/2048/t8"
+      },
+      "sample": {
+        "sampling_mode": "Linear",
+        "iters": [
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          14,
+          16,
+          18,
+          20
+        ],
+        "times": [
+          190860021,
+          353980088,
+          532126155,
+          658880070,
+          747454636,
+          924362238,
+          1039773088,
+          1195222153,
+          1342021347,
+          1512900052
+        ]
+      },
+      "estimates": {
+        "mean": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 76392627.35715625,
+            "upper_bound": 85345963.45137501
+          },
+          "point_estimate": 80592101.87982143,
+          "standard_error": 2306131.8884987845
+        },
+        "median": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 74651102.55,
+            "upper_bound": 88495022
+          },
+          "point_estimate": 76337594.55,
+          "standard_error": 3837336.475293748
+        },
+        "median_abs_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 172575.48016491393,
+            "upper_bound": 12271715.457402252
+          },
+          "point_estimate": 2853220.1456252136,
+          "standard_error": 3678046.7639792846
+        },
+        "slope": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 75024889.71165644,
+            "upper_bound": 77996126.58405173
+          },
+          "point_estimate": 75924087.05584416,
+          "standard_error": 777915.9327223543
+        },
+        "std_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 3543412.3831258137,
+            "upper_bound": 9601587.928548608
+          },
+          "point_estimate": 7700860.795635945,
+          "standard_error": 1527715.3307320972
+        }
+      }
+    },
+    {
+      "benchmark": {
+        "group_id": "vega_mc_zkp_sha256",
+        "function_id": "verify/1024/t8",
+        "value_str": null,
+        "throughput": {
+          "Bytes": 1024
+        },
+        "full_id": "vega_mc_zkp_sha256/verify/1024/t8",
+        "directory_name": "vega_mc_zkp_sha256/verify_1024_t8",
+        "title": "vega_mc_zkp_sha256/verify/1024/t8"
+      },
+      "sample": {
+        "sampling_mode": "Linear",
+        "iters": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "times": [
+          22039162,
+          41629784,
+          57483034,
+          83616585,
+          97350409,
+          121676239,
+          141351469,
+          165780817,
+          180293914,
+          214379433
+        ]
+      },
+      "estimates": {
+        "mean": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 20005449.620222222,
+            "upper_bound": 21022649.1175
+          },
+          "point_estimate": 20505493.608611114,
+          "standard_error": 259797.24769177465
+        },
+        "median": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 19831574.4,
+            "upper_bound": 21126417.65
+          },
+          "point_estimate": 20500987.645833336,
+          "standard_error": 315761.0371996979
+        },
+        "median_abs_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 134578.65747325122,
+            "upper_bound": 1487422.0477263127
+          },
+          "point_estimate": 646034.8871889208,
+          "standard_error": 341487.44295412063
+        },
+        "slope": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 20018370.836363636,
+            "upper_bound": 21036183.928030305
+          },
+          "point_estimate": 20548493.574025974,
+          "standard_error": 273780.3938764882
+        },
+        "std_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 465087.8530731748,
+            "upper_bound": 1117223.3543306154
+          },
+          "point_estimate": 867654.1782962504,
+          "standard_error": 167031.04866895793
+        }
+      }
+    },
+    {
+      "benchmark": {
+        "group_id": "vega_mc_zkp_sha256",
+        "function_id": "verify/2048/t8",
+        "value_str": null,
+        "throughput": {
+          "Bytes": 2048
+        },
+        "full_id": "vega_mc_zkp_sha256/verify/2048/t8",
+        "directory_name": "vega_mc_zkp_sha256/verify_2048_t8",
+        "title": "vega_mc_zkp_sha256/verify/2048/t8"
+      },
+      "sample": {
+        "sampling_mode": "Linear",
+        "iters": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "times": [
+          19627638,
+          39076651,
+          60477485,
+          75444001,
+          100036891,
+          123417343,
+          138093677,
+          159873998,
+          179482434,
+          197310331
+        ]
+      },
+      "estimates": {
+        "mean": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 19541558.732607145,
+            "upper_bound": 20066309.578553572
+          },
+          "point_estimate": 19814850.444285713,
+          "standard_error": 134010.58160737832
+        },
+        "median": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 19627638,
+            "upper_bound": 20071705.708333336
+          },
+          "point_estimate": 19836762.883333333,
+          "standard_error": 131010.08397253844
+        },
+        "median_abs_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 48099.64500605913,
+            "upper_bound": 698244.6658536801
+          },
+          "point_estimate": 281501.4052623505,
+          "standard_error": 154951.48204349875
+        },
+        "slope": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 19697623.71674739,
+            "upper_bound": 20105487.811170213
+          },
+          "point_estimate": 19885119.093506493,
+          "standard_error": 102494.27571266505
+        },
+        "std_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 175619.71677234684,
+            "upper_bound": 625301.765229795
+          },
+          "point_estimate": 447978.03656822717,
+          "standard_error": 118106.45146777482
+        }
+      }
+    },
+    {
+      "benchmark": {
+        "group_id": "vega_sc_sha256",
+        "function_id": "prep_prove/1024/t8",
+        "value_str": null,
+        "throughput": {
+          "Bytes": 1024
+        },
+        "full_id": "vega_sc_sha256/prep_prove/1024/t8",
+        "directory_name": "vega_sc_sha256/prep_prove_1024_t8",
+        "title": "vega_sc_sha256/prep_prove/1024/t8"
+      },
+      "sample": {
+        "sampling_mode": "Flat",
+        "iters": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "times": [
+          177478509,
+          174752187,
+          172551434,
+          169433963,
+          185746404,
+          168104971,
+          170674728,
+          168733063,
+          169591270,
+          169333631
+        ]
+      },
+      "estimates": {
+        "mean": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 84936857.15,
+            "upper_bound": 88078013.065
+          },
+          "point_estimate": 86320008,
+          "standard_error": 816524.3693463134
+        },
+        "median": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 84541756.5,
+            "upper_bound": 87507485.75
+          },
+          "point_estimate": 85066499.5,
+          "standard_error": 850416.3434584724
+        },
+        "median_abs_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 116611.67702972889,
+            "upper_bound": 3677311.988514662
+          },
+          "point_estimate": 1270574.8340427876,
+          "standard_error": 951814.2885328665
+        },
+        "slope": null,
+        "std_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 860744.9405583986,
+            "upper_bound": 3843301.32152617
+          },
+          "point_estimate": 2737885.5163361924,
+          "standard_error": 842460.9680325649
+        }
+      }
+    },
+    {
+      "benchmark": {
+        "group_id": "vega_sc_sha256",
+        "function_id": "prep_prove/2048/t8",
+        "value_str": null,
+        "throughput": {
+          "Bytes": 2048
+        },
+        "full_id": "vega_sc_sha256/prep_prove/2048/t8",
+        "directory_name": "vega_sc_sha256/prep_prove_2048_t8",
+        "title": "vega_sc_sha256/prep_prove/2048/t8"
+      },
+      "sample": {
+        "sampling_mode": "Flat",
+        "iters": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "times": [
+          252737170,
+          271814859,
+          248838976,
+          258782068,
+          248721323,
+          251947862,
+          261225457,
+          255612699,
+          275564341,
+          272859202
+        ]
+      },
+      "estimates": {
+        "mean": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 254047285.7,
+            "upper_bound": 266007954.6
+          },
+          "point_estimate": 259810395.7,
+          "standard_error": 3067923.3191231056
+        },
+        "median": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 250788073,
+            "upper_bound": 271814859
+          },
+          "point_estimate": 257197383.5,
+          "standard_error": 5042268.415023616
+        },
+        "median_abs_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 2131629.6098560095,
+            "upper_bound": 16640128.338378668
+          },
+          "point_estimate": 10087557.588610053,
+          "standard_error": 4021032.616176373
+        },
+        "slope": null,
+        "std_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 5137880.629903869,
+            "upper_bound": 12015761.288671318
+          },
+          "point_estimate": 10211297.300235134,
+          "standard_error": 1600386.1663248516
+        }
+      }
+    },
+    {
+      "benchmark": {
+        "group_id": "vega_sc_sha256",
+        "function_id": "prove/1024/t8",
+        "value_str": null,
+        "throughput": {
+          "Bytes": 1024
+        },
+        "full_id": "vega_sc_sha256/prove/1024/t8",
+        "directory_name": "vega_sc_sha256/prove_1024_t8",
+        "title": "vega_sc_sha256/prove/1024/t8"
+      },
+      "sample": {
+        "sampling_mode": "Flat",
+        "iters": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "times": [
+          200247534,
+          179523437,
+          185250762,
+          195228275,
+          179395025,
+          180904192,
+          185735464,
+          175575522,
+          191203217,
+          192132848
+        ]
+      },
+      "estimates": {
+        "mean": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 90993937,
+            "upper_bound": 95632179.49249999
+          },
+          "point_estimate": 93259813.8,
+          "standard_error": 1191931.7244211726
+        },
+        "median": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 89761718.5,
+            "upper_bound": 96607873
+          },
+          "point_estimate": 92746556.5,
+          "standard_error": 1897609.7214782122
+        },
+        "median_abs_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 559372.7386191487,
+            "upper_bound": 6511984.946139157
+          },
+          "point_estimate": 4472916.647189856,
+          "standard_error": 1469799.6166230675
+        },
+        "slope": null,
+        "std_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 2347816.310934378,
+            "upper_bound": 4928855.434850694
+          },
+          "point_estimate": 3982525.5405996894,
+          "standard_error": 662141.583195621
+        }
+      }
+    },
+    {
+      "benchmark": {
+        "group_id": "vega_sc_sha256",
+        "function_id": "prove/2048/t8",
+        "value_str": null,
+        "throughput": {
+          "Bytes": 2048
+        },
+        "full_id": "vega_sc_sha256/prove/2048/t8",
+        "directory_name": "vega_sc_sha256/prove_2048_t8",
+        "title": "vega_sc_sha256/prove/2048/t8"
+      },
+      "sample": {
+        "sampling_mode": "Flat",
+        "iters": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "times": [
+          200014887,
+          256028124,
+          253562528,
+          252928153,
+          214534553,
+          232983244,
+          212128983,
+          222360070,
+          218424138,
+          247932743
+        ]
+      },
+      "estimates": {
+        "mean": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 219240717.3475,
+            "upper_bound": 243033000.325
+          },
+          "point_estimate": 231089742.3,
+          "standard_error": 6104188.42140138
+        },
+        "median": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 214534553,
+            "upper_bound": 252928153
+          },
+          "point_estimate": 227671657,
+          "standard_error": 11744561.651528735
+        },
+        "median_abs_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 2883349.309310317,
+            "upper_bound": 33128967.72764325
+          },
+          "point_estimate": 26541326.816797256,
+          "standard_error": 8605725.355825132
+        },
+        "slope": null,
+        "std_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 13380571.168501398,
+            "upper_bound": 24024332.96103768
+          },
+          "point_estimate": 20349701.63788887,
+          "standard_error": 2731816.586750928
+        }
+      }
+    },
+    {
+      "benchmark": {
+        "group_id": "vega_sc_sha256",
+        "function_id": "setup/1024/t8",
+        "value_str": null,
+        "throughput": {
+          "Bytes": 1024
+        },
+        "full_id": "vega_sc_sha256/setup/1024/t8",
+        "directory_name": "vega_sc_sha256/setup_1024_t8",
+        "title": "vega_sc_sha256/setup/1024/t8"
+      },
+      "sample": {
+        "sampling_mode": "Flat",
+        "iters": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "times": [
+          1242962778,
+          1489079022,
+          1280651884,
+          1259226044,
+          1281683231,
+          1326746763,
+          1297173829,
+          1309064035,
+          1251535424,
+          1260504673
+        ]
+      },
+      "estimates": {
+        "mean": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 422301436.5,
+            "upper_bound": 449229437.2666666
+          },
+          "point_estimate": 433287589.4333333,
+          "standard_error": 7177933.07252511
+        },
+        "median": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 418673349.5,
+            "upper_bound": 437320098.6666666
+          },
+          "point_estimate": 427055852.5,
+          "standard_error": 5195266.777963921
+        },
+        "median_abs_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 2532250.608843506,
+            "upper_bound": 21978694.338700086
+          },
+          "point_estimate": 12314967.357465595,
+          "standard_error": 5045465.970273229
+        },
+        "slope": null,
+        "std_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 6250757.26122596,
+            "upper_bound": 35663836.17918989
+          },
+          "point_estimate": 23854117.15413914,
+          "standard_error": 9438383.656360084
+        }
+      }
+    },
+    {
+      "benchmark": {
+        "group_id": "vega_sc_sha256",
+        "function_id": "setup/2048/t8",
+        "value_str": null,
+        "throughput": {
+          "Bytes": 2048
+        },
+        "full_id": "vega_sc_sha256/setup/2048/t8",
+        "directory_name": "vega_sc_sha256/setup_2048_t8",
+        "title": "vega_sc_sha256/setup/2048/t8"
+      },
+      "sample": {
+        "sampling_mode": "Flat",
+        "iters": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "times": [
+          1107267079,
+          811255936,
+          820136954,
+          811152410,
+          811049081,
+          823430479,
+          833050023,
+          793382496,
+          841734297,
+          838916217
+        ]
+      },
+      "estimates": {
+        "mean": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 813648627.1975,
+            "upper_bound": 909531108.9
+          },
+          "point_estimate": 849137497.2,
+          "standard_error": 27457565.31422953
+        },
+        "median": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 811152410,
+            "upper_bound": 838916217
+          },
+          "point_estimate": 821783716.5,
+          "standard_error": 10496770.249330018
+        },
+        "median_abs_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 229939.3951177597,
+            "upper_bound": 36660522.347545624
+          },
+          "point_estimate": 16309298.01505208,
+          "standard_error": 11172661.171795912
+        },
+        "slope": null,
+        "std_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 10468234.890318865,
+            "upper_bound": 141217192.2304291
+          },
+          "point_estimate": 91886451.18061888,
+          "standard_error": 45838719.30502261
+        }
+      }
+    },
+    {
+      "benchmark": {
+        "group_id": "vega_sc_sha256",
+        "function_id": "verify/1024/t8",
+        "value_str": null,
+        "throughput": {
+          "Bytes": 1024
+        },
+        "full_id": "vega_sc_sha256/verify/1024/t8",
+        "directory_name": "vega_sc_sha256/verify_1024_t8",
+        "title": "vega_sc_sha256/verify/1024/t8"
+      },
+      "sample": {
+        "sampling_mode": "Flat",
+        "iters": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "times": [
+          58701714,
+          54071902,
+          46659475,
+          63137759,
+          68274055,
+          49717338,
+          49130486,
+          56999238,
+          64916536,
+          52678216
+        ]
+      },
+      "estimates": {
+        "mean": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 26131314.93625,
+            "upper_bound": 30409873.87625
+          },
+          "point_estimate": 28214335.95,
+          "standard_error": 1090916.911922919
+        },
+        "median": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 24858669,
+            "upper_bound": 31568879.5
+          },
+          "point_estimate": 27767785,
+          "standard_error": 1677824.9419203138
+        },
+        "median_abs_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 1133396.9008281827,
+            "upper_bound": 6063279.399955273
+          },
+          "point_estimate": 4530571.994966269,
+          "standard_error": 1291588.3040267446
+        },
+        "slope": null,
+        "std_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 2146365.6040519397,
+            "upper_bound": 4429770.544358415
+          },
+          "point_estimate": 3637093.1066148556,
+          "standard_error": 578371.9075230404
+        }
+      }
+    },
+    {
+      "benchmark": {
+        "group_id": "vega_sc_sha256",
+        "function_id": "verify/2048/t8",
+        "value_str": null,
+        "throughput": {
+          "Bytes": 2048
+        },
+        "full_id": "vega_sc_sha256/verify/2048/t8",
+        "directory_name": "vega_sc_sha256/verify_2048_t8",
+        "title": "vega_sc_sha256/verify/2048/t8"
+      },
+      "sample": {
+        "sampling_mode": "Flat",
+        "iters": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "times": [
+          72885293,
+          75140423,
+          67340853,
+          79879983,
+          73562406,
+          73707414,
+          68944873,
+          73705936,
+          81519857,
+          77750948
+        ]
+      },
+      "estimates": {
+        "mean": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 71848959.9,
+            "upper_bound": 77033824.1
+          },
+          "point_estimate": 74443798.6,
+          "standard_error": 1324042.1530914183
+        },
+        "median": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 71253639.5,
+            "upper_bound": 77750948
+          },
+          "point_estimate": 73706675,
+          "standard_error": 1438354.5727342928
+        },
+        "median_abs_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 108590.06987214088,
+            "upper_bound": 8106196.899086237
+          },
+          "point_estimate": 4060856.8952053785,
+          "standard_error": 2295870.8803159823
+        },
+        "slope": null,
+        "std_dev": {
+          "confidence_interval": {
+            "confidence_level": 0.95,
+            "lower_bound": 2439465.3269941295,
+            "upper_bound": 5629849.430997426
+          },
+          "point_estimate": 4422514.883922776,
+          "standard_error": 834034.5181735673
+        }
+      }
+    }
+  ]
+}

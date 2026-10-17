@@ -1,0 +1,4 @@
+interface:
+  display_name: "Infrastructure de preuve cloud"
+  short_description: "Contrôler les frontières Azure et GCP avant déploiement"
+  default_prompt: "Utilise $cloud-proof-infrastructure pour vérifier les fondations cloud de ZK-agentiK et les preuves encore nécessaires."

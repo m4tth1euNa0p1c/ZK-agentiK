@@ -1,0 +1,43 @@
+{
+  "schema": "zk-agentik-publication-validation-v1",
+  "observed_on": "2026-10-17",
+  "timestamp_authority": "local-clock-unattested",
+  "observer": "Coding agents; no independent human audit",
+  "baseline_commit": "8935cc9e42dee9b2ed32207483a6f7383e37ffc4",
+  "scope": "feat/publication-proofkit working tree; exact delivered bytes belong to the subsequent Git commit and evidence manifest",
+  "platform": { "os": "Windows x64", "node": "24.11.1", "root_rust": "1.93.0", "docker": "28.5.2", "compose": "2.40.3-desktop.1" },
+  "tests": [
+    { "command": "cargo test --workspace --locked", "runner": "node scripts/cargo.mjs", "passed": 14, "failed": 0 },
+    { "command": "cargo test --manifest-path labs/horizon/Cargo.toml --locked", "runner": "node scripts/cargo.mjs", "passed": 9, "failed": 0 },
+    { "command": "npm test", "passed": 25, "failed": 0 },
+    { "command": "npm run test:horizon", "passed": 29, "failed": 0 },
+    { "command": "npm run test:proofkit", "passed": 21, "failed": 0 },
+    { "command": "npm run test:risc0:gpu", "passed": 5, "failed": 0 }
+  ],
+  "total": { "rust_tests": 23, "node_tests": 80, "passed": 103, "failed": 0 },
+  "other_checks": [
+    { "command": "cargo fmt --all -- --check", "result": "passed" },
+    { "command": "cargo clippy --workspace --all-targets --locked -- -D warnings", "result": "passed" },
+    { "command": "cargo fmt --manifest-path labs/horizon/Cargo.toml --all -- --check", "result": "passed" },
+    { "command": "cargo clippy --manifest-path labs/horizon/Cargo.toml --all-targets --locked -- -D warnings", "result": "passed" },
+    { "command": "npm ci --ignore-scripts --no-audit --no-fund", "result": "passed" },
+    { "command": "npm run build", "result": "passed" },
+    { "command": "npm run typecheck", "result": "passed" },
+    { "command": "npm run schema:check", "result": "passed" },
+    { "command": "npm run build:guest", "result": "passed", "scope": "Freestanding ELF only, not a zkVM proof" },
+    { "command": "npm run proofkit -- run horizon", "result": "passed", "scope": "Real historical fixture and fresh synthetic local authorization; not a latency benchmark" },
+    { "command": "npm run proofkit -- run math", "result": "passed", "scope": "GNU Octave; not MATLAB or cryptographic execution" },
+    { "command": "npm run proofkit -- check", "result": "passed", "scope": "Explicit catalogue artifacts only; no semantic certification" },
+    { "command": "docker compose -f deploy/horizon/compose.yaml build", "result": "passed" },
+    { "command": "isolated Compose deployment, HTTP smoke, restart, replay smoke", "result": "passed", "scope": "Project horizon-publication, fresh local configuration and volume, loopback 38180/38181; original sandbox preserved", "unauthorized_effects": 0, "authorized_effects": 1 },
+    { "command": "node scripts/horizon-container-verify.mjs", "result": "passed", "scope": "Public fixture, separate container, no network and no mounts" }
+  ],
+  "docker_test_image": "sha256:46e2de1bcc78690ed3f218a3d707a0ddf3cb81ecc60ed82f5dca73fee0f9b11a",
+  "limitations": [
+    "Observed command outcomes are reported by the executing agents; this JSON is not signed or independently timestamped.",
+    "Tests executed on a working tree; Git/CI and the evidence manifest identify the published candidate separately.",
+    "No new performance campaign for the SDK or patched dependencies; historical percentiles remain scoped to historical builds.",
+    "GPU compilation blocked by memory, N=0 new receipts; GPU runner unit tests do not prove GPU execution.",
+    "No production cloud, financial effect, external security audit or validated buyer."
+  ]
+}
