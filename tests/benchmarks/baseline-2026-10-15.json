@@ -1,0 +1,42 @@
+{
+  "measured_at": "2026-10-15T19:30:58.277Z",
+  "backend": "native-simulator",
+  "security_profile": "simulation",
+  "includes": "Rust release worker, persistent local IPC, JSON and TS firewall; warm; no network",
+  "node": "v24.11.1",
+  "os": "win32",
+  "arch": "x64",
+  "cpu": "Intel(R) Core(TM) Ultra 7 265F",
+  "total_memory_bytes": 33984958464,
+  "image_id": "sim-sha256:737a977c6ce9d43d65e54db9cc2d33ef8ef188973b9c487ef2f61d5b0f5357e9",
+  "proof_bytes": 282,
+  "envelope_bytes": 1276,
+  "process_rss_bytes": 83742720,
+  "simulation_prove": {
+    "samples": 300,
+    "p50_ms": 0.08709999999996398,
+    "p95_ms": 0.18640000000004875,
+    "max_ms": 0.4840000000000373
+  },
+  "verify_allow": {
+    "samples": 300,
+    "p50_ms": 0.09550000000001546,
+    "p95_ms": 0.21339999999997872,
+    "max_ms": 0.6142000000000962
+  },
+  "reject_policy": {
+    "samples": 300,
+    "p50_ms": 0.022699999999986176,
+    "p95_ms": 0.03890000000001237,
+    "max_ms": 0.3442999999999756
+  },
+  "reject_tamper": {
+    "samples": 300,
+    "p50_ms": 0.07569999999998345,
+    "p95_ms": 0.17270000000007713,
+    "max_ms": 0.35350000000005366
+  },
+  "target_reject_p95_under_5ms": true,
+  "all_observed_rejects_under_5ms": true,
+  "disclaimer": "Simulation only. Not a ZK benchmark or a universal latency guarantee."
+}

@@ -1,0 +1,40 @@
+{
+  "request": {
+    "public_inputs": {
+      "audience": "zk-mcp-local",
+      "context": {
+        "tenant_id": "demo-tenant",
+        "tool": "verifiable_gitlab_merge",
+        "project_id": 1,
+        "merge_request_iid": 7,
+        "head_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "policy": {
+        "min_reviewers": 2
+      },
+      "policy_hash": "ad86975cd628b2336f9644bbbe0d5b7318eda2db1e597976e4dbd5aa54626554",
+      "input_commitment": "604d2898e2db57157937277f934cb0352bf0e4d007f9783bbe03a9ed24fcc068",
+      "nonce": "2222222222222222222222222222222222222222222222222222222222222222",
+      "issued_at_ms": 1792065600000,
+      "expires_at_ms": 1792065630000
+    },
+    "private_inputs": {
+      "facts": {
+        "sonar_quality_gate": "OK",
+        "jira_status": "APPROVED",
+        "critical_vulnerabilities": 0,
+        "approvals": 2
+      },
+      "salt": "1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  },
+  "expected": {
+    "input_commitment": "604d2898e2db57157937277f934cb0352bf0e4d007f9783bbe03a9ed24fcc068",
+    "policy_hash": "ad86975cd628b2336f9644bbbe0d5b7318eda2db1e597976e4dbd5aa54626554",
+    "public_inputs_hash": "05b6c4f3459673b76c2da8940ae9498e26c9c4c7cc07c741654a0a772f3062b1",
+    "public_outputs": {
+      "allow": true,
+      "violations_mask": 0
+    }
+  }
+}

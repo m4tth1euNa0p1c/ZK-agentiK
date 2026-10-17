@@ -1,0 +1,77 @@
+{
+  "backend": "risc0",
+  "dev_mode": false,
+  "elf_sha256": "sha256:53cbbc340bc8ab586353893f22d64daf5ffa756a41c798a55db203ca3ee9d29e",
+  "fixture_authority": true,
+  "historical_verification": true,
+  "image_id": "[2022839068, 257765873, 776957775, 296799569, 1367979543, 1424068181, 2094130782, 3225387710]",
+  "independent_proofs_differ": true,
+  "journal_bytes": 324,
+  "native_signed_policy": {
+    "max_ms": 0.106235,
+    "p50_ms": 0.039066000000000004,
+    "p95_ms": 0.053824,
+    "samples": 100
+  },
+  "negative_checks": [
+    "seal_bitflip",
+    "wrong_image",
+    "journal_tamper",
+    "wrong_context",
+    "fake_receipt",
+    "signature_in_guest",
+    "witness_commitment_in_guest"
+  ],
+  "proof_kind": "succinct",
+  "proof_samples_in_order_ms": [
+    153681.184435,
+    163231.832184,
+    158619.288996
+  ],
+  "prove_local_process": {
+    "max_ms": 163231.832184,
+    "p50_ms": 158619.288996,
+    "p95_ms": 163231.832184,
+    "samples": 3
+  },
+  "receipt_bundle_bytes": 298510,
+  "reject_full_seal_bitflip": {
+    "max_ms": 8.640002,
+    "p50_ms": 6.39377,
+    "p95_ms": 6.949922,
+    "samples": 100
+  },
+  "scenario": "critical",
+  "scope": "real CPU proof; local r0vm subprocess overhead included; no gateway/network/side effect; fixture authority only; no critical-privacy claim",
+  "seal_bytes": 222668,
+  "session_stats": [
+    {
+      "paging_cycles": 141698,
+      "reserved_cycles": 107094,
+      "segments": 2,
+      "total_cycles": 1310720,
+      "user_cycles": 1061928
+    },
+    {
+      "paging_cycles": 141698,
+      "reserved_cycles": 107094,
+      "segments": 2,
+      "total_cycles": 1310720,
+      "user_cycles": 1061928
+    },
+    {
+      "paging_cycles": 141698,
+      "reserved_cycles": 107094,
+      "segments": 2,
+      "total_cycles": 1310720,
+      "user_cycles": 1061928
+    }
+  ],
+  "verify_warm": {
+    "max_ms": 14.343148,
+    "p50_ms": 13.047768,
+    "p95_ms": 13.697434,
+    "samples": 100
+  },
+  "version": "3.0.6"
+}

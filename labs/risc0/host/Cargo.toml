@@ -1,0 +1,17 @@
+[package]
+name = "lab-host"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow.workspace = true
+serde_json = { workspace = true, features = ["std"] }
+risc0-zkvm = { workspace = true, features = ["client"] }
+policy-statement.workspace = true
+lab-statement.workspace = true
+lab-methods.workspace = true
+lab-verifier.workspace = true
+ed25519-dalek.workspace = true
+sha2 = "=0.10.9"
+base64 = "=0.22.1"
+zkvm-bridge = { path = "../../../crates/zkvm-bridge" }

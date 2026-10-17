@@ -1,0 +1,12 @@
+{
+  "started": "2026-10-15T20:25:34.509Z",
+  "finished": "2026-10-15T20:28:14.840Z",
+  "docker_image": "rust@sha256:82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922",
+  "cpus": 8,
+  "memory_bytes": 12884901888,
+  "network_during_proof": "none",
+  "rust_host": "1.98.0",
+  "rust_guest": "1.97.0",
+  "risc0": "3.0.6",
+  "sample_count": 1
+}

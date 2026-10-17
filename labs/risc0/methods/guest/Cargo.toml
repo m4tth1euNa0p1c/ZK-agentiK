@@ -1,0 +1,23 @@
+[package]
+name = "policy-proof-guest"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+
+[dependencies]
+risc0-zkvm = { version = "=3.0.6", default-features = false, features = ["std"] }
+lab-statement = { path = "../../statement" }
+policy-statement = { path = "../../../../crates/policy-statement" }
+serde_json = { version = "=1.0.154", default-features = false, features = ["alloc"] }
+
+[patch.crates-io]
+# Official RISC Zero precompiles, exact commits; checked in guest Cargo.lock.
+sha2 = { git = "https://github.com/risc0/RustCrypto-hashes", rev = "8631fabdea7bdffa97b11868e04e73491d8e5bcf" }
+curve25519-dalek = { git = "https://github.com/risc0/curve25519-dalek", rev = "385adda1fa3b66d9aaa8b8fcc99ddc324d33ba32" }
+crypto-bigint = { git = "https://github.com/risc0/RustCrypto-crypto-bigint", rev = "3ab63a6f1048833f7047d5a50532e4a4cc789384" }
+
+[profile.release]
+opt-level = 3
+overflow-checks = true
+lto = "thin"

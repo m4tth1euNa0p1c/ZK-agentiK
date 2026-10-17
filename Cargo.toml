@@ -1,0 +1,29 @@
+[workspace]
+members = ["crates/policy-engine-core", "crates/policy-guest-riscv", "crates/policy-statement", "crates/zkvm-bridge"]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.93"
+license = "MIT"
+
+[workspace.dependencies]
+serde = { version = "1.0.228", default-features = false, features = ["derive"] }
+serde_json = { version = "1.0.149", default-features = false, features = ["alloc"] }
+sha2 = { version = "0.10.9", default-features = false }
+base64 = "0.22.1"
+policy-engine-core = { path = "crates/policy-engine-core" }
+policy-guest-riscv = { path = "crates/policy-guest-riscv" }
+policy-statement = { path = "crates/policy-statement" }
+
+[workspace.lints.rust]
+unsafe_code = "deny"
+
+[workspace.lints.clippy]
+all = "deny"
+
+[profile.release]
+overflow-checks = true
+panic = "abort"
+lto = "thin"

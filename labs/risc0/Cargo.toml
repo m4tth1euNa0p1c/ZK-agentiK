@@ -1,0 +1,17 @@
+[workspace]
+members = ["statement", "methods", "host", "verifier"]
+resolver = "2"
+
+[workspace.dependencies]
+anyhow = "=1.0.103"
+serde = { version = "=1.0.229", default-features = false, features = ["derive", "alloc"] }
+serde_json = { version = "=1.0.154", default-features = false, features = ["alloc"] }
+risc0-zkvm = { version = "=3.0.6", default-features = false, features = ["std", "disable-dev-mode"] }
+policy-statement = { path = "../../crates/policy-statement" }
+lab-statement = { path = "statement" }
+lab-methods = { path = "methods" }
+lab-verifier = { path = "verifier" }
+ed25519-dalek = { version = "=2.2.0", default-features = false, features = ["alloc", "fast", "zeroize"] }
+
+[profile.release]
+overflow-checks = true

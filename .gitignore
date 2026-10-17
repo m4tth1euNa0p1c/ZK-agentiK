@@ -1,0 +1,11 @@
+node_modules/
+target/
+dist/
+.tools/
+.env
+.env.*
+!.env.example
+tests/benchmarks/results/*.json
+tests/benchmarks/results/risc0/
+!tests/benchmarks/results/.gitkeep
+*.log

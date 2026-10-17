@@ -1,0 +1,9 @@
+[package]
+name = "lab-statement"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+policy-statement.workspace = true
+serde.workspace = true
+ed25519-dalek.workspace = true

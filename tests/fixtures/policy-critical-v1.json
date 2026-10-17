@@ -1,0 +1,99 @@
+{
+  "request": {
+    "public_inputs": {
+      "audience": "zk-mcp-local",
+      "context": {
+        "tenant_id": "demo-tenant",
+        "tool": "verifiable_gitlab_merge",
+        "project_id": 1,
+        "merge_request_iid": 7,
+        "head_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "policy": {
+        "min_reviewers": 3,
+        "critical": {
+          "max_evidence_age_ms": 60000,
+          "max_canary_error_rate_ppm": 500,
+          "max_canary_p99_latency_ms": 250,
+          "min_canary_duration_ms": 600000,
+          "max_canary_traffic_percent": 5
+        }
+      },
+      "policy_hash": "c661ef3d6d677ccb0ff37f71198a106d166dfec89cff44fc5357d50e098049d5",
+      "input_commitment": "1479f045d56463f0ebb390a912e7bd7a9290e1ad5c4e55299912fbb08c608afa",
+      "nonce": "2222222222222222222222222222222222222222222222222222222222222222",
+      "issued_at_ms": 1800000000000,
+      "expires_at_ms": 1800000030000
+    },
+    "private_inputs": {
+      "facts": {
+        "sonar_quality_gate": "OK",
+        "jira_status": "APPROVED",
+        "critical_vulnerabilities": 0,
+        "approvals": 3,
+        "critical": {
+          "emergency_stop": false,
+          "requester_id": 10,
+          "security_approver_id": 20,
+          "operations_approver_id": 30,
+          "service_owner_approver_id": 40,
+          "approvers_mfa_verified": true,
+          "approvals_expires_at_ms": 1800000900000,
+          "approved_revision": [
+            227,
+            60,
+            223,
+            156,
+            127,
+            113,
+            32,
+            185,
+            142,
+            140,
+            120,
+            64,
+            137,
+            83,
+            224,
+            127,
+            46,
+            205,
+            24,
+            48,
+            6,
+            181,
+            96,
+            109,
+            243,
+            73,
+            180,
+            194,
+            18,
+            172,
+            244,
+            62
+          ],
+          "evidence_observed_at_ms": 1800000000000,
+          "change_window_start_ms": 1799999940000,
+          "change_window_end_ms": 1800000900000,
+          "artifact_signature_verified": true,
+          "sbom_verified": true,
+          "provenance_verified": true,
+          "vulnerability_scan_complete": true,
+          "high_vulnerabilities": 0,
+          "secrets_detected": 0,
+          "backup_restore_tested": true,
+          "rollback_tested": true,
+          "canary_duration_ms": 600000,
+          "canary_traffic_percent": 5,
+          "canary_error_rate_ppm": 100,
+          "canary_p99_latency_ms": 120,
+          "active_sev1_incidents": 0,
+          "dependencies_healthy": true,
+          "policy_override_requested": false
+        }
+      },
+      "salt": "1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  }
+}
