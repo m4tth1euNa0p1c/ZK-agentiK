@@ -26,19 +26,19 @@ jobs:
       - run: cargo fmt --manifest-path labs/horizon/Cargo.toml --all -- --check
       - run: cargo clippy --manifest-path labs/horizon/Cargo.toml --all-targets --locked -- -D warnings
       - run: cargo test --manifest-path labs/horizon/Cargo.toml --locked
+      - name: Audit active Rust workspaces (historical RISC Zero findings are documented)
+        run: |
+          cargo install cargo-audit --version 0.22.2 --locked
+          cargo audit --file Cargo.lock --deny unsound
+          cargo audit --file labs/horizon/Cargo.lock --deny unsound
       - run: npm run horizon:build
       - run: npm run test:horizon
-      - run: node scripts/horizon-fixture.mjs verify
-      - run: npm run horizon:demo
-      - run: npm run horizon:init
-      - run: echo "HORIZON_PROVER_UID=$(id -u)" >> "$GITHUB_ENV"
-      - run: docker compose -f deploy/horizon/compose.yaml up -d --build --wait --wait-timeout 60
-      - run: node scripts/horizon-http-smoke.mjs
-      - run: docker compose -f deploy/horizon/compose.yaml restart
-      - run: docker compose -f deploy/horizon/compose.yaml up -d --wait --wait-timeout 60
-      - run: node scripts/horizon-http-smoke.mjs replay
-      - run: node scripts/horizon-container-verify.mjs
-      - if: failure()
-        run: docker compose -f deploy/horizon/compose.yaml logs --no-color --tail 100
-      - if: always()
-        run: docker compose -f deploy/horizon/compose.yaml stop
+      - run: npm run test:proofkit
+      - run: npm run test:risc0:gpu
+      - run: npm run proofkit -- check
+  sandbox:
+    needs: test
+    uses: ./.github/workflows/proof-sandbox.yml
+    with:
+      profile: horizon
+      deploy_sandbox: true

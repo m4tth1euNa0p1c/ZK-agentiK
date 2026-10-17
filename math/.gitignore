@@ -1,0 +1,6 @@
+# Historical local archives may contain absolute host paths. Preserve on disk.
+/container-build.log
+/results/*
+# Explicitly selected, path-redacted publication run (append a new exception after review).
+!/results/octave-2026-10-17T14-48-23.751Z-0f44a541-9089-42a3-9676-47d943cfaed5/
+!/results/octave-2026-10-17T14-48-23.751Z-0f44a541-9089-42a3-9676-47d943cfaed5/octave.log

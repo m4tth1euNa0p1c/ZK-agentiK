@@ -1,0 +1,14 @@
+rzup v0.5.2 features=[]
+└── risc0-build v3.0.6 features=[]
+    [build-dependencies]
+    └── lab-methods v0.1.0 (<repository>\labs\risc0\methods) features=[]
+        ├── lab-host v0.1.0 (<repository>\labs\risc0\host) features=[]
+        └── lab-verifier v0.1.0 (<repository>\labs\risc0\verifier) features=[]
+            └── lab-host v0.1.0 (<repository>\labs\risc0\host) features=[]
+
+rzup v0.5.2 features=[]
+├── risc0-build v3.0.6 features=[]
+│   └── risc0-zkvm v3.0.6 features=[client,disable-dev-mode,std]
+│       ├── lab-host v0.1.0 (<repository>\labs\risc0\host) features=[]
+│       └── lab-verifier v0.1.0 (<repository>\labs\risc0\verifier) features=[] (*)
+└── risc0-zkvm v3.0.6 features=[client,disable-dev-mode,std] (*)

@@ -15,6 +15,7 @@ const command = process.argv[2] ?? 'demo';
 const directory = resolve(process.argv[3] ?? '.tools/horizon/demo');
 if (command === 'build') {
   run(['scripts/cargo.mjs', 'build', '--release', '--locked', '--manifest-path', 'labs/horizon/Cargo.toml']);
+  run(['node_modules/typescript/bin/tsc', '-p', 'packages/proofkit-sdk/tsconfig.json']);
   run(['node_modules/typescript/bin/tsc', '-p', 'packages/horizon-demo/tsconfig.json']);
 } else {
   const { ProofWorker } = await import('../packages/horizon-demo/dist/worker.js');

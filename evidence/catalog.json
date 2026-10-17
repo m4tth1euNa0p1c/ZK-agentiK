@@ -1,0 +1,280 @@
+{
+  "schema": "proofkit-catalog-v1",
+  "title": "Horizon / Proofkit : registre expérimental, sans certification sémantique",
+  "claims": [
+    {
+      "id": "horizon-conditional-mathematics",
+      "kind": "mathematical-derivation",
+      "status": "derived",
+      "relation": "Connaissance d'ouvertures de A-G et C-A dans deux plages 32 bits, liaison aux engagements signés et domaine source u64 ; 1 <= a <= 2^32, 0 <= c-a < 2^32.",
+      "limitations": [
+        "Démonstrations conditionnelles, pas preuve formelle machine ou audit de la bibliothèque.",
+        "La simple existence d'une ouverture Pedersen ne suffit pas ; connaissance extractible, binding et contrat d'émission sont requis.",
+        "Ni cumul, franchise, vérité source, anonymat, nouveauté ou sécurité post-quantique."
+      ],
+      "artifacts": [
+        "docs/whitepaper/whitepaper.tex",
+        "docs/whitepaper/references.bib",
+        "docs/whitepaper/whitepaper.pdf",
+        "docs/whitepaper/validation.json",
+        "docs/whitepaper/build.sh"
+      ],
+      "sources": [
+        {
+          "url": "https://eprint.iacr.org/2017/1066",
+          "accessed_on": "2026-10-17"
+        },
+        {
+          "url": "https://www.rfc-editor.org/rfc/rfc9496.html",
+          "accessed_on": "2026-10-17"
+        },
+        {
+          "url": "https://doi.org/10.1007/3-540-46766-1_9",
+          "accessed_on": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": "octave-integer-model",
+      "kind": "numerical-check",
+      "status": "reproduced",
+      "relation": "24 510 paires entières réduites, dix frontières u64/32 bits, 20 états et 160 transitions d'un modèle anti-rejeu abstrait.",
+      "limitations": [
+        "Exécuté sous GNU Octave 7.3.0 ; MATLAB n'a pas été exécuté.",
+        "Pas un test du logarithme discret, de Bulletproofs, du disque ou du code TypeScript.",
+        "Horodatages auto-déclarés et SHA-256 sans signature ni TSA."
+      ],
+      "artifacts": [
+        "math/horizon_checks.m",
+        "math/run_checks.m",
+        "math/run.mjs",
+        "math/Dockerfile",
+        "math/results/octave-2026-10-17T14-48-23.751Z-0f44a541-9089-42a3-9676-47d943cfaed5/run.json",
+        "math/results/octave-2026-10-17T14-48-23.751Z-0f44a541-9089-42a3-9676-47d943cfaed5/20261017T144824Z.json",
+        "math/results/octave-2026-10-17T14-48-23.751Z-0f44a541-9089-42a3-9676-47d943cfaed5/octave.log"
+      ],
+      "sources": [
+        {
+          "url": "https://www.rfc-editor.org/rfc/rfc9496.html",
+          "accessed_on": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": "horizon-public-proof",
+      "kind": "cryptographic-proof",
+      "status": "reproduced",
+      "relation": "Fixture publique historique Bulletproofs agrégée 2x32 avec deux attestations Ed25519 et autorisation du détenteur ; mode B historique.",
+      "limitations": [
+        "Sources synthétiques ; fixture historique, pas autorisation présente.",
+        "Vérification cryptographique réelle distincte de la vérification SHA-256 du registre.",
+        "Montants cachés au vérifieur, métadonnées corrélables ; aucune sécurité PQ."
+      ],
+      "artifacts": [
+        "tests/fixtures/horizon/public-presentation.json",
+        "tests/fixtures/horizon/manifest.json",
+        "labs/horizon/proof/src/lib.rs",
+        "labs/horizon/Cargo.lock",
+        "scripts/horizon-fixture.mjs"
+      ],
+      "sources": [
+        {
+          "url": "https://docs.rs/bulletproofs/5.0.0/bulletproofs/struct.RangeProof.html",
+          "accessed_on": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": "risc0-public-receipts",
+      "kind": "cryptographic-proof",
+      "status": "reproduced",
+      "relation": "Receipts RISC Zero historiques sur la politique DevSecOps signée ; acceptation critique et refus métier cryptographiquement valide.",
+      "limitations": [
+        "Relation différente d'Horizon ; pas de ratio de vitesse scientifique entre les deux.",
+        "Vérifieur de laboratoire préparé requis pour réexécuter ; un fichier absent ne sera pas simulé.",
+        "Fixture historique et signature d'autorité de démonstration ; pas dispatch ou qualification production."
+      ],
+      "artifacts": [
+        "tests/fixtures/risc0/critical-proof.json",
+        "tests/fixtures/risc0/critical-expected.json",
+        "tests/fixtures/risc0/denied-proof.json",
+        "tests/fixtures/risc0/denied-expected.json",
+        "tests/fixtures/risc0/manifest.json",
+        "scripts/risc0-lab.mjs"
+      ],
+      "sources": [
+        {
+          "url": "https://github.com/risc0/risc0/tree/v3.0.6",
+          "accessed_on": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": "horizon-cpu-observations",
+      "kind": "benchmark",
+      "status": "measured",
+      "relation": "Deux campagnes crypto Linux n=500 avant/après conservation des paramètres publics fixes, et parcours durable local Windows séparé.",
+      "limitations": [
+        "Même relation Horizon ; aucun record externe ou SLA.",
+        "IID non établi, une machine, aucune qualification matérielle de durabilité.",
+        "0,065 ms en B est une présentation signée après préparation, pas une nouvelle preuve."
+      ],
+      "artifacts": [
+        "docs/horizon/BENCHMARK_RESULTS.json",
+        "docs/horizon/raw/horizon-linux-before.json",
+        "docs/horizon/raw/horizon-linux-after.json",
+        "docs/horizon/raw/horizon-linux-before.summary.json",
+        "docs/horizon/raw/horizon-linux-after.summary.json",
+        "docs/horizon/FINAL_VERDICT.md",
+        "docs/horizon/raw/horizon-firewall-2026-10-17T02-19-55.801Z-c283b618-d189-4921-9cb9-350c18190761.json",
+        "docs/horizon/raw/horizon-firewall-2026-10-17T02-19-55.801Z-c283b618-d189-4921-9cb9-350c18190761.summary.json"
+      ],
+      "sources": []
+    },
+    {
+      "id": "vega-sha256-reference",
+      "kind": "benchmark",
+      "status": "measured",
+      "relation": "Benchmarks amont SHA-256 SC/MC au commit c0ee259053cd12eaf43ed71b5cde375452b3ee4d ; pas circuit complet de credentials.",
+      "limitations": [
+        "Estimations centrales Criterion, pas percentiles Horizon.",
+        "Relations et divulgations différentes ; aucune comparaison équivalente battant Vega.",
+        "Le profil de reproduction télécharge et compile des outils, et peut être long."
+      ],
+      "artifacts": [
+        "docs/horizon/raw/vega-criterion.json",
+        "docs/horizon/COMPETITOR_COMPARISON.md",
+        "labs/horizon/reference/vega-Cargo.lock",
+        "scripts/horizon-vega.mjs"
+      ],
+      "sources": [
+        {
+          "url": "https://github.com/microsoft/vega-prover/tree/c0ee259053cd12eaf43ed71b5cde375452b3ee4d",
+          "accessed_on": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": "gpu-horizon-speedup",
+      "kind": "limitation",
+      "status": "not-demonstrated",
+      "relation": "Aucune accélération GPU de la relation Horizon Bulletproofs n'est établie ; le laboratoire CUDA séparé utilise RISC Zero DevSecOps.",
+      "limitations": [
+        "GPU visible ou build réussi ne signifie pas preuve générée et vérifiée.",
+        "Consulter les résultats datés du laboratoire GPU ; aucune valeur manquante n'est interpolée."
+      ],
+      "artifacts": [
+        "docs/whitepaper/whitepaper.tex",
+        "docs/horizon/FINAL_VERDICT.md"
+      ],
+      "sources": []
+    },
+    {
+      "id": "end-to-end-post-quantum",
+      "kind": "limitation",
+      "status": "not-demonstrated",
+      "relation": "Aucun profil Proofkit livré ne fournit une garantie post-quantique de bout en bout.",
+      "limitations": [
+        "Pedersen/Bulletproofs et Ed25519 sont elliptiques ; un hachage dans le transcript ne change pas cette hypothèse.",
+        "ML-DSA ou SLH-DSA ne rendent pas à eux seuls la relation de preuve post-quantique.",
+        "--require-post-quantum refuse les profils avant toute exécution."
+      ],
+      "artifacts": [
+        "docs/whitepaper/whitepaper.tex",
+        "tools/proofkit/profiles.mjs"
+      ],
+      "sources": [
+        {
+          "url": "https://csrc.nist.gov/pubs/fips/204/final",
+          "accessed_on": "2026-10-17"
+        },
+        {
+          "url": "https://csrc.nist.gov/pubs/fips/205/final",
+          "accessed_on": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": "risc0-cuda-build-blocked",
+      "kind": "limitation",
+      "status": "blocked",
+      "relation": "Tentative RISC Zero 3.0.6 Succinct sur RTX 5060 Ti : compilation CUDA récursive arrêtée par OOM sous 12 GiB, avec quatre puis un job ; zéro receipt GPU.",
+      "limitations": [
+        "Aucun temps de génération ou de vérification GPU mesuré ; N=0.",
+        "Ni incompatibilité Blackwell ni gain GPU Horizon démontrés.",
+        "Premier essai avec script live, reprise avec script figé ; limites de provenance détaillées dans le rapport."
+      ],
+      "artifacts": [
+        "docs/experiments/gpu/ARTIFACT_HASHES.json",
+        "docs/experiments/gpu/README.md",
+        "docs/experiments/gpu/RESULTS_2026-10-17.md",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/01-git.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/01-git.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/02-docker-version.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/02-docker-version.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/03-gpu-probe.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/03-gpu-probe.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/04-build-image.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/04-build-image.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/05-image-id.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/05-image-id.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/06-create.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/06-create.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/07-inspect.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/07-inspect.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/08-setup-marker.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/08-setup-marker.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/09-setup-cuda.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/09-setup-cuda.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/10-stop-retain-container.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/10-stop-retain-container.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/intermediate-memory.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/review-notes.json",
+        "docs/experiments/gpu/runs/2026-10-17T14-34-50-644Z-231fa047/run.json",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/01-git.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/01-git.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/02-docker-version.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/02-docker-version.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/03-gpu-probe.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/03-gpu-probe.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/04-image-id.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/04-image-id.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/05-inspect.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/05-inspect.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/06-start.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/06-start.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/07-setup-marker.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/07-setup-marker.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/08-snapshot-setup.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/08-snapshot-setup.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/09-executed-setup-hash.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/09-executed-setup-hash.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/10-setup-cuda.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/10-setup-cuda.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/11-stop-retain-container.stderr.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/11-stop-retain-container.stdout.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/cpu-dev-mode-check.json",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/executed-setup.sh",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/memory-observation.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/provenance/copied-source.sha256",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/provenance/cpu-lab-built",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/provenance/gpu.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/provenance/nvcc.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/provenance/packages.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/provenance/rust-host.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/provenance/upstream-commit.txt",
+        "docs/experiments/gpu/runs/2026-10-17T14-46-35-564Z-52d99ed7/run.json",
+        "scripts/risc0-gpu-lab.mjs",
+        "labs/risc0/gpu/setup.sh",
+        "labs/risc0/gpu/Dockerfile",
+        "labs/risc0/gpu/runner.test.mjs"
+      ],
+      "sources": [
+        {
+          "url": "https://github.com/risc0/risc0/tree/1cc70cf05033a79ebc90f07c679cb4bd1cd301b9",
+          "accessed_on": "2026-10-17"
+        }
+      ]
+    }
+  ]
+}

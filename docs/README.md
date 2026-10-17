@@ -6,6 +6,12 @@ pas une nouvelle vérification de l'état du marché ou des publications.
 
 ## Parcours de lecture
 
+**Finition publique et SDK : [dossier de publication](publication/README.md).**
+[White paper](whitepaper/whitepaper.pdf), [mathématiques](../math/),
+[registre d'artefacts](../evidence/), [outillage Proofkit](../tools/proofkit/README.md)
+et [comparaison Azure/GCP](publication/CLOUD_COMPARISON.md). Ce dossier ajoute
+ses observations datées sans remplacer les campagnes historiques ci-dessous.
+
 **Nouvelle campagne du 17 octobre : [Horizon](horizon/FINAL_VERDICT.md).**
 Recherche contradictoire banque/assurance, reproduction Vega SHA-256, preuve
 spécialisée réelle, optimisation mesurée et sandbox durable. Son énoncé diffère
@@ -48,7 +54,8 @@ constitue une expérience supplémentaire sur une relation spécialisée différ
   un objectif de 5 ms ni un challenge synchrone de 30 s.
 - La confidentialité critique, les sources authentiques, la durabilité,
   l'intégration au firewall et le fonctionnement en crise restent à qualifier.
-  Aucun benchmark GPU n'a été réalisé.
+  Aucun benchmark GPU n'avait été réalisé dans cette campagne historique ;
+  consulter les [tentatives GPU ultérieures](experiments/gpu/README.md).
 
 ## Code et éléments de reproduction
 

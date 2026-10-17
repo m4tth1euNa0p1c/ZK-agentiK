@@ -13,11 +13,14 @@ COPY package.json package-lock.json tsconfig.base.json ./
 COPY packages/zk-mcp-sdk/package.json ./packages/zk-mcp-sdk/package.json
 COPY packages/enterprise-gateway/package.json ./packages/enterprise-gateway/package.json
 COPY packages/horizon-demo/package.json ./packages/horizon-demo/package.json
+COPY packages/proofkit-sdk/package.json ./packages/proofkit-sdk/package.json
 RUN npm ci --ignore-scripts --no-audit --no-fund
+COPY packages/proofkit-sdk/tsconfig.json ./packages/proofkit-sdk/tsconfig.json
+COPY packages/proofkit-sdk/src ./packages/proofkit-sdk/src
 COPY packages/horizon-demo/tsconfig.json ./packages/horizon-demo/tsconfig.json
 COPY packages/horizon-demo/src ./packages/horizon-demo/src
 COPY packages/horizon-demo/public ./packages/horizon-demo/public
-RUN ./node_modules/.bin/tsc --project packages/horizon-demo/tsconfig.json
+RUN ./node_modules/.bin/tsc --project packages/proofkit-sdk/tsconfig.json && ./node_modules/.bin/tsc --project packages/horizon-demo/tsconfig.json
 
 # Keep only this service's locked production dependency tree in the final image.
 FROM node-build AS production-dependencies
@@ -34,6 +37,8 @@ WORKDIR /app
 RUN install -d -o node -g node /data /config
 COPY --from=rust-build /build/labs/horizon/target/release/horizon-proof-worker /usr/local/bin/horizon-proof-worker
 COPY --from=production-dependencies /app/node_modules ./node_modules
+COPY --from=node-build /app/packages/proofkit-sdk/package.json ./packages/proofkit-sdk/package.json
+COPY --from=node-build /app/packages/proofkit-sdk/dist ./packages/proofkit-sdk/dist
 COPY --from=node-build /app/packages/horizon-demo/package.json ./packages/horizon-demo/package.json
 COPY --from=node-build /app/packages/horizon-demo/dist ./packages/horizon-demo/dist
 COPY --from=node-build /app/packages/horizon-demo/public ./packages/horizon-demo/public

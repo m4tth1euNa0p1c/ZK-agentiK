@@ -1,0 +1,37 @@
+name: Publication evidence
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24.11.1'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Check public evidence and append-only manifest roundtrip
+        run: |
+          npm run proofkit -- check
+          npm run proofkit -- seal evidence/ci-manifest.json
+          npm run proofkit -- verify evidence/ci-manifest.json
+      - name: Scan fetched Git history with pinned Gitleaks
+        run: |
+          docker run --rm --network none --read-only --cap-drop ALL \
+            --security-opt no-new-privileges --cpus 2 --memory 512m --pids-limit 128 \
+            --mount type=bind,source="$GITHUB_WORKSPACE",target=/repo,readonly \
+            ghcr.io/gitleaks/gitleaks@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f \
+            git /repo --log-opts=--all --redact --no-banner
+  scientific:
+    needs: evidence
+    uses: ./.github/workflows/proof-sandbox.yml
+    with:
+      profile: math
+      deploy_sandbox: false

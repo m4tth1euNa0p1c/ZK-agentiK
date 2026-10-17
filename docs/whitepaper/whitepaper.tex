@@ -1,0 +1,421 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs,longtable,array}
+\usepackage[margin=25mm]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{url}
+\usepackage[numbers]{natbib}
+\hypersetup{pdftitle={Horizon : admission confidentielle sur deux engagements signes},pdfauthor={Dossier technique ZK-agentiK},pdfsubject={Demonstrations conditionnelles et verification numerique experimentale}}
+\newtheorem{theorem}{Proposition}
+\newtheorem{lemma}[theorem]{Lemme}
+\newtheorem{definition}[theorem]{Définition}
+\newtheorem{assumption}[theorem]{Hypothèse}
+\newcommand{\Com}{\operatorname{Com}}
+\newcommand{\Zq}{\mathbb Z_q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\title{Horizon : admission confidentielle sur deux engagements signés\\
+  \large Relation, preuves conditionnelles et limites expérimentales}
+\author{Dossier technique du dépôt ZK-agentiK}
+\date{17 octobre 2026 \quad Version expérimentale 1}
+\begin{document}
+\maketitle
+\begin{abstract}
+Horizon vérifie une inégalité entre un montant et un plafond par dossier,
+attestés par deux rôles distincts, avant d'enregistrer une autorisation
+synthétique. Il utilise Pedersen sur Ristretto, Bulletproofs et des signatures
+Ed25519. Ce texte donne des démonstrations conditionnelles, sépare confidentialité,
+authenticité et reprise, et fournit des vérifications arithmétiques exécutables.
+Il ne constitue ni une preuve formelle machine, ni un audit cryptographique,
+ni une nouvelle primitive, ni une qualification bancaire. Les essais Octave
+ne prouvent pas la sécurité cryptographique. Le profil n'est pas post-quantique.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Objet, périmètre et correspondance avec le code}
+Le profil \code{horizon-range-v1} se trouve dans
+\code{labs/horizon/proof/src/lib.rs}. L'effet de démonstration est
+\code{record_claim_authorization}, dans un registre SQLite local, pas un paiement.
+La cible économique envisagée est une autorisation de sinistre déléguée ; aucune
+demande solvable, conformité automatique ou supériorité sur Vega n'est établie.
+
+La bibliothèque vérifie un \emph{énoncé cryptographique}. Le contrôleur
+\code{packages/horizon-demo/src/store.ts} ajoute les attentes locales,
+la consommation de nonce, la déduplication métier et la gestion d'état. Le SDK
+de publication \code{packages/proofkit-sdk} reste un composant expérimental :
+une interface ne remplace aucune de ces hypothèses.
+
+\begin{center}\small
+\begin{tabular}{p{.27\linewidth}p{.63\linewidth}}
+\toprule
+Objet & Statut de l'argument \\
+\midrule
+Identités algébriques et bornes & Démonstrations mathématiques ci-dessous. \\
+Primitive et composition & Sécurité conditionnelle aux hypothèses explicites ; héritée des travaux cités. \\
+Code et état local & Tests adverses et modèle fini abstrait ; pas de preuve de raffinement du code. \\
+Octave/MATLAB & Vérification numérique exacte d'exemples et d'un domaine réduit ; exécution Octave distincte de MATLAB. \\
+Manifestes SHA-256 & Intégrité relativement à un manifeste de confiance ; date auto-déclarée, pas horodatage tiers, signature ou preuve de sens. \\
+\bottomrule
+\end{tabular}\end{center}
+
+\section{Paramètres et contrat d'émission}
+Soit $\mathbb G$ le groupe Ristretto d'ordre premier
+\begin{align*}
+q&=2^{252}+27742317777372353535851937790883648493.
+\end{align*}
+Les encodages canoniques et le groupe premier sont spécifiés par RFC~9496
+\cite{rfc9496}. $G,H\in\mathbb G$ sont les bases fixes de
+\code{PedersenGens::default()}. Le prover ne les choisit pas. Posons $N=2^{32}$.
+
+Deux autorités produisent $A=\Com(a,r_a)=aG+r_aH$ et
+$C=\Com(c,r_c)=cG+r_cH$. Le contrat exige des valeurs entières non négatives
+représentables en \code{u64}, la même devise EUR et le même exposant 2.
+Les signatures couvrent profil, rôle, autorité, tenant, sujet, devise, exposant,
+version, clé du détenteur, période et engagement. Les clés de confiance sont
+épinglées ; les deux identifiants et clés d'autorité doivent être distincts.
+
+\begin{assumption}[Émission et jointure]
+Chaque autorité calcule ou contrôle l'ouverture de son engagement à partir
+de ses faits. Elle ne signe pas aveuglément un point soumis par le détenteur.
+L'autorité montant ne connaît pas nécessairement le plafond, et inversement.
+Les deux ouvertures arrivent au prover ; celui-ci connaît les deux valeurs.
+Les métadonnées communes désignent effectivement le même dossier et la même
+version métier. Le contrôleur associe indépendamment ce sujet à l'objet ciblé.
+\end{assumption}
+Deux clés différentes ne prouvent pas l'indépendance organisationnelle, la
+qualité de l'expertise ni l'absence de collusion. La version de schéma 1 du
+prototype n'est pas un registre d'historique des sinistres. Une signature
+atteste une émission sous clé, pas la vérité du fait signé.
+
+\section{Relation et démonstrations conditionnelles}
+\subsection{Engagement : confidentialité et liaison}
+\begin{lemma}[Hiding dans le modèle idéal]
+Pour $H\ne0$ et $r$ uniforme dans $\Zq$, la loi de $vG+rH$ est uniforme
+dans $\mathbb G$ pour toute valeur fixée $v$.
+\end{lemma}
+\begin{proof}
+La multiplication $r\mapsto rH$ est une bijection puisque $q$ est premier
+et $H\ne0$. La translation par $vG$ conserve l'uniformité. Les distributions
+des engagements sont donc égales pour deux valeurs quelconques.
+\end{proof}
+Ce résultat concerne l'engagement seul. Dans le code, la qualité du générateur
+aléatoire et de la conversion en scalaires reste une hypothèse d'implémentation.
+Il ne justifie pas des masques réutilisés ou choisis en fonction du secret.
+
+\begin{lemma}[Liaison calculatoire]
+Produire deux ouvertures $(v,r)\ne(v',r')$ du même engagement avec
+$v\ne v'\pmod q$ permet de calculer $\log_G H$.
+\end{lemma}
+\begin{proof}
+L'égalité donne $(v-v')G=(r'-r)H$. Si $r'=r$, alors $v=v'\pmod q$,
+contradiction. Ainsi $(r'-r)^{-1}$ existe dans $\Zq$ et
+$\log_G H=(v-v')(r'-r)^{-1}\pmod q$.
+\end{proof}
+La confidentialité est informationnelle dans le modèle idéal ; la liaison
+dépend du logarithme discret et de bases sans relation connue
+\cite{pedersen1992,daleknotes}. Aucune expérience numérique réduite ne valide
+cette hypothèse pour Ristretto.
+
+\subsection{Énoncé effectivement prouvé}
+Les engagements dérivés sont
+\[
+ X=A-G,\qquad D=C-A.
+\]
+Le prover appelle une preuve de plages agrégée à deux valeurs de 32 bits
+\cite{bulletproofs,dalek5}, avec ouvertures
+\[
+ x=a-1,\quad d=c-a,\quad r_X=r_a,\quad r_D=r_c-r_a\pmod q.
+\]
+La relation d'ouverture est
+\begin{equation}\label{eq:relation}
+\exists x,d\in\{0,\ldots,N-1\},\ r_X,r_D\in\Zq:
+ X=xG+r_XH,\quad D=dG+r_DH.
+\end{equation}
+\textbf{Une nuance nécessaire :} comme $H$ engendre le groupe, tout point
+possède mathématiquement une ouverture à n'importe quelle valeur. Une simple
+affirmation d'appartenance existentielle ne suffit donc pas à lier une valeur
+métier. Le raisonnement utilise l'\emph{argument de connaissance} d'ouvertures
+et la liaison calculatoire aux ouvertures effectivement attestées.
+
+\begin{assumption}[Primitive héritée]
+Le protocole Bulletproofs non interactif utilisé fournit la complétude,
+la connaissance calculatoire des ouvertures et la confidentialité appropriées
+à son modèle de sécurité et à ses transcriptions Fiat--Shamir.
+Son implémentation, ses paramètres, son aléa et son analyse de transcript
+correspondent à ce protocole. La version corrigée du papier est la référence ;
+ce dossier ne refait ni sa réduction ni un audit de la bibliothèque.
+\end{assumption}
+Le papier ePrint signale une correction de sa section Fiat--Shamir en 2022
+\cite{bulletproofs}. Cette histoire interdit d'assimiler une citation de
+sécurité à une preuve automatique de toute adaptation logicielle.
+
+\begin{theorem}[Complétude conditionnelle]
+Si les signatures et métadonnées sont valides, la politique permet le mode,
+le challenge est celui attendu et non expiré, et
+$1\le a\le N$, $a\le c<a+N$, alors un prover honnête construit les deux
+engagements dérivés avec des valeurs admissibles. Sous la complétude de la
+primitive et en l'absence d'erreur d'exécution, sa preuve est acceptée.
+\end{theorem}
+\begin{proof}
+$x=a-1\in[0,N-1]$ et $d=c-a\in[0,N-1]$. Par linéarité,
+$X=(a-1)G+r_aH$ et $D=(c-a)G+(r_c-r_a)H$.
+Ce sont exactement les entrées attendues par le vérifieur. Les autres
+préconditions sont testées séparément par celui-ci.
+\end{proof}
+Cette complétude ne garantit pas disponibilité réseau, absence de révocation
+après calcul, ni succès d'un effet métier.
+
+\begin{theorem}[Bornes entières et absence de wrap]\label{th:bounds}
+Supposons l'extraction des ouvertures de \eqref{eq:relation}, la liaison
+des engagements et l'émission dans le domaine entier \code{u64}. Alors les
+valeurs attestées satisfont
+\[
+1\le a\le2^{32},\qquad 0\le c-a<2^{32},\qquad c\le2^{33}-1.
+\]
+\end{theorem}
+\begin{proof}
+Les ouvertures extraites donnent une ouverture de $A$ à $a'=x+1$ avec
+masque $r_X$, et de $C$ à $c'=x+1+d$ avec masque $r_X+r_D$.
+Elles satisfont $1\le a'\le N$ et $a'\le c'\le2N-1$.
+Si $a'$ ou $c'$ diffèrent modulo $q$ des valeurs attestées, on obtient une
+violation de liaison. Sinon $a=a'\pmod q$ et $c=c'\pmod q$.
+Les valeurs attestées sont entre 0 et $2^{64}-1<q$, et les extraites entre
+0 et $2^{33}-1<q$. Deux entiers de $[0,q)$ congrus sont égaux ; les bornes
+sont donc des bornes entières, et non seulement modulaires.
+\end{proof}
+Le plafond peut dépasser $2^{32}-1$ : il faut \code{u64}. Le maximum
+$8\,589\,934\,591$ centimes vaut $85\,899\,345{,}91$ EUR, sans engagement
+sur l'adéquation de ce maximum à un contrat d'assurance.
+
+\begin{theorem}[Correction calculatoire conditionnelle]
+Conditionnellement aux autorités honnêtes pour l'émission, à la liaison,
+à l'argument de connaissance hérité, à l'inforgeabilité des signatures
+et à une implémentation fidèle, accepter une valeur attestée qui viole les
+bornes de la proposition~\ref{th:bounds} exige de rompre au moins l'une de
+ces hypothèses ou les vérifications de liaison des contextes.
+\end{theorem}
+\begin{proof}
+Une signature sur une attestation non émise relève d'une contrefaçon.
+Pour les attestations émises, l'extraction et la proposition précédente
+imposent les bornes. Une mauvaise association de contexte exige soit une
+entrée de confiance erronée, soit une erreur d'encodage/comparaison,
+soit une rupture du mécanisme qui authentifie ce contexte.
+\end{proof}
+On peut organiser une borne d'échec comme une somme des événements de
+contrefaçon, de collision, d'échec d'extraction et de rupture de liaison.
+Sans réduction complète et modèle des oracles, ce dossier ne donne ni
+constantes de réduction ni probabilité numérique de sécurité. Les 500
+rejets d'une campagne ne sont pas une estimation de la soundness.
+
+\section{Composition avec signatures et challenge}
+Le challenge attendu est émis et stocké par le contrôleur. Il contient tenant,
+client, audience, action, opération, objet, sujet, politique et époque, époque
+de confiance, nonce de 32 octets, dates et méthode. L'égalité porte sur
+\emph{tous} ces champs, avant autorisation. L'agent ne fournit pas les racines
+de confiance. Les encodages sont du JSON typé en ordre de déclaration,
+avec domaines distincts ; ce n'est pas une promesse de JSON canonique universel.
+
+\begin{theorem}[Liaison de la présentation]
+Supposons Ed25519 inforgeable pour les clés honnêtes, SHA-256 résistant aux
+collisions, les domaines distincts et l'encodage injectif sur les types
+admis. Une présentation acceptée sous un challenge indépendant est liée
+au couple d'attestations, au payload et à ce challenge par la clé du détenteur.
+\end{theorem}
+\begin{proof}
+La signature du détenteur porte sur le digest du tuple profil, attestations,
+challenge et payload, lui-même encodé sous un domaine distinct. Changer un
+de ces objets sans obtenir une nouvelle signature exige une collision ou
+une contrefaçon. Une entrée dotée d'un autre challenge est rejetée par
+l'égalité avec la valeur attendue. Les signatures des autorités couvrent
+chaque corps d'attestation séparément.
+\end{proof}
+RFC~8032 décrit EdDSA \cite{rfc8032} ; le code utilise une vérification stricte
+et refuse les clés faibles. Une clé compromise ou une autorité malveillante
+sort de l'hypothèse, et deux présentations identiques peuvent toujours être
+rejouées en l'absence d'un état de consommation.
+
+\paragraph{Mode A.} Le challenge entier est aussi ajouté au transcript
+Merlin. La preuve de plages est recalculée par présentation. Il s'agit d'une
+liaison cryptographique au contexte, pas d'une horloge ou d'une preuve de
+vérité instantanée des sources.
+\paragraph{Mode B.} La preuve de plages est préparée sur les attestations
+immuables puis conservée. Une nouvelle signature du détenteur couvre le
+challenge et la preuve exacte. Cela atteste une autorisation fraîche par
+cette clé sur une preuve historique, \emph{pas} une connaissance fraîche du
+witness. Le vérifieur actuel vérifie toute la preuve à chaque appel.
+\paragraph{Politique C.} Si la confidentialité n'est pas exigée, le sélecteur
+choisit la divulgation signée. Sinon, il choisit B si la réutilisation est
+autorisée et A dans le cas contraire. Un refus cryptographique n'entraîne
+aucun fallback. L'autorisation des méthodes reste vérifiée indépendamment.
+
+\section{Anti-rejeu et frontière transactionnelle}
+L'identité d'opération du contrôleur est le hachage du tuple tenant, audience,
+action et objet. Elle ne contient pas le nonce. La garantie est locale à ce
+domaine de déduplication ; plusieurs audiences ou bases indépendantes ne
+partagent pas automatiquement une identité métier globale.
+
+\begin{assumption}[Modèle de stockage et de cible]
+Les transactions sont sérialisées et atomiques. Les états commis sont
+persistés sans rollback de sauvegarde, effacement administratif ou corruption.
+Tous les chemins d'effet passent par le même contrôleur, la même identité
+métier stable et la même base. Le résultat \code{Verified} provient du worker
+cryptographique de confiance, jamais d'un champ HTTP forgé. L'horloge et
+les racines de confiance sont contrôlées par le vérifieur.
+\end{assumption}
+
+\begin{theorem}[Au plus un effet local par identité métier]
+Sous l'hypothèse précédente, le contrôleur produit au plus une ligne d'effet
+pour une identité d'opération, y compris avec plusieurs nonces, concurrence,
+arrêt après réservation ou réponse ambiguë.
+\end{theorem}
+\begin{proof}
+Initialement, aucune opération n'existe. Une transaction valide le contexte
+courant, consomme le nonce et insère l'opération sous une clé primaire unique.
+Toute réservation ultérieure avec cette clé est rejetée. La transaction
+de cible exige l'état réservé, recontrôle échéances et époques, puis insère
+l'effet sous la même clé primaire et termine l'opération. Un échec de ce
+recontrôle conserve une opération rejetée ; une réponse ambiguë conserve
+un état inconnu. Aucun de ces états n'est supprimé pour retenter. La
+réconciliation consulte les effets existants et ne redispatche pas.
+Par induction sur les transitions, le nombre d'effets reste au plus un.
+\end{proof}
+SQLite fournit les mécanismes transactionnels sous ses hypothèses documentées
+\cite{sqlite,sqliteatomic}. La preuve est un invariant abstrait, pas un
+théorème vérifié sur le moteur, le filesystem ou le code TypeScript.
+Elle ne prouve ni qu'un effet finira par arriver, ni une atomicité sur une
+API distante. Un arrêt après réservation peut laisser une opération bloquée.
+Le journal chaîné détecte certaines modifications si une racine est connue,
+mais un administrateur capable de réécrire toute la base n'est pas exclu
+par un simple hachage local.
+
+La validité temporelle est l'intersection des intervalles :
+\[
+t_{\min}=\max(t_{\mathrm{challenge}},t_A,t_C),\qquad
+t_{\max}=\min(e_{\mathrm{challenge}},e_A,e_C),\qquad
+t_{\min}\le t<t_{\max}.
+\]
+Les revocations et époques sont recontrôlées après l'attente cryptographique
+et avant l'effet. Cela borne la validité d'un snapshot, sans prouver la
+fraîcheur d'un système externe indisponible en crise.
+
+\section{Fuites et contre-exemples métier}
+Les valeurs et ouvertures sont privées face au vérifieur dans A/B, sous les
+hypothèses de la preuve. Les autorités connaissent leurs propres valeurs,
+le prover connaît les deux, et le mode divulgué les révèle toutes.
+Engagements, signatures, clés, dossier opaque, tenant, rôles, dates, politique
+et décision sont publics. Des engagements fixes rendent les sessions
+corrélables ; rerandomiser la preuve seule ne les rend pas anonymes.
+La décision apprend au moins l'inégalité et les bornes. Des politiques
+adaptatives, informations auxiliaires et canaux temporels peuvent révéler
+davantage ; aucune non-interférence système n'est démontrée.
+
+\begin{center}\small
+\begin{tabular}{p{.19\linewidth}p{.35\linewidth}p{.36\linewidth}}
+\toprule
+Contre-exemple & Énoncé accepté & Ce qui manque \\
+\midrule
+Budget cumulé & Deux dossiers à 60 satisfont chacun $60\le100$. & Leur somme 120 excède un budget commun de 100 ; il faut un ledger concurrent. \\
+Franchise & Un versement 15000 est inférieur à 20000. & Si perte 15000 et franchise 5000, le montant prévu serait 10000 ; cette formule n'est pas prouvée. \\
+Exposant & Les entiers $1000\le10000$ passent. & 1000 EUR dépasse 10000 centimes ; le prototype empêche ce mélange en fixant EUR/exposant 2. \\
+Devise & Deux nombres égaux. & EUR et USD ne sont pas une unité commune ; conversion, source et instant doivent être authentifiés. \\
+Wrap & $103\equiv2\pmod{101}$. & Un domaine source non borné peut changer le sens entier ; le contrat \code{u64} exclut ce cas pour le vrai $q$. \\
+Nonce seul & Deux nonces différents sont chacun neufs. & Ils peuvent autoriser deux fois le même objet sans réservation métier. \\
+\bottomrule
+\end{tabular}\end{center}
+Ces exemples ne sont pas des contournements des contrôles présents ; ils
+délimitent l'énoncé. Une logique de sinistre complète doit expliciter exclusions,
+franchises, taxes, coassurance, dates de couverture et réserves. Aucun circuit
+ne devient « parfait » en augmentant seulement sa vitesse.
+
+\section{Mesures CPU, GPU, Vega et hypothèses quantiques}
+Les mesures conservées dans \code{docs/horizon/BENCHMARK_RESULTS.json}
+utilisent 500 observations après 30 échauffements. Les fonctions crypto Linux
+parcourent cinq cas ; les quantiles sont au rang supérieur. L'indépendance IID
+des observations n'est pas établie et les IC lui sont conditionnels.
+Les mêmes paramètres publics fixes sont initialisés une fois par processus
+avec \code{OnceLock} : ni preuve, ni witness, ni verdict, ni aléa n'y sont cachés.
+Le mode B conserve séparément sa preuve préparée, conformément à sa sémantique.
+
+\begin{center}\small
+\begin{tabular}{p{.46\linewidth}p{.4\linewidth}}
+\toprule
+Mesure publiée du laboratoire & Observation, pas SLA \\
+\midrule
+A, génération CPU p95 avant / après & 7,770 / 6,546 ms \\
+B, vérification complète CPU p95 avant / après & 2,266 / 1,247 ms \\
+B, présentation signée p95 après préparation & 0,065 ms ; pas une nouvelle preuve \\
+Preuve agrégée seule & 672 octets ; enveloppe et signatures exclues \\
+Baseline divulguée, vérification p95 & 0,245 ms \\
+Windows IPC, vérification et effet local durable & p95 13,014 ms ; maximum 180,310 ms, hors HTTP \\
+Vega MC SHA-256 2 Kio, 8 threads & Preuve 65,836 ms, vérification 19,885 ms ; estimations centrales Criterion, pas p95 \\
+\bottomrule
+\end{tabular}\end{center}
+La taille de preuve est ici $32(2\log_2(2\cdot32)+9)=672$ octets pour
+le format agrégé utilisé. Elle n'inclut pas les engagements publics ou les
+autorisations. La réduction observée du p95 par conservation des paramètres
+est 15,75\% pour A et 44,97\% pour la vérification B ; aucun record externe
+n'en découle.
+
+Vega s'intéresse à des présentations de credentials et à une préparation
+réutilisable \cite{vega,vegacode}. Le bench SHA-256 du dépôt public n'est pas
+le circuit applicatif complet des 92/23 ms du papier. Horizon exige au contraire
+une émission adaptée sur des engagements et laisse signatures et métadonnées
+publiques. Les relations, modèles de fuite et phases diffèrent : aucun rapport
+de vitesse ne permet de conclure que l'un bat l'autre sur une tâche commune.
+
+Le dossier GPU est conservé séparément dans \code{docs/experiments/gpu/}.
+Une tentative CUDA/RISC Zero n'est pas un portage GPU de cette relation
+Bulletproofs. Ce texte n'attribue aucune accélération GPU sans résultat
+reproduit, déclaration de relation, taille, transfert hôte/appareil, préparation,
+vérification indépendante et matériel exact. Une indisponibilité CUDA est
+un résultat de faisabilité négatif, pas une mesure de vitesse. Les chiffres
+GPU ne sont donc pas interpolés depuis ceux CPU.
+
+Enfin, GPU et résistance quantique sont des axes différents. Un calcul de
+logarithme discret efficace compromettrait la liaison et les signatures
+elliptiques ; l'algorithme de Shor motive cette distinction \cite{shor}.
+ML-DSA et SLH-DSA sont des standards de signature post-quantique
+\cite{fips204,fips205}. Remplacer Ed25519 par l'un d'eux ne rendrait pas
+Pedersen/Bulletproofs post-quantiques. Le fait d'utiliser SHA-256 ou SHA-3
+dans un transcript ne transforme pas un protocole elliptique en preuve
+entièrement fondée sur des hachages. Une migration demande une autre relation
+de preuve, une analyse de composition et de nouveaux benchmarks.
+
+\section{Vérifications reproductibles et limites de preuve}
+\code{math/horizon_checks.m} énumère les paires entières d'un domaine réduit
+pour 1 à 6 bits, incluant des valeurs négatives ; contrôle les frontières
+32 bits en \code{uint64} ; reconstruit $q$ par chaînes décimales ; et explore
+tous les états atteignables d'un modèle fini de réservation à deux nonces
+et une opération. Les fonctions de calcul décimal ne manipulent que de petits
+chiffres, jamais $q$ en flottant. Aucune implémentation de courbe, signature
+ou Bulletproofs n'est recréée dans MATLAB/Octave.
+
+Le résultat JSON indique explicitement runtime, version, date UTC et limites.
+Le conteneur fige le digest de base et le dossier conserve l'identifiant de
+l'image construite et les versions des paquets. Le Dockerfile dépend encore
+du dépôt de paquets au moment de sa reconstruction : ce n'est pas une
+promesse de build reproductible bit à bit. L'exécution est sans réseau après
+construction. MATLAB nécessite un runtime/licence distinct : une réussite
+Octave n'est pas présentée comme une exécution MATLAB.
+
+Les tests adverses Rust et Node existants restent une preuve expérimentale
+séparée. Le modèle réduit ne remplace ni la vérification d'une vraie preuve
+cryptographique par un processus indépendant, ni un modèle-checker appliqué
+au code, ni une revue de sécurité indépendante. Le journal de compilation PDF
+et l'inspection des pages attestent seulement la fabrication du document.
+
+\section{Décision technique}
+Le résultat défendable est un laboratoire de faisabilité : une relation étroite,
+des hypothèses explicites, des preuves réelles et un contrôleur local qui
+refuse avant son effet. La sécurité de production exige encore autorités
+qualifiées, gestion des clés, revocation, isolation, audit, modèle distant de
+reprise et validation du besoin économique. Les déploiements cloud restent
+des exemples de configuration réseau/IAM, pas une certification opérationnelle.
+Une affirmation de conformité, d'absence de concurrence ou de logique métier
+universellement correcte ne découle d'aucun théorème présenté ici.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}

@@ -1,0 +1,37 @@
+tracing-subscriber v0.2.25
+└── ark-relations v0.5.1
+    ├── ark-crypto-primitives v0.5.0
+    │   ├── ark-crypto-primitives feature "merlin"
+    │   │   └── ark-crypto-primitives feature "sponge"
+    │   │       └── ark-groth16 v0.5.0
+    │   │           └── risc0-groth16 v3.0.5
+    │   │               └── risc0-zkvm v3.0.6
+    │   │                   ├── risc0-zkvm feature "client"
+    │   │                   │   └── lab-host v0.1.0 (<repository>\labs\risc0\host)
+    │   │                   │       └── lab-host feature "default" (command-line)
+    │   │                   ├── risc0-zkvm feature "disable-dev-mode"
+    │   │                   │   ├── lab-host v0.1.0 (<repository>\labs\risc0\host) (*)
+    │   │                   │   └── lab-verifier v0.1.0 (<repository>\labs\risc0\verifier)
+    │   │                   │       └── lab-verifier feature "default" (command-line)
+    │   │                   │           └── lab-host v0.1.0 (<repository>\labs\risc0\host) (*)
+    │   │                   └── risc0-zkvm feature "std"
+    │   │                       ├── lab-host v0.1.0 (<repository>\labs\risc0\host) (*)
+    │   │                       └── lab-verifier v0.1.0 (<repository>\labs\risc0\verifier) (*)
+    │   │                       └── risc0-zkvm feature "client" (*)
+    │   │               └── risc0-groth16 feature "std"
+    │   │                   └── risc0-zkvm feature "std" (*)
+    │   │           └── ark-groth16 feature "std"
+    │   │               └── risc0-groth16 feature "std" (*)
+    │   ├── ark-crypto-primitives feature "snark"
+    │   │   └── ark-groth16 v0.5.0 (*)
+    │   ├── ark-crypto-primitives feature "sponge" (*)
+    │   └── ark-crypto-primitives feature "std"
+    │       └── ark-groth16 feature "std" (*)
+    ├── ark-groth16 v0.5.0 (*)
+    └── ark-snark v0.5.1
+        └── ark-crypto-primitives v0.5.0 (*)
+    ├── ark-relations feature "std"
+    │   ├── ark-groth16 feature "std" (*)
+    │   └── ark-crypto-primitives feature "std" (*)
+    └── ark-relations feature "tracing-subscriber"
+        └── ark-relations feature "std" (*)

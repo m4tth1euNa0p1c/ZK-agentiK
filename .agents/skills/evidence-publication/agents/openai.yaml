@@ -1,0 +1,4 @@
+interface:
+  display_name: "Publication et preuves"
+  short_description: "Préparer un candidat auditable et ses limites"
+  default_prompt: "Utilise $evidence-publication pour vérifier le candidat ZK-agentiK, ses artefacts et ses revendications avant publication."

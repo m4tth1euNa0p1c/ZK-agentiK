@@ -53,3 +53,36 @@ La compilation du guest nu n'est pas une preuve d'exécution sous SP1/RISC Zero.
 Les fichiers sont des instructions Markdown portables. Codex découvre `.agents/skills` ;
 les autres clients peuvent les lire explicitement ou les importer dans leur
 répertoire de skills. Ne pas promettre leur découverte automatique partout.
+
+## Horizon, Proofkit et publication
+
+Lire `docs/horizon/FORMAL_STATEMENT.md` et `docs/horizon/ARCHITECTURE.md` avant
+de changer le profil Horizon ou son contrôleur. Le `no_std` déterministe concerne
+le cœur/guest historique ; le prover Horizon utilise un RNG cryptographique.
+Ne pas enlever son aléa pour obtenir un benchmark déterministe.
+
+Le SDK `packages/proofkit-sdk` centralise le contrat d'outil vérifié ; les
+adaptateurs de preuve et de stockage sont de confiance. Aucune garantie de
+durabilité, confidentialité ou post-quantique ne découle d'un simple descripteur.
+Le MCP Horizon utilise une présentation distincte de l'enveloppe zk-MCP historique.
+Ne pas encoder une preuve Bulletproofs dans le schéma RISC-V sans nouvelle RFC.
+
+Pour ce périmètre, ajouter aux contrôles racine : `npm run horizon:build`,
+`npm run test:horizon`, `npm run test:proofkit`, `npm run test:risc0:gpu` et
+`npm run proofkit -- check`. Respecter les workspaces Cargo séparés. Ne pas lancer
+de campagne de performance en concurrence avec compilation ou autre benchmark.
+
+Skills complémentaires :
+- `.agents/skills/scientific-whitepaper/SKILL.md` : sources, mathématiques, LaTeX.
+- `.agents/skills/evidence-publication/SKILL.md` : assertions et candidat public.
+- `.agents/skills/cloud-proof-infrastructure/SKILL.md` : frontières Azure/GCP.
+
+Lors d'un travail multi-agents demandé, assigner les chemins et faire relire par
+un autre agent que l'auteur ; utiliser les contrats `.agents/roles/`. Une revue
+d'agent est interne et ne clôt jamais le besoin d'audit cryptographique externe.
+Les faits commerciaux inconnus restent inconnus. Aucun entretien client inventé.
+
+Conserver les observations datées et les erreurs. MATLAB, Octave, démonstration
+sur papier, modèle fini, test applicatif et preuve cryptographique ne sont pas
+interchangeables. SHA-256 lie les artefacts, sans certifier leur date ou leur
+vérité. Les anciennes mesures ne valident pas les nouveaux transports.

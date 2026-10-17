@@ -1,0 +1,14 @@
+/root/.risc0/bin/rzup: OK
+Installing rust version 1.97.0
+Downloading rust version 1.97.0
+✓ Downloaded rust version 1.97.0
+Installing rust version 1.97.0
+✓ Installed rust version 1.97.0
+✓ Setting rust version 1.97.0 as default
+Installing r0vm version 3.0.6
+Downloading cargo-risczero version 3.0.6
+✓ Downloaded cargo-risczero version 3.0.6
+Installing cargo-risczero version 3.0.6
+✓ Installed r0vm version 3.0.6
+✓ Setting r0vm version 3.0.6 as default
+/root/.risc0/extensions/v3.0.6-cargo-risczero-x86_64-unknown-linux-gnu/r0vm: OK

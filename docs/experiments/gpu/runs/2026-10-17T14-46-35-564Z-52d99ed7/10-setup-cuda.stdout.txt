@@ -1,0 +1,6 @@
+/root/.risc0/bin/rzup: OK
+! Version 1.97.0 of rust is already installed
+✓ Setting rust version 1.97.0 as default
+! Version 3.0.6 of r0vm is already installed
+✓ Setting r0vm version 3.0.6 as default
+/root/.risc0/extensions/v3.0.6-cargo-risczero-x86_64-unknown-linux-gnu/r0vm: OK

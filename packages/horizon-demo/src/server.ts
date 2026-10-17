@@ -1,11 +1,11 @@
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { isDeepStrictEqual } from 'node:util';
 import { z } from 'zod';
 import { AuthorizationStore } from './store.js';
 import { ProofWorker } from './worker.js';
 import { Challenge, PrivateConfig, PublicConfig, selectMethod } from './types.js';
+import { createClaimTool } from './tool.js';
 
 const MAX_BODY = 65535;
 function send(response: ServerResponse, status: number, value: unknown): void {
@@ -30,11 +30,14 @@ export interface ServerOptions {
 /** Two separate processes/configurations. Only the verifier process can mutate its SQLite target. */
 export function createHorizonServer(options: ServerOptions) {
   const clock = options.clock ?? Date.now;
-  const worker = new ProofWorker(options.binary);
   const parsed: unknown = JSON.parse(readFileSync(options.configPath, 'utf8'));
   const privateConfig = options.role === 'prover' ? PrivateConfig.parse(parsed) : undefined;
   const publicConfig = options.role === 'verifier' ? PublicConfig.parse(parsed) : undefined;
   const store = publicConfig ? new AuthorizationStore(options.databasePath ?? 'horizon.sqlite', publicConfig, clock) : undefined;
+  const worker = new ProofWorker(options.binary);
+  let tool: ReturnType<typeof createClaimTool> | undefined;
+  try { tool = store && publicConfig ? createClaimTool(store, worker, publicConfig, clock) : undefined; }
+  catch (error) { worker.close(); store?.close(); throw error; }
   let prepared: unknown;
   let preparation: Promise<unknown> | undefined;
   let inFlight = 0;
@@ -84,23 +87,12 @@ export function createHorizonServer(options: ServerOptions) {
         }
         return send(response, 200, { presentation });
       }
-      if (!store || !publicConfig) return send(response, 404, { error: 'NOT_FOUND' });
+      if (!store || !publicConfig || !tool) return send(response, 404, { error: 'NOT_FOUND' });
       if (request.url === '/api/challenge') {
-        z.strictObject({}).parse(input);
-        return send(response, 200, { challenge: store.issue() });
+        return send(response, 200, { challenge: await tool.issue(input) });
       }
       if (request.url === '/api/execute') {
-        const { nonce, presentation } = z.strictObject({ nonce: z.string().regex(/^[0-9a-f]{64}$/),
-          presentation: z.record(z.string(), z.unknown()) }).parse(input);
-        const expected = store.expected(nonce);
-        const state = store.state();
-        if (state.revoked) throw new Error('REVOKED');
-        // Config holds approved sources and the exact synthetic evidence. Never accept caller roots.
-        if (!isDeepStrictEqual(presentation['evidence'], publicConfig.evidence)) throw new Error('EVIDENCE_SUBSTITUTION');
-        const result = await worker.request({ op: 'verify', presentation, expected,
-          trust: { ...publicConfig.trust, epoch: state.trust_epoch },
-          policy: { ...publicConfig.policy, policy_epoch: state.policy_epoch }, now_ms: clock() });
-        const outcome = store.authorize(expected, result);
+        const outcome = await tool.execute(input);
         return send(response, outcome.status === 'COMPLETED' ? 200 : 409, outcome);
       }
       // These are explicit sandbox operator controls, absent from the MCP agent toolset.

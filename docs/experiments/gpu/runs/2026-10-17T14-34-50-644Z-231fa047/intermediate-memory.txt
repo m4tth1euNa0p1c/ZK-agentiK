@@ -1,0 +1,20 @@
+2026-10-17T14:46:13Z
+low 0
+high 0
+max 1485286
+oom 14
+oom_kill 2
+oom_group_kill 0
+12885168128
+     84 sh
+     85 ptxas
+     85 sh
+     89 nvcc
+     89 nvcc
+    258 ptxas
+    258 sh
+    262 nvcc
+    367 build-script-bu
+    430 cargo
+    564 bash
+    564 sleep

@@ -18,6 +18,11 @@
 !packages/horizon-demo/src/**
 !packages/horizon-demo/public/
 !packages/horizon-demo/public/**
+!packages/proofkit-sdk/
+!packages/proofkit-sdk/package.json
+!packages/proofkit-sdk/tsconfig.json
+!packages/proofkit-sdk/src/
+!packages/proofkit-sdk/src/**
 !labs/
 !labs/horizon/
 !labs/horizon/Cargo.toml

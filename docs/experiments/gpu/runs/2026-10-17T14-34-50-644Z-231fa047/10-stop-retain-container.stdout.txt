@@ -1,0 +1,2 @@
+Flag --time has been deprecated, use --timeout instead
+zk-agentik-risc0-gpu-2026-10-17t14-34-50-644z-231fa047

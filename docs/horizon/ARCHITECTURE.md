@@ -28,9 +28,16 @@ worker. Le client possède uniquement sa configuration publique, un autre worker
 et sa base. La sélection C est imposée par la politique locale ; A, B et la
 baseline non-ZK restent identifiables. Aucune stratégie ne prétend être nouvelle.
 
-Le SDK MCP historique n'est pas modifié : ce produit expérimental sépare encore
-API de démonstration et chemin MCP de production. Ajouter un wrapper MCP ne
-résoudrait pas l'émission réelle, les règles contractuelles ou l'authentification.
+Le SDK MCP historique reste distinct. L'ajout Proofkit du 17 octobre centralise
+le chemin HTTP/MCP Horizon dans `defineVerifiedTool` et l'adaptateur
+`packages/horizon-demo/src/tool.ts`. Le transport MCP officiel expose seulement
+émission de challenge et soumission d'une présentation ; il ne porte pas les
+secrets du prover ni les routes d'administration. La preuve Bulletproofs est
+vérifiée par le même worker avant le même contrôleur SQLite. Aucun champ
+`_meta.zkp` du protocole historique n'est réinterprété comme ce nouveau profil.
+L'hôte, ses adaptateurs et sa configuration sont de confiance. Cette intégration
+ne résout pas l'émission réelle, les règles contractuelles ou l'authentification.
+Les mesures antérieures au SDK ne constituent pas une mesure de son transport.
 
 Dans Compose, un relais HTTP sans secret publie les deux ports loopback. Ses
 destinations et routes sont constantes. Lui seul joint le réseau d'entrée et

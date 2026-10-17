@@ -1,0 +1,109 @@
+name: Reusable proof and local sandbox
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: Reviewed experiment profile
+        type: choice
+        options: [horizon, math]
+        default: horizon
+      deploy_sandbox:
+        description: Run ephemeral Docker sandbox on this GitHub runner (Horizon only)
+        type: boolean
+        default: false
+  workflow_call:
+    inputs:
+      profile:
+        type: string
+        required: true
+      deploy_sandbox:
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PROFILE: ${{ inputs.profile }}
+      DEPLOY_SANDBOX: ${{ inputs.deploy_sandbox }}
+    steps:
+      - name: Reject unreviewed profiles and deployment combinations
+        shell: bash
+        run: |
+          case "$PROFILE" in horizon|math) ;; *) exit 2 ;; esac
+          if [ "$DEPLOY_SANDBOX" = true ] && [ "$PROFILE" != horizon ]; then exit 2; fi
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24.11.1'
+          cache: npm
+      - if: inputs.profile == 'horizon'
+        run: rustup toolchain install 1.93.0 --profile minimal
+      - run: npm ci --ignore-scripts
+      - name: Run reviewed proof profile and retain public process summary
+        id: execute
+        shell: bash
+        run: |
+          mkdir public-artifacts
+          touch public-artifacts/started.marker
+          node tools/proofkit/cli.mjs run "$PROFILE" > public-artifacts/execution.json
+      - if: inputs.profile == 'math'
+        id: paper
+        name: Build and render the scientific manuscript
+        shell: bash
+        run: |
+          docker run --rm --network none --cpus 2 --memory 2g \
+            --mount type=bind,source="$GITHUB_WORKSPACE",target=/work \
+            horizon-math-paper:local sh /work/docs/whitepaper/build.sh
+          test -s docs/whitepaper/whitepaper.pdf
+          ! grep -E 'Warning|Overfull|^!' docs/whitepaper/build/diagnostics.txt
+      - if: inputs.deploy_sandbox
+        name: Create fresh synthetic configuration for the isolated runner
+        run: |
+          npm run horizon:init
+          echo "HORIZON_PROVER_UID=$(id -u)" >> "$GITHUB_ENV"
+      - if: inputs.deploy_sandbox
+        name: Deploy local Docker sandbox, test real proof and restart replay rejection
+        run: |
+          docker compose -f deploy/horizon/compose.yaml up -d --build --wait --wait-timeout 90
+          node scripts/horizon-http-smoke.mjs > public-artifacts/sandbox.json
+          docker compose -f deploy/horizon/compose.yaml restart
+          docker compose -f deploy/horizon/compose.yaml up -d --wait --wait-timeout 90
+          node scripts/horizon-http-smoke.mjs replay > public-artifacts/restart.json
+          node scripts/horizon-container-verify.mjs > public-artifacts/independent-verification.json
+      - name: Select public artifacts explicitly
+        id: export
+        if: always() && steps.execute.outcome != 'skipped'
+        env:
+          EXECUTION_OUTCOME: ${{ steps.execute.outcome }}
+          PAPER_OUTCOME: ${{ steps.paper.outcome }}
+          JOB_STATUS: ${{ job.status }}
+        shell: bash
+        run: |
+          cp evidence/catalog.json public-artifacts/catalog.json
+          cp docs/whitepaper/whitepaper.pdf public-artifacts/whitepaper.pdf
+          cp docs/publication/CLAIMS.md public-artifacts/CLAIMS.md
+          if [ "$PROFILE" = math ] && [ -f public-artifacts/started.marker ]; then
+            find math/results -mindepth 2 -maxdepth 2 -name '*.json' -newer public-artifacts/started.marker -print0 |
+              while IFS= read -r -d '' result; do cp --parents -- "$result" public-artifacts/; done
+          fi
+          if [ "$PROFILE" = horizon ]; then
+            cp tests/fixtures/horizon/public-presentation.json public-artifacts/historical-public-fixture.json
+          fi
+          printf '%s\n' "$GITHUB_SHA" > public-artifacts/commit.txt
+          printf 'job_before_export=%s\nprofile_outcome=%s\npdf_rebuild_outcome=%s\n' "$JOB_STATUS" "$EXECUTION_OUTCOME" "$PAPER_OUTCOME" > public-artifacts/RUN_STATUS.txt
+          printf '%s\n' 'Process outcomes and selected public artifacts only. Local-clock dates; no TSA or external security audit. The fixture is historical, not a fresh authorization. No witness, private keys, raw logs or cloud deployment.' > public-artifacts/SCOPE.txt
+          rm public-artifacts/started.marker
+          (cd public-artifacts && find . -type f -print0 | sort -z | xargs -0 sha256sum > ../SHA256SUMS.tmp && mv ../SHA256SUMS.tmp SHA256SUMS)
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always() && steps.export.outcome == 'success'
+        with:
+          name: public-proof-${{ inputs.profile }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: public-artifacts/
+          if-no-files-found: error
+          include-hidden-files: false
+          retention-days: 14
+      - if: always() && inputs.deploy_sandbox
+        run: docker compose -f deploy/horizon/compose.yaml stop

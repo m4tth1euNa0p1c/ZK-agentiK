@@ -1,0 +1,1 @@
+{"public_fixture_verified":true,"method":"reusable","live_authorization":false}

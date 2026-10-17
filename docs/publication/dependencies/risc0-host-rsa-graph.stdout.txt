@@ -1,0 +1,41 @@
+rsa v0.9.10
+├── rsa feature "default"
+│   └── rzup v0.5.2
+│       └── risc0-build v3.0.6
+│           └── risc0-build feature "default"
+│               [build-dependencies]
+│               └── lab-methods v0.1.0 (<repository>\labs\risc0\methods)
+│                   └── lab-methods feature "default" (command-line)
+│                       ├── lab-host v0.1.0 (<repository>\labs\risc0\host)
+│                       │   └── lab-host feature "default" (command-line)
+│                       └── lab-verifier v0.1.0 (<repository>\labs\risc0\verifier)
+│                           └── lab-verifier feature "default" (command-line)
+│                               └── lab-host v0.1.0 (<repository>\labs\risc0\host) (*)
+├── rsa feature "pem"
+│   └── rsa feature "default" (*)
+├── rsa feature "std"
+│   └── rsa feature "default" (*)
+└── rsa feature "u64_digit"
+    └── rsa feature "default" (*)
+
+rsa v0.9.10
+├── rsa feature "default"
+│   └── rzup v0.5.2
+│       ├── risc0-build v3.0.6
+│       │   └── risc0-zkvm v3.0.6
+│       │       ├── risc0-zkvm feature "client"
+│       │       │   └── lab-host v0.1.0 (<repository>\labs\risc0\host) (*)
+│       │       ├── risc0-zkvm feature "disable-dev-mode"
+│       │       │   ├── lab-host v0.1.0 (<repository>\labs\risc0\host) (*)
+│       │       │   └── lab-verifier v0.1.0 (<repository>\labs\risc0\verifier) (*)
+│       │       └── risc0-zkvm feature "std"
+│       │           ├── lab-host v0.1.0 (<repository>\labs\risc0\host) (*)
+│       │           └── lab-verifier v0.1.0 (<repository>\labs\risc0\verifier) (*)
+│       │           └── risc0-zkvm feature "client" (*)
+│       └── risc0-zkvm v3.0.6 (*)
+├── rsa feature "pem"
+│   └── rsa feature "default" (*)
+├── rsa feature "std"
+│   └── rsa feature "default" (*)
+└── rsa feature "u64_digit"
+    └── rsa feature "default" (*)

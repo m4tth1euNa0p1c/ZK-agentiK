@@ -1,0 +1,69 @@
+{
+  "observed_at": "2026-10-17T15:05:42.613Z",
+  "scope": "Installed crates.io source corresponding to locked versions, plus captured cargo tree. Limited source review; not full binary or data-flow analysis. Source excerpts are not reproduced.",
+  "registry_source": "registry+https://github.com/rust-lang/crates.io-index",
+  "records": [
+    {
+      "crate_relative_path": "ark-relations-0.5.1/Cargo.toml",
+      "sha256": "3b6d7a63a6fc48149583d79065f269e6374d34e3ef959896a719570c9f6b3469",
+      "line_ranges": [
+        [
+          60,
+          63
+        ],
+        [
+          70,
+          77
+        ]
+      ],
+      "observation": "tracing-subscriber 0.2 optional dependency, default-features=false, activated by std"
+    },
+    {
+      "crate_relative_path": "tracing-subscriber-0.2.25/src/lib.rs",
+      "sha256": "ff2b9ebfca8af47e9a81ee931c3f71f130706e9bdd645bec7c5e68f04a2f176c",
+      "line_ranges": [
+        [
+          155,
+          157
+        ]
+      ],
+      "observation": "fmt module requires fmt feature"
+    },
+    {
+      "crate_relative_path": "rzup-0.5.2/src/distribution/signature.rs",
+      "sha256": "ab62589273f67a7284abdee476e172cc2a7c9851ba5e766df6fa1867c723fa76",
+      "line_ranges": [
+        [
+          65,
+          66
+        ],
+        [
+          87,
+          102
+        ]
+      ],
+      "observation": "private sign method feature-gated publish; official public key verification"
+    },
+    {
+      "crate_relative_path": "bulletproofs-5.0.0/Cargo.toml",
+      "sha256": "4140a067c24b3a7330429e2b533ab563339e51356b06b831b41f6ccdba85f20f",
+      "line_ranges": [],
+      "observation": "clear_on_drop dependency"
+    },
+    {
+      "crate_relative_path": "bulletproofs-5.0.0/src/range_proof/party.rs",
+      "sha256": "8e8735141ab4cae45e2daf2e991b769b3777198996c3e1078a776de9e9fec7ce",
+      "line_ranges": [
+        [
+          16,
+          16
+        ],
+        [
+          249,
+          258
+        ]
+      ],
+      "observation": "clear_on_drop imported and used in range proof witness cleanup"
+    }
+  ]
+}
