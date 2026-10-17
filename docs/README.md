@@ -12,6 +12,11 @@ spécialisée réelle, optimisation mesurée et sandbox durable. Son énoncé di
 du guest RISC Zero historique. [Méthode et données](horizon/BENCHMARK_METHODOLOGY.md),
 [relation](horizon/FORMAL_STATEMENT.md), [application](horizon/DEPLOYMENT.md).
 
+[Inventaire vérifié au commit 684b567](horizon/INVENTORY_2026-10-17.md) et
+[protocole de qualification H11](horizon/REVIEW_PROTOCOL.md) : bilan figé,
+revue métier/sécurité, alternatives et critères de décision. Aucun entretien
+client n'est déclaré réalisé par ces documents.
+
 | Document | Contenu et portée |
 | --- | --- |
 | [01 — Recherche initiale et analyse d'écart](01-RESEARCH-AND-GAP-ANALYSIS.md) | Magnetar, BinarySpartan, Spartan, Lasso, SP1, RISC Zero, Jolt et MCP ; liens vers les sources primaires et limites des annonces |

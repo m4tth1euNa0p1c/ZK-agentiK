@@ -150,7 +150,7 @@ du witness impose une autre architecture.
 | Confidentialité nécessaire | Champs interdits au destinataire et fondement concret | Hypothèse non confirmée |
 | Sources utilisables | Deux autorités acceptant de signer les engagements et leurs métadonnées | Fixtures seulement |
 | Baseline insuffisante | DSSE, ouverture, credentials ou service existant évalués par le décideur | Comparaisons à réaliser/qualifier |
-| Sécurité et coût technique | Tests négatifs, reprise et mesures représentatives | Laboratoire en cours ; pas de qualification production |
+| Sécurité et coût technique | Tests négatifs, reprise et mesures représentatives | Essais de laboratoire exécutés ; pas de qualification production |
 | Valeur économique | Coût actuel observé, coût complet cible, sponsor et budget | Inconnus ; aucun financement prospect |
 
 Abandonner ou réorienter le produit si une des trois premières portes est
@@ -160,5 +160,5 @@ Conserver éventuellement les résultats comme contribution technique ouverte.
 
 **Conclusion du comité : GO recherche bornée, NO-GO lancement commercial.**
 Le prochain fait décisif pour le marché serait un contrôle client documenté
-et un besoin de divulgation démontré. Une preuve plus rapide, à elle seule,
+et un besoin de non-divulgation démontré. Une preuve plus rapide, à elle seule,
 ne fournit ni ce besoin ni un acheteur.

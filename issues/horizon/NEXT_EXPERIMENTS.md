@@ -9,8 +9,17 @@ Collecter avec autorisation des entretiens et mesures de dossiers anonymisés :
 volume, temps de contrôle, coût des erreurs, coût d'intégration de deux sources.
 **Acceptation** : sponsor identifié, contrainte de non-divulgation documentée,
 alternative signée/divulgation sélective évaluée et budget expérimental explicite.
-**Abandon** : partage permis, verdict signé accepté ou adaptation impossible.
+**Abandon du profil privé pour ce cas** : adaptation impossible, ou alternative
+acceptée (partage des valeurs / verdict signé) satisfaisant le même contrôle
+à moindre coût complet. Un partage permis ou un verdict signé accepté réfute
+la nécessité cryptographique alléguée, sans établir seul le bilan économique.
 Pas d'outreach automatique. Livrable : modèle chiffré sourcé, sans données client.
+
+**Préparation livrée** : [protocole de revue et fiche de résultat](../../docs/horizon/REVIEW_PROTOCOL.md).
+Le dossier confronte explicitement le profil au verdict signé d'un tiers accepté,
+à la réunion des witnesses chez le prover et aux coûts imposés aux émetteurs.
+**H11 reste ouvert** : aucun entretien exécuté, sponsor engagé ou budget validé.
+La disponibilité du dossier et les tests techniques ne satisfont pas ce ticket.
 
 ## H12 — Relation Vega identique, P1 recherche
 
