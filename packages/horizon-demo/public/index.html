@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="color-scheme" content="light">
+    <title>HORIZON — laboratoire d'autorisation confidentielle</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#workflow">Aller à la démonstration</a>
+    <header class="masthead">
+      <div class="container masthead-inner">
+        <a class="brand" href="/" aria-label="Horizon, accueil du laboratoire">HORIZON<span>Recherche appliquée</span></a>
+        <span class="environment">Sandbox locale · données synthétiques</span>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="introduction" aria-labelledby="page-title">
+        <p class="eyebrow">Deux organisations. Une décision vérifiable.</p>
+        <h1 id="page-title">Autoriser un dossier<br>sans dévoiler ses montants.</h1>
+        <p class="lead">Le fournisseur prouve qu'un montant admissible respecte un plafond.
+          Le contrôleur vérifie la présentation avant d'enregistrer une autorisation locale.</p>
+        <div class="scope-note"><strong>Aucun paiement.</strong> Preuve spécialisée Bulletproofs,
+          clés de fixture aléatoires et cible synthétique. Ce laboratoire n'est pas une
+          qualification de production ni un record comparatif contre Vega.</div>
+      </section>
+
+      <section class="overview" aria-label="État du contrôleur">
+        <div class="overview-item"><span class="label">Contrôleur</span><strong id="connection-status" class="state-label">Connexion…</strong></div>
+        <div class="overview-item"><span class="label">Autorisations enregistrées</span><strong id="effect-count" class="large-number">—</strong></div>
+        <div class="overview-item"><span class="label">Époque de politique</span><strong id="policy-epoch">—</strong></div>
+        <div class="overview-item"><span class="label">Époque de confiance</span><strong id="trust-epoch">—</strong></div>
+        <button id="refresh-button" class="button secondary compact" type="button">Relire l'état</button>
+      </section>
+      <p id="state-observed" class="caption">L'état n'a pas encore été consulté.</p>
+
+      <div id="feedback" class="feedback neutral" role="status" aria-live="polite" aria-atomic="true">
+        Demandez un challenge, produisez une preuve, puis vérifiez-la avant l'enregistrement.
+      </div>
+
+      <section id="workflow" class="workflow" aria-labelledby="workflow-title" tabindex="-1">
+        <div class="section-heading">
+          <div><p class="eyebrow">Parcours de démonstration</p><h2 id="workflow-title">La preuve précède l'effet.</h2></div>
+          <span id="method-badge" class="pill">Mode fixé par le contrôleur</span>
+        </div>
+        <p id="method-description" class="caption">L'interface ne choisit pas la politique et ne réduit pas les garanties en cas d'échec.</p>
+
+        <div class="steps">
+          <article class="step-card" aria-labelledby="challenge-title">
+            <div class="step-header"><span class="step-number" aria-hidden="true">01</span><span class="organization">Organisation B · Contrôleur</span></div>
+            <h3 id="challenge-title">Demander le contexte</h3>
+            <p>Le contrôleur fixe l'action, la politique, le nonce et l'échéance.</p>
+            <dl class="facts">
+              <div><dt>Challenge</dt><dd id="challenge-id">Aucun</dd></div>
+              <div><dt>Validité restante</dt><dd id="challenge-expiry">—</dd></div>
+            </dl>
+            <button id="challenge-button" class="button primary" type="button">1. Demander</button>
+            <p id="challenge-timing" class="timing">Requête HTTP : non exécutée</p>
+          </article>
+
+          <article class="step-card" aria-labelledby="proof-title">
+            <div class="step-header"><span class="step-number" aria-hidden="true">02</span><span class="organization">Organisation A · Fournisseur</span></div>
+            <h3 id="proof-title">Produire la présentation</h3>
+            <p>Le fournisseur détient les valeurs et leurs ouvertures. Le navigateur ne les affiche pas.</p>
+            <dl class="facts">
+              <div><dt>Présentation</dt><dd id="proof-status">En attente du challenge</dd></div>
+              <div><dt>Conservation</dt><dd>En mémoire de cette page</dd></div>
+            </dl>
+            <button id="prove-button" class="button primary" type="button" disabled>2. Prouver</button>
+            <p id="prove-timing" class="timing">Requête HTTP : non exécutée</p>
+          </article>
+
+          <article class="step-card" aria-labelledby="execute-title">
+            <div class="step-header"><span class="step-number" aria-hidden="true">03</span><span class="organization">Organisation B · Contrôleur</span></div>
+            <h3 id="execute-title">Vérifier et enregistrer</h3>
+            <p>Le contrôleur vérifie la présentation et ses préconditions, puis réserve l'opération.</p>
+            <dl class="facts">
+              <div><dt>Dernier résultat</dt><dd id="execution-status">Non exécuté</dd></div>
+              <div><dt>Effet local</dt><dd>Autorisation de dossier</dd></div>
+            </dl>
+            <button id="execute-button" class="button primary" type="button" disabled>3. Vérifier et enregistrer</button>
+            <p id="execute-timing" class="timing">Requête HTTP : non exécutée</p>
+          </article>
+        </div>
+        <p class="caption timing-note">Les durées incluent l'aller-retour HTTP et la lecture de la réponse.
+          Elles n'isolent pas la cryptographie et ne constituent pas un benchmark de service.</p>
+      </section>
+
+      <div class="detail-grid">
+        <section class="panel" aria-labelledby="adversarial-title">
+          <p class="eyebrow">Essais de refus</p>
+          <h2 id="adversarial-title">Mettre le contrôle à l'épreuve</h2>
+          <p>Renvoyez la présentation, ou altérez une copie en mémoire. La présentation d'origine reste disponible.</p>
+          <div class="button-row">
+            <button id="replay-button" class="button secondary" type="button" disabled>Tester le rejeu</button>
+            <button id="tamper-button" class="button secondary" type="button" disabled>Preuve altérée</button>
+          </div>
+          <p class="caption">Testez l'altération avant l'enregistrement pour éviter qu'un nonce déjà consommé masque
+            ce contrôle. Un refus HTTP seul ne révèle pas sa cause cryptographique.</p>
+          <div class="effect-comparison" aria-label="Compteurs autour du dernier appel d'exécution">
+            <div><span class="label">Effets avant</span><strong id="effects-before">—</strong></div>
+            <span class="comparison-arrow" aria-hidden="true">→</span>
+            <div><span class="label">Effets après</span><strong id="effects-after">—</strong></div>
+          </div>
+          <p id="effect-observation" class="caption">Compteurs relus sur le serveur ; aucun résultat supposé.</p>
+        </section>
+
+        <section class="panel" aria-labelledby="operations-title">
+          <p class="eyebrow">Cible persistante</p>
+          <h2 id="operations-title">Opérations observées</h2>
+          <p>Le même dossier ne peut pas être réautorisé avec un nouveau challenge. Recharger la page ne remet pas la base à zéro.</p>
+          <div class="table-container">
+            <table>
+              <caption class="visually-hidden">Opérations enregistrées par le contrôleur</caption>
+              <thead><tr><th scope="col">Opération</th><th scope="col">État</th></tr></thead>
+              <tbody id="operations-body"><tr><td colspan="2">État en cours de lecture.</td></tr></tbody>
+            </table>
+          </div>
+          <div class="reconciliation">
+            <label for="operation-select">Opération à réconcilier</label>
+            <select id="operation-select" disabled><option value="">Aucune opération</option></select>
+            <button id="reconcile-button" class="button secondary compact" type="button" disabled>Réconcilier l'état</button>
+          </div>
+          <p class="caption">Une réponse réseau perdue ne prouve pas l'absence d'effet. Relisez l'état puis réconciliez ;
+            l'interface ne renvoie jamais automatiquement une mutation.</p>
+        </section>
+      </div>
+
+      <details class="operator-panel">
+        <summary>Commandes de l'exploitant de la sandbox</summary>
+        <div class="operator-content">
+          <div>
+            <h3>Changer l'époque de politique</h3>
+            <p>Les challenges déjà émis deviennent obsolètes. Une nouvelle demande sera nécessaire.</p>
+            <button id="rotate-button" class="button secondary" type="button">Changer l'époque</button>
+          </div>
+          <div class="revocation-control">
+            <h3>Révoquer cette instance</h3>
+            <p id="revocation-warning"><strong>Irréversible dans cette sandbox.</strong> La révocation persiste dans la base
+              et bloque les nouvelles autorisations. Il n'existe pas de bouton de réactivation.</p>
+            <label class="checkbox-label"><input id="revoke-confirm" type="checkbox">
+              Je confirme la révocation persistante de cette instance.</label>
+            <button id="revoke-button" class="button danger" type="button" aria-describedby="revocation-warning" disabled>Révoquer — irréversible</button>
+          </div>
+        </div>
+      </details>
+
+      <section class="journal" aria-labelledby="journal-title">
+        <div class="section-heading"><div><p class="eyebrow">Observations de la session</p><h2 id="journal-title">Journal succinct</h2></div><span class="caption">Sans valeurs ni clés privées</span></div>
+        <ol id="activity-log" class="activity-log"><li class="empty-entry">Aucune action effectuée.</li></ol>
+        <details class="audit-panel">
+          <summary>Derniers événements de l'audit serveur</summary>
+          <ul id="server-audit" class="server-audit"><li>État non consulté.</li></ul>
+          <p class="caption">L'interface présente les événements reçus ; elle ne vérifie pas la chaîne de hachage d'audit.</p>
+        </details>
+      </section>
+    </main>
+    <footer class="container footer">HORIZON · Profil expérimental sur données synthétiques · Aucun secret ne doit être saisi dans cette interface.</footer>
+    <noscript><p class="noscript">JavaScript est nécessaire pour piloter cette démonstration locale.</p></noscript>
+  </body>
+</html>

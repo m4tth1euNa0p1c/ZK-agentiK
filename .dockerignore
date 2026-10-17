@@ -1,0 +1,31 @@
+# Deny by default. In particular .tools/, witnesses, keys, databases, .env,
+# local receipts, node_modules, target directories and Git history never enter
+# the Docker build context. Only Horizon build inputs are admitted below.
+**
+!.dockerignore
+!package.json
+!package-lock.json
+!tsconfig.base.json
+!packages/
+!packages/zk-mcp-sdk/
+!packages/zk-mcp-sdk/package.json
+!packages/enterprise-gateway/
+!packages/enterprise-gateway/package.json
+!packages/horizon-demo/
+!packages/horizon-demo/package.json
+!packages/horizon-demo/tsconfig.json
+!packages/horizon-demo/src/
+!packages/horizon-demo/src/**
+!packages/horizon-demo/public/
+!packages/horizon-demo/public/**
+!labs/
+!labs/horizon/
+!labs/horizon/Cargo.toml
+!labs/horizon/Cargo.lock
+!labs/horizon/proof/
+!labs/horizon/proof/Cargo.toml
+!labs/horizon/proof/src/
+!labs/horizon/proof/src/**
+!deploy/
+!deploy/horizon/
+!deploy/horizon/Dockerfile

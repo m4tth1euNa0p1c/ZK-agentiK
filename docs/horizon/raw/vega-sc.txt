@@ -1,0 +1,76 @@
+    Finished `bench` profile [optimized + debuginfo] target(s) in 0.12s
+     Running benches/sha256_vega_sc.rs (/lab/horizon/target/release/deps/sha256_vega_sc-a5f27836ed5f9fb9)
+Gnuplot not found, using plotters backend
+Vega SC SHA-256 msg=1024B: proof_size=85948 bytes
+Vega SC SHA-256 msg=2048B: proof_size=94572 bytes
+Benchmarking vega_sc_sha256/setup/1024/t8
+Benchmarking vega_sc_sha256/setup/1024/t8: Warming up for 100.00 ms
+Benchmarking vega_sc_sha256/setup/1024/t8: Collecting 10 samples in estimated 14.067 s (30 iterations)
+Benchmarking vega_sc_sha256/setup/1024/t8: Analyzing
+vega_sc_sha256/setup/1024/t8
+                        time:   [422.30 ms 433.29 ms 449.23 ms]
+                        thrpt:  [2.2260 KiB/s 2.3079 KiB/s 2.3680 KiB/s]
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) high severe
+Benchmarking vega_sc_sha256/prep_prove/1024/t8
+Benchmarking vega_sc_sha256/prep_prove/1024/t8: Warming up for 100.00 ms
+Benchmarking vega_sc_sha256/prep_prove/1024/t8: Collecting 10 samples in estimated 10.083 s (20 iterations)
+Benchmarking vega_sc_sha256/prep_prove/1024/t8: Analyzing
+vega_sc_sha256/prep_prove/1024/t8
+                        time:   [84.937 ms 86.320 ms 88.078 ms]
+                        thrpt:  [11.354 KiB/s 11.585 KiB/s 11.773 KiB/s]
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) high mild
+Benchmarking vega_sc_sha256/prove/1024/t8
+Benchmarking vega_sc_sha256/prove/1024/t8: Warming up for 100.00 ms
+Benchmarking vega_sc_sha256/prove/1024/t8: Collecting 10 samples in estimated 13.775 s (20 iterations)
+Benchmarking vega_sc_sha256/prove/1024/t8: Analyzing
+vega_sc_sha256/prove/1024/t8
+                        time:   [90.994 ms 93.260 ms 95.632 ms]
+                        thrpt:  [10.457 KiB/s 10.723 KiB/s 10.990 KiB/s]
+Benchmarking vega_sc_sha256/verify/1024/t8
+Benchmarking vega_sc_sha256/verify/1024/t8: Warming up for 100.00 ms
+Benchmarking vega_sc_sha256/verify/1024/t8: Collecting 10 samples in estimated 13.473 s (20 iterations)
+Benchmarking vega_sc_sha256/verify/1024/t8: Analyzing
+vega_sc_sha256/verify/1024/t8
+                        time:   [26.131 ms 28.214 ms 30.410 ms]
+                        thrpt:  [32.884 KiB/s 35.443 KiB/s 38.268 KiB/s]
+Benchmarking vega_sc_sha256/setup/2048/t8
+Benchmarking vega_sc_sha256/setup/2048/t8: Warming up for 100.00 ms
+
+Warning: Unable to complete 10 samples in 10.0s. You may wish to increase target time to 12.9s.
+Benchmarking vega_sc_sha256/setup/2048/t8: Collecting 10 samples in estimated 12.886 s (10 iterations)
+Benchmarking vega_sc_sha256/setup/2048/t8: Analyzing
+vega_sc_sha256/setup/2048/t8
+                        time:   [813.65 ms 849.14 ms 909.53 ms]
+                        thrpt:  [2.1989 KiB/s 2.3553 KiB/s 2.4581 KiB/s]
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) high severe
+Benchmarking vega_sc_sha256/prep_prove/2048/t8
+Benchmarking vega_sc_sha256/prep_prove/2048/t8: Warming up for 100.00 ms
+
+Warning: Unable to complete 10 samples in 10.0s. You may wish to increase target time to 10.7s.
+Benchmarking vega_sc_sha256/prep_prove/2048/t8: Collecting 10 samples in estimated 10.687 s (10 iterations)
+Benchmarking vega_sc_sha256/prep_prove/2048/t8: Analyzing
+vega_sc_sha256/prep_prove/2048/t8
+                        time:   [254.05 ms 259.81 ms 266.01 ms]
+                        thrpt:  [7.5186 KiB/s 7.6979 KiB/s 7.8726 KiB/s]
+Benchmarking vega_sc_sha256/prove/2048/t8
+Benchmarking vega_sc_sha256/prove/2048/t8: Warming up for 100.00 ms
+
+Warning: Unable to complete 10 samples in 10.0s. You may wish to increase target time to 14.9s.
+Benchmarking vega_sc_sha256/prove/2048/t8: Collecting 10 samples in estimated 14.885 s (10 iterations)
+Benchmarking vega_sc_sha256/prove/2048/t8: Analyzing
+vega_sc_sha256/prove/2048/t8
+                        time:   [219.24 ms 231.09 ms 243.03 ms]
+                        thrpt:  [8.2293 KiB/s 8.6546 KiB/s 9.1224 KiB/s]
+Benchmarking vega_sc_sha256/verify/2048/t8
+Benchmarking vega_sc_sha256/verify/2048/t8: Warming up for 100.00 ms
+
+Warning: Unable to complete 10 samples in 10.0s. You may wish to increase target time to 15.6s.
+Benchmarking vega_sc_sha256/verify/2048/t8: Collecting 10 samples in estimated 15.648 s (10 iterations)
+Benchmarking vega_sc_sha256/verify/2048/t8: Analyzing
+vega_sc_sha256/verify/2048/t8
+                        time:   [71.849 ms 74.444 ms 77.034 ms]
+                        thrpt:  [25.963 KiB/s 26.866 KiB/s 27.836 KiB/s]
+
