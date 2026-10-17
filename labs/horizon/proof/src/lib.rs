@@ -12,11 +12,24 @@ use merlin::Transcript;
 use rand::{rngs::OsRng, RngCore};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
+use std::sync::OnceLock;
 
 pub const PROFILE: &str = "horizon-range-v1";
 pub const MAX_INPUT_BYTES: usize = 65_536;
 const RANGE: u64 = 1_u64 << 32;
 const MAX_PROOF_BYTES: usize = 672;
+
+// Immutable, publicly derived parameters for this fixed two-value 32-bit profile.
+// Callers cannot choose or mutate these generators. No witness or RNG is cached.
+fn bulletproof_generators() -> &'static BulletproofGens {
+    static GENERATORS: OnceLock<BulletproofGens> = OnceLock::new();
+    GENERATORS.get_or_init(|| BulletproofGens::new(32, 2))
+}
+
+fn pedersen_generators() -> &'static PedersenGens {
+    static GENERATORS: OnceLock<PedersenGens> = OnceLock::new();
+    GENERATORS.get_or_init(PedersenGens::default)
+}
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
@@ -280,7 +293,7 @@ fn check_witness(evidence: &EvidencePair, witness: &PrivateWitness) -> Result<(S
     ensure!(difference < RANGE, "DIFFERENCE_RANGE");
     let a = scalar(&witness.amount_blinding_hex)?;
     let c = scalar(&witness.cap_blinding_hex)?;
-    let generators = PedersenGens::default();
+    let generators = pedersen_generators();
     ensure!(
         generators
             .commit(Scalar::from(witness.amount), a)
@@ -303,10 +316,7 @@ fn commitments(evidence: &EvidencePair) -> Result<[CompressedRistretto; 2]> {
     let c = point(&evidence.cap.body.commitment_hex)?
         .decompress()
         .context("INVALID_POINT")?;
-    Ok([
-        (a - PedersenGens::default().B).compress(),
-        (c - a).compress(),
-    ])
+    Ok([(a - pedersen_generators().B).compress(), (c - a).compress()])
 }
 
 fn transcript(evidence: &EvidencePair, challenge: Option<&Challenge>) -> Result<Transcript> {
@@ -331,8 +341,8 @@ fn range_prove(
 ) -> Result<String> {
     let (a, c) = check_witness(evidence, witness)?;
     let (proof, actual) = RangeProof::prove_multiple_with_rng(
-        &BulletproofGens::new(32, 2),
-        &PedersenGens::default(),
+        bulletproof_generators(),
+        pedersen_generators(),
         &mut transcript(evidence, challenge)?,
         &[witness.amount - 1, witness.cap - witness.amount],
         &[a, c - a],
@@ -353,8 +363,8 @@ fn range_verify(evidence: &EvidencePair, proof: &str, challenge: Option<&Challen
     ensure!(hex::encode(&bytes) == proof, "NONCANONICAL_HEX");
     RangeProof::from_bytes(&bytes)?
         .verify_multiple_with_rng(
-            &BulletproofGens::new(32, 2),
-            &PedersenGens::default(),
+            bulletproof_generators(),
+            pedersen_generators(),
             &mut transcript(evidence, challenge)?,
             &commitments(evidence)?,
             32,
@@ -623,7 +633,7 @@ impl Fixture {
                 valid_from_ms: now_ms,
                 valid_until_ms: until,
                 commitment_hex: hex::encode(
-                    PedersenGens::default()
+                    pedersen_generators()
                         .commit(Scalar::from(value), blind)
                         .compress()
                         .to_bytes(),

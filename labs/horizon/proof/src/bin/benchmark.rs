@@ -206,7 +206,7 @@ fn main() -> Result<()> {
         "durations":records.durations, "proof_bytes_a":records.proofs, "proof_bytes_b":cases[0].1.proof_hex.len()/2,
         "envelope_json_bytes":records.envelopes,
         "verification_cache":false, "b_reuses_exact_proof":true, "valid_encoding_tamper_rejections":samples_count,
-        "parameter_cost_note":"Public generators are constructed within current library prove/verify calls. parameters_standalone is diagnostic and must not be subtracted or added twice.",
+        "parameter_cost_note":"Fixed immutable public generators are initialized once per process with OnceLock. This parameter cache contains no witness, proof or verdict; mode B separately reuses its prepared proof. Samples follow warmup. Initial issuance/prepare include first-use initialization; parameters_standalone still reconstructs a fresh diagnostic set and is not a warm-call component.",
         "scope":"Five synthetic value pairs with random keys/blinds; no network/SQLite/dispatch; IID independence not established; no performance ratio against the different Vega credential relation."
     });
     let bytes = serde_json::to_vec_pretty(&report)?;

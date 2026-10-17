@@ -1,0 +1,101 @@
+{
+  "op": "verify",
+  "presentation": {
+    "challenge": {
+      "action": "record_claim_authorization",
+      "audience": "horizon-verifier",
+      "client_id": "claims-agent",
+      "expires_at_ms": 1800000030000,
+      "issued_at_ms": 1800000000000,
+      "method": "reusable",
+      "nonce": "3bb629cbf6aa28801481ed5c2bf8576238b335f2d8e211f02734c9fe5d0a9dd3",
+      "object_id": "claim-001",
+      "operation_id": "operation-001",
+      "policy_epoch": 1,
+      "policy_id": "claim-range-v1",
+      "subject": "claim-001",
+      "tenant": "horizon-demo",
+      "trust_epoch": 1
+    },
+    "evidence": {
+      "amount": {
+        "body": {
+          "commitment_hex": "4cb50864efbcc74c50b17744f4d268fb7f4f89f1ec36ea86056084927cd9a95b",
+          "currency": "EUR",
+          "exponent": 2,
+          "holder_public_key_hex": "4b111988d25846c2b9f8694212d8b95edbb95085211df1ad9c2c3d7dd6fe8a27",
+          "issuer": "expert",
+          "profile": "horizon-range-v1",
+          "role": "amount",
+          "subject": "claim-001",
+          "tenant": "horizon-demo",
+          "valid_from_ms": 1800000000000,
+          "valid_until_ms": 1800003600000,
+          "version": 1
+        },
+        "signature_hex": "adb0594ca70223762aebe103f03fdb6d84296b0697145dd0c2f5bdb2202ddab1d0907c31828d1df054ac72e8bc219792e9b4c814014b17dc1d5498ce0c497502"
+      },
+      "cap": {
+        "body": {
+          "commitment_hex": "e20bb9cb39585a1603d1d00abb21fa0c621a8c8add0cdc2961531b42900d6653",
+          "currency": "EUR",
+          "exponent": 2,
+          "holder_public_key_hex": "4b111988d25846c2b9f8694212d8b95edbb95085211df1ad9c2c3d7dd6fe8a27",
+          "issuer": "delegation",
+          "profile": "horizon-range-v1",
+          "role": "cap",
+          "subject": "claim-001",
+          "tenant": "horizon-demo",
+          "valid_from_ms": 1800000000000,
+          "valid_until_ms": 1800003600000,
+          "version": 1
+        },
+        "signature_hex": "9e762e096e379dd810c06fd80a91e139aa83f371000f915d9e54ae8e95b21bf450c094a3df44cf3aa1984541adb7fe15a66d749ba458f8fe0c33ffd8cca80604"
+      }
+    },
+    "holder_signature_hex": "41f95366bd058df4622b6299070e19385436806e314618445b32d7b0b86f68ef5d13a673c5326b4c3bfe8eea99443f70e869fdcd8165f9f67b9cdfdc0af52a09",
+    "payload": {
+      "method": "reusable",
+      "prepared": {
+        "evidence_hash": "c51f1183c1d81de372a1778f211c1791d1ed6e08aa57d9e6b7a527f6885ca135",
+        "proof_hex": "8e431465dd5f66c98c695cd1ae09675f8421da6f58ac032cfc55a7c22d739822d64dcfde47fbfaa7c84bc588573e49a27469aa4f74bae488b71c8cde6743221c30b8162c026e874a1682002dbffb52826688e4d55fc77699500623a9dde84c18be2a5c70c2597bf1939071c044b3853435190d6d630650e13b3ba2a0e96919710a47be559ca9435383a3ea2f2d60fb5651d5a2db4ae618c9d00bd055bdc9c104a3844fb19ced1f9ce1f7b39bd1bb55565de6494eedc422693f76ff3a715201021829d34c99e321b453473658fe48bb95d0df1c009887e703554f0b99a017840242c6bce4c4e36765bb4d53b918297ca5b02e1592416b1f0849bc92445e301352a67e7d58990ae1c964c8d309c1847dd53923b487c189d01c87fc8b6358442300587a8ce6b485bc228e95ae56c6d78be7bbe9a5523e39d119f25d3411d0d53b6164feefd3cf5ef8cbe825a347480614378f4633412d60c88e6a505c8d54fc2128a49eaffd1239c15f630ad660a325e124eedd5e23e28d357a969a2a70be382661fe6698fa3cb99311fc653703bef70aac11f584a91a5aa6d62c0831ac1cd7722bd483806fa25ae9601c4080d0245ae43fab4c2736d66af293e952ac23b926874c2c44f644ebc987091ea33f3b20882b7bc6bf0eda8d0cb196d54a372fc2339d52feed8ccee7a4590485b2cbb1cc3a0693e5c616878566328a6268c36bce9607614ac32cb052079637528f06ea95a54bde42a028e0f04e8864ac3ecb8e82aaae00e81ea5adfbe3db59e8e28acb15a85b1ae9a251f3a34346b7ec77aece58658a3a7afcbd85d029ef6283da1e2cac09433285044696063cc07db597432226a2e85b71df738a0153cf81e8f7ac5fb7c193fe78c1497f03d4426c0908307b5da91d042d06b3ef6d812b316c9efd7061ebddcc1a0e564e568b68c3cbcf9d6e9663dc03"
+      }
+    },
+    "profile": "horizon-range-v1"
+  },
+  "expected": {
+    "action": "record_claim_authorization",
+    "audience": "horizon-verifier",
+    "client_id": "claims-agent",
+    "expires_at_ms": 1800000030000,
+    "issued_at_ms": 1800000000000,
+    "method": "reusable",
+    "nonce": "3bb629cbf6aa28801481ed5c2bf8576238b335f2d8e211f02734c9fe5d0a9dd3",
+    "object_id": "claim-001",
+    "operation_id": "operation-001",
+    "policy_epoch": 1,
+    "policy_id": "claim-range-v1",
+    "subject": "claim-001",
+    "tenant": "horizon-demo",
+    "trust_epoch": 1
+  },
+  "trust": {
+    "amount_issuer": {
+      "issuer": "expert",
+      "public_key_hex": "ca39ca2ab5b47ab7b143831d289ebdce6f38c2a7170486628093d984a3a0c1ac"
+    },
+    "cap_issuer": {
+      "issuer": "delegation",
+      "public_key_hex": "9ea66191ca8c6ad498fd4be21e707469aedc24edd22d613f267d58006099e013"
+    },
+    "epoch": 1
+  },
+  "policy": {
+    "allow_reuse": true,
+    "max_challenge_ttl_ms": 30000,
+    "policy_epoch": 1,
+    "policy_id": "claim-range-v1",
+    "require_private": true
+  },
+  "now_ms": 1800000000000
+}
