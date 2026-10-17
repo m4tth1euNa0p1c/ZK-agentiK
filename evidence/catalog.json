@@ -315,7 +315,9 @@
         "package-lock.json",
         "docs/publication/LOCAL_VALIDATION_2026-10-17.json",
         "docs/publication/OPERATOR_VALIDATION_2026-10-17.json",
-        "docs/publication/INDEPENDENT_AGENT_REVIEW.md"
+        "docs/publication/INDEPENDENT_AGENT_REVIEW.md",
+        "docs/horizon/ARCHITECTURE.md",
+        "docs/horizon/THREAT_MODEL.md"
       ],
       "sources": []
     },
@@ -382,7 +384,8 @@
         "labs/risc0/Cargo.lock",
         "labs/risc0/methods/guest/Cargo.lock",
         "THIRD_PARTY_NOTICES.md",
-        "LICENSE"
+        "LICENSE",
+        "docs/publication/checks/npm-audit-2026-10-17.json"
       ],
       "sources": []
     },
@@ -457,6 +460,45 @@
         ".agents/skills/scientific-whitepaper/SKILL.md",
         ".agents/skills/scientific-whitepaper/agents/openai.yaml",
         ".agents/skills/zkp-riscv-guest/SKILL.md"
+      ],
+      "sources": []
+    },
+    {
+      "id": "github-actions-local-reproduction",
+      "kind": "deployment",
+      "status": "reproduced",
+      "relation": "Deux workflows et quatre jobs réussis sur le candidat acc6e98 : 105 tests, preuve Horizon et sandbox Docker avec rejeu après redémarrage, Octave/PDF et contrôle du registre.",
+      "limitations": [
+        "Déploiement éphémère sur le runner GitHub, sans Azure/GCP ou production. Les dates et états API ne constituent pas un horodatage TSA des assertions scientifiques.",
+        "Les appels workflow_call ont été exécutés ; workflow_dispatch n’a pas été exécuté dans ce relevé.",
+        "Les résumés de processus, JSON numériques et observations sont conservés ; les bundles complets GitHub ont une rétention de 14 jours.",
+        "Aucun benchmark de latence n’est déduit du temps de CI ; les preuves publiques historiques ne sont pas des autorisations fraîches.",
+        "Un scan de secrets et une revue d’agent ne prouvent pas l’absence de vulnérabilité ni la qualification du produit."
+      ],
+      "artifacts": [
+        "docs/publication/checks/ci-candidate-acc6e98/horizon/commit.txt",
+        "docs/publication/checks/ci-candidate-acc6e98/horizon/execution.json",
+        "docs/publication/checks/ci-candidate-acc6e98/horizon/independent-verification.json",
+        "docs/publication/checks/ci-candidate-acc6e98/horizon/restart.json",
+        "docs/publication/checks/ci-candidate-acc6e98/horizon/RUN_STATUS.txt",
+        "docs/publication/checks/ci-candidate-acc6e98/horizon/sandbox.json",
+        "docs/publication/checks/ci-candidate-acc6e98/horizon/SCOPE.txt",
+        "docs/publication/checks/ci-candidate-acc6e98/math/commit.txt",
+        "docs/publication/checks/ci-candidate-acc6e98/math/execution.json",
+        "docs/publication/checks/ci-candidate-acc6e98/math/octave-2026-10-17T15-21-51.256Z-45b3be90-eb81-4571-b06a-3d8f2308c9b4/20261017T152253Z.json",
+        "docs/publication/checks/ci-candidate-acc6e98/math/octave-2026-10-17T15-21-51.256Z-45b3be90-eb81-4571-b06a-3d8f2308c9b4/latest.json",
+        "docs/publication/checks/ci-candidate-acc6e98/math/octave-2026-10-17T15-21-51.256Z-45b3be90-eb81-4571-b06a-3d8f2308c9b4/run.json",
+        "docs/publication/checks/ci-candidate-acc6e98/math/RUN_STATUS.txt",
+        "docs/publication/checks/ci-candidate-acc6e98/math/SCOPE.txt",
+        "docs/publication/checks/ci-candidate-acc6e98/observation.json",
+        "docs/publication/checks/ci-candidate-acc6e98/test-counts.json",
+        "docs/publication/checks/gitleaks-2026-10-17.json",
+        "docs/publication/PUBLICATION_REVIEW_2026-10-17.md",
+        ".github/workflows/ci.yml",
+        ".github/workflows/evidence.yml",
+        ".github/workflows/proof-sandbox.yml",
+        "docs/publication/GITHUB_ACTIONS.md",
+        "evidence/README.md"
       ],
       "sources": []
     }

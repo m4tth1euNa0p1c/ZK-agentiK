@@ -59,7 +59,12 @@ pas évalués. Le mode non-ZK divulgue intentionnellement les valeurs et ouvertu
 
 ## Déploiement et conformité
 
-HTTP sans authentification est limité au loopback et aux organisations fictives.
+Les routes HTTP du parcours de démonstration, sans authentification d'utilisateur,
+sont limitées au loopback et aux organisations fictives. Les trois routes opérateur
+(`/api/revoke`, `/api/rotate-policy`, `/api/reconcile`) exigent désormais un secret
+configuré côté serveur ; elles échouent fermées en son absence. Compose ne le
+configure pas et le navigateur ne le reçoit pas. Un secret partagé local n'est
+pas un IAM bancaire. Voir les [tests opérateur datés](../publication/OPERATOR_VALIDATION_2026-10-17.json).
 Les routes opérateur de révocation ne doivent pas être exposées comme des outils
 d'agent. CORS/CSP ne remplacent pas une authentification. Une industrialisation
 exige mTLS/IAM, séparation des rôles, HSM/KMS, origine contrôlée, rotation/révocation,

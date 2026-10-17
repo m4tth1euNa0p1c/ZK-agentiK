@@ -36,8 +36,15 @@ secrets du prover ni les routes d'administration. La preuve Bulletproofs est
 vérifiée par le même worker avant le même contrôleur SQLite. Aucun champ
 `_meta.zkp` du protocole historique n'est réinterprété comme ce nouveau profil.
 L'hôte, ses adaptateurs et sa configuration sont de confiance. Cette intégration
-ne résout pas l'émission réelle, les règles contractuelles ou l'authentification.
+ne résout pas l'émission réelle, les règles contractuelles ou l'IAM bancaire.
 Les mesures antérieures au SDK ne constituent pas une mesure de son transport.
+
+Les routes HTTP d'exploitation vérifient un secret opérateur distinct, absent
+du navigateur et des outils MCP. Sans configuration explicite, révocation,
+rotation de politique et réconciliation sont refusées. Ce contrôle local ne
+fournit ni identité bancaire ni rôles nominatifs. Il ne remplace jamais la
+vérification de preuve du parcours d'autorisation. Le [guide de déploiement](DEPLOYMENT.md)
+précise cette frontière et les limites du relais.
 
 Dans Compose, un relais HTTP sans secret publie les deux ports loopback. Ses
 destinations et routes sont constantes. Lui seul joint le réseau d'entrée et

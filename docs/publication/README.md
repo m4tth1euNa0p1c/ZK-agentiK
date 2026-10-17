@@ -18,6 +18,7 @@ indique son propre périmètre et ses limites.
 | Évaluer Azure/GCP et personnaliser les fondations | [Comparaison](CLOUD_COMPARISON.md), [validation locale](VALIDATION.md) |
 | Examiner l'expérience CUDA | [Rapport GPU](../experiments/gpu/README.md), résultats négatifs conservés |
 | Contrôler les affirmations publiques | [Registre éditorial](CLAIMS.md), [checklist](RELEASE_CHECKLIST.md) |
+| Lire la décision et les checks réellement exécutés | [Revue de publication datée](PUBLICATION_REVIEW_2026-10-17.md) |
 | Lire les corrections et limites de sécurité | [Contre-revue d'agents](INDEPENDENT_AGENT_REVIEW.md), [dépendances](DEPENDENCY_REVIEW.md), [validation locale](LOCAL_VALIDATION_2026-10-17.json) |
 | Poursuivre le travail | [Prompt exact](NEXT_PROMPT.md), [issues H11–H17](../../issues/horizon/NEXT_EXPERIMENTS.md) |
 

@@ -1,0 +1,20 @@
+{
+  "observed_at_utc": "2026-10-17T15:33:30.718Z",
+  "source": "https://github.com/m4tth1euNa0p1c/ZK-agentiK/actions/runs/39044646338/job/117430845824",
+  "source_commit": "acc6e9832d41bfe3260cb578e4a975ff630b5100",
+  "rust_passed": 23,
+  "node_passed": 82,
+  "node_groups": [
+    25,
+    31,
+    21,
+    5
+  ],
+  "total_passed": 105,
+  "failed": 0,
+  "raw_gh_job_log_sha256": "568781122e25548889bac8b6e89e0814a167a972eea51168568d1e1aadb067f9",
+  "limitations": [
+    "Counts parsed from the completed GitHub job log; no external audit.",
+    "Command outcomes are not performance measurements or mathematical proof."
+  ]
+}

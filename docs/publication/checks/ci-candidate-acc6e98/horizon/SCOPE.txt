@@ -1,0 +1,1 @@
+Process outcomes and selected public artifacts only. Local-clock dates; no TSA or external security audit. The fixture is historical, not a fresh authorization. No witness, private keys, raw logs or cloud deployment.

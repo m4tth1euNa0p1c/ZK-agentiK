@@ -11,3 +11,11 @@ Les données privées, logs non relus, caches et configurations locales sont exc
 Le catalogue conserve les résultats négatifs et les hypothèses non démontrées.
 Les benchmarks historiques restent à leur place et ne sont pas recalculés sous
 un nouveau nom pour masquer une régression.
+
+La publication ajoute un manifeste daté, produit dans un checkout propre. Pour
+vérifier une version ancienne après évolution du catalogue, prendre un checkout
+du commit `source.commit` indiqué et y copier le manifeste à vérifier. Exécuter
+le vérifieur depuis un environnement de confiance. Le commit déclaré est une
+référence de reproduction, sans signature attestant l'identité du déclarant.
+Conserver les anciens manifestes ; un nouveau catalogue demande un nouveau
+manifeste, pas la réécriture d'un résultat antérieur.

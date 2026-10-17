@@ -1,0 +1,21 @@
+{
+  "schema": "proofkit-run-v1",
+  "profile": "math",
+  "relation": "Exact integer range equivalence, boundary vectors, finite local replay model.",
+  "started_at_utc": "2026-10-17T15:21:51.225Z",
+  "date_is_self_reported": true,
+  "post_quantum": false,
+  "outcome": "passed",
+  "steps": [
+    {
+      "id": "octave",
+      "outcome": "passed",
+      "exit_code": 0,
+      "elapsed_ms": 64028.7815
+    }
+  ],
+  "semantics": "Process outcomes only; no automatic claim promotion, percentile or semantic certification.",
+  "privacy": "Raw logs stay local under .tools; POSIX mode 0600/0700 is not a Windows ACL guarantee.",
+  "finished_at_utc": "2026-10-17T15:22:55.255Z",
+  "report": ".tools/proofkit/runs/2026-10-17T15-21-51.224Z-b5b844be-e8e8-4c7f-a085-3d1069aad37b/report.json"
+}

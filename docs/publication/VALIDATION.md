@@ -53,3 +53,12 @@ multi-instance, ni effets distants. Les fondations ne déploient aucun runtime.
 La validité des skills ne mesure pas leur efficacité sur tous les agents ; les
 rôles sont des contrats Markdown chargés explicitement, pas des configurations
 universellement autodécouvertes.
+
+## Complément GitHub Actions
+
+Le 17 octobre 2026, le quatrième skill ajouté pour cette livraison,
+`proof-workflow-automation`, a passé `quick_validate` et le contrôle des
+métadonnées `agents/openai.yaml` (description 25–64 caractères et référence au
+skill dans le prompt). L'agent auteur a exécuté ces contrôles. Le routage dans
+`AGENTS.md` pointe vers ce skill. Sa validation de structure ne démontre pas
+l'efficacité de ses instructions sur tous les clients.

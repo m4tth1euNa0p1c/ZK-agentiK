@@ -75,6 +75,27 @@ Elle ne signifie ni disponibilité générale du produit ni publication npm.
    Tout déploiement cloud futur exige un périmètre explicitement autorisé ;
    ne pas ajouter un stage fictif annonçant un environnement inexistant.
 
+7. Expériences CPU/GPU, Vega et migration post-quantique
+   Lire docs/experiments/gpu/RESULTS_2026-10-17.md : deux compilations ont échoué
+   par manque de mémoire et aucune receipt GPU n'a été produite. Ne pas relancer
+   les mêmes paramètres. Justifier d'abord le profil, la RAM, la durée maximale
+   et le critère d'arrêt ; aucune modification globale du pilote ou location de
+   GPU n'est autorisée par ce prompt. Un essai nouveau doit séparer compilation,
+   préparation, proving, vérification indépendante, sérialisation et mémoire,
+   conserver le résultat négatif et vérifier le refus du mode de développement.
+   Comparer CPU/GPU uniquement à relation, sécurité, entrées et paramètres égaux.
+   Ne pas mélanger le circuit SHA-256 de Vega avec le prédicat Horizon ; un essai
+   à relation différente reste dans un classement distinct. Ne pas extrapoler
+   les chiffres des références au code du SDK ou à une nouvelle dépendance.
+
+   Pour le post-quantique, inventorier toutes les hypothèses : engagement,
+   signature de source, signature fraîche, preuve, transcript et paramètres.
+   Changer seulement Ed25519 pour ML-DSA ou SLH-DSA ne rend pas Bulletproofs
+   post-quantique. Proposer un profil séparé à partir de primitives publiées,
+   établir ses hypothèses et ses coûts, puis réaliser un POC seulement si son
+   besoin et sa faisabilité sont établis. Refuser toute demande PQ sur le profil
+   classique actuel. Aucun protocole maison ou label PQ fondé sur SHA-256 seul.
+
 Livrables : diff borné, matrice assertion/preuve/limite, tests négatifs avec
 compteurs d'effets, artefacts de panne, coût avec hypothèses, décision GO/NO-GO
 par expérience. Exécuter les contrôles appropriés de AGENTS.md et les profils

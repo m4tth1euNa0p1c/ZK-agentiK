@@ -13,6 +13,9 @@ bancaire, la demande commerciale et la sécurité post-quantique ne sont pas ét
 [Dossier de publication](docs/publication/README.md) ·
 [Recherche et historique](docs/README.md)
 
+Les [contrôles de publication datés](docs/publication/PUBLICATION_REVIEW_2026-10-17.md)
+relient les tests exécutés, les artefacts CI et les limites encore ouvertes.
+
 ## Le besoin à éprouver
 
 Un délégataire et un assureur veulent vérifier qu'un montant admissible respecte
