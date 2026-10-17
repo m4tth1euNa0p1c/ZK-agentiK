@@ -23,6 +23,12 @@ npm run horizon:init
 docker compose -f deploy/horizon/compose.yaml up -d --build --wait
 ```
 
+Sous Linux avec un utilisateur non-root, définir avant Compose
+`export HORIZON_PROVER_UID=$(id -u)`. Le fournisseur lit ainsi le fichier privé
+`0600` avec l'identité de son propriétaire. Le vérifieur reste UID 1000, avec
+son propre volume ; seul `public.json`, sans witness ni clé privée, est `0644`.
+Sous Windows/Docker Desktop, la valeur par défaut 1000 convient au montage.
+
 Ouvrir **http://127.0.0.1:38080**. Le fournisseur répond sur le port 38081.
 Le relais local fixe les deux destinations ; seuls ses ports loopback sont
 publiés. Les processus fournisseur et vérifieur sont sur un réseau Docker interne.

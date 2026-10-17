@@ -143,6 +143,14 @@ L'interface statique a été contrôlée aux largeurs desktop et mobile par l'ag
 frontend ; le navigateur interactif CUA n'était pas disponible pour le contrôle
 racine. Le parcours réel a été validé par l'API HTTP et le compteur de cible.
 
+La première CI GitHub Linux a passé les suites mais échoué au démarrage Compose :
+les fichiers bind en `0600`, appartenant au runner UID 1001, n'étaient pas
+accessibles aux services UID 1000. Ce cas était masqué par les montages Windows.
+Correction : fichier public seul en `0644` explicite, privé conservé en `0600`,
+UID du seul prover aligné sur le propriétaire non-root. Le vérifieur conserve
+son UID et volume propres. Référence de l'échec conservée :
+[run 38995262984](https://github.com/m4tth1euNa0p1c/ZK-agentiK/actions/runs/38995262984).
+
 ## H10 — Décision
 
 POC utile et optimisation locale démontrés. Aucun record externe, aucune

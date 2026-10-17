@@ -48,6 +48,9 @@ x-runtime: &runtime
 services:
   prover:
     <<: *runtime
+    # A Linux bind preserves host UID/mode. Match its non-root owner to read
+    # private.json (0600); do not make private material world-readable.
+    user: "${HORIZON_PROVER_UID:-1000}:1000"
     command: ["prover", "/config/private.json"]
     environment:
       PORT: "38081"

@@ -1,5 +1,5 @@
 import { spawn, spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { chmodSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { mkdtempSync } from 'node:fs';
@@ -28,7 +28,10 @@ if (command === 'build') {
     try {
       const fixture = await worker.request({ op: 'init', now_ms: Date.now() });
       const { trust, evidence, challenge, policy, witness, holder_secret_hex } = fixture;
-      writeFileSync(join(destination, 'public.json'), JSON.stringify({ trust, evidence, challenge, policy }, null, 2), { mode: 0o600, flag: 'wx' });
+      // Only this public configuration is readable by the separate verifier UID.
+      // The witness and signing key remain owner-only in private.json below.
+      writeFileSync(join(destination, 'public.json'), JSON.stringify({ trust, evidence, challenge, policy }, null, 2), { mode: 0o644, flag: 'wx' });
+      chmodSync(join(destination, 'public.json'), 0o644); // Public-only; also handles a restrictive host umask.
       writeFileSync(join(destination, 'private.json'), JSON.stringify({ evidence, witness, holder_secret_hex, policy,
         client_id: challenge.client_id, audience: challenge.audience, action: challenge.action }, null, 2), { mode: 0o600, flag: 'wx' });
     } finally { worker.close(); }
