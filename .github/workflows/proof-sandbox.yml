@@ -59,6 +59,11 @@ jobs:
             horizon-math-paper:local sh /work/docs/whitepaper/build.sh
           test -s docs/whitepaper/whitepaper.pdf
           ! grep -E 'Warning|Overfull|^!' docs/whitepaper/build/diagnostics.txt
+          docker run --rm --network none --cpus 2 --memory 2g \
+            --mount type=bind,source="$GITHUB_WORKSPACE",target=/work \
+            horizon-math-paper:local sh /work/docs/whitepaper/build-circuit.sh
+          test -s docs/whitepaper/circuit-validation.pdf
+          ! grep -E 'Warning|Overfull|^!' docs/whitepaper/build/circuit/diagnostics.txt
       - if: inputs.deploy_sandbox
         name: Create fresh synthetic configuration for the isolated runner
         run: |
@@ -84,6 +89,7 @@ jobs:
         run: |
           cp evidence/catalog.json public-artifacts/catalog.json
           cp docs/whitepaper/whitepaper.pdf public-artifacts/whitepaper.pdf
+          cp docs/whitepaper/circuit-validation.pdf public-artifacts/circuit-validation.pdf
           cp docs/publication/CLAIMS.md public-artifacts/CLAIMS.md
           if [ "$PROFILE" = math ] && [ -f public-artifacts/started.marker ]; then
             find math/results -mindepth 2 -maxdepth 2 -name '*.json' -newer public-artifacts/started.marker -print0 |

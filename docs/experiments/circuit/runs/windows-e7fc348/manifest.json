@@ -1,0 +1,306 @@
+{
+  "schema": "horizon-circuit-run-v1",
+  "started_at_utc": "2026-10-17T17:08:56.889Z",
+  "date_is_self_reported": true,
+  "trusted_timestamp": false,
+  "status": "pass",
+  "case_count": 4096,
+  "source_commit": "e7fc348cc953566fc44b5cdf74e5ebf381cfd205",
+  "tracked_checkout_dirty": false,
+  "source_sha256": {
+    "scripts/circuit-campaign.mjs": "07aa1b119bef2db3c87020b4fc09bc0ed305fed52a0914b4351e36adf25ad132",
+    "scripts/circuit-vectors.mjs": "a8cf4d6a76d5470a46794f0526c37da8cfcd2b52f61e2d125abfbc4ae153df29",
+    "scripts/circuit-correlate.mjs": "5eb07243136f8867ef3e1a610d5ca1358f29886492be618b53266cb9c6df4837",
+    "scripts/circuit-report.mjs": "5fd6e0119b2dfd44efb3a1862a84d694f7b65ed25cae5b4b0aef4506726c2727",
+    "scripts/circuit-reverify.mjs": "fb767c9f950106daa1d1f466dbc0656398c6c07c9b21f6ed5d6932defad13bb0",
+    "math/circuit/circuit_oracle.m": "fa134dee0bb98484249abdb90dbb31cc25439e4f0874eb4aad716b490935be39",
+    "math/circuit/run_oracle.m": "a847009d851755cefbf2339c1cabdd7b0d9d4243a1058791a48ab62c05d1b245",
+    "math/circuit/Dockerfile": "0b568188302782cdb93336af7fb0132f9b5141900ac07808c0bc6aae682a6460",
+    "math/circuit/plot_campaign.py": "b6bad30333c65548dfbf007bd4101f62f40603a43f33054a6731243dffa6e3f2",
+    "labs/horizon/proof/src/bin/circuit_campaign.rs": "1b62c042f6195f9055a72af452aef69733925f4a899c4713ddf1856cb489a654",
+    "labs/horizon/proof/src/lib.rs": "836431b405c6dcb4430d93e92ebd529d3965758921ce9757eb4f10226f3d8208",
+    "labs/horizon/Cargo.lock": "ad2bc6af625f216870143d54765e910330e9e1e5728261ca1e38928c85dceed9"
+  },
+  "environment": {
+    "node": "v24.11.1",
+    "os": "win32",
+    "architecture": "x64",
+    "cpu": "Intel(R) Core(TM) Ultra 7 265F",
+    "logical_cpus": 20,
+    "host_memory_bytes": 33984958464,
+    "crypto": "CPU; no GPU",
+    "numerical_container": {
+      "cpus": 2,
+      "memory": "2g",
+      "network": "none",
+      "image_id": "sha256:498098bfc2f7bd4154dde8dd35977cb6a61a8abcaab591f1407e653a170fbb62",
+      "packages": "octave\t7.3.0-2\npython3\t3.11.2-1+b1\npython3-matplotlib\t3.6.3-1+b1"
+    },
+    "cargo": "cargo 1.93.0 (083ac5135 2025-12-15)"
+  },
+  "steps": [
+    {
+      "id": "rust-build",
+      "executable": "node",
+      "args": [
+        "scripts/cargo.mjs",
+        "build",
+        "--release",
+        "--locked",
+        "--manifest-path",
+        "labs/horizon/Cargo.toml",
+        "--bin",
+        "circuit_campaign"
+      ],
+      "status": "pass",
+      "exit_code": 0,
+      "signal": null,
+      "elapsed_ms": 2894,
+      "timed_out": false
+    },
+    {
+      "id": "generate-cryptographic-corpus",
+      "executable": "<REPO>\\labs\\horizon\\target\\release\\circuit_campaign.exe",
+      "args": [
+        "generate",
+        "--vectors",
+        "<RUN>\\public\\vectors.json",
+        "--output",
+        "<RUN>\\generated"
+      ],
+      "status": "pass",
+      "exit_code": 0,
+      "signal": null,
+      "elapsed_ms": 87501,
+      "timed_out": false
+    },
+    {
+      "id": "independent-process-verification",
+      "executable": "<REPO>\\labs\\horizon\\target\\release\\circuit_campaign.exe",
+      "args": [
+        "verify",
+        "--requests",
+        "<RUN>\\generated\\verification-requests.ndjson",
+        "--output",
+        "<RUN>\\public\\verifier-results.json"
+      ],
+      "status": "pass",
+      "exit_code": 0,
+      "signal": null,
+      "elapsed_ms": 20210,
+      "timed_out": false
+    },
+    {
+      "id": "octave-self-tests",
+      "executable": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "--name",
+        "horizon-circuit-57bc479b-78e6-45a8-9197-b3e7ae4c19b1",
+        "--network",
+        "none",
+        "--read-only",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--cpus",
+        "2",
+        "--memory",
+        "2g",
+        "--pids-limit",
+        "128",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev,size=256m",
+        "--mount",
+        "type=bind,source=<REPO>\\math\\circuit,target=/math/circuit,readonly",
+        "--mount",
+        "type=bind,source=<RUN>\\public,target=/output",
+        "horizon-circuit-math:local",
+        "octave",
+        "--no-gui",
+        "--no-history",
+        "--quiet",
+        "--eval",
+        "addpath('/math/circuit'); r=run_oracle(); f=fopen('/output/octave-selftests.json','w'); assert(f>=0); assert(fprintf(f,'%s\\n',jsonencode(r))>0); fclose(f);"
+      ],
+      "status": "pass",
+      "exit_code": 0,
+      "signal": null,
+      "elapsed_ms": 2226,
+      "timed_out": false
+    },
+    {
+      "id": "octave-oracle",
+      "executable": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "--name",
+        "horizon-circuit-57bc479b-78e6-45a8-9197-b3e7ae4c19b1",
+        "--network",
+        "none",
+        "--read-only",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--cpus",
+        "2",
+        "--memory",
+        "2g",
+        "--pids-limit",
+        "128",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev,size=256m",
+        "--mount",
+        "type=bind,source=<REPO>\\math\\circuit,target=/math/circuit,readonly",
+        "--mount",
+        "type=bind,source=<RUN>\\public,target=/output",
+        "horizon-circuit-math:local",
+        "octave",
+        "--no-gui",
+        "--no-history",
+        "--quiet",
+        "--eval",
+        "addpath('/math/circuit'); circuit_oracle('/output/vectors.json','/output/octave.json');"
+      ],
+      "status": "pass",
+      "exit_code": 0,
+      "signal": null,
+      "elapsed_ms": 24712,
+      "timed_out": false
+    },
+    {
+      "id": "scientific-figures",
+      "executable": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "--name",
+        "horizon-circuit-57bc479b-78e6-45a8-9197-b3e7ae4c19b1",
+        "--network",
+        "none",
+        "--read-only",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--cpus",
+        "2",
+        "--memory",
+        "2g",
+        "--pids-limit",
+        "128",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev,size=256m",
+        "--mount",
+        "type=bind,source=<REPO>\\math\\circuit,target=/src,readonly",
+        "--mount",
+        "type=bind,source=<RUN>\\public,target=/output",
+        "horizon-circuit-math:local",
+        "python3",
+        "/src/plot_campaign.py",
+        "/output"
+      ],
+      "status": "pass",
+      "exit_code": 0,
+      "signal": null,
+      "elapsed_ms": 1755,
+      "timed_out": false
+    }
+  ],
+  "matlab_executed": false,
+  "cryptographic_rng": "OsRng; values only are deterministically generated",
+  "synthetic_inputs_public": true,
+  "external_effects_attempted": 0,
+  "performance_benchmark": false,
+  "executable_sha256": "e6237d4efc8383145ae1214ffc1fd62ceb261397aae7fc26fc4a4dff93e9a078",
+  "requests_sha256": "332aa4087d830b646349b2cf2810357d4540f334152764df0d74961b10236b4f",
+  "correlation": {
+    "status": "pass",
+    "cases": 4096,
+    "cryptographic_checks": 36794,
+    "valid_proofs_generated": 4086,
+    "invalid_upstream_candidates": 4106,
+    "mismatches": 0,
+    "false_acceptances": 0
+  },
+  "finished_at_utc": "2026-10-17T17:11:19.218Z",
+  "limitations": [
+    "Finite experiment; no universal mathematical or cryptographic security proof.",
+    "Separate verifier process uses the same Rust implementation; not an external audit.",
+    "Host clock and hashes provide no trusted timestamp.",
+    "MATLAB is a separate explicit CI job.",
+    "No business action executed; application authorization is tested separately.",
+    "New observations do not replace historical benchmarks or establish a Vega/PQ/GPU result."
+  ],
+  "files": [
+    {
+      "path": "correlation.json",
+      "bytes": 1104146,
+      "sha256": "651a0faefe4ca9a701991c93059e746bd970aa195d181e3e606e007597c4a8ec"
+    },
+    {
+      "path": "figures/coverage.png",
+      "bytes": 272361,
+      "sha256": "87225c4983ff6b04675a9a3513ae723756e8fe27135fc5e56676ad6795e08d3d"
+    },
+    {
+      "path": "figures/coverage.svg",
+      "bytes": 216322,
+      "sha256": "eb5da465db5db511798a333ea0a17fcb76367bef68a9d566c2c67ef437638cd6"
+    },
+    {
+      "path": "figures/plot-metadata.json",
+      "bytes": 148,
+      "sha256": "8bdf3d2d6d64f17cd1b59d8c1ec4c7afeb19a28a5607c1ffe9b44988a6967a08"
+    },
+    {
+      "path": "figures/verification.png",
+      "bytes": 92003,
+      "sha256": "4f767e554f842d08b3536cfb5375a56011ebce60253106d6cb43e2b220387863"
+    },
+    {
+      "path": "figures/verification.svg",
+      "bytes": 217020,
+      "sha256": "61f603d61d805f5a3707e79a29bac2f0d63270350bc3f954ca628d8562f886bc"
+    },
+    {
+      "path": "octave-selftests.json",
+      "bytes": 492,
+      "sha256": "cab349d3fe5d02f938dfbcfa309b4b3544e6052ef7f348252a33eceff9926c71"
+    },
+    {
+      "path": "octave.json",
+      "bytes": 520319,
+      "sha256": "3deb98e5c92b3d520dc874be6a49ce9f8754d0bce76bf37063ee040056e30999"
+    },
+    {
+      "path": "prover-results.json",
+      "bytes": 1130464,
+      "sha256": "50854dc3552a60ba4fc9571d6c16134aa1453067884036bd0a7f6efee8ca2079"
+    },
+    {
+      "path": "report.html",
+      "bytes": 774878,
+      "sha256": "63a7c962acda8629a26972df6c199ce68678cf0a10e885d4f6d83f0b5c3ff112"
+    },
+    {
+      "path": "vectors.json",
+      "bytes": 487862,
+      "sha256": "15904eede261efb1fe5fd42f207ad2becf757386a32cc01c198d084d392de242"
+    },
+    {
+      "path": "verification-requests.ndjson.gz",
+      "bytes": 11119291,
+      "sha256": "a647c471b6890003d852fd6429be6ea7bfe413e2ea905bfcb70570f849871b9a"
+    },
+    {
+      "path": "verifier-results.json",
+      "bytes": 4129918,
+      "sha256": "152cfa1ff67025b05893c37cb8bcfffb031c3f49745686aa6f8b98402e12fb7a"
+    }
+  ]
+}

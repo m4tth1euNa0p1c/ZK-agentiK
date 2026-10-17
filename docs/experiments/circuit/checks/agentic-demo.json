@@ -1,0 +1,22 @@
+{
+  "schema": "circuit-agentic-demo-observation-v1",
+  "observed_on": "2026-10-17",
+  "date_is_self_reported": true,
+  "source_revision": "581dbeb4bf84631bcf5abb9421f706d4d586bca6",
+  "command": "node scripts/horizon.mjs demo",
+  "exit_code": 0,
+  "observed_output": {
+    "profile": "horizon-range-v1",
+    "proof": "real Bulletproofs + Ed25519",
+    "source_data": "synthetic",
+    "action": "record_claim_authorization (local SQLite)",
+    "independent_verifier": true,
+    "unauthorized_effects": 0,
+    "authorized_effects": 1,
+    "disclosure_downgrade_rejected": true,
+    "alteration_rejected": true,
+    "replay_rejected": true
+  },
+  "redaction": "The local temporary directory containing generated private configuration is deliberately omitted.",
+  "scope": "Local HTTP scenario and real proof workers. Official MCP client/stdio scenarios are exercised separately by npm run test:horizon. No external financial action or exactly-once remote API claim."
+}

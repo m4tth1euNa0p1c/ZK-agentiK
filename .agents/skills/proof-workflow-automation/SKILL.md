@@ -66,6 +66,17 @@ Pour Horizon, conserver les contrôles de falsification, rejeu, redémarrage et
 compteur d'effets ; pour math, distinguer tests Octave et preuve cryptographique.
 Ne pas lancer Vega/CUDA ou une campagne lourde pour une simple édition CI.
 
+Le workflow séparé `circuit-validation.yml` orchestre les campagnes corrélées
+128/1024/4096 ; ses corpus complets, autotests et images ont une liste d'export
+propre. Le job MATLAB utilise les actions officielles épinglées et l'éligibilité
+du dépôt public ; contrôler son exécution réelle et corréler les mêmes octets,
+sans promouvoir un résultat Octave en résultat MATLAB. Les PR directes lancent
+128 cas et MATLAB ; un appel réutilisable respecte ses paramètres explicites.
+Le conteneur numérique prend UID:GID de l'hôte Linux pour écrire sur les mounts
+sans rétablir de capacité ou rendre les dossiers accessibles en écriture à tous.
+Conserver les échecs Linux initiaux et leurs fichiers manquants. Le profil `math`
+reconstruit le manuscrit principal et le supplément `circuit-validation.pdf`.
+
 Livrer le diff, les validations réellement exécutées, les résultats négatifs
 et les inconnues restantes. Le maintien de ce workflow n'autorise pas à lui
 seul une fusion sur la branche principale, un déploiement cloud, une publication

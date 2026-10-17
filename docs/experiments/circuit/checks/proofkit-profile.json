@@ -1,0 +1,20 @@
+{
+  "schema": "proofkit-run-v1",
+  "profile": "circuit",
+  "relation": "Horizon two 32-bit ranges, exact u64 input corpus and adversarial presentations; no external action.",
+  "started_at_utc": "2026-10-17T17:22:22.135Z",
+  "date_is_self_reported": true,
+  "post_quantum": false,
+  "outcome": "passed",
+  "steps": [
+    {
+      "id": "correlated-circuit",
+      "outcome": "passed",
+      "exit_code": 0,
+      "elapsed_ms": 10042.381
+    }
+  ],
+  "semantics": "Process outcomes only; no automatic claim promotion, percentile or semantic certification.",
+  "privacy": "Raw logs stay local under .tools; POSIX mode 0600/0700 is not a Windows ACL guarantee.",
+  "finished_at_utc": "2026-10-17T17:22:32.178Z"
+}

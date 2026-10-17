@@ -18,6 +18,8 @@
     "lab:risc0": "node scripts/risc0-lab.mjs",
     "lab:risc0:gpu": "node scripts/risc0-gpu-lab.mjs",
     "test:risc0:gpu": "node --test labs/risc0/gpu/runner.test.mjs",
+    "test:circuit": "node --test tests/circuit/*.test.mjs",
+    "circuit:campaign": "node scripts/circuit-campaign.mjs",
     "horizon:build": "node scripts/horizon.mjs build",
     "horizon:init": "node scripts/horizon.mjs init",
     "horizon:serve": "node scripts/horizon.mjs serve",

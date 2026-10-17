@@ -1,0 +1,14 @@
+{
+  "schema": "circuit-browser-check-v1",
+  "observed_at_utc": "2026-10-17T17:20:30.360Z",
+  "runtime": "Installed Chrome headless; isolated temporary profile",
+  "url": "http://127.0.0.1:38190/views/windows-e7fc348/report.html",
+  "checks": {
+    "exit": 0,
+    "case_count_rendered": true,
+    "table_rendered": true,
+    "all_categories_rendered": true
+  },
+  "report_sha256": "97c3c34fa7738503f8b982955986d1a1e7d9aa53c5ac1bde83749e22069cb731",
+  "scope": "Actual browser DOM after script execution: 4096 case count, rendered table and category options. Filter change and accessibility audit not exercised."
+}

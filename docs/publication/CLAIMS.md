@@ -22,6 +22,7 @@ identifier le commit candidat et ses vérifications actuelles.
 | P13 | Le profil est post-quantique | **Faux pour Horizon** | Bulletproofs/Ristretto et Ed25519 ne donnent pas cette garantie |
 | P14 | Le système est qualifié DORA, AI Act ou bancaire | **Non établi** | Le code et un journal ne constituent pas une évaluation réglementaire |
 | P15 | Le paquet scellé est authentique et ses résultats vrais | **Non établi par une empreinte seule** | Une empreinte lie des octets ; identité du signataire, temps et véracité exigent d'autres preuves |
+| P16 | Le banc corrélé traite 4 096 vecteurs avec 4 086 preuves valides, 4 106 candidats invalides et 36 794 vérifications | [Campagnes Windows/Linux et MATLAB R2026b](../experiments/circuit/RESULTS_2026-10-17.md), 0 désaccord observé | Tests finis synthétiques ; même bibliothèque dans un processus vérifieur séparé ; candidats invalides distincts des preuves valides ; pas une borne de soundness |
 
 Toute modification d'une ligne doit indiquer le nouveau support et les limites
 retirées ou ajoutées. Une assertion rejetée reste visible pour empêcher sa

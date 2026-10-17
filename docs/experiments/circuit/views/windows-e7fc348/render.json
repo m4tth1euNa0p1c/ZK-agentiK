@@ -1,0 +1,45 @@
+{
+  "schema": "horizon-circuit-derived-view-v1",
+  "created_at_utc": "2026-10-17T17:14:25.675Z",
+  "date_is_self_reported": true,
+  "cryptographic_reexecution": false,
+  "purpose": "Correct x-axis/footer overlap found during visual QA. Original campaign bundle is preserved byte-for-byte.",
+  "input": "docs/experiments/circuit/runs/windows-e7fc348",
+  "input_sha256": {
+    "correlation.json": "651a0faefe4ca9a701991c93059e746bd970aa195d181e3e606e007597c4a8ec",
+    "verifier-results.json": "152cfa1ff67025b05893c37cb8bcfffb031c3f49745686aa6f8b98402e12fb7a"
+  },
+  "renderer_sha256": {
+    "scripts/circuit-report.mjs": "218c0fe062ee6d9e3ac023072346f7cdb59865cf2d174bc0311f465a955744f8",
+    "math/circuit/plot_campaign.py": "c7c81d8bb5f484ef10a44a71c482eb6e93094ca63b9f2a0978a3ac406c65a573"
+  },
+  "files": [
+    {
+      "path": "report.html",
+      "sha256": "97c3c34fa7738503f8b982955986d1a1e7d9aa53c5ac1bde83749e22069cb731"
+    },
+    {
+      "path": "figures/coverage.png",
+      "sha256": "87225c4983ff6b04675a9a3513ae723756e8fe27135fc5e56676ad6795e08d3d"
+    },
+    {
+      "path": "figures/coverage.svg",
+      "sha256": "69b2e8bcd95a083c8afb82c4996623e9c8622e9072e503ba04707d22c52f557c"
+    },
+    {
+      "path": "figures/plot-metadata.json",
+      "sha256": "8bdf3d2d6d64f17cd1b59d8c1ec4c7afeb19a28a5607c1ffe9b44988a6967a08"
+    },
+    {
+      "path": "figures/verification.png",
+      "sha256": "edab914b058e5c73967d207aa925e7a6ee6682d65f97d7ac66270b2da8e857a4"
+    },
+    {
+      "path": "figures/verification.svg",
+      "sha256": "1bc9ac64229bd0752f7dad9ff5628b26defd833461ff776e81ff5638805db1a2"
+    }
+  ],
+  "command": "horizon-circuit-math:local python3 /src/plot_campaign.py /output; writeReport(view, correlation, relativeArchivePath)",
+  "image_id": "sha256:498098bfc2f7bd4154dde8dd35977cb6a61a8abcaab591f1407e653a170fbb62",
+  "visual_review": "Root agent inspected the regenerated verification PNG on 2026-10-17: axis and labels no longer overlap. Internal visual review, no external audit."
+}

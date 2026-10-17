@@ -1,0 +1,67 @@
+{
+  "schema": "circuit-public-inspection-v1",
+  "inspected_at_utc": "2026-10-17T17:28:19.457Z",
+  "inspector": "root agent with fixed recursive field inspection",
+  "reports": [
+    {
+      "directory": "docs/experiments/circuit/runs/gha-39053037516",
+      "compressed_sha256": "a859f226b16310ca1ee4211442957fdaa79257ffabcbe69f8efe46f6610932af",
+      "public_requests": 1082,
+      "case_ids": 128,
+      "families": [
+        "a_challenge_transplant",
+        "a_direct_bypass",
+        "a_valid",
+        "b_authority_key_substitution",
+        "b_direct_bypass",
+        "b_evidence_join",
+        "b_expected_context",
+        "b_expired_challenge",
+        "b_expired_evidence",
+        "b_future_challenge",
+        "b_holder_signature_corruption",
+        "b_issuer_signature_corruption",
+        "b_policy_epoch",
+        "b_reuse_forbidden",
+        "b_scalar_corruption",
+        "b_subject_transplant",
+        "b_trust_epoch",
+        "b_valid"
+      ],
+      "positive_annotations": 118,
+      "forbidden_private_fields_observed": 0,
+      "disclosure_payloads_observed": 0,
+      "note": "Static recursive inspection, not cryptographic verification. Expected annotations are never authorization decisions."
+    },
+    {
+      "directory": "docs/experiments/circuit/runs/gha-39053041832",
+      "compressed_sha256": "6dabe00324097fdd5f0a771e43c163ec71aee1795adfb4064fd0704df405d826",
+      "public_requests": 36794,
+      "case_ids": 4096,
+      "families": [
+        "a_challenge_transplant",
+        "a_direct_bypass",
+        "a_valid",
+        "b_authority_key_substitution",
+        "b_direct_bypass",
+        "b_evidence_join",
+        "b_expected_context",
+        "b_expired_challenge",
+        "b_expired_evidence",
+        "b_future_challenge",
+        "b_holder_signature_corruption",
+        "b_issuer_signature_corruption",
+        "b_policy_epoch",
+        "b_reuse_forbidden",
+        "b_scalar_corruption",
+        "b_subject_transplant",
+        "b_trust_epoch",
+        "b_valid"
+      ],
+      "positive_annotations": 4086,
+      "forbidden_private_fields_observed": 0,
+      "disclosure_payloads_observed": 0,
+      "note": "Static recursive inspection, not cryptographic verification. Expected annotations are never authorization decisions."
+    }
+  ]
+}

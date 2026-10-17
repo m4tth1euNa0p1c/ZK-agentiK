@@ -1,0 +1,9 @@
+{
+  "matplotlib": "3.6.3",
+  "backend": "agg",
+  "input": [
+    "correlation.json",
+    "verifier-results.json"
+  ],
+  "performance_claim": false
+}

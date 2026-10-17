@@ -1,5 +1,10 @@
 # Vérifications mathématiques Horizon
 
+Le dossier ci-dessous conserve le premier profil historique. Le
+[nouveau banc corrélé](../docs/experiments/circuit/RESULTS_2026-10-17.md) ajoute
+un oracle distinct, des preuves Rust nombreuses et une exécution **MATLAB
+R2026b réellement effectuée** dans GitHub Actions, en plus d'Octave.
+
 Ce dossier contrôle des identités et des hypothèses de la relation existante. Il
 ne réimplémente aucune primitive cryptographique. Une réussite numérique ne
 prouve ni la sécurité de Bulletproofs, ni la vérité des faits signés, ni le code
