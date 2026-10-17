@@ -247,3 +247,37 @@ reste ouvert pour le laboratoire local examiné.** Les réserves ci-dessus,
 H11/H13/H14/H15/H17 et les décisions de publication restent distinctes.
 Aucune conclusion de disponibilité générale ou de qualification d'une
 plateforme critique n'est autorisée par ce rapport.
+
+## Complément : branche de sécurité intégrée
+
+Le 17 octobre 2026, l'orchestrateur a conservé puis fusionné la branche distante
+`feat/publication-hardening` au commit `21b6dc2`. Une nouvelle revue ciblée par
+l'agent `technical_challenger`, distinct de l'auteur des routes, couvre la garde
+opérateur du serveur et son interaction avec le SDK. Les URL protégées sont
+identiques à celles du dispatch ; le contrôle intervient avant lecture du corps
+et avant toute attente. Aucun contournement n'a été trouvé dans ce périmètre.
+
+Le relecteur a ajouté et exécuté neuf tests de firewall, dont 162 requêtes
+négatives sur les trois routes et sept configurations de token. Chaque refus
+retourne 403 et laisse le snapshot intégral inchangé : état, opérations, audit
+et effets. Une opération déjà réservée rend le contrôle de réconciliation
+observable. Les cas authentifiés vérifient réconciliation `UNKNOWN` vers
+`COMPLETED` sans second effet, rotation et révocation. Un token opérateur valide
+ne permet pas d'admettre une preuve falsifiée. TypeScript strict passe.
+L'orchestrateur a ensuite exécuté les 31 tests Horizon : 31 passent.
+
+Les contrôles opérateur sont désactivés dans le navigateur ; Compose ne configure
+aucun token et le relais ne transmet pas son en-tête. Le secret partagé constitue
+un contrôle local, sans IAM bancaire, rôles nominatifs, TLS ou rotation à chaud.
+Les autres routes ne sont pas rendues authentifiées par cette garde. Cette revue
+interne ne change pas les réserves de production et ne remplace pas H15/H17.
+
+L'agent `buyer_crisis_challenger` a également relu les nouveaux dossiers
+dépendances, GPU, mathématiques, white paper, skills et sélection des artefacts
+CI. Aucune donnée privée n'a été trouvée dans ce périmètre ; 106 empreintes
+d'indexes GPU/dépendances et du PDF/sources concordent. Le PDF de huit pages ne
+contient aucune pièce jointe ni chemin utilisateur détecté. Les adresses de
+mainteneur dans les métadonnées NVIDIA sont des métadonnées publiques d'image.
+Cette passe n'est ni un audit exhaustif de l'historique Git ni un inventaire des
+licences d'une future distribution binaire. Aucun blocage supplémentaire n'a été
+identifié pour la publication de sources et résultats du laboratoire.

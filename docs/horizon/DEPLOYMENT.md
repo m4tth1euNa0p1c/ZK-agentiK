@@ -35,8 +35,9 @@ publiés. Les processus fournisseur et vérifieur sont sur un réseau Docker int
 Le relais ne possède ni configuration privée, ni clés, ni base.
 
 L'interface permet challenge, présentation, vérification avant action synthétique,
-altération, rejeu et contrôles opérateur. Révocation et consommation sont
-persistantes. Une opération consommée reste refusée après redémarrage :
+altération, rejeu et lecture de l'état. Les contrôles opérateur sont désactivés
+dans le navigateur. Révocation et consommation sont persistantes. Une opération
+consommée reste refusée après redémarrage :
 
 ```sh
 node scripts/horizon-http-smoke.mjs
@@ -100,8 +101,21 @@ credential absent du dépôt public.
 ## Frontière d'exploitation
 
 Compose impose utilisateur non-root, rootfs en lecture seule, limites CPU/RAM/PID,
-aucune capacité Linux et aucune élévation de privilège. HTTP est local, sans IAM,
-sans TLS et avec des boutons opérateur volontairement accessibles dans ce sandbox.
+aucune capacité Linux et aucune élévation de privilège. HTTP est local, sans IAM
+bancaire et sans TLS. Les trois routes opérateur (`/api/revoke`, `/api/rotate-policy`,
+`/api/reconcile`) refusent par défaut toute requête avec HTTP 403. Un serveur
+opérateur configuré séparément peut fournir `HORIZON_OPERATOR_TOKEN` (32 octets
+aléatoires encodés en 64 caractères hexadécimaux minuscules) ; le client doit
+fournir `x-horizon-operator-token`. La comparaison est à temps constant, après
+validation de l'encodage. Les tests couvrent les refus sans mutation et les
+opérations authentifiées. Ce secret partagé local n'est pas un IAM qualifié.
+
+Compose ne configure aucun token et le relais ne transmet pas cet en-tête.
+Le navigateur et les outils MCP ne reçoivent jamais ce secret. Ne pas le placer
+dans une URL, le JavaScript public, un log ou un manifeste. Un futur canal
+opérateur exige identité, rôles, TLS, gestion des secrets et audit adaptés ;
+aucune activation cloud n'est incluse dans ce démonstrateur.
+
 Ne pas ouvrir ces ports à un réseau d'entreprise. L'application n'a aucun
 connecteur financier et n'utilise aucune donnée client. Les limites et travaux
 de qualification sont dans [THREAT_MODEL](THREAT_MODEL.md) et les [tickets](../../issues/horizon/NEXT_EXPERIMENTS.md).

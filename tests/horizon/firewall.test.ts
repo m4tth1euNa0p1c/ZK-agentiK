@@ -37,6 +37,18 @@ async function fixture() {
 function effects(store: AuthorizationStore): number {
   return Number(store.db.prepare('SELECT count(*) AS n FROM effects').get()?.['n']);
 }
+async function listen(app: ReturnType<typeof createHorizonServer>): Promise<string> {
+  await new Promise<void>(done => app.server.listen(0, '127.0.0.1', done));
+  const address = app.server.address(); assert.ok(address && typeof address !== 'string');
+  return `http://127.0.0.1:${address.port}`;
+}
+async function post(url: string, value: unknown, operatorToken?: string) {
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  if (operatorToken !== undefined) headers['x-horizon-operator-token'] = operatorToken;
+  const response = await fetch(url, { method: 'POST', headers, body: JSON.stringify(value),
+    signal: AbortSignal.timeout(5000) });
+  return { status: response.status, body: z.record(z.string(), z.unknown()).parse(await response.json()) };
+}
 
 test('real proof, independent public worker, durable replay and new-nonce exclusion', async () => {
   const f = await fixture(); let store = new AuthorizationStore(f.database, f.config, () => now);
@@ -116,19 +128,9 @@ test('cross-tenant configuration and unavailable crypto worker fail closed', asy
 });
 
 test('HTTP rejects disclosure downgrade, omission, alteration, substitution and concurrent replay', async () => {
-  // Sandbox operator routes must refuse unauthenticated mutations.
-
   const f = await fixture(); f.worker.close(); const origin = 'http://127.0.0.1:38080';
   const prover = createHorizonServer({ role: 'prover', configPath: f.privatePath, origin, clock: () => now });
-  const verifier = createHorizonServer({ role: 'verifier', configPath: f.publicPath, databasePath: f.database, origin, operatorToken: 'b'.repeat(64), clock: () => now });
-  const listen = async (app: typeof prover) => {
-    await new Promise<void>(done => app.server.listen(0, '127.0.0.1', done));
-    const address = app.server.address(); assert.ok(address && typeof address !== 'string'); return `http://127.0.0.1:${address.port}`;
-  };
-  const post = async (url: string, value: unknown) => {
-    const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(value) });
-    return { status: r.status, body: z.record(z.string(), z.unknown()).parse(await r.json()) };
-  };
+  const verifier = createHorizonServer({ role: 'verifier', configPath: f.publicPath, databasePath: f.database, origin, clock: () => now });
   try {
     const p = await listen(prover); const v = await listen(verifier);
     const issued = await post(`${v}/api/challenge`, {}); const challenge = z.record(z.string(), z.unknown()).parse(issued.body['challenge']);
@@ -149,14 +151,94 @@ test('HTTP rejects disclosure downgrade, omission, alteration, substitution and 
       ? { nonce: challenge['nonce'], presentation }
       : { nonce: challenge2['nonce'], presentation: proof2.body['presentation'] })));
     assert.equal(requests.filter(r => r.status === 200).length, 1); assert.equal(effects(verifier.store), 1);
-    const blocked = await post(`${v}/api/revoke`, {}); assert.equal(blocked.status, 403);
-    const blockedRotate = await post(`${v}/api/rotate-policy`, {}); assert.equal(blockedRotate.status, 403);
-    const revokedResponse = await fetch(`${v}/api/revoke`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-horizon-operator-token': 'a'.repeat(64) }, body: '{}' });
-    assert.equal(revokedResponse.status, 403);
-    assert.equal(verifier.store.state().revoked, 0);
-    const authenticated = await fetch(`${v}/api/revoke`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-horizon-operator-token': 'b'.repeat(64) }, body: '{}' });
-    assert.equal(authenticated.status, 200);
-    assert.equal(verifier.store.state().revoked, 1);
-    assert.equal((await post(`${v}/api/challenge`, {})).status, 400);
   } finally { await prover.close(); await verifier.close(); }
+});
+
+test('HTTP operator authentication rejects every invalid configuration or token without changing state, audit or effects', async () => {
+  const f = await fixture(); const token = 'b'.repeat(64);
+  const configurations: { name: string; option?: string; environment?: string; valid: boolean }[] = [
+    { name: 'absent', valid: false },
+    { name: 'empty-option', option: '', environment: token, valid: false },
+    { name: 'short-option', option: 'b'.repeat(63), valid: false },
+    { name: 'nonhex-option', option: 'g'.repeat(64), valid: false },
+    { name: 'malformed-environment', environment: 'g'.repeat(64), valid: false },
+    { name: 'valid-option', option: token, environment: 'a'.repeat(64), valid: true },
+    { name: 'valid-environment', environment: token, valid: true },
+  ];
+  const suppliedTokens = [undefined, '', 'b'.repeat(63), 'b'.repeat(65), 'g'.repeat(64), 'B'.repeat(64), 'a'.repeat(64), token];
+  try {
+    for (const configuration of configurations) {
+      // Isolate the constructor's environment fallback without changing process.env across an await.
+      const previous = process.env['HORIZON_OPERATOR_TOKEN'];
+      let app: ReturnType<typeof createHorizonServer>;
+      try {
+        if (configuration.environment === undefined) delete process.env['HORIZON_OPERATOR_TOKEN'];
+        else process.env['HORIZON_OPERATOR_TOKEN'] = configuration.environment;
+        app = createHorizonServer({ role: 'verifier', configPath: f.publicPath,
+          databasePath: join(f.directory, `${configuration.name}.sqlite`), origin: 'http://127.0.0.1:38080',
+          clock: () => now, ...(configuration.option === undefined ? {} : { operatorToken: configuration.option }) });
+      } finally {
+        if (previous === undefined) delete process.env['HORIZON_OPERATOR_TOKEN'];
+        else process.env['HORIZON_OPERATOR_TOKEN'] = previous;
+      }
+      try {
+        const base = await listen(app); const store = app.store; assert.ok(store);
+        const challenge = store.issue(); const verified = await f.verified(challenge);
+        assert.throws(() => store.authorize(challenge, verified, 'after_reservation'), /CRASH_AFTER_RESERVATION/);
+        const before = store.snapshot(); assert.equal(effects(store), 0);
+        const routes = [
+          { path: '/api/revoke', input: {} },
+          { path: '/api/rotate-policy', input: {} },
+          { path: '/api/reconcile', input: { operation_id: challenge.operation_id } },
+        ];
+        for (const supplied of suppliedTokens) {
+          if (configuration.valid && supplied === token) continue;
+          for (const route of routes) {
+            const label = `${configuration.name} ${route.path} token=${supplied === undefined ? 'absent' : supplied.length}`;
+            assert.deepEqual(await post(base + route.path, route.input, supplied),
+              { status: 403, body: { error: 'OPERATOR_AUTH_REQUIRED' } }, label);
+            assert.deepEqual(store.snapshot(), before, label);
+          }
+        }
+      } finally { await app.close(); }
+    }
+  } finally { f.worker.close(); }
+});
+
+test('HTTP authenticated operator controls reconcile, rotate and revoke without bypassing SDK proof verification', async () => {
+  const f = await fixture(); const token = 'b'.repeat(64);
+  const app = createHorizonServer({ role: 'verifier', configPath: f.publicPath,
+    databasePath: f.database, origin: 'http://127.0.0.1:38080', operatorToken: token, clock: () => now });
+  try {
+    const base = await listen(app); const store = app.store; assert.ok(store);
+    const challenge = store.issue(); const before = store.snapshot();
+    const presentation = z.record(z.string(), z.unknown()).parse(await f.presentation(challenge));
+    const forged = await post(`${base}/api/execute`, { nonce: challenge.nonce,
+      presentation: { ...presentation, holder_signature_hex: '00'.repeat(64) } }, token);
+    assert.equal(forged.status, 400); assert.deepEqual(store.snapshot(), before); assert.equal(effects(store), 0);
+
+    // An existing ambiguous local effect makes reconciliation observable; it must not dispatch again.
+    const verified = await f.verified(challenge);
+    assert.equal(store.authorize(challenge, verified, 'ambiguous').status, 'UNKNOWN');
+    const originalState = store.state(); const originalEffects = store.snapshot()['effects'];
+    const auditCount = () => Number(store.db.prepare('SELECT count(*) AS n FROM audit').get()?.['n']);
+    const initialAuditCount = auditCount();
+    assert.deepEqual(await post(`${base}/api/reconcile`, { operation_id: challenge.operation_id }, token),
+      { status: 200, body: { status: 'COMPLETED' } });
+    assert.equal(store.db.prepare('SELECT status FROM operations WHERE id=?').get(challenge.operation_id)?.['status'], 'COMPLETED');
+    assert.deepEqual(store.state(), originalState); assert.equal(auditCount(), initialAuditCount + 1);
+    assert.deepEqual(store.snapshot()['effects'], originalEffects);
+
+    assert.deepEqual(await post(`${base}/api/rotate-policy`, {}, token), { status: 200, body: { rotated: true } });
+    assert.deepEqual(store.state(), { ...originalState, policy_epoch: originalState.policy_epoch + 1 });
+    assert.equal(auditCount(), initialAuditCount + 2); assert.deepEqual(store.snapshot()['effects'], originalEffects);
+
+    assert.deepEqual(await post(`${base}/api/revoke`, {}, token), { status: 200, body: { revoked: true } });
+    assert.deepEqual(store.state(), { policy_epoch: originalState.policy_epoch + 1,
+      trust_epoch: originalState.trust_epoch + 1, revoked: 1 });
+    assert.equal(auditCount(), initialAuditCount + 3); assert.deepEqual(store.snapshot()['effects'], originalEffects);
+    const revoked = store.snapshot();
+    assert.equal((await post(`${base}/api/challenge`, {}, token)).status, 400);
+    assert.deepEqual(store.snapshot(), revoked);
+  } finally { f.worker.close(); await app.close(); }
 });

@@ -7,6 +7,9 @@ manuellement : [proof-sandbox.yml](../../.github/workflows/proof-sandbox.yml).
 Les workflows automatiques l'utilisent déjà : `ci.yml` lance Horizon et le
 sandbox après les tests ; `evidence.yml` contrôle le registre et l'historique,
 puis lance Octave et reconstruit le manuscrit. Aucun compte cloud n'est utilisé.
+Ils s'exécutent sur les PR et sur les pushes vers `main`, sans double campagne
+pour un même push de branche de PR. Une nouvelle révision annule les checks
+encore en cours de la même PR ; elle ne modifie pas les résultats déjà conservés.
 
 ## Réutilisation dans ce dépôt ou un fork
 

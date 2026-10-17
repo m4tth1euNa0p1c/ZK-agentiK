@@ -1,7 +1,11 @@
 name: Publication evidence
 on:
   push:
+    branches: [main]
   pull_request:
+concurrency:
+  group: evidence-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:

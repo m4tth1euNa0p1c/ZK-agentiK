@@ -76,6 +76,7 @@ Skills complémentaires :
 - `.agents/skills/scientific-whitepaper/SKILL.md` : sources, mathématiques, LaTeX.
 - `.agents/skills/evidence-publication/SKILL.md` : assertions et candidat public.
 - `.agents/skills/cloud-proof-infrastructure/SKILL.md` : frontières Azure/GCP.
+- `.agents/skills/proof-workflow-automation/SKILL.md` : GitHub Actions, preuves et sandbox.
 
 Lors d'un travail multi-agents demandé, assigner les chemins et faire relire par
 un autre agent que l'auteur ; utiliser les contrats `.agents/roles/`. Une revue

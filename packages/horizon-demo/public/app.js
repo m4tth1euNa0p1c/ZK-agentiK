@@ -58,11 +58,12 @@ function refreshButtons() {
   byId("replay-button").disabled = busy || !presentation || !executionAttempted;
   byId("tamper-button").disabled = busy || !presentation;
   byId("refresh-button").disabled = busy;
-  byId("rotate-button").disabled = busy || revoked;
-  byId("revoke-confirm").disabled = busy || revoked;
-  byId("revoke-button").disabled = busy || revoked || !byId("revoke-confirm").checked;
-  byId("operation-select").disabled = busy || !stateKnown || !snapshot?.operations.length;
-  byId("reconcile-button").disabled = busy || !stateKnown || !byId("operation-select").value;
+  // Operator credentials never enter the browser. These controls are explanatory only.
+  byId("rotate-button").disabled = true;
+  byId("revoke-confirm").disabled = true;
+  byId("revoke-button").disabled = true;
+  byId("operation-select").disabled = true;
+  byId("reconcile-button").disabled = true;
   byId("workflow").setAttribute("aria-busy", String(busy));
 }
 
@@ -319,33 +320,6 @@ byId("tamper-button").addEventListener("click", () => run("Essai d'altération",
 byId("refresh-button").addEventListener("click", () => run("Lecture du contrôleur", async () => {
   const value = await readState();
   feedback(value ? "État du contrôleur relu. Aucun appel de mutation effectué." : "État inaccessible. Les compteurs ne sont pas confirmés.", value ? "neutral" : "warning");
-}));
-byId("rotate-button").addEventListener("click", () => run("Changement de l'époque de politique", async () => {
-  await request("/api/rotate-policy", {});
-  const value = await readState();
-  log("Changement d'époque accepté par le serveur. Les anciens challenges sont obsolètes.");
-  feedback(value ? "Époque changée. La présentation actuelle est conservée pour tester son refus ; demandez ensuite un nouveau challenge."
-    : "Changement accepté, mais état final inaccessible. Relisez l'état.", value ? "neutral" : "warning");
-}));
-byId("revoke-confirm").addEventListener("change", refreshButtons);
-byId("revoke-button").addEventListener("click", () => run("Révocation persistante", async () => {
-  if (!byId("revoke-confirm").checked) throw new RequestFailure("La révocation n'a pas été confirmée.");
-  await request("/api/revoke", {});
-  byId("revoke-confirm").checked = false;
-  const value = await readState();
-  log("Révocation acceptée par le serveur. Cette sandbox ne peut pas être réactivée par l'interface.");
-  feedback(value ? "Instance révoquée. Les nouvelles autorisations sont bloquées ; les effets précédents restent dans la base."
-    : "Révocation acceptée, mais état final inaccessible. Relisez l'état.", "warning");
-}));
-byId("operation-select").addEventListener("change", refreshButtons);
-byId("reconcile-button").addEventListener("click", () => run("Réconciliation de l'opération", async () => {
-  const operationId = byId("operation-select").value;
-  if (!operationId) throw new RequestFailure("Sélectionnez une opération existante.");
-  const value = await request("/api/reconcile", { operation_id: operationId });
-  const status = record(value) && typeof value.status === "string" ? value.status : "INCONNU";
-  const state = await readState();
-  log(`Réconciliation de ${shortId(operationId)} : ${status}.`);
-  feedback(`Réconciliation retournée : ${status}.${state ? " État relu ; aucun nouvel enregistrement demandé." : " État final inaccessible."}`, state && status === "COMPLETED" ? "neutral" : "warning");
 }));
 
 renderChallenge();

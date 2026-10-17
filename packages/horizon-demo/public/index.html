@@ -125,24 +125,28 @@
             <select id="operation-select" disabled><option value="">Aucune opération</option></select>
             <button id="reconcile-button" class="button secondary compact" type="button" disabled>Réconcilier l'état</button>
           </div>
-          <p class="caption">Une réponse réseau perdue ne prouve pas l'absence d'effet. Relisez l'état puis réconciliez ;
+          <p class="caption">Une réponse réseau perdue ne prouve pas l'absence d'effet. Relisez l'état puis demandez
+            une réconciliation à l'exploitant. Cette commande est désactivée dans le navigateur ;
             l'interface ne renvoie jamais automatiquement une mutation.</p>
         </section>
       </div>
 
       <details class="operator-panel">
-        <summary>Commandes de l'exploitant de la sandbox</summary>
+        <summary>Commandes réservées à l'exploitant — désactivées ici</summary>
+        <p class="caption">La révocation, le changement de politique et la réconciliation exigent un canal opérateur
+          authentifié séparé. Aucun secret opérateur n'est fourni à cette page. Le déploiement local refuse ces
+          commandes par défaut ; leur comportement est couvert par les tests d'intégration.</p>
         <div class="operator-content">
           <div>
             <h3>Changer l'époque de politique</h3>
             <p>Les challenges déjà émis deviennent obsolètes. Une nouvelle demande sera nécessaire.</p>
-            <button id="rotate-button" class="button secondary" type="button">Changer l'époque</button>
+            <button id="rotate-button" class="button secondary" type="button" disabled>Changer l'époque</button>
           </div>
           <div class="revocation-control">
             <h3>Révoquer cette instance</h3>
             <p id="revocation-warning"><strong>Irréversible dans cette sandbox.</strong> La révocation persiste dans la base
               et bloque les nouvelles autorisations. Il n'existe pas de bouton de réactivation.</p>
-            <label class="checkbox-label"><input id="revoke-confirm" type="checkbox">
+            <label class="checkbox-label"><input id="revoke-confirm" type="checkbox" disabled>
               Je confirme la révocation persistante de cette instance.</label>
             <button id="revoke-button" class="button danger" type="button" aria-describedby="revocation-warning" disabled>Révoquer — irréversible</button>
           </div>
