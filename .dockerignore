@@ -29,3 +29,4 @@
 !deploy/
 !deploy/horizon/
 !deploy/horizon/Dockerfile
+!deploy/horizon/relay.mjs

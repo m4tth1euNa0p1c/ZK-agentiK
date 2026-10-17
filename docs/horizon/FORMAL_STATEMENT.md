@@ -67,7 +67,7 @@ produite par opération. Les signatures d'origine restent vérifiées.
 immuables et la relation. Une signature Ed25519 fraîche du détenteur couvre
 le digest complet du bundle (preuve incluse), le client, tenant, objet,
 opération, politique/époque, registre de confiance/époque, dates et nonce.
-Cette composition prouve maîtrise de clé fraîche sur une preuve historique,
+Cette composition apporte une autorisation fraîche par la clé du détenteur sur une preuve historique,
 pas connaissance fraîche du witness et pas une preuve récursive. Vérifier
 la preuve complète reste possible sans cache. Tout cache éventuel ne mémorise
 que validité cryptographique immuable et jamais l'autorisation courante.

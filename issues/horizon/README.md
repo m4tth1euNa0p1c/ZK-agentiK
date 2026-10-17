@@ -24,3 +24,18 @@ Commandes initiales : `cargo test --workspace --locked`, `npm test`,
 `npm run lab:risc0 -- verify`. Les commandes Horizon sont ajoutées à mesure
 que les expériences deviennent exécutables. Aucun record n'est reconnu sans
 relation, coût complet, machine et hypothèses comparables.
+
+## État du programme après les expériences
+
+M0 : baseline préservée. M1 : benches Vega SHA-256 reproduits, application
+credential non reproductible depuis ces seuls benches. M2/M3 : cinq pistes et
+arbitrage contradictoire, GO laboratoire sans validation client. M4 : relation
+formalisée. M5 : A/B/C et baseline réellement exécutées. M6 : optimisation des
+paramètres publics mesurée avant/après. M7 : bibliothèque, CLI, API et application.
+M8 : suites adverses et bruts conservés. M9 : Docker local, admission unique et
+rejeu après redémarrage validés. M10 : verdict publié, sans record ni GO produit.
+
+Les blocages de qualification et prochaines expériences sont détaillés dans
+[H11–H17](NEXT_EXPERIMENTS.md). Priorité H11, H13/H15, H14/H17, puis H16 ; H12
+est une piste scientifique indépendante. La cible complète de 10 ms est manquée
+sur le banc durable Windows et reste un résultat négatif à conserver.

@@ -1,0 +1,211 @@
+{
+  "format": "horizon-firewall-benchmark-v1",
+  "profile": "horizon-range-v1",
+  "status": "completed",
+  "started_at": "2026-10-17T02:19:45.132Z",
+  "finished_at": "2026-10-17T02:19:46.117Z",
+  "units": "milliseconds",
+  "planned": {
+    "samples": 2,
+    "warmup": 1,
+    "max_wall_ms": 300000
+  },
+  "environment": {
+    "platform": "win32",
+    "release": "10.0.26200",
+    "arch": "x64",
+    "cpu": "Intel(R) Core(TM) Ultra 7 265F",
+    "logical_cpus": 20,
+    "total_memory_bytes": 33984958464,
+    "node": "v24.11.1",
+    "node_versions": {
+      "node": "24.11.1",
+      "acorn": "8.15.0",
+      "ada": "3.3.0",
+      "amaro": "1.1.4",
+      "ares": "1.34.5",
+      "brotli": "1.1.0",
+      "cjs_module_lexer": "2.1.0",
+      "cldr": "47.0",
+      "icu": "77.1",
+      "llhttp": "9.3.0",
+      "modules": "137",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.66.0",
+      "openssl": "3.5.4",
+      "simdjson": "4.0.7",
+      "simdutf": "6.4.0",
+      "sqlite": "3.50.4",
+      "tz": "2025b",
+      "undici": "7.16.0",
+      "unicode": "16.0",
+      "uv": "1.51.0",
+      "uvwasi": "0.0.23",
+      "v8": "13.6.233.10-node.28",
+      "zlib": "1.3.1-470d3a2",
+      "zstd": "1.5.7"
+    },
+    "git_head": "353652d12caf70b902c385666b6869d1b0c1b9f1",
+    "git_dirty": true,
+    "rustc_available_to_harness": null,
+    "rustc_note": "Available compiler is not asserted to be the compiler that produced the worker; executed binary SHA-256 identifies it.",
+    "artifacts_sha256": {
+      "packages/horizon-demo/dist/worker.js": "1ad791e0b437d637a4560ddcd7ec59f53b02fbdeb236bbe3608db5dd7ccc8d04",
+      "packages/horizon-demo/dist/store.js": "f3877d732a79cc5fa4eb18316da87b7fa6ce85fd824faf9d8c4cb9168c7903b3",
+      "packages/horizon-demo/dist/types.js": "e5606138906caa27114639adab236d8ffe78f5c5fc212fdfc9153e99eaafed45",
+      "labs/horizon/target/release/horizon-proof-worker.exe": "d0eebf45c330af080222911268a9de05a2bc5fbfff2545a1186126e6d869a9fc",
+      "scripts/horizon-firewall-benchmark.mjs": "df2ae0ae91e9f32bd6f0efda9dc7e2c77cc8a431ba4b82b1c7b3d700a4227860",
+      "scripts/horizon-stats.mjs": "6c49d692e93e690d07ad47b2e50967032b1e1c71009dc3b3ba1c356dc830dbbc",
+      "labs/horizon/Cargo.lock": "326f077f238678b6808c7950d41f16c68b04991356fc794b1f2416e2882a91df",
+      "package-lock.json": "dd95db9aff8bd9a9c19c17574e87207d2e64b28790c53bef5ddb0bc74e4b2ce3"
+    }
+  },
+  "storage": {
+    "preserved_directory": ".tools/horizon/bench-2026-10-17T02-19-45.132Z-5c0c4fe9-fda0-443d-9dd8-5542345b8658",
+    "progress_jsonl": ".tools/horizon/bench-2026-10-17T02-19-45.132Z-5c0c4fe9-fda0-443d-9dd8-5542345b8658/observations.jsonl",
+    "one_new_database_per_observation": true,
+    "sqlite": "WAL; synchronous=FULL; busy_timeout=5000",
+    "durability_scope": "Two SQLite commits include requested WAL syncs. Hardware power-loss durability is not measured.",
+    "close_checkpoint": "Store close/checkpoint is outside the authorization timing.",
+    "observed_journal_mode": "wal",
+    "observed_synchronous": 2
+  },
+  "scope": {
+    "action": "record_claim_authorization on a synthetic local SQLite target",
+    "corpus": "One synthetic evidence pair and one prepared proof B reused with fresh signed challenges and unique synthetic operation objects.",
+    "worker_processes": "Separate prover and verifier Rust subprocesses; the verifier receives public requests only. The Node harness itself holds the synthetic witness.",
+    "timing_clock": "performance.now() monotonic durations; Date.now() live authorization clock",
+    "verification_cache": false,
+    "sample_concurrency": 1,
+    "exclusions": [
+      "HTTP",
+      "network",
+      "real clients or authorities",
+      "external target",
+      "process startup",
+      "fixture issuance and proof preparation (reported separately)",
+      "database/configuration creation",
+      "challenge issuance and pre-verification store reads",
+      "post-effect assertions",
+      "database close/checkpoint",
+      "observation logging"
+    ],
+    "continuous_interval": "From starting verify IPC through authorize return, without await between verification completion and authorize. authorize rechecks current clock/epochs inside both durable transactions.",
+    "iid": "Not established: sequential warm observations of one evidence pair, OS cache and storage effects. Quantile confidence intervals are conditional on IID, not service guarantees.",
+    "resource_scope": "process.memoryUsage() samples of the Node coordinator, including its SQLite allocations; excludes both Rust subprocesses, filesystem cache and system memory. Observed sample maximum is not a measured process peak."
+  },
+  "setup_ms": {
+    "fixture_issuance_ipc": 11.565200000000004,
+    "prepare_b_ipc": 8.764099999999985
+  },
+  "public_config_sha256": "274ad091391b62ac89ff37fccc242a4858efe34022e86e66e528288e663fe83f",
+  "prepared_proof_sha256": "9f12534c0311d1239c8e12b1f632bf48df94b14d91bff327815d949ac8ac6685",
+  "warmup_observations": [
+    {
+      "phase": "warmup",
+      "index": 0,
+      "at_ms": 1792203585968,
+      "database": ".tools/horizon/bench-2026-10-17T02-19-45.132Z-5c0c4fe9-fda0-443d-9dd8-5542345b8658/warmup-0000.sqlite",
+      "object_id": "fw-2026-10-17T02-19-45.132Z-5c0c4fe9-fda0-443d-9dd8-5542345b8658/warmup-0",
+      "nonce": "e54f9de2b8c677b7abc5f8315b97f0cbb245412c46cdc832c014e7035d84ee93",
+      "operation_id": "ef04b04984ebe0b7da33d380678e0087d24bf51e3d7bdddea0f94333299d6fa2",
+      "config_sha256": "af52f4b7ce372947df643394669ed7f522feaff8e08b92521061b3bd0121ffb7",
+      "effect_count": 1,
+      "nonce_consumed": true,
+      "operation_status": "COMPLETED",
+      "timings_ms": {
+        "present_b_ipc": 0.3925000000000409,
+        "verify_b_ipc": 3.2509999999999764,
+        "authorize_durable": 7.348299999999995,
+        "verify_and_authorize_continuous": 10.599299999999971
+      }
+    }
+  ],
+  "observations": [
+    {
+      "phase": "measurement",
+      "index": 0,
+      "at_ms": 1792203586039,
+      "database": ".tools/horizon/bench-2026-10-17T02-19-45.132Z-5c0c4fe9-fda0-443d-9dd8-5542345b8658/measurement-0000.sqlite",
+      "object_id": "fw-2026-10-17T02-19-45.132Z-5c0c4fe9-fda0-443d-9dd8-5542345b8658/measurement-0",
+      "nonce": "88a787ca608275ab0a99c5066913556e5c14dcd3980f1f40415f8a2641f8eca9",
+      "operation_id": "3072457b3e7145933755714dd5fa4643b84118821c3aca75c56fcc3b05fe15ca",
+      "config_sha256": "69b48c9727d48ef54255c3ca4ee6ab4e615810ec5b9d71743a5c8e948de2abf9",
+      "effect_count": 1,
+      "nonce_consumed": true,
+      "operation_status": "COMPLETED",
+      "timings_ms": {
+        "present_b_ipc": 0.3485000000000582,
+        "verify_b_ipc": 1.4113999999999578,
+        "authorize_durable": 6.858900000000062,
+        "verify_and_authorize_continuous": 8.27030000000002
+      }
+    },
+    {
+      "phase": "measurement",
+      "index": 1,
+      "at_ms": 1792203586110,
+      "database": ".tools/horizon/bench-2026-10-17T02-19-45.132Z-5c0c4fe9-fda0-443d-9dd8-5542345b8658/measurement-0001.sqlite",
+      "object_id": "fw-2026-10-17T02-19-45.132Z-5c0c4fe9-fda0-443d-9dd8-5542345b8658/measurement-1",
+      "nonce": "97d6ec570d33edfbf266ff2c1c60673a0e5345b9bab5c7e3c701d3fc32f4de06",
+      "operation_id": "d8e636cba63f24619db6334a3c9c75acf6fdecfa9f22e7ce99b0eacf981ff53f",
+      "config_sha256": "396dc15737d3ff6a7fdbb4c9451ab80be016816c81008d2259881f18a56fa864",
+      "effect_count": 1,
+      "nonce_consumed": true,
+      "operation_status": "COMPLETED",
+      "timings_ms": {
+        "present_b_ipc": 0.3648000000000593,
+        "verify_b_ipc": 1.388400000000047,
+        "authorize_durable": 6.79340000000002,
+        "verify_and_authorize_continuous": 8.181800000000067
+      }
+    }
+  ],
+  "errors": [],
+  "memory_observations": [
+    {
+      "at_ms": 1792203585237,
+      "rss": 66781184,
+      "heapTotal": 18022400,
+      "heapUsed": 11760640,
+      "external": 3421469,
+      "arrayBuffers": 1156497
+    },
+    {
+      "at_ms": 1792203585975,
+      "rss": 68870144,
+      "heapTotal": 18808832,
+      "heapUsed": 11108064,
+      "external": 2298766,
+      "arrayBuffers": 32382
+    },
+    {
+      "at_ms": 1792203586046,
+      "rss": 68939776,
+      "heapTotal": 18808832,
+      "heapUsed": 11281168,
+      "external": 2302561,
+      "arrayBuffers": 36177
+    },
+    {
+      "at_ms": 1792203586117,
+      "rss": 68816896,
+      "heapTotal": 18808832,
+      "heapUsed": 11457640,
+      "external": 2306356,
+      "arrayBuffers": 39972
+    },
+    {
+      "at_ms": 1792203586117,
+      "rss": 68849664,
+      "heapTotal": 18808832,
+      "heapUsed": 11460672,
+      "external": 2306356,
+      "arrayBuffers": 39972
+    }
+  ],
+  "successful_effects": 3,
+  "elapsed_ms": 880.1025000000001
+}

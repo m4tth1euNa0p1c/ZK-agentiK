@@ -64,8 +64,9 @@ cargo run --manifest-path labs/horizon/Cargo.toml --locked --release --bin horiz
 ```
 
 B réutilise exactement la preuve préparée de son cas ; `verify_b_full` effectue
-la vérification complète sans cache. Les générateurs sont actuellement créés
-dans chaque appel de la bibliothèque ; `parameters_standalone` est une mesure
-diagnostique à ne pas compter deux fois. Les warmups ne figurent pas dans les
+la vérification complète sans cache de preuve ou de verdict. Les générateurs
+publics fixes sont préparés une fois par processus via `OnceLock`, sans witness,
+RNG ni état d'autorisation partagé. `parameters_standalone` est une mesure
+diagnostique de leur construction, à ne pas ajouter aux temps chauds. Les warmups ne figurent pas dans les
 échantillons retenus. L'indépendance statistique des observations n'est pas
 établie et aucun ratio de vitesse face à une autre relation Vega n'est produit.

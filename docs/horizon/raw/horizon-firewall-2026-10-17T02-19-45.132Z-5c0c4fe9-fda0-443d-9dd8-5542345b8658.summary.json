@@ -1,0 +1,341 @@
+{
+  "format": "horizon-firewall-summary-v1",
+  "raw_file": "docs/horizon/raw/horizon-firewall-2026-10-17T02-19-45.132Z-5c0c4fe9-fda0-443d-9dd8-5542345b8658.json",
+  "raw_sha256": "fea7e49bffcbb5337c53d6df8c1c3502af4d2ab864a607bc4b1e157309ae9dcb",
+  "samples": 2,
+  "warmup_excluded": 1,
+  "errors": 0,
+  "successful_effects": 3,
+  "timings_ms": {
+    "present_b_ipc": {
+      "n": 2,
+      "min": 0.3485000000000582,
+      "max": 0.3648000000000593,
+      "mean": 0.35665000000005875,
+      "p50": 0.3485000000000582,
+      "p95": 0.3648000000000593,
+      "p99": 0.3648000000000593,
+      "quantile_convention": "nearest-rank: sorted[ceil(p * n) - 1], one-based rank ceil(p*n)",
+      "confidence_method": "distribution-free binomial order-statistic interval, equal tail caps",
+      "confidence_assumptions": {
+        "requires_iid": true,
+        "iid_verified": false,
+        "population_representativeness_verified": false,
+        "ties": "conservative coverage for population quantile inf{x:F(x)>=p}",
+        "arithmetic": "IEEE-754 double recurrence; not certified numerical bounds",
+        "interpretation": "conditional on IID; not a service SLA or a maximum-latency bound",
+        "null_endpoints": "lower null means -Infinity; upper null means +Infinity"
+      },
+      "confidence_intervals": {
+        "p50": {
+          "probability": 0.5,
+          "confidence_level": 0.95,
+          "lower": null,
+          "upper": null,
+          "lower_rank": 0,
+          "upper_rank": 3,
+          "lower_unbounded": true,
+          "upper_unbounded": true,
+          "finite_interval": false,
+          "insufficient_samples_for_two_finite_bounds": true,
+          "omitted_binomial_tails": {
+            "lower": 0,
+            "upper": 0
+          },
+          "coverage_lower_bound_if_iid": 1
+        },
+        "p95": {
+          "probability": 0.95,
+          "confidence_level": 0.95,
+          "lower": 0.3485000000000582,
+          "upper": null,
+          "lower_rank": 1,
+          "upper_rank": 3,
+          "lower_unbounded": false,
+          "upper_unbounded": true,
+          "finite_interval": false,
+          "insufficient_samples_for_two_finite_bounds": true,
+          "omitted_binomial_tails": {
+            "lower": 0.002500000000000005,
+            "upper": 0
+          },
+          "coverage_lower_bound_if_iid": 0.9974999999999999
+        },
+        "p99": {
+          "probability": 0.99,
+          "confidence_level": 0.95,
+          "lower": 0.3648000000000593,
+          "upper": null,
+          "lower_rank": 2,
+          "upper_rank": 3,
+          "lower_unbounded": false,
+          "upper_unbounded": true,
+          "finite_interval": false,
+          "insufficient_samples_for_two_finite_bounds": true,
+          "omitted_binomial_tails": {
+            "lower": 0.01990000000000002,
+            "upper": 0
+          },
+          "coverage_lower_bound_if_iid": 0.9801
+        }
+      }
+    },
+    "verify_b_ipc": {
+      "n": 2,
+      "min": 1.388400000000047,
+      "max": 1.4113999999999578,
+      "mean": 1.3999000000000024,
+      "p50": 1.388400000000047,
+      "p95": 1.4113999999999578,
+      "p99": 1.4113999999999578,
+      "quantile_convention": "nearest-rank: sorted[ceil(p * n) - 1], one-based rank ceil(p*n)",
+      "confidence_method": "distribution-free binomial order-statistic interval, equal tail caps",
+      "confidence_assumptions": {
+        "requires_iid": true,
+        "iid_verified": false,
+        "population_representativeness_verified": false,
+        "ties": "conservative coverage for population quantile inf{x:F(x)>=p}",
+        "arithmetic": "IEEE-754 double recurrence; not certified numerical bounds",
+        "interpretation": "conditional on IID; not a service SLA or a maximum-latency bound",
+        "null_endpoints": "lower null means -Infinity; upper null means +Infinity"
+      },
+      "confidence_intervals": {
+        "p50": {
+          "probability": 0.5,
+          "confidence_level": 0.95,
+          "lower": null,
+          "upper": null,
+          "lower_rank": 0,
+          "upper_rank": 3,
+          "lower_unbounded": true,
+          "upper_unbounded": true,
+          "finite_interval": false,
+          "insufficient_samples_for_two_finite_bounds": true,
+          "omitted_binomial_tails": {
+            "lower": 0,
+            "upper": 0
+          },
+          "coverage_lower_bound_if_iid": 1
+        },
+        "p95": {
+          "probability": 0.95,
+          "confidence_level": 0.95,
+          "lower": 1.388400000000047,
+          "upper": null,
+          "lower_rank": 1,
+          "upper_rank": 3,
+          "lower_unbounded": false,
+          "upper_unbounded": true,
+          "finite_interval": false,
+          "insufficient_samples_for_two_finite_bounds": true,
+          "omitted_binomial_tails": {
+            "lower": 0.002500000000000005,
+            "upper": 0
+          },
+          "coverage_lower_bound_if_iid": 0.9974999999999999
+        },
+        "p99": {
+          "probability": 0.99,
+          "confidence_level": 0.95,
+          "lower": 1.4113999999999578,
+          "upper": null,
+          "lower_rank": 2,
+          "upper_rank": 3,
+          "lower_unbounded": false,
+          "upper_unbounded": true,
+          "finite_interval": false,
+          "insufficient_samples_for_two_finite_bounds": true,
+          "omitted_binomial_tails": {
+            "lower": 0.01990000000000002,
+            "upper": 0
+          },
+          "coverage_lower_bound_if_iid": 0.9801
+        }
+      }
+    },
+    "authorize_durable": {
+      "n": 2,
+      "min": 6.79340000000002,
+      "max": 6.858900000000062,
+      "mean": 6.826150000000041,
+      "p50": 6.79340000000002,
+      "p95": 6.858900000000062,
+      "p99": 6.858900000000062,
+      "quantile_convention": "nearest-rank: sorted[ceil(p * n) - 1], one-based rank ceil(p*n)",
+      "confidence_method": "distribution-free binomial order-statistic interval, equal tail caps",
+      "confidence_assumptions": {
+        "requires_iid": true,
+        "iid_verified": false,
+        "population_representativeness_verified": false,
+        "ties": "conservative coverage for population quantile inf{x:F(x)>=p}",
+        "arithmetic": "IEEE-754 double recurrence; not certified numerical bounds",
+        "interpretation": "conditional on IID; not a service SLA or a maximum-latency bound",
+        "null_endpoints": "lower null means -Infinity; upper null means +Infinity"
+      },
+      "confidence_intervals": {
+        "p50": {
+          "probability": 0.5,
+          "confidence_level": 0.95,
+          "lower": null,
+          "upper": null,
+          "lower_rank": 0,
+          "upper_rank": 3,
+          "lower_unbounded": true,
+          "upper_unbounded": true,
+          "finite_interval": false,
+          "insufficient_samples_for_two_finite_bounds": true,
+          "omitted_binomial_tails": {
+            "lower": 0,
+            "upper": 0
+          },
+          "coverage_lower_bound_if_iid": 1
+        },
+        "p95": {
+          "probability": 0.95,
+          "confidence_level": 0.95,
+          "lower": 6.79340000000002,
+          "upper": null,
+          "lower_rank": 1,
+          "upper_rank": 3,
+          "lower_unbounded": false,
+          "upper_unbounded": true,
+          "finite_interval": false,
+          "insufficient_samples_for_two_finite_bounds": true,
+          "omitted_binomial_tails": {
+            "lower": 0.002500000000000005,
+            "upper": 0
+          },
+          "coverage_lower_bound_if_iid": 0.9974999999999999
+        },
+        "p99": {
+          "probability": 0.99,
+          "confidence_level": 0.95,
+          "lower": 6.858900000000062,
+          "upper": null,
+          "lower_rank": 2,
+          "upper_rank": 3,
+          "lower_unbounded": false,
+          "upper_unbounded": true,
+          "finite_interval": false,
+          "insufficient_samples_for_two_finite_bounds": true,
+          "omitted_binomial_tails": {
+            "lower": 0.01990000000000002,
+            "upper": 0
+          },
+          "coverage_lower_bound_if_iid": 0.9801
+        }
+      }
+    },
+    "verify_and_authorize_continuous": {
+      "n": 2,
+      "min": 8.181800000000067,
+      "max": 8.27030000000002,
+      "mean": 8.226050000000043,
+      "p50": 8.181800000000067,
+      "p95": 8.27030000000002,
+      "p99": 8.27030000000002,
+      "quantile_convention": "nearest-rank: sorted[ceil(p * n) - 1], one-based rank ceil(p*n)",
+      "confidence_method": "distribution-free binomial order-statistic interval, equal tail caps",
+      "confidence_assumptions": {
+        "requires_iid": true,
+        "iid_verified": false,
+        "population_representativeness_verified": false,
+        "ties": "conservative coverage for population quantile inf{x:F(x)>=p}",
+        "arithmetic": "IEEE-754 double recurrence; not certified numerical bounds",
+        "interpretation": "conditional on IID; not a service SLA or a maximum-latency bound",
+        "null_endpoints": "lower null means -Infinity; upper null means +Infinity"
+      },
+      "confidence_intervals": {
+        "p50": {
+          "probability": 0.5,
+          "confidence_level": 0.95,
+          "lower": null,
+          "upper": null,
+          "lower_rank": 0,
+          "upper_rank": 3,
+          "lower_unbounded": true,
+          "upper_unbounded": true,
+          "finite_interval": false,
+          "insufficient_samples_for_two_finite_bounds": true,
+          "omitted_binomial_tails": {
+            "lower": 0,
+            "upper": 0
+          },
+          "coverage_lower_bound_if_iid": 1
+        },
+        "p95": {
+          "probability": 0.95,
+          "confidence_level": 0.95,
+          "lower": 8.181800000000067,
+          "upper": null,
+          "lower_rank": 1,
+          "upper_rank": 3,
+          "lower_unbounded": false,
+          "upper_unbounded": true,
+          "finite_interval": false,
+          "insufficient_samples_for_two_finite_bounds": true,
+          "omitted_binomial_tails": {
+            "lower": 0.002500000000000005,
+            "upper": 0
+          },
+          "coverage_lower_bound_if_iid": 0.9974999999999999
+        },
+        "p99": {
+          "probability": 0.99,
+          "confidence_level": 0.95,
+          "lower": 8.27030000000002,
+          "upper": null,
+          "lower_rank": 2,
+          "upper_rank": 3,
+          "lower_unbounded": false,
+          "upper_unbounded": true,
+          "finite_interval": false,
+          "insufficient_samples_for_two_finite_bounds": true,
+          "omitted_binomial_tails": {
+            "lower": 0.01990000000000002,
+            "upper": 0
+          },
+          "coverage_lower_bound_if_iid": 0.9801
+        }
+      }
+    }
+  },
+  "node_memory_sampled_max_bytes": {
+    "rss": 68939776,
+    "heapTotal": 18808832,
+    "heapUsed": 11760640,
+    "external": 3421469,
+    "arrayBuffers": 1156497
+  },
+  "memory_scope": "process.memoryUsage() samples of the Node coordinator, including its SQLite allocations; excludes both Rust subprocesses, filesystem cache and system memory. Observed sample maximum is not a measured process peak.",
+  "setup_ms": {
+    "fixture_issuance_ipc": 11.565200000000004,
+    "prepare_b_ipc": 8.764099999999985
+  },
+  "exclusions": [
+    "HTTP",
+    "network",
+    "real clients or authorities",
+    "external target",
+    "process startup",
+    "fixture issuance and proof preparation (reported separately)",
+    "database/configuration creation",
+    "challenge issuance and pre-verification store reads",
+    "post-effect assertions",
+    "database close/checkpoint",
+    "observation logging"
+  ],
+  "continuous_interval": "From starting verify IPC through authorize return, without await between verification completion and authorize. authorize rechecks current clock/epochs inside both durable transactions.",
+  "iid": "Not established: sequential warm observations of one evidence pair, OS cache and storage effects. Quantile confidence intervals are conditional on IID, not service guarantees.",
+  "storage": {
+    "preserved_directory": ".tools/horizon/bench-2026-10-17T02-19-45.132Z-5c0c4fe9-fda0-443d-9dd8-5542345b8658",
+    "progress_jsonl": ".tools/horizon/bench-2026-10-17T02-19-45.132Z-5c0c4fe9-fda0-443d-9dd8-5542345b8658/observations.jsonl",
+    "one_new_database_per_observation": true,
+    "sqlite": "WAL; synchronous=FULL; busy_timeout=5000",
+    "durability_scope": "Two SQLite commits include requested WAL syncs. Hardware power-loss durability is not measured.",
+    "close_checkpoint": "Store close/checkpoint is outside the authorization timing.",
+    "observed_journal_mode": "wal",
+    "observed_synchronous": 2
+  },
+  "service_sla_established": false
+}

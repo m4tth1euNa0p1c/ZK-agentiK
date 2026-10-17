@@ -20,6 +20,24 @@ Ce dépôt ne revendique pas un premier standard mondial ou un marché vierge.
 
 ## Lancer
 
+**Programme Horizon — 17 octobre 2026.** Un laboratoire distinct teste une
+autorisation de sinistre synthétique avec de vraies preuves Bulletproofs,
+attestations signées, vérifieur indépendant et contrôleur SQLite durable.
+Les benchmarks Vega publiés sont reproduits sur leur relation SHA-256 ; aucune
+supériorité globale ni validation commerciale n'est revendiquée.
+[Dossier de décision](docs/horizon/FINAL_VERDICT.md) ·
+[Déploiement et application web](docs/horizon/DEPLOYMENT.md) ·
+[Résultats reproductibles](docs/horizon/BENCHMARK_RESULTS.json).
+
+```sh
+# Node 24.11.1+ et Rust 1.93.0
+npm ci --ignore-scripts
+npm run horizon:build
+npm run horizon:demo
+```
+
+Les commandes suivantes restent celles du POC MCP historique.
+
 Prérequis : Node.js 22.14+ (24 testé), Rust via rustup, toolchain 1.93.0 et linker
 natif. Sous Windows, les outils C++ MSVC sont nécessaires. `scripts/cargo.mjs`
 retrouve aussi Cargo dans `~/.cargo/bin` lorsqu'il n'est pas encore dans PATH.

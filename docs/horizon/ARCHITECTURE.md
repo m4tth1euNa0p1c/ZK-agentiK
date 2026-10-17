@@ -32,6 +32,13 @@ Le SDK MCP historique n'est pas modifié : ce produit expérimental sépare enco
 API de démonstration et chemin MCP de production. Ajouter un wrapper MCP ne
 résoudrait pas l'émission réelle, les règles contractuelles ou l'authentification.
 
+Dans Compose, un relais HTTP sans secret publie les deux ports loopback. Ses
+destinations et routes sont constantes. Lui seul joint le réseau d'entrée et
+le réseau interne ; aucun port du prover/vérifieur n'est directement publié.
+Il ne réessaie jamais un POST transmis dont le résultat est inconnu. Cette
+adaptation rend le sandbox accessible sur Docker Desktop sans fournir de
+route Internet aux processus portant les données privées ou l'état d'action.
+
 ## État durable et effets
 
 La première transaction consomme le nonce et réserve l'opération, puis commit.

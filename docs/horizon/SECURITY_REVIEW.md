@@ -295,3 +295,24 @@ ni besoin économique, ni innocuité d'une future action de paiement.
 Vote maintenu : **GO laboratoire sur cette relation bornée ; NO-GO
 production et marché**. Les tests adversariaux réussis réduisent les défauts
 connus du prototype ; ils ne démontrent pas l'absence de toute vulnérabilité.
+
+## Revue finale du déploiement et des résultats
+
+Le contradicteur a relu le relais sans secret : destinations et routes fixes,
+corps/réponses/files bornés, refus de CONNECT et upgrade, absence de retry
+automatique, résultat inconnu conservé après erreur d'un POST transmis.
+Seul ce relais publie des ports loopback ; les processus portant witness et
+état d'action restent sur le réseau interne. Aucun défaut bloquant identifié
+dans ce périmètre. Les limites IAM et opérateur local restent présentes.
+
+Le contrôleur principal a exécuté le smoke HTTP réel, les refus de routes,
+origine et corps trop grand, puis le redémarrage et le refus de rejeu/nouveau
+challenge avec un effet persistant. La fixture publique a également été
+vérifiée en conteneur sans réseau ni volume. Ce sont des essais de sandbox,
+pas une qualification d'un environnement financier.
+
+La revue des données a recalculé les deux réductions de p95 depuis les bruts,
+contrôlé les 13 phases × 500 observations et les 11 empreintes de référence.
+Le gain après `OnceLock` concerne seulement des paramètres publics immuables.
+Le parcours durable de 13,014 ms au p95 dépasse son hypothèse de 10 ms.
+Le verdict final conserve ce résultat négatif et l'absence de record externe.

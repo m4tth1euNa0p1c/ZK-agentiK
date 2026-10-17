@@ -53,8 +53,6 @@ services:
       PORT: "38081"
       HORIZON_BIND: "0.0.0.0"
       HORIZON_ORIGIN: "http://127.0.0.1:38080"
-    ports:
-      - "127.0.0.1:38081:38081"
     volumes:
       - type: bind
         source: "${HORIZON_PRIVATE_CONFIG:-../../.tools/horizon/demo/private.json}"
@@ -71,8 +69,6 @@ services:
       HORIZON_BIND: "0.0.0.0"
       HORIZON_ORIGIN: "http://127.0.0.1:38080"
       HORIZON_DB: "/data/authorization.sqlite"
-    ports:
-      - "127.0.0.1:38080:38080"
     volumes:
       - type: bind
         source: "${HORIZON_PUBLIC_CONFIG:-../../.tools/horizon/demo/public.json}"
@@ -84,7 +80,44 @@ services:
         source: verifier-data
         target: /data
 
+  # Docker Desktop does not publish ports from an internal-only bridge. This
+  # stateless relay alone joins the entry bridge; neither backend gains egress.
+  # Upstreams and paths are hard-coded in relay.mjs, never chosen by callers.
+  relay:
+    <<: *runtime
+    entrypoint: ["node", "/app/deploy/horizon/relay.mjs"]
+    command: []
+    cpus: "0.5"
+    mem_limit: 128m
+    memswap_limit: 128m
+    pids_limit: 64
+    environment:
+      NODE_OPTIONS: "--max-old-space-size=64"
+    networks:
+      - entry
+      - sandbox
+    ports:
+      - "127.0.0.1:38080:38080"
+      - "127.0.0.1:38081:38081"
+    depends_on:
+      prover:
+        condition: service_healthy
+      verifier:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "Promise.all([38080,38081].map(p=>fetch('http://127.0.0.1:'+p+'/health',{signal:AbortSignal.timeout(2000)}))).then(rs=>process.exit(rs.every(r=>r.ok)?0:1)).catch(()=>process.exit(1))"
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
 networks:
+  entry:
+    driver: bridge
   sandbox:
     driver: bridge
     internal: true

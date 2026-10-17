@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: '24'
+          node-version: '24.11.1'
           cache: npm
       - run: rustup toolchain install 1.93.0 --profile minimal --component clippy --component rustfmt --target riscv32im-unknown-none-elf
       - run: cargo fmt --all -- --check
@@ -23,3 +23,19 @@ jobs:
       - run: npm run typecheck
       - run: npm run schema:check
       - run: npm run build:guest
+      - run: cargo fmt --manifest-path labs/horizon/Cargo.toml --all -- --check
+      - run: cargo clippy --manifest-path labs/horizon/Cargo.toml --all-targets --locked -- -D warnings
+      - run: cargo test --manifest-path labs/horizon/Cargo.toml --locked
+      - run: npm run horizon:build
+      - run: npm run test:horizon
+      - run: node scripts/horizon-fixture.mjs verify
+      - run: npm run horizon:demo
+      - run: npm run horizon:init
+      - run: docker compose -f deploy/horizon/compose.yaml up -d --build --wait --wait-timeout 60
+      - run: node scripts/horizon-http-smoke.mjs
+      - run: docker compose -f deploy/horizon/compose.yaml restart
+      - run: docker compose -f deploy/horizon/compose.yaml up -d --wait --wait-timeout 60
+      - run: node scripts/horizon-http-smoke.mjs replay
+      - run: node scripts/horizon-container-verify.mjs
+      - if: always()
+        run: docker compose -f deploy/horizon/compose.yaml stop

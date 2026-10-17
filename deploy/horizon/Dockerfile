@@ -37,6 +37,7 @@ COPY --from=production-dependencies /app/node_modules ./node_modules
 COPY --from=node-build /app/packages/horizon-demo/package.json ./packages/horizon-demo/package.json
 COPY --from=node-build /app/packages/horizon-demo/dist ./packages/horizon-demo/dist
 COPY --from=node-build /app/packages/horizon-demo/public ./packages/horizon-demo/public
+COPY deploy/horizon/relay.mjs ./deploy/horizon/relay.mjs
 USER node:node
 EXPOSE 38080 38081
 ENTRYPOINT ["node", "packages/horizon-demo/dist/server.js"]

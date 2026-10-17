@@ -172,7 +172,8 @@ async function request(path, payload, timingId, origin = window.location.origin)
     catch { throw new RequestFailure(`Réponse HTTP ${response.status} non interprétable.`, true); }
     if (!response.ok) {
       const code = record(value) && typeof value.error === "string" && /^[A-Z0-9_]{1,80}$/.test(value.error) ? ` · ${value.error}` : "";
-      throw new RequestFailure(`Requête refusée : HTTP ${response.status}${code}.`);
+      const unknown = record(value) && (value.result_unknown === true || value.authorization_result === 'rejected_or_unknown');
+      throw new RequestFailure(`${unknown ? 'Résultat à réconcilier' : 'Requête refusée'} : HTTP ${response.status}${code}.`, unknown);
     }
     return value;
   } catch (error) {

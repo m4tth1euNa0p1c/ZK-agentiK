@@ -6,6 +6,12 @@ pas une nouvelle vérification de l'état du marché ou des publications.
 
 ## Parcours de lecture
 
+**Nouvelle campagne du 17 octobre : [Horizon](horizon/FINAL_VERDICT.md).**
+Recherche contradictoire banque/assurance, reproduction Vega SHA-256, preuve
+spécialisée réelle, optimisation mesurée et sandbox durable. Son énoncé diffère
+du guest RISC Zero historique. [Méthode et données](horizon/BENCHMARK_METHODOLOGY.md),
+[relation](horizon/FORMAL_STATEMENT.md), [application](horizon/DEPLOYMENT.md).
+
 | Document | Contenu et portée |
 | --- | --- |
 | [01 — Recherche initiale et analyse d'écart](01-RESEARCH-AND-GAP-ANALYSIS.md) | Magnetar, BinarySpartan, Spartan, Lasso, SP1, RISC Zero, Jolt et MCP ; liens vers les sources primaires et limites des annonces |
@@ -20,7 +26,8 @@ pas une nouvelle vérification de l'état du marché ou des publications.
 Les rapports sont des synthèses de recherche, avec leurs sources et leurs
 limites. Les articles et codes tiers liés conservent leurs licences respectives.
 La recherche initiale est conservée comme historique ; le rapport 08 décrit le
-dernier état expérimental du backend réel.
+dernier état expérimental de ce backend RISC Zero. Le laboratoire Horizon
+constitue une expérience supplémentaire sur une relation spécialisée différente.
 
 ## Conclusions conservées
 
