@@ -173,3 +173,21 @@ Aucun nouveau blocage de la campagne locale n'a été identifié après les
 corrections relues. Cela n'établit ni absence universelle de défaut, ni audit
 externe, ni qualification de production. Les exécutions 4096 cas et MATLAB
 réelles doivent conserver leurs propres artefacts et verdicts datés.
+
+## Revue finale des archives MATLAB — 17 octobre 2026
+
+La contre-revue en lecture seule de l'agent `market_equivalents`, effectuée
+après l'exécution étendue, confirme les jobs `campaign` et `matlab` réussis
+du [run 39053041832](https://github.com/m4tth1euNa0p1c/ZK-agentic/actions/runs/39053041832)
+sur `581dbeb4bf84631bcf5abb9421f706d4d586bca6`. Les 15 entrées de sommes Linux,
+4 entrées MATLAB, 13 fichiers du manifeste et 12 empreintes source concordent.
+Les 108 chemins de la nouvelle assertion du catalogue existent.
+
+Les comptes observés concordent : 4 096 cas, 4 086 preuves valides, 4 106 candidats
+invalides, 36 794 vérifications et aucun désaccord. MATLAB R2026b a réellement
+exécuté les mêmes vecteurs. Cette revue d'archives n'a pas relancé de preuve ;
+le contrôle séparé du corpus compressé figure dans les inspections et la
+revérification publiées. Aucun blocage relevé ; la formulation « mutations de
+présentation » a été précisée pour ne pas suggérer des mutations métier.
+Les réserves sur l'échantillon fini, la même bibliothèque Rust, l'horloge locale,
+les sources synthétiques et l'absence d'audit externe restent applicables.
