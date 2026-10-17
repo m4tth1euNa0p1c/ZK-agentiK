@@ -23,6 +23,7 @@ avec le manifeste donné, pas l'authenticité du manifeste.
 
 | Profil | Travail réellement exécuté | Prérequis / coût |
 | --- | --- | --- |
+| `circuit` | 128 cas corrélés BigInt/Octave/Rust, preuves réelles et vérifieur séparé, figures et rapport | Rust, Docker ; [campagne et budgets](../../docs/experiments/circuit/README.md), MATLAB dans un job CI explicite |
 | `horizon` | Build, fixture Bulletproofs historique, puis preuve et action locale synthétique fraîches | Rust et Node ; minutes au premier build |
 | `risc0-public` | Vérification de receipts historiques acceptant/refusant la politique | Docker, laboratoire RISC Zero préparé ; voir son runner |
 | `vega-sha256` | Benchmarks amont SHA-256 SC/MC épinglés | Docker, téléchargements et compilation longs ; pas relation mDL complète |

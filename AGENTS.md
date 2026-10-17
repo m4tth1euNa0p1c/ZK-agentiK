@@ -83,6 +83,14 @@ un autre agent que l'auteur ; utiliser les contrats `.agents/roles/`. Une revue
 d'agent est interne et ne clôt jamais le besoin d'audit cryptographique externe.
 Les faits commerciaux inconnus restent inconnus. Aucun entretien client inventé.
 
+Le banc corrélé `scripts/circuit-campaign.mjs` emploie des vecteurs synthétiques
+partagés BigInt / Octave / Rust ; MATLAB est une exécution distincte explicite.
+Pour ce périmètre, exécuter `npm run test:circuit`, les tests du binaire
+`circuit_campaign` et une campagne bornée. Conserver tous les candidats publics
+compressés, les empreintes et les codes de refus. Ne pas compter un candidat
+hors domaine comme une preuve valide ; le corrélateur doit refuser une campagne
+incomplète. Les timings de correction ne deviennent pas des benchmarks.
+
 Conserver les observations datées et les erreurs. MATLAB, Octave, démonstration
 sur papier, modèle fini, test applicatif et preuve cryptographique ne sont pas
 interchangeables. SHA-256 lie les artefacts, sans certifier leur date ou leur

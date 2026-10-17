@@ -38,3 +38,22 @@ Ne pas comparer le reçu de quelques centaines d'octets du simulateur aux
 preuves Magnetar/SP1/RISC Zero. Pour un backend réel : publier version, type
 de preuve, paramètres de sécurité/ZK, cycles, prétraitement, RAM, threads,
 accélération, coûts cold/warm, tailles et résultats de vérification falsifiée.
+
+## Campagne corrélée Horizon
+
+Lire `docs/experiments/circuit/README.md`. `npm run test:circuit` vérifie les
+gardes du banc. `npm run circuit:campaign -- --cases 128 --output <nouveau-dossier> --build`
+exécute le vrai prover, un vérifieur séparé et Octave ; 1024 et 4096 sont les
+autres budgets autorisés. Ne pas remplir le rapport avec des mocks. Relier
+chaque ID aux différences entières exactes, aux deux modes de preuve et aux
+étapes de rejet attendues. Les contrôles négatifs incluent un prover contournant
+les gardes natives et des corruptions algébriques résignées.
+
+Exiger les SHA-256 concordants des vecteurs et du corpus public décompressé,
+les compteurs complets et un statut terminé. MATLAB exige son propre résultat
+et une jointure séparée ; Octave seul ne suffit pas. Le workflow
+`.github/workflows/circuit-validation.yml` prévoit cette exécution. Les durées
+de correction sont descriptives, sans échauffement ni revendication de SLA.
+Conserver le bundle complet et les résultats négatifs, puis faire relire les
+mathématiques, l'oracle et le banc par un agent autre que leur auteur lorsque
+la mission demande une équipe. Une revue d'agents n'est pas un audit externe.

@@ -10,6 +10,7 @@ bancaire, la demande commerciale et la sécurité post-quantique ne sont pas ét
 
 [Démarrage développeur](packages/proofkit-sdk/README.md) ·
 [White paper PDF](docs/whitepaper/whitepaper.pdf) ·
+[Circuit : mathématiques et campagnes corrélées](docs/experiments/circuit/README.md) ·
 [Dossier de publication](docs/publication/README.md) ·
 [Recherche et historique](docs/README.md)
 

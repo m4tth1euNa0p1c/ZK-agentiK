@@ -1,0 +1,238 @@
+name: Correlated circuit validation
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/circuit-validation.yml'
+      - 'labs/horizon/**'
+      - 'math/circuit/**'
+      - 'scripts/circuit-*.mjs'
+      - 'tests/circuit/**'
+  pull_request:
+    paths:
+      - '.github/workflows/circuit-validation.yml'
+      - 'labs/horizon/**'
+      - 'math/circuit/**'
+      - 'scripts/circuit-*.mjs'
+      - 'tests/circuit/**'
+  workflow_dispatch:
+    inputs:
+      cases:
+        description: Bounded synthetic campaign size
+        type: choice
+        options: ['128', '1024', '4096']
+        default: '128'
+      include_matlab:
+        description: Run real MATLAB on the same public vectors (public repository only)
+        type: boolean
+        default: false
+  workflow_call:
+    inputs:
+      cases:
+        type: string
+        default: '128'
+      include_matlab:
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: circuit-${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}-${{ inputs.cases || '128' }}-${{ (github.event_name == 'pull_request' && inputs.cases == '') || inputs.include_matlab || false }}
+  cancel-in-progress: false
+jobs:
+  campaign:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      CASES: ${{ inputs.cases || '128' }}
+      INCLUDE_MATLAB: ${{ (github.event_name == 'pull_request' && inputs.cases == '') || inputs.include_matlab || false }}
+    steps:
+      - name: Validate bounded inputs before building
+        shell: bash
+        run: |
+          case "$CASES" in 128|1024|4096) ;; *) exit 2 ;; esac
+          case "$INCLUDE_MATLAB" in true|false) ;; *) exit 2 ;; esac
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24.11.1'
+          cache: npm
+      - run: rustup toolchain install 1.93.0 --profile minimal
+      - run: npm ci --ignore-scripts
+      - name: Validate the campaign harness
+        run: node --test tests/circuit/*.test.mjs
+      - name: Execute real prover, separate verifier and Octave oracle
+        id: execute
+        run: node scripts/circuit-campaign.mjs --cases "$CASES" --output .tools/circuit-ci --build
+      - name: Select public outputs and preserve negative outcomes
+        id: export
+        if: always() && steps.execute.outcome != 'skipped'
+        env:
+          CAMPAIGN_OUTCOME: ${{ steps.execute.outcome }}
+          JOB_STATUS: ${{ job.status }}
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import { existsSync, lstatSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+          import { join } from 'node:path';
+          import { createHash } from 'node:crypto';
+          const source = '.tools/circuit-ci/public';
+          const target = 'public-circuit-artifacts';
+          mkdirSync(target);
+          const files = ['vectors.json', 'octave.json', 'octave-selftests.json', 'prover-results.json', 'verifier-results.json',
+            'correlation.json', 'verification-requests.ndjson.gz', 'report.html', 'manifest.json',
+            'figures/plot-metadata.json'];
+          const figures = join(source, 'figures');
+          if (existsSync(figures)) {
+            const stat = lstatSync(figures);
+            if (!stat.isDirectory() || stat.isSymbolicLink()) throw new Error('UNSAFE_FIGURES_DIRECTORY');
+            for (const name of readdirSync(figures)) {
+              if (/^[A-Za-z0-9_-]+\.(png|svg)$/.test(name)) files.push(`figures/${name}`);
+            }
+          }
+          if (files.length > 64) throw new Error('TOO_MANY_PUBLIC_FILES');
+          let total = 0;
+          const missing = [], sums = [];
+          const emit = (name, bytes) => {
+            if (bytes.length > 64 * 1024 * 1024 || (total += bytes.length) > 256 * 1024 * 1024) {
+              throw new Error('PUBLIC_EXPORT_BUDGET_EXCEEDED');
+            }
+            if (name.startsWith('figures/')) mkdirSync(join(target, 'figures'), { recursive: true });
+            writeFileSync(join(target, name), bytes, { flag: 'wx' });
+            sums.push(`${createHash('sha256').update(bytes).digest('hex')}  ${name}`);
+          };
+          for (const name of files) {
+            const path = join(source, name);
+            if (!existsSync(path)) { missing.push(name); continue; }
+            const stat = lstatSync(path);
+            if (!stat.isFile() || stat.isSymbolicLink() || stat.nlink !== 1 || stat.size > 64 * 1024 * 1024) {
+              throw new Error('UNSAFE_PUBLIC_ARTIFACT');
+            }
+            emit(name, readFileSync(path));
+          }
+          emit('CI_STATUS.json', Buffer.from(JSON.stringify({ schema: 'circuit-ci-status-v1',
+            commit: process.env.GITHUB_SHA, run_id: process.env.GITHUB_RUN_ID,
+            run_attempt: process.env.GITHUB_RUN_ATTEMPT, cases: process.env.CASES,
+            campaign_outcome: process.env.CAMPAIGN_OUTCOME, job_before_export: process.env.JOB_STATUS,
+            matlab_requested: process.env.INCLUDE_MATLAB === 'true', matlab_executed_in_this_job: false,
+            missing_public_files: missing, scope: 'Synthetic vectors and public receipts; process states are not cryptographic proofs.'
+          }, null, 2) + '\n'));
+          writeFileSync(join(target, 'SHA256SUMS'), sums.sort().join('\n') + '\n', { flag: 'wx' });
+          NODE
+      - name: Reject a successful campaign with missing required evidence
+        if: steps.execute.outcome == 'success' && steps.export.outcome == 'success'
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+          const status = JSON.parse(readFileSync('public-circuit-artifacts/CI_STATUS.json', 'utf8'));
+          if (status.missing_public_files.length) throw new Error('SUCCESS_WITH_MISSING_EVIDENCE');
+          NODE
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always() && steps.export.outcome == 'success'
+        with:
+          name: circuit-public-${{ github.run_id }}-${{ github.run_attempt }}
+          path: public-circuit-artifacts/
+          if-no-files-found: error
+          include-hidden-files: false
+          retention-days: 14
+  matlab:
+    needs: campaign
+    if: (github.event_name == 'pull_request' && inputs.cases == '') || inputs.include_matlab
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24.11.1'
+      - name: Require public-repository automatic MATLAB licensing
+        id: eligibility
+        env:
+          REPOSITORY_VISIBILITY: ${{ github.event.repository.visibility }}
+        run: |
+          mkdir public-matlab-artifacts
+          test "$REPOSITORY_VISIBILITY" = public
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: circuit-public-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .tools/circuit-matlab/input
+      - name: Check exact transferred vector bytes
+        run: |
+          cd .tools/circuit-matlab/input
+          sha256sum --check --strict SHA256SUMS
+          test -s vectors.json
+          test -s octave.json
+          test -s prover-results.json
+          test -s verifier-results.json
+      - uses: matlab-actions/setup-matlab@f9e43010f1ae678f7cfa0542fe2a4f60f7d1ad8d # v3.1.0
+        id: setup
+        with:
+          release: R2026b
+      - name: Execute the actual MATLAB oracle
+        uses: matlab-actions/run-command@bfa857648f4895aa98a446fe41c85e0788421ed5 # v3.3.0
+        id: oracle
+        with:
+          command: >-
+            addpath('math/circuit'); r=run_oracle();
+            assert(strcmp(r.runtime,'MATLAB') && r.executed_in_matlab);
+            p='public-matlab-artifacts/matlab-selftests.json'; assert(~isfile(p));
+            f=fopen(p,'w'); assert(f>=0); encoded=[jsonencode(r) newline];
+            written=fwrite(f,encoded,'char'); assert(fclose(f)==0); assert(written==numel(encoded));
+            circuit_oracle('.tools/circuit-matlab/input/vectors.json', 'public-matlab-artifacts/matlab.json');
+      - name: Correlate MATLAB with the same Rust and Octave records
+        id: correlate
+        run: node scripts/circuit-correlate.mjs .tools/circuit-matlab/input --matlab public-matlab-artifacts/matlab.json --output public-matlab-artifacts/correlation-matlab.json
+      - name: Preserve MATLAB execution and licensing states
+        id: status
+        if: always() && steps.eligibility.outcome != 'skipped'
+        env:
+          ELIGIBILITY_OUTCOME: ${{ steps.eligibility.outcome }}
+          SETUP_OUTCOME: ${{ steps.setup.outcome }}
+          ORACLE_OUTCOME: ${{ steps.oracle.outcome }}
+          CORRELATION_OUTCOME: ${{ steps.correlate.outcome }}
+          JOB_STATUS: ${{ job.status }}
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import { existsSync, lstatSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+          import { createHash } from 'node:crypto';
+          const directory = 'public-matlab-artifacts';
+          mkdirSync(directory, { recursive: true });
+          const env = process.env;
+          writeFileSync(`${directory}/CI_STATUS.json`, JSON.stringify({ schema: 'circuit-matlab-ci-status-v1',
+            commit: env.GITHUB_SHA, run_id: env.GITHUB_RUN_ID, run_attempt: env.GITHUB_RUN_ATTEMPT,
+            eligibility_outcome: env.ELIGIBILITY_OUTCOME, setup_outcome: env.SETUP_OUTCOME,
+            oracle_outcome: env.ORACLE_OUTCOME, correlation_outcome: env.CORRELATION_OUTCOME,
+            job_before_export: env.JOB_STATUS, requested_release: 'R2026b',
+            matlab_oracle_completed: env.ORACLE_OUTCOME === 'success',
+            scope: 'Actual MATLAB execution only when oracle succeeded; no license token, cloud deployment or cryptographic audit.'
+          }, null, 2) + '\n', { flag: 'wx' });
+          const sums = [];
+          for (const name of ['CI_STATUS.json', 'matlab.json', 'matlab-selftests.json', 'correlation-matlab.json']) {
+            const path = `${directory}/${name}`;
+            if (!existsSync(path)) continue;
+            const stat = lstatSync(path);
+            if (!stat.isFile() || stat.isSymbolicLink() || stat.nlink !== 1 || stat.size > 64 * 1024 * 1024) {
+              throw new Error('UNSAFE_MATLAB_ARTIFACT');
+            }
+            sums.push(`${createHash('sha256').update(readFileSync(path)).digest('hex')}  ${name}`);
+          }
+          writeFileSync(`${directory}/SHA256SUMS`, sums.sort().join('\n') + '\n', { flag: 'wx' });
+          NODE
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always() && steps.status.outcome == 'success'
+        with:
+          name: circuit-matlab-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            public-matlab-artifacts/CI_STATUS.json
+            public-matlab-artifacts/matlab.json
+            public-matlab-artifacts/matlab-selftests.json
+            public-matlab-artifacts/correlation-matlab.json
+            public-matlab-artifacts/SHA256SUMS
+          if-no-files-found: error
+          include-hidden-files: false
+          retention-days: 14

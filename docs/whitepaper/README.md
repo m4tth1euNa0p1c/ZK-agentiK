@@ -3,6 +3,11 @@
 [Whitepaper PDF](whitepaper.pdf), [source LaTeX](whitepaper.tex),
 [bibliographie](references.bib), [vérifications exécutables](../../math/README.md).
 
+Le [supplément de validation du circuit](circuit-validation.pdf) développe
+la relation, les bornes et la corrélation des oracles avec le prover/vérifieur.
+Ses [sources LaTeX](circuit-validation.tex) et le [banc exécutable](../experiments/circuit/README.md)
+sont conservés séparément du manuscrit historique.
+
 Le texte distingue le hiding idéal de Pedersen, sa liaison calculatoire,
 l'argument de connaissance hérité de Bulletproofs, les bornes entières, la
 composition avec les signatures et le challenge, et l'invariant applicatif de

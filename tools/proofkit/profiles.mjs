@@ -2,6 +2,16 @@
 import { join } from 'node:path';
 
 export const profiles = Object.freeze({
+  circuit: Object.freeze({
+    description: '128 correlated synthetic cases: BigInt, Octave, real Bulletproofs and a separate verifier process.',
+    postQuantum: false,
+    relation: 'Horizon two 32-bit ranges, exact u64 input corpus and adversarial presentations; no external action.',
+    required: ['scripts/circuit-campaign.mjs', 'scripts/circuit-correlate.mjs', 'scripts/circuit-vectors.mjs',
+      'math/circuit/circuit_oracle.m', 'math/circuit/run_oracle.m', 'math/circuit/Dockerfile',
+      'labs/horizon/proof/src/bin/circuit_campaign.rs'],
+    steps: (_root, directory) => [{ id: 'correlated-circuit', args: ['scripts/circuit-campaign.mjs',
+      '--cases', '128', '--output', join(directory, 'circuit'), '--build'] }],
+  }),
   horizon: Object.freeze({
     description: 'Real Bulletproofs fixture verification and synthetic local authorization demo.',
     postQuantum: false,
