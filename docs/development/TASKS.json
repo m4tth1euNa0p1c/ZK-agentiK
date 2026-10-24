@@ -1,0 +1,86 @@
+{
+  "schema": "zk-agentic-research-backlog/1",
+  "updated_on": "2026-10-24",
+  "baseline_main": "1ff00fc8663bd88e0ba6ff7f571ddef62d16fc7f",
+  "tasks": [
+    {
+      "id": "SEC-1",
+      "status": "ready",
+      "priority": "P0",
+      "title": "Adversarial verifier statement/transcript binding regression tests",
+      "acceptance": "Cross-profile, malformed proof, altered commitment layout and wrong trusted-verifier parameters rejected; negative cases count zero target effects; document exact tested code.",
+      "paths": [
+        "labs/horizon/proof",
+        "tests/horizon",
+        "packages/proofkit-sdk"
+      ]
+    },
+    {
+      "id": "H14",
+      "status": "ready",
+      "priority": "P0",
+      "title": "Remote sandbox target plus durable two-controller reconciliation",
+      "acceptance": "Separated controllers and target; lost ACK, concurrent operations, crash, stale version and UNKNOWN tested; at most one target effect and no blind retry.",
+      "paths": [
+        "packages/horizon-demo",
+        "tests/horizon"
+      ]
+    },
+    {
+      "id": "H13",
+      "status": "ready",
+      "priority": "P0",
+      "title": "Two real-format synthetic issuer provenance adapters",
+      "acceptance": "Versioned issuer roles and trust registry, verified commitments, signatures, source omissions and revocation; zero effects on invalid inputs.",
+      "paths": [
+        "labs/horizon",
+        "packages/horizon-demo",
+        "tests/horizon"
+      ]
+    },
+    {
+      "id": "H15",
+      "status": "blocked",
+      "priority": "P0",
+      "title": "Independent third-party cryptographic audit",
+      "acceptance": "Independent reviewer validates mathematical statement, implementation, leakage, parsing and side channels; internal agent review is not sufficient.",
+      "paths": [
+        "docs/horizon",
+        "docs/whitepaper"
+      ]
+    },
+    {
+      "id": "H17",
+      "status": "research",
+      "priority": "P0",
+      "title": "Threat model for production IAM and operational resilience",
+      "acceptance": "Document reviewed mTLS/IAM/KMS/backup requirements, tenant isolation and production NO-GO until exercised.",
+      "paths": [
+        "docs/publication",
+        "infra"
+      ]
+    },
+    {
+      "id": "H12",
+      "status": "research",
+      "priority": "P1",
+      "title": "Equivalent-statement Microsoft Vega comparative measurement",
+      "acceptance": "Equivalent signatures, statements, environment and boundaries; otherwise separate comparisons, never a record claim.",
+      "paths": [
+        "docs/experiments",
+        "scripts"
+      ]
+    },
+    {
+      "id": "H16",
+      "status": "research",
+      "priority": "P1",
+      "title": "CPU/GPU/PQ research feasibility and resource budget",
+      "acceptance": "No GPU benchmark without GPU receipt independently verified; full PQ chain required, no signature-only relabeling; cost and limits explicit.",
+      "paths": [
+        "docs/experiments/gpu",
+        "docs/publication"
+      ]
+    }
+  ]
+}
