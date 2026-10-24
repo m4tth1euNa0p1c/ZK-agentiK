@@ -1,70 +1,70 @@
-# Candidat de publication auditable
+# Auditable publication candidate
 
-Cette checklist prépare un résultat reviewable. Elle n'autorise pas à changer
-la visibilité du dépôt, publier un package ou déployer un service. Le candidat
-reste un **laboratoire expérimental**, même si tous les contrôles locaux passent.
+This checklist prepares a reviewable result. It does not authorize changing
+the repository's visibility, publishing a package or deploying a service. The candidate
+remains an **experimental laboratory**, even if all local checks pass.
 
-Pour chaque ligne renseigner `vérifié`, `non vérifié` ou `bloquant`, avec date,
-commit, commande/artefact et responsable. Ne pas cocher une intention.
+For each row enter `verified`, `not verified` or `blocking`, with date,
+commit, command/artifact and owner. Do not check off an intention.
 
-## Identité du candidat
+## Candidate identity
 
-- [ ] Commit candidat exact et état de l'arbre conservés ; changements non suivis
-  de l'utilisateur exclus de toute suppression ou inclusion automatique.
-- [ ] Diff et historique destinés à devenir publics examinés : fichiers, branches,
-  tags, logs, commentaires, artefacts CI et anciennes versions peuvent contenir
-  des informations absentes de l'arbre courant.
-- [ ] Périmètre décidé : préparation privée, PR, dépôt public ou package publié.
-  Une autorisation pour l'un ne suppose pas l'autorisation pour les autres.
+- [ ] Exact candidate commit and tree state retained; the user's untracked
+  changes excluded from any automatic deletion or inclusion.
+- [ ] Diff and history intended to become public examined: files, branches,
+  tags, logs, comments, CI artifacts and old versions may contain
+  information absent from the current tree.
+- [ ] Scope decided: private preparation, PR, public repository or published package.
+  Authorization for one does not imply authorization for the others.
 
-## Contenu et sécurité
+## Content and security
 
-- [ ] Aucun credential réel, witness réel, donnée client, identifiant de tenant
-  sensible, URL privée ou ouverture d'engagement hors fixture dans le candidat.
-- [ ] Les fixtures sont explicitement synthétiques ; les clés générées localement
-  restent hors Git. Les logs et captures ne divulguent pas ces clés.
-- [ ] Les simulateurs et adaptateurs non implémentés sont identifiés et refusés
-  là où une preuve réelle est exigée ; aucune réussite simulée présentée comme ZK.
-- [ ] Invariants autorisation testés : action complète liée, refus avant effet,
-  rejeu, concurrence, expiration/révocation pendant une attente, opération métier
-  réservée indépendamment du nonce, réponse réseau ambiguë et réconciliation.
-- [ ] Le statut local SQLite et les blocages H14/H17 sont visibles dans les guides
-  cloud. Aucun « exactement une fois » distant non démontré.
-- [ ] Procédure de signalement vérifiée dans `SECURITY.md` ; aucun contact ou délai
-  de réponse inventé ; aucun audit externe annoncé sans rapport attribuable.
+- [ ] No real credential, real witness, customer data, sensitive tenant
+  identifier, private URL or non-fixture commitment opening in the candidate.
+- [ ] Fixtures are explicitly synthetic; locally generated keys
+  remain outside Git. Logs and screenshots do not disclose these keys.
+- [ ] Simulators and unimplemented adapters are identified and rejected
+  where a real proof is required; no simulated success presented as ZK.
+- [ ] Authorization invariants tested: complete action bound, denial before effect,
+  replay, concurrency, expiration/revocation during a wait, business operation
+  reserved independently of the nonce, ambiguous network response and reconciliation.
+- [ ] Local SQLite status and H14/H17 blockers are visible in cloud
+  guides. No unproven remote “exactly once” claim.
+- [ ] Reporting procedure verified in `SECURITY.md`; no invented contact or response
+  time; no external audit announced without an attributable report.
 
-## Reproductibilité
+## Reproducibility
 
-- [ ] Commandes racine exigées par `AGENTS.md` exécutées pour le candidat ; les
-  profils Horizon/Proofkit testés séparément selon leurs scripts disponibles.
-- [ ] Versions et lockfiles conservés, tests négatifs mesurant les effets et pas
-  seulement les exceptions ; résultats locaux séparés des résultats CI distante.
-- [ ] Mesures historiques conservées avec leur périmètre ; aucune campagne
-  longue relancée seulement pour afficher un succès. Toute nouvelle assertion
-  de performance exige une nouvelle mesure justifiée.
-- [ ] Manuscrit reconstruit et rendu inspecté ; liens, tableaux, bibliographie,
-  tailles de preuve et limitations alignés sur les artefacts.
-- [ ] Fondations IaC compilées/validées localement ; absence de test cloud indiquée.
-- [ ] Manifest des artefacts, empreintes et exclusions vérifiés. Un éventuel
-  `proofkit seal` lie des octets ; il ne certifie pas la vérité scientifique.
+- [ ] Root commands required by `AGENTS.md` run for the candidate; the
+  Horizon/Proofkit profiles tested separately using their available scripts.
+- [ ] Versions and lockfiles retained, negative tests measuring effects and not
+  just exceptions; local results separated from remote CI results.
+- [ ] Historical measurements retained with their scope; no long campaign
+  rerun merely to display success. Any new performance
+  claim requires a justified new measurement.
+- [ ] Manuscript rebuilt and rendering inspected; links, tables, bibliography,
+  proof sizes and limitations aligned with artifacts.
+- [ ] IaC foundations compiled/validated locally; absence of cloud testing stated.
+- [ ] Artifact manifest, hashes and exclusions verified. An optional
+  `proofkit seal` binds bytes; it does not certify scientific truth.
 
-## Droits et assertions
+## Rights and claims
 
-- [ ] Licence du projet, licences transitives, notices, données et images revues
-  pour la distribution exacte. `THIRD_PARTY_NOTICES.md` est un inventaire partiel,
-  pas une attestation de conformité juridique ni un SBOM complet.
-- [ ] Aucun DOI, partenaire, client, certification, économie ou résultat inventé.
-- [ ] Registre `CLAIMS.md` aligné sur les textes publics ; exclusions explicites
-  de nouveauté absolue, record Vega, post-quantique Horizon et qualification DORA.
-- [ ] `CITATION.cff` correspond au logiciel ; métadonnées de version/date ajoutées
-  seulement si une release réelle les justifie.
-- [ ] Revue contradictoire du candidat effectuée et identifiée comme revue d'agent
-  ou revue humaine. Les réserves H11/H13/H14/H15/H17 restent visibles.
+- [ ] Project license, transitive licenses, notices, data and images reviewed
+  for the exact distribution. `THIRD_PARTY_NOTICES.md` is a partial inventory,
+  not a statement of legal compliance or a complete SBOM.
+- [ ] No invented DOI, partner, customer, certification, savings or result.
+- [ ] `CLAIMS.md` register aligned with public texts; explicit exclusions
+  of absolute novelty, Vega record, post-quantum Horizon and DORA qualification.
+- [ ] `CITATION.cff` matches the software; version/date metadata added
+  only when justified by an actual release.
+- [ ] Adversarial review of the candidate performed and identified as an agent
+  or human review. H11/H13/H14/H15/H17 reservations remain visible.
 
-## Décision finale distincte
+## Separate final decision
 
-Le rapport final indique séparément : candidat publiable comme expérience ;
-autorisation effective de publication ; qualification pour une plateforme
-critique. Les deux dernières ne résultent jamais mécaniquement des tests locaux.
-Si l'utilisateur demande une action externe, présenter le candidat et ses
-réserves concrètes avant l'étape finale, selon les autorisations de la session.
+The final report states separately: candidate publishable as an experiment;
+effective publication authorization; qualification for a critical
+platform. The latter two never follow mechanically from local tests.
+If the user requests an external action, present the candidate and its
+concrete reservations before the final step, according to the session's authorizations.

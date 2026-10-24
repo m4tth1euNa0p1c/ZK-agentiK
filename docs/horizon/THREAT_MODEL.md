@@ -1,76 +1,75 @@
-# Modèle de menace Horizon
+# Horizon threat model
 
-Profil `horizon-range-v1`, laboratoire de contrôle d'une autorisation de sinistre.
-La relation est définie dans [FORMAL_STATEMENT](FORMAL_STATEMENT.md). Aucun paiement.
+Profile `horizon-range-v1`, laboratory for controlling a claims authorization.
+The relation is defined in [FORMAL_STATEMENT](FORMAL_STATEMENT.md). No payment.
 
-## Actifs et frontières
+## Assets and boundaries
 
-Les montants et ouvertures Pedersen sont privés au fournisseur. Les clés privées
-des autorités servent uniquement à l'émission synthétique ; la clé du détenteur
-reste chez le prover. Le client vérifieur ne reçoit que les attestations publiques,
-les clés publiques approuvées et les présentations. Son contrôleur possède seul
-la base de l'action simulée. Une preuve ne donne pas accès à un credential de mutation.
+Amounts and Pedersen openings are private to the provider. Authorities' private
+keys are used only for synthetic issuance; the holder key stays with the prover.
+The verifying client receives only public attestations, approved public keys
+and presentations. Its controller alone holds the simulated-action database.
+A proof does not grant access to a mutation credential.
 
-L'agent, le transport et les présentations sont potentiellement hostiles :
-substitution, omission, répétition, changement de méthode et prompts arbitraires.
-Le vérifieur, sa configuration, son binaire, son stockage et son système
-d'exploitation sont de confiance. Compromettre cette frontière permet de changer
-les règles ou d'écrire dans la cible ; ZK ne protège pas contre cette compromission.
+The agent, transport and presentations are potentially hostile: substitution,
+omission, replay, method changes and arbitrary prompts. The verifier, its
+configuration, binary, storage and operating system are trusted. Compromising
+this boundary allows rules to be changed or writes to the target; ZK does not
+protect against such a compromise.
 
-Les autorités sont de confiance pour la vérité des faits, les unités et l'émission
-depuis les valeurs connues. Un signataire qui signe un mensonge peut produire une
-attestation authentique mais fausse. La preuve vérifie la relation sur ce qui est
-attesté, pas la réalité du sinistre. Le prover connaît ici les deux valeurs :
-ce n'est pas un calcul multipartite où chaque source conserve son witness.
+Authorities are trusted for factual truth, units and issuance from known values.
+A signer signing a lie can produce an authentic but false attestation. The proof
+checks the relation over what is attested, not the reality of the claim. Here,
+the prover knows both values: this is not a multiparty computation in which
+each source retains its witness.
 
-## Attaques et contrôles observables
+## Attacks and observable controls
 
-| Attaque | Contrôle | Limite |
+| Attack | Control | Limitation |
 | --- | --- | --- |
-| Hallucination/injection demandant une action différente | Attentes émises par le serveur, contexte complet signé et transcript A | L'agent ne reçoit aucune API financière |
-| Fausse preuve ou signature | Vérification Dalek/Bulletproofs, scalaires canoniques, clés épinglées | Pas d'audit cryptographique externe réalisé |
-| Substitution ou omission de source | Deux rôles obligatoires, signatures et jointures, evidence exacte configurée | Émission réelle non raccordée |
-| Divulgation forcée | Politique locale du fournisseur et du client ; aucune sélection HTTP affaiblissante | Une politique explicitement publique autorise la baseline divulguée |
-| Rejeu/concurrence/nouveau challenge | Nonce consommé et opération métier réservée sous `BEGIN IMMEDIATE` | Pas de consensus interrégions |
-| Révocation/politique/expiration pendant la preuve | Relecture après attente et après réservation ; bornes début/fin vérifiées | Horloge et source de révocation de confiance ; pas d'horloge sécurisée |
-| Arrêt après réservation | SQLite WAL/FULL, état réservé persistant, pas de retry automatique | Durabilité dépend du stockage et de ses garanties réelles |
-| Réponse cible inconnue | `UNKNOWN` reste consommé, réconciliation en lecture avant décision | Pas de promesse exactly-once sur une cible distante |
-| Saturation | Corps 64 Kio, queue/HTTP 8, timeout worker 30 s, 10 000 challenges, limites Docker | Contrôles locaux, pas de protection DDoS certifiée |
-| Mauvais tenant | Attestations/contexte liés ; base épinglée à sa configuration | Une configuration/instance par tenant ; pas de SaaS multi-tenant qualifié |
+| Hallucination/injection requesting a different action | Server-issued expectations, fully signed context and transcript A | The agent receives no financial API |
+| Fake proof or signature | Dalek/Bulletproofs verification, canonical scalars, pinned keys | No external cryptographic audit performed |
+| Source substitution or omission | Two mandatory roles, signatures and joins, exact configured evidence | Real issuance not connected |
+| Forced disclosure | Local provider and client policies; no weakening through HTTP selection | An explicitly public policy permits the disclosed baseline |
+| Replay/concurrency/new challenge | Nonce consumed and business operation reserved under `BEGIN IMMEDIATE` | No cross-region consensus |
+| Revocation/policy/expiration during proving | Reread after waiting and after reservation; start/end bounds checked | Trusted clock and revocation source; no secure clock |
+| Shutdown after reservation | SQLite WAL/FULL, persistent reserved state, no automatic retry | Durability depends on storage and its actual guarantees |
+| Unknown target response | `UNKNOWN` remains consumed; read-only reconciliation before a decision | No exactly-once promise for a remote target |
+| Saturation | 64 KiB bodies, queue/HTTP 8, 30 s worker timeout, 10,000 challenges, Docker limits | Local controls, not certified DDoS protection |
+| Wrong tenant | Bound attestations/context; database pinned to its configuration | One configuration/instance per tenant; no qualified multi-tenant SaaS |
 
-Le test de recul d'horloge couvre un challenge antérieur au début de validité
-des attestations, une vérification dans leur intervalle, puis un dispatch avant
-ce début. Il exige zéro effet. Il ne constitue pas une protection générale contre
-une horloge contrôlée par l'attaquant.
+The clock-rollback test covers a challenge before attestation validity starts,
+verification within the validity interval, then dispatch before its start.
+It requires zero effects. It is not general protection against an attacker-controlled clock.
 
-## Confidentialité et hypothèses cryptographiques
+## Confidentiality and cryptographic assumptions
 
-Bulletproofs/Ristretto repose sur des hypothèses de logarithme discret et le
-modèle du transcript Fiat–Shamir ; Ed25519 est une signature classique. Aucun
-profil de cette expérience n'est post-quantique. Les générateurs standards sont
-fixés dans le code, sans trusted setup à secret toxique.
+Bulletproofs/Ristretto relies on discrete-log assumptions and the Fiat–Shamir
+transcript model; Ed25519 is a classical signature. No profile in this experiment
+is post-quantum. Standard generators are fixed in the code, with no toxic-secret
+trusted setup.
 
-Le profil révèle identifiants, tenant, devise, unité, versions, clés, dates,
-engagements, action et verdict. Les mêmes engagements et clé de détenteur rendent
-les présentations corrélables. Une preuve réutilisée est elle-même un identifiant
-stable. Pas d'anonymat ni d'unlinkability. Les secrets ne sont pas effacés de façon
-qualifiée de la RAM ; les canaux auxiliaires et la résistance aux dumps ne sont
-pas évalués. Le mode non-ZK divulgue intentionnellement les valeurs et ouvertures.
+The profile reveals identifiers, tenant, currency, unit, versions, keys, dates,
+commitments, action and verdict. Reusing commitments and the holder key makes
+presentations linkable. A reused proof is itself a stable identifier. No
+anonymity or unlinkability. Secrets are not erased from RAM with qualified
+guarantees; side channels and dump resistance have not been evaluated. Non-ZK
+mode intentionally discloses values and openings.
 
-## Déploiement et conformité
+## Deployment and compliance
 
-Les routes HTTP du parcours de démonstration, sans authentification d'utilisateur,
-sont limitées au loopback et aux organisations fictives. Les trois routes opérateur
-(`/api/revoke`, `/api/rotate-policy`, `/api/reconcile`) exigent désormais un secret
-configuré côté serveur ; elles échouent fermées en son absence. Compose ne le
-configure pas et le navigateur ne le reçoit pas. Un secret partagé local n'est
-pas un IAM bancaire. Voir les [tests opérateur datés](../publication/OPERATOR_VALIDATION_2026-10-17.json).
-Les routes opérateur de révocation ne doivent pas être exposées comme des outils
-d'agent. CORS/CSP ne remplacent pas une authentification. Une industrialisation
-exige mTLS/IAM, séparation des rôles, HSM/KMS, origine contrôlée, rotation/révocation,
-sauvegardes testées, audit externe et politique de migration.
+The demonstration HTTP routes, with no user authentication, are restricted to
+loopback and fictitious organizations. The three operator routes (`/api/revoke`,
+`/api/rotate-policy`, `/api/reconcile`) now require a server-configured secret;
+they fail closed when it is absent. Compose does not configure it and the
+browser does not receive it. A local shared secret is not banking IAM. See the
+[dated operator tests](../publication/OPERATOR_VALIDATION_2026-10-17.json).
+Operator revocation routes must not be exposed as agent tools. CORS/CSP do not
+replace authentication. Industrialization requires mTLS/IAM, role separation,
+HSM/KMS, controlled origins, rotation/revocation, tested backups, external audit
+and a migration policy.
 
-DORA, RGPD, AI Act et les obligations du secteur ne découlent pas d'une preuve.
-La corrélation et les métadonnées peuvent être des données personnelles. Aucun
-avis juridique, certification ou conformité réglementaire n'est établi par ce POC.
-Les textes et leur portée sont référencés dans [MARKET_DISCOVERY](MARKET_DISCOVERY.md).
+DORA, GDPR, the AI Act and sector obligations do not follow from a proof.
+Linkability and metadata may constitute personal data. This POC establishes no
+legal opinion, certification or regulatory compliance. The texts and their scope
+are referenced in [MARKET_DISCOVERY](MARKET_DISCOVERY.md).

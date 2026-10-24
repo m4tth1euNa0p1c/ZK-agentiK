@@ -1,117 +1,116 @@
-# Validation locale — 15 octobre 2026
+# Local validation — October 15, 2026
 
-Ce document conserve la campagne initiale du simulateur (12 tests Rust et
-24 tests Node). La suite a depuis atteint 14 tests Rust et 25 tests Node, et
-un backend réel séparé a produit quatre preuves : voir
-[la campagne RISC Zero](08-RISC0-LAB-RESULTS.md). Les mesures ci-dessous restent
-celles du premier run ; elles ne décrivent pas la nouvelle preuve réelle.
+This document preserves the initial simulator campaign (12 Rust tests and
+24 Node tests). The suite has since reached 14 Rust tests and 25 Node tests,
+and a separate real backend has produced four proofs: see
+[the RISC Zero campaign](08-RISC0-LAB-RESULTS.md). The measurements below remain
+those of the first run; they do not describe the new real proof.
 
-## Résultat et périmètre
+## Result and scope
 
-Le POC MCP compile et ses tests locaux passent. **Ce chemin ne produit pas de preuve ZK** :
-le worker Rust reconstruit un reçu de simulation contenant les données privées.
-Les services Jira, SonarQube et GitLab sont des fixtures. Aucune mutation réelle,
-aucun déploiement, aucun audit cryptographique et aucun essai client commercial
-n'ont été effectués.
+The MCP POC compiles and its local tests pass. **This path does not produce a ZK proof**:
+the Rust worker reconstructs a simulation receipt containing the private data.
+Jira, SonarQube and GitLab services are fixtures. No real mutation, deployment,
+cryptographic audit or commercial customer trial was performed.
 
-Les résultats ci-dessous ont été obtenus sur Windows x64, Intel Core Ultra 7
-265F, environ 32 GiB de RAM, Node.js 24.11.1, npm 11.6.2 et Rust 1.93.0 MSVC.
-Les dépendances sont verrouillées dans les deux lockfiles. La CI GitHub est
-configurée mais n'a pas été exécutée à distance dans cette session.
+The results below were obtained on Windows x64, Intel Core Ultra 7 265F,
+approximately 32 GiB of RAM, Node.js 24.11.1, npm 11.6.2 and Rust 1.93.0 MSVC.
+Dependencies are locked in both lockfiles. GitHub CI is configured but was
+not run remotely in this session.
 
-## Commandes exécutées
+## Commands executed
 
-| Vérification | Résultat |
+| Check | Result |
 |---|---|
-| `node scripts/cargo.mjs test --workspace --locked` | 12 tests réussis : 5 cœur, 7 bridge ; zéro échec |
-| `node scripts/cargo.mjs fmt --all -- --check` | Réussi |
-| `node scripts/cargo.mjs clippy --workspace --all-targets --locked -- -D warnings` | Réussi, zéro avertissement |
-| `npm test` | Build Rust/TS puis 24 tests réussis, zéro ignoré/échec |
-| `npm run typecheck` | Réussi en mode strict |
-| `npm run schema:check` | Schéma JSON identique aux schémas d'exécution |
-| `npm run demo` | Client MCP stdio connecté ; merge simulé autorisé ; mauvais projet et reçu falsifié refusés |
-| `npm run demo:critical` | Un dossier complet autorisé ; 23 scénarios adverses bloqués ; zéro merge supplémentaire |
-| `npm run build:guest` | ELF32 RISC-V compilé, en-tête et entrée inspectés |
-| `npm run benchmark -- --enforce-5ms` | Critère p95 de rejet <5 ms atteint sur ce run |
-| `npm audit --omit=dev` | Zéro vulnérabilité signalée pour les dépendances de production à cette date |
+| `node scripts/cargo.mjs test --workspace --locked` | 12 tests passed: 5 core, 7 bridge; zero failures |
+| `node scripts/cargo.mjs fmt --all -- --check` | Passed |
+| `node scripts/cargo.mjs clippy --workspace --all-targets --locked -- -D warnings` | Passed, zero warnings |
+| `npm test` | Rust/TS build, then 24 tests passed, zero skipped/failed |
+| `npm run typecheck` | Passed in strict mode |
+| `npm run schema:check` | JSON schema identical to runtime schemas |
+| `npm run demo` | MCP stdio client connected; simulated merge authorized; wrong project and tampered receipt rejected |
+| `npm run demo:critical` | One complete evidence package authorized; 23 adversarial scenarios blocked; zero additional merges |
+| `npm run build:guest` | RISC-V ELF32 compiled, header and entry point inspected |
+| `npm run benchmark -- --enforce-5ms` | Rejection p95 criterion <5 ms met on this run |
+| `npm audit --omit=dev` | Zero vulnerabilities reported for production dependencies as of that date |
 
-Le shim Cargo sert uniquement à retrouver l'exécutable rustup sous Windows.
-Lorsque Cargo est dans PATH, les mêmes commandes commencent directement par
-`cargo`. Le scanner npm ne constitue pas un audit de sécurité du logiciel.
-Les quatre skills locaux ont également passé le validateur de structure
-`quick_validate.py` du skill-creator.
+The Cargo shim is used only to locate the rustup executable on Windows.
+When Cargo is in PATH, the same commands start directly with `cargo`.
+The npm scanner is not a software security audit.
+The four local skills also passed the skill-creator's `quick_validate.py`
+structure validator.
 
-## Scénarios et invariants vérifiés
+## Scenarios and invariants verified
 
-- Table exhaustive des quatre règles métier, bornes entières et statuts exacts.
-- Contrôles critiques indépendants : rôles/MFA, fraîcheur, révision, fenêtre,
-  artefact/SBOM/provenance, scans, récupération, canary, incident et arrêt.
-- Vecteurs SHA-256/canoniques partagés Python → Rust/TypeScript ; rejet des
-  encodages ambigus et statuts ASCII non imprimables.
-- Altération des champs d'autorisation et du reçu : aucun effet de bord.
-- Simulator interdit par défaut ; SP1/RISC Zero/Magnetar indisponibles refusés.
-- Rejeu concurrent du même nonce ; 32 challenges distincts pour la même
-  opération ; résultat API ambigu : aucune seconde mutation.
-- Substitution du witness par un prover, changement des faits ou du HEAD,
-  tentative d'affaiblissement de la politique : refus.
-- Expiration pendant la preuve et pendant la réservation de l'opération,
-  arrêt d'urgence activé pendant la preuve : aucun dispatch autorisé.
-- Handshake, découverte et appels avec le client MCP officiel, sur transport
-  mémoire et stdio. Claude Desktop, Cursor et LangChain n'ont pas été essayés.
+- Exhaustive table of the four business rules, integer bounds and exact statuses.
+- Independent critical controls: roles/MFA, freshness, revision, window,
+  artifact/SBOM/provenance, scans, recovery, canary, incident and stop.
+- Shared Python → Rust/TypeScript SHA-256/canonical vectors; rejection of
+  ambiguous encodings and nonprintable ASCII statuses.
+- Authorization field and receipt tampering: no side effect.
+- Simulator prohibited by default; unavailable SP1/RISC Zero/Magnetar rejected.
+- Concurrent replay of the same nonce; 32 distinct challenges for the same
+  operation; ambiguous API result: no second mutation.
+- Witness substitution by a prover, changed facts or HEAD, attempted policy
+  weakening: rejected.
+- Expiration during proof generation and operation reservation, emergency stop
+  activated during proof generation: no dispatch authorized.
+- Handshake, discovery and calls with the official MCP client over in-memory
+  and stdio transports. Claude Desktop, Cursor and LangChain were not tried.
 
-Les tests critiques paramètrent plusieurs cas dans un même test : les 23
-scénarios ne sont donc pas 23 tests Node supplémentaires. Les états de sécurité
-du profil critique sont des attestations simulées ; aucune signature fournisseur
-d'artefact, vérification de MFA réelle ou restauration effective n'est impliquée.
+Critical tests parameterize several cases within one test: the 23 scenarios
+are therefore not 23 additional Node tests. Critical-profile security states
+are simulated attestations; no artifact vendor signature, real MFA check or
+actual restoration is involved.
 
-## Mesure du simulateur
+## Simulator measurement
 
-Mesure du 15 octobre 2026 à 19:30:58 UTC, worker Rust release persistant,
-30 itérations de chauffe et 300 échantillons par catégorie. Le coût inclut
-IPC local, JSON et firewall TypeScript ; il exclut réseau et véritable preuve.
-Le rejet métier mesure le refus immédiat d'un résultat non autorisant, pas
-la vérification cryptographique d'une preuve de refus.
+Measured on October 15, 2026 at 19:30:58 UTC, with a persistent release Rust
+worker, 30 warmup iterations and 300 samples per category. The cost includes
+local IPC, JSON and the TypeScript firewall; it excludes network and real proof
+costs. Policy denial measures the immediate rejection of a non-authorizing
+result, not cryptographic verification of a denial proof.
 
-| Opération | p50 (ms) | p95 (ms) | maximum (ms) |
+| Operation | p50 (ms) | p95 (ms) | maximum (ms) |
 |---|---:|---:|---:|
-| Génération du reçu natif | 0,0871 | 0,1864 | 0,4840 |
-| Vérification autorisante | 0,0955 | 0,2134 | 0,6142 |
-| Rejet métier | 0,0227 | 0,0389 | 0,3443 |
-| Rejet d'un reçu altéré | 0,0757 | 0,1727 | 0,3535 |
+| Native receipt generation | 0.0871 | 0.1864 | 0.4840 |
+| Verification granting authorization | 0.0955 | 0.2134 | 0.6142 |
+| Policy denial | 0.0227 | 0.0389 | 0.3443 |
+| Tampered receipt rejection | 0.0757 | 0.1727 | 0.3535 |
 
-Reçu : **282 octets** ; enveloppe JSON : **1 276 octets**. La RSS enregistrée
-est celle du processus Node, pas le pic mémoire cumulé de tous les processus.
-Le benchmark utilise la politique de base, pas le dossier critique complet.
-Les mesures brutes avec identité de simulation sont conservées dans
+Receipt: **282 bytes**; JSON envelope: **1,276 bytes**. Recorded RSS is that
+of the Node process, not the combined peak memory of all processes.
+The benchmark uses the base policy, not the full critical evidence package.
+Raw measurements with simulation identity are retained in
 [baseline-2026-10-15.json](../tests/benchmarks/baseline-2026-10-15.json).
 
-Tous les rejets observés ici étaient inférieurs à 5 ms. Le script impose le
-critère **p95**, pas une borne universelle : charge, machine, ordonnanceur et
-backend changeront les résultats. Aucun objectif de latence ZK n'est validé.
+All rejections observed here were below 5 ms. The script enforces a **p95**
+criterion, not a universal bound: load, machine, scheduler and backend will
+change the results. No ZK latency target is validated.
 
-## ELF RISC-V de faisabilité
+## RISC-V feasibility ELF
 
-Le binaire `target/riscv32im-unknown-none-elf/release/policy-guest-riscv`
-fait 1 280 octets ; ELF32 little-endian, machine RISC-V, entrée 69 844.
-Son SHA-256 est :
+The `target/riscv32im-unknown-none-elf/release/policy-guest-riscv` binary
+is 1,280 bytes; little-endian ELF32, RISC-V machine, entry point 69,844.
+Its SHA-256 is:
 
 ```text
 18e1e40276eab4e61a22cec54e0f12c038aa1db227750d3319e8311cae76e5cc
 ```
 
-C'est un probe de compilation freestanding. Il ne possède pas encore l'ABI
-d'entrée, de journal et de terminaison d'une véritable zkVM. Cette compilation
-n'établit ni une exécution RISC-V prouvée ni une portabilité binaire universelle.
+This is a freestanding compilation probe. It does not yet have the input,
+journal and termination ABI of a real zkVM. This compilation establishes
+neither proved RISC-V execution nor universal binary portability.
 
-## Limites restantes
+## Remaining limitations
 
-Le store d'opérations et le store de nonces sont en mémoire : les tests ne
-démontrent ni durabilité, ni reprise après crash, ni exclusion multi-instance.
-La relecture des faits ne crée pas une transaction atomique entre trois services.
-Le contrôleur cible doit imposer ses préconditions et ses droits de mutation.
+The operation and nonce stores are in memory: tests demonstrate neither
+durability, crash recovery nor multi-instance exclusion.
+Rereading facts does not create an atomic transaction across three services.
+The target controller must enforce its preconditions and mutation permissions.
 
-La production exige un backend réel, un guest vérifiant les attestations
-d'origine, un registre de confiance, l'isolation des tenants, une cible concrète,
-des stores durables et des essais de panne. Le chemin de récupération d'urgence
-est distinct du gel des changements ordinaires actuellement testé.
-Ces travaux et leurs critères sont décrits dans [les dix issues](../issues/README.md).
+Production requires a real backend, a guest verifying source attestations,
+a trust registry, tenant isolation, a concrete target, durable stores and
+failure tests. The emergency recovery path is separate from the freeze on
+ordinary changes currently tested.
+This work and its criteria are described in [the ten issues](../issues/README.md).

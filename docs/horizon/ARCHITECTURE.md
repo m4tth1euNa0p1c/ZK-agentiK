@@ -1,90 +1,90 @@
-# Architecture du laboratoire Horizon
+# Horizon laboratory architecture
 
 ```mermaid
 flowchart TD
-  I[Deux autorités synthétiques : montant et plafond] -->|engagements signés| P[Fournisseur : witness et clé du détenteur]
-  I -->|clés publiques et attestations épinglées| V[Client : configuration locale]
-  V --> C[Challenge exact et méthode imposée]
+  I[Two synthetic authorities: amount and limit] -->|signed commitments| P[Provider: witness and holder key]
+  I -->|pinned public keys and attestations| V[Client: local configuration]
+  V --> C[Exact challenge and required method]
   C --> P
-  P --> R[Worker Rust : A nouvelle range proof ou B preuve préparée et signature fraîche]
-  R -->|présentation publique| W[Worker Rust indépendant : toutes signatures et preuve complète]
-  W --> F[Contrôleur SQLite : fraîcheur, révocation, politique, nonce et opération]
-  F --> T[Action synthétique : enregistrer une autorisation]
-  F --> A[Audit chaîné et réconciliation]
+  P --> R[Rust worker: A new range proof or B prepared proof and fresh signature]
+  R -->|public presentation| W[Independent Rust worker: all signatures and full proof]
+  W --> F[SQLite controller: freshness, revocation, policy, nonce and operation]
+  F --> T[Synthetic action: record an authorization]
+  F --> A[Chained audit and reconciliation]
 ```
 
-## Implémentation
+## Implementation
 
-`labs/horizon/proof` est une bibliothèque Rust et deux binaires indépendants du
-workspace historique. `horizon-proof-worker` reçoit une requête JSON par ligne ;
-`horizon-benchmark` mesure les fonctions internes. Les primitives sont fournies
-par Bulletproofs 5 et Dalek, versions figées. La logique de preuve n'est pas
-réimplémentée en TypeScript. Le moteur Rust historique `no_std` et le lab RISC
-Zero restent intacts et répondent à une autre relation.
+`labs/horizon/proof` is a Rust library and two binaries independent of the
+historical workspace. `horizon-proof-worker` receives one JSON request per line;
+`horizon-benchmark` measures internal functions. Primitives are provided by
+Bulletproofs 5 and Dalek, with pinned versions. Proof logic is not reimplemented
+in TypeScript. The historical `no_std` Rust engine and the RISC Zero lab remain
+unchanged and address a different relation.
 
-`packages/horizon-demo` contient une API HTTP typée stricte et une interface
-statique. Le fournisseur possède uniquement sa configuration privée et son
-worker. Le client possède uniquement sa configuration publique, un autre worker
-et sa base. La sélection C est imposée par la politique locale ; A, B et la
-baseline non-ZK restent identifiables. Aucune stratégie ne prétend être nouvelle.
+`packages/horizon-demo` contains a strictly typed HTTP API and a static interface.
+The provider holds only its private configuration and its worker. The client
+holds only its public configuration, a separate worker and its database.
+Selection C is enforced by local policy; A, B and the non-ZK baseline remain
+distinguishable. No strategy claims to be new.
 
-Le SDK MCP historique reste distinct. L'ajout Proofkit du 17 octobre centralise
-le chemin HTTP/MCP Horizon dans `defineVerifiedTool` et l'adaptateur
-`packages/horizon-demo/src/tool.ts`. Le transport MCP officiel expose seulement
-émission de challenge et soumission d'une présentation ; il ne porte pas les
-secrets du prover ni les routes d'administration. La preuve Bulletproofs est
-vérifiée par le même worker avant le même contrôleur SQLite. Aucun champ
-`_meta.zkp` du protocole historique n'est réinterprété comme ce nouveau profil.
-L'hôte, ses adaptateurs et sa configuration sont de confiance. Cette intégration
-ne résout pas l'émission réelle, les règles contractuelles ou l'IAM bancaire.
-Les mesures antérieures au SDK ne constituent pas une mesure de son transport.
+The historical MCP SDK remains separate. The October 17 Proofkit addition
+centralizes the Horizon HTTP/MCP path in `defineVerifiedTool` and the adapter
+`packages/horizon-demo/src/tool.ts`. The official MCP transport exposes only
+challenge issuance and presentation submission; it carries neither prover
+secrets nor administration routes. The Bulletproofs proof is verified by the
+same worker before the same SQLite controller. No `_meta.zkp` field from the
+historical protocol is reinterpreted as this new profile. The host, its adapters
+and its configuration are trusted. This integration does not resolve real
+issuance, contractual rules or banking IAM. Measurements predating the SDK do
+not measure its transport.
 
-Les routes HTTP d'exploitation vérifient un secret opérateur distinct, absent
-du navigateur et des outils MCP. Sans configuration explicite, révocation,
-rotation de politique et réconciliation sont refusées. Ce contrôle local ne
-fournit ni identité bancaire ni rôles nominatifs. Il ne remplace jamais la
-vérification de preuve du parcours d'autorisation. Le [guide de déploiement](DEPLOYMENT.md)
-précise cette frontière et les limites du relais.
+Operational HTTP routes check a separate operator secret, absent from the
+browser and MCP tools. Without explicit configuration, revocation, policy
+rotation and reconciliation are denied. This local control provides neither
+banking identity nor individually assigned roles. It never replaces proof
+verification in the authorization flow. The [deployment guide](DEPLOYMENT.md)
+describes this boundary and the relay's limitations.
 
-Dans Compose, un relais HTTP sans secret publie les deux ports loopback. Ses
-destinations et routes sont constantes. Lui seul joint le réseau d'entrée et
-le réseau interne ; aucun port du prover/vérifieur n'est directement publié.
-Il ne réessaie jamais un POST transmis dont le résultat est inconnu. Cette
-adaptation rend le sandbox accessible sur Docker Desktop sans fournir de
-route Internet aux processus portant les données privées ou l'état d'action.
+In Compose, an HTTP relay with no secrets publishes both loopback ports. Its
+destinations and routes are constant. Only this relay joins both the ingress
+network and the internal network; no prover/verifier port is published directly.
+It never retries a forwarded POST with an unknown outcome. This adaptation makes
+the sandbox accessible on Docker Desktop without providing an Internet route
+to processes holding private data or action state.
 
-## État durable et effets
+## Durable state and effects
 
-La première transaction consomme le nonce et réserve l'opération, puis commit.
-La seconde revérifie les bornes temporelles et l'état courant, écrit l'action
-simulée et son audit. L'identité métier dépend de tenant, audience, action et
-dossier ; un changement de nonce ou politique ne recrée pas une action.
+The first transaction consumes the nonce and reserves the operation, then
+commits. The second rechecks time bounds and current state, and writes the
+simulated action and its audit record. Business identity depends on tenant,
+audience, action and case; changing the nonce or policy does not recreate an action.
 
 ```text
 absent -> RESERVED -> COMPLETED
                   -> REJECTED
-                  -> UNKNOWN -> réconciliation -> COMPLETED ou UNKNOWN
+                  -> UNKNOWN -> reconciliation -> COMPLETED or UNKNOWN
 ```
 
-Un arrêt après réservation ne relâche jamais l'opération. La réconciliation
-lit la cible locale, sans redispatch. Le test d'ambiguïté force `UNKNOWN` après
-un effet connu de la cible synthétique. Aucune inférence vers une API bancaire
-distante : il faudrait idempotency key, précondition exacte et API de statut
-auprès de cette cible, avec protocole de reprise accepté par son opérateur.
+A shutdown after reservation never releases the operation. Reconciliation reads
+the local target without redispatching. The ambiguity test forces `UNKNOWN`
+after a known effect at the synthetic target. No inference applies to a remote
+banking API: that target would need an idempotency key, an exact precondition
+and a status API, with a recovery protocol accepted by its operator.
 
-Les événements sont chaînés par SHA-256. Cela détecte une altération lorsqu'une
-tête antérieure fiable est disponible ; un administrateur peut réécrire toute
-la chaîne. Aucun ancrage externe/WORM ni coffre-fort réglementaire n'est livré.
+Events are chained with SHA-256. This detects tampering when a trusted earlier
+head is available; an administrator can rewrite the entire chain. No external
+anchoring/WORM storage or regulatory vault is provided.
 
-## Limites de confiance et migration
+## Trust boundaries and migration
 
-Une instance configure un tenant et un dossier. Les tests refusent une autre
-configuration sur la même base. Ils ne qualifient pas une isolation SaaS à grande
-échelle. Une migration de politique/registre doit être opérée côté client et
-fournisseur ; le prototype révoque/augmente les époques pour démontrer le refus,
-sans réémission automatique susceptible de réautoriser une opération consommée.
+An instance configures one tenant and one case. Tests reject a different
+configuration on the same database. They do not qualify large-scale SaaS
+isolation. A policy/registry migration must be operated on both client and
+provider sides; the prototype revokes/increments epochs to demonstrate rejection,
+without automatic reissuance that could reauthorize a consumed operation.
 
-Le profil, domaines de signature, types stricts et dépendances figées identifient
-la version. Une future suite cryptographique doit avoir un nouvel identifiant,
-de nouvelles racines approuvées et des tests de refus croisé ; aucun fallback
-automatique vers la divulgation ou vers le simulateur.
+The profile, signature domains, strict types and pinned dependencies identify
+the version. A future cryptographic suite must have a new identifier, new
+approved roots and cross-rejection tests; there is no automatic fallback to
+disclosure or to the simulator.

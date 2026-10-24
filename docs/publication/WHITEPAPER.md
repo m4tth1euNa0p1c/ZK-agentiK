@@ -1,40 +1,40 @@
-# Dossier de publication du whitepaper
+# Whitepaper publication dossier
 
-Le manuscrit canonique est [la source LaTeX](../whitepaper/whitepaper.tex), avec
-[bibliographie](../whitepaper/references.bib) et [PDF](../whitepaper/whitepaper.pdf).
-Ce fichier organise sa publication ; il ne constitue pas un second article.
+The canonical manuscript is the [LaTeX source](../whitepaper/whitepaper.tex), with
+[bibliography](../whitepaper/references.bib) and [PDF](../whitepaper/whitepaper.pdf).
+This file organizes its publication; it is not a second paper.
 
-Le manuscrit doit rester aligné sur [l'énoncé formel Horizon](../horizon/FORMAL_STATEMENT.md),
-[le registre d'assertions](CLAIMS.md) et le
-[verdict expérimental gelé](../horizon/FINAL_VERDICT.md).
-Le dossier Azure/GCP décrit des plans et des primitives documentées, sans
-mesures cloud ni application multi-instance qualifiée.
+The manuscript must stay aligned with the [Horizon formal statement](../horizon/FORMAL_STATEMENT.md),
+the [claims register](CLAIMS.md) and the
+[frozen experimental verdict](../horizon/FINAL_VERDICT.md).
+The Azure/GCP dossier describes plans and documented primitives, without
+cloud measurements or a qualified multi-instance application.
 
-## Exigences du candidat
+## Candidate requirements
 
-La relation formelle, ses bornes et hypothèses précèdent les revendications.
-Les mesures distinguent préparation, preuve fraîche, présentation réutilisée,
-vérification et chemin durable. Chaque nombre renvoie à un artefact brut,
-au périmètre, à la machine et au protocole d'échantillonnage.
+The formal relation, its bounds and assumptions precede claims.
+Measurements distinguish preparation, fresh proof, reused presentation,
+verification and durable path. Each number points to a raw artifact,
+the scope, machine and sampling protocol.
 
-La nouveauté n'est jamais « le premier standard mondial ». Les primitives,
-schémas de credentials et produits proches sont crédités ; la recherche
-d'antériorité demeure bornée. La valeur client, les émissions d'autorités
-réelles, les effets distants et la revue cryptographique externe restent
-respectivement H11, H13, H14 et H15.
+Novelty is never “the world's first standard.” Related primitives,
+credential schemes and products are credited; the prior-art search
+remains bounded. Customer value, issuance by real authorities,
+remote effects and external cryptographic review remain
+H11, H13, H14 and H15 respectively.
 
-Le statut demeure **laboratoire expérimental**. Une preuve cryptographique ne
-garantit ni vérité de la source, absence de fuites applicatives, disponibilité,
-exactement un effet dans une API distante ou conformité d'un organisme.
+The status remains **experimental laboratory**. A cryptographic proof does not
+guarantee source truth, absence of application leaks, availability,
+exactly one effect in a remote API or an organization's compliance.
 
-## Reproduction et revue
+## Reproduction and review
 
-Utiliser le script de construction du manuscrit dans `docs/whitepaper/` et
-conserver ses versions, sortie et empreinte PDF dans le candidat. Une compilation
-LaTeX réussie ne remplace pas l'inspection visuelle des pages et tableaux.
-La présence d'un PDF ne signifie pas qu'il a été contrôlé par ce dossier.
+Use the manuscript build script in `docs/whitepaper/` and
+retain its versions, output and PDF hash in the candidate. Successful LaTeX
+compilation does not replace visual inspection of pages and tables.
+The presence of a PDF does not mean it was checked by this dossier.
 
-Appliquer [la checklist](RELEASE_CHECKLIST.md). Une relecture par agent doit
-être identifiée comme telle ; aucun comité de lecture, revue juridique ou audit
-indépendant n'est revendiqué. Les métadonnées [CITATION.cff](../../CITATION.cff)
-citent le logiciel et ne créent ni DOI, ni publication académique acceptée.
+Apply the [checklist](RELEASE_CHECKLIST.md). An agent review must
+be identified as such; no peer review, legal review or independent
+audit is claimed. [CITATION.cff](../../CITATION.cff) metadata
+cites the software and creates neither a DOI nor an accepted academic publication.

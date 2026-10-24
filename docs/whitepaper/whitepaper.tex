@@ -6,415 +6,412 @@
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 \usepackage{url}
 \usepackage[numbers]{natbib}
-\hypersetup{pdftitle={Horizon : admission confidentielle sur deux engagements signes},pdfauthor={Dossier technique ZK-agentiK},pdfsubject={Demonstrations conditionnelles et verification numerique experimentale}}
+\hypersetup{pdftitle={Horizon: confidential admission over two signed commitments},pdfauthor={ZK-agentiK technical dossier},pdfsubject={Conditional derivations and experimental numerical verification}}
 \newtheorem{theorem}{Proposition}
-\newtheorem{lemma}[theorem]{Lemme}
-\newtheorem{definition}[theorem]{Définition}
-\newtheorem{assumption}[theorem]{Hypothèse}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
 \newcommand{\Com}{\operatorname{Com}}
 \newcommand{\Zq}{\mathbb Z_q}
 \newcommand{\N}{\mathbb N}
 \newcommand{\code}[1]{\nolinkurl{#1}}
-\title{Horizon : admission confidentielle sur deux engagements signés\\
-  \large Relation, preuves conditionnelles et limites expérimentales}
-\author{Dossier technique du dépôt ZK-agentiK}
-\date{17 octobre 2026 \quad Version expérimentale 1}
+\title{Horizon: confidential admission over two signed commitments\\
+  \large Relation, conditional proofs and experimental limitations}
+\author{Technical dossier of the ZK-agentiK repository}
+\date{17 October 2026 \quad Experimental version 1}
 \begin{document}
 \maketitle
 \begin{abstract}
-Horizon vérifie une inégalité entre un montant et un plafond par dossier,
-attestés par deux rôles distincts, avant d'enregistrer une autorisation
-synthétique. Il utilise Pedersen sur Ristretto, Bulletproofs et des signatures
-Ed25519. Ce texte donne des démonstrations conditionnelles, sépare confidentialité,
-authenticité et reprise, et fournit des vérifications arithmétiques exécutables.
-Il ne constitue ni une preuve formelle machine, ni un audit cryptographique,
-ni une nouvelle primitive, ni une qualification bancaire. Les essais Octave
-ne prouvent pas la sécurité cryptographique. Le profil n'est pas post-quantique.
+Horizon verifies an inequality between an amount and a per-case limit,
+attested by two distinct roles, before recording a synthetic authorization.
+It uses Pedersen over Ristretto, Bulletproofs and Ed25519 signatures.
+This text provides conditional derivations, separates confidentiality,
+authenticity and recovery, and supplies executable arithmetic checks.
+It is neither a machine-checked formal proof, a cryptographic audit, a new
+primitive nor banking qualification. Octave tests do not prove cryptographic
+security. The profile is not post-quantum.
 \end{abstract}
 \tableofcontents
 \newpage
 
-\section{Objet, périmètre et correspondance avec le code}
-Le profil \code{horizon-range-v1} se trouve dans
-\code{labs/horizon/proof/src/lib.rs}. L'effet de démonstration est
-\code{record_claim_authorization}, dans un registre SQLite local, pas un paiement.
-La cible économique envisagée est une autorisation de sinistre déléguée ; aucune
-demande solvable, conformité automatique ou supériorité sur Vega n'est établie.
+\section{Purpose, scope and correspondence with the code}
+The \code{horizon-range-v1} profile is in
+\code{labs/horizon/proof/src/lib.rs}. The demonstration effect is
+\code{record_claim_authorization}, in a local SQLite registry, not a payment.
+The intended economic use case is delegated insurance claim authorization;
+no paying demand, automatic compliance or superiority over Vega is established.
 
-La bibliothèque vérifie un \emph{énoncé cryptographique}. Le contrôleur
-\code{packages/horizon-demo/src/store.ts} ajoute les attentes locales,
-la consommation de nonce, la déduplication métier et la gestion d'état. Le SDK
-de publication \code{packages/proofkit-sdk} reste un composant expérimental :
-une interface ne remplace aucune de ces hypothèses.
+The library verifies a \emph{cryptographic statement}. The controller
+\code{packages/horizon-demo/src/store.ts} adds local expectations,
+nonce consumption, business deduplication and state management. The publication
+SDK \code{packages/proofkit-sdk} remains experimental:
+an interface does not replace any of these assumptions.
 
 \begin{center}\small
 \begin{tabular}{p{.27\linewidth}p{.63\linewidth}}
 \toprule
-Objet & Statut de l'argument \\
+Object & Status of the argument \\
 \midrule
-Identités algébriques et bornes & Démonstrations mathématiques ci-dessous. \\
-Primitive et composition & Sécurité conditionnelle aux hypothèses explicites ; héritée des travaux cités. \\
-Code et état local & Tests adverses et modèle fini abstrait ; pas de preuve de raffinement du code. \\
-Octave/MATLAB & Vérification numérique exacte d'exemples et d'un domaine réduit ; exécution Octave distincte de MATLAB. \\
-Manifestes SHA-256 & Intégrité relativement à un manifeste de confiance ; date auto-déclarée, pas horodatage tiers, signature ou preuve de sens. \\
+Algebraic identities and bounds & Mathematical derivations below. \\
+Primitive and composition & Security conditional on explicit assumptions; inherited from cited work. \\
+Code and local state & Adversarial tests and abstract finite model; no code refinement proof. \\
+Octave/MATLAB & Exact numerical verification of examples and a reduced domain; Octave execution distinct from MATLAB. \\
+SHA-256 manifests & Integrity relative to a trusted manifest; self-declared date, not a third-party timestamp, signature or proof of meaning. \\
 \bottomrule
 \end{tabular}\end{center}
 
-\section{Paramètres et contrat d'émission}
-Soit $\mathbb G$ le groupe Ristretto d'ordre premier
+\section{Parameters and issuance contract}
+Let $\mathbb G$ be the Ristretto group of prime order
 \begin{align*}
 q&=2^{252}+27742317777372353535851937790883648493.
 \end{align*}
-Les encodages canoniques et le groupe premier sont spécifiés par RFC~9496
-\cite{rfc9496}. $G,H\in\mathbb G$ sont les bases fixes de
-\code{PedersenGens::default()}. Le prover ne les choisit pas. Posons $N=2^{32}$.
+Canonical encodings and the prime-order group are specified by RFC~9496
+\cite{rfc9496}. $G,H\in\mathbb G$ are the fixed bases from
+\code{PedersenGens::default()}. The prover does not choose them. Set $N=2^{32}$.
 
-Deux autorités produisent $A=\Com(a,r_a)=aG+r_aH$ et
-$C=\Com(c,r_c)=cG+r_cH$. Le contrat exige des valeurs entières non négatives
-représentables en \code{u64}, la même devise EUR et le même exposant 2.
-Les signatures couvrent profil, rôle, autorité, tenant, sujet, devise, exposant,
-version, clé du détenteur, période et engagement. Les clés de confiance sont
-épinglées ; les deux identifiants et clés d'autorité doivent être distincts.
+Two authorities produce $A=\Com(a,r_a)=aG+r_aH$ and
+$C=\Com(c,r_c)=cG+r_cH$. The contract requires nonnegative integers
+representable as \code{u64}, the same EUR currency and the same exponent 2.
+Signatures cover profile, role, authority, tenant, subject, currency, exponent,
+version, holder key, period and commitment. Trust keys are pinned;
+the two authority identifiers and keys must be distinct.
 
-\begin{assumption}[Émission et jointure]
-Chaque autorité calcule ou contrôle l'ouverture de son engagement à partir
-de ses faits. Elle ne signe pas aveuglément un point soumis par le détenteur.
-L'autorité montant ne connaît pas nécessairement le plafond, et inversement.
-Les deux ouvertures arrivent au prover ; celui-ci connaît les deux valeurs.
-Les métadonnées communes désignent effectivement le même dossier et la même
-version métier. Le contrôleur associe indépendamment ce sujet à l'objet ciblé.
+\begin{assumption}[Issuance and joining]
+Each authority computes or checks its commitment opening from its facts.
+It does not blindly sign a point submitted by the holder.
+The amount authority does not necessarily know the limit, and vice versa.
+Both openings reach the prover, which knows both values.
+Shared metadata actually refers to the same case and business version.
+The controller independently associates that subject with the target object.
 \end{assumption}
-Deux clés différentes ne prouvent pas l'indépendance organisationnelle, la
-qualité de l'expertise ni l'absence de collusion. La version de schéma 1 du
-prototype n'est pas un registre d'historique des sinistres. Une signature
-atteste une émission sous clé, pas la vérité du fait signé.
+Two different keys do not prove organizational independence, quality of
+expertise or absence of collusion. Schema version 1 of the prototype is not
+an insurance claims history registry. A signature attests issuance under a key,
+not the truth of the signed fact.
 
-\section{Relation et démonstrations conditionnelles}
-\subsection{Engagement : confidentialité et liaison}
-\begin{lemma}[Hiding dans le modèle idéal]
-Pour $H\ne0$ et $r$ uniforme dans $\Zq$, la loi de $vG+rH$ est uniforme
-dans $\mathbb G$ pour toute valeur fixée $v$.
+\section{Relation and conditional derivations}
+\subsection{Commitment: confidentiality and binding}
+\begin{lemma}[Hiding in the ideal model]
+For $H\ne0$ and $r$ uniform in $\Zq$, the distribution of $vG+rH$ is uniform
+in $\mathbb G$ for any fixed value $v$.
 \end{lemma}
 \begin{proof}
-La multiplication $r\mapsto rH$ est une bijection puisque $q$ est premier
-et $H\ne0$. La translation par $vG$ conserve l'uniformité. Les distributions
-des engagements sont donc égales pour deux valeurs quelconques.
+Multiplication $r\mapsto rH$ is a bijection because $q$ is prime
+and $H\ne0$. Translation by $vG$ preserves uniformity. Commitment
+distributions are therefore equal for any two values.
 \end{proof}
-Ce résultat concerne l'engagement seul. Dans le code, la qualité du générateur
-aléatoire et de la conversion en scalaires reste une hypothèse d'implémentation.
-Il ne justifie pas des masques réutilisés ou choisis en fonction du secret.
+This result concerns the commitment alone. In the code, the quality of the
+random generator and conversion to scalars remains an implementation assumption.
+It does not justify masks that are reused or selected based on the secret.
 
-\begin{lemma}[Liaison calculatoire]
-Produire deux ouvertures $(v,r)\ne(v',r')$ du même engagement avec
-$v\ne v'\pmod q$ permet de calculer $\log_G H$.
+\begin{lemma}[Computational binding]
+Producing two openings $(v,r)\ne(v',r')$ of the same commitment with
+$v\ne v'\pmod q$ makes it possible to compute $\log_G H$.
 \end{lemma}
 \begin{proof}
-L'égalité donne $(v-v')G=(r'-r)H$. Si $r'=r$, alors $v=v'\pmod q$,
-contradiction. Ainsi $(r'-r)^{-1}$ existe dans $\Zq$ et
+Equality gives $(v-v')G=(r'-r)H$. If $r'=r$, then $v=v'\pmod q$,
+a contradiction. Thus $(r'-r)^{-1}$ exists in $\Zq$ and
 $\log_G H=(v-v')(r'-r)^{-1}\pmod q$.
 \end{proof}
-La confidentialité est informationnelle dans le modèle idéal ; la liaison
-dépend du logarithme discret et de bases sans relation connue
-\cite{pedersen1992,daleknotes}. Aucune expérience numérique réduite ne valide
-cette hypothèse pour Ristretto.
+Confidentiality is information-theoretic in the ideal model; binding depends
+on the discrete logarithm and bases with no known relation
+\cite{pedersen1992,daleknotes}. No reduced numerical experiment validates
+this assumption for Ristretto.
 
-\subsection{Énoncé effectivement prouvé}
-Les engagements dérivés sont
+\subsection{The statement actually proved}
+The derived commitments are
 \[
  X=A-G,\qquad D=C-A.
 \]
-Le prover appelle une preuve de plages agrégée à deux valeurs de 32 bits
-\cite{bulletproofs,dalek5}, avec ouvertures
+The prover invokes an aggregated range proof for two 32-bit values
+\cite{bulletproofs,dalek5}, with openings
 \[
  x=a-1,\quad d=c-a,\quad r_X=r_a,\quad r_D=r_c-r_a\pmod q.
 \]
-La relation d'ouverture est
+The opening relation is
 \begin{equation}\label{eq:relation}
 \exists x,d\in\{0,\ldots,N-1\},\ r_X,r_D\in\Zq:
  X=xG+r_XH,\quad D=dG+r_DH.
 \end{equation}
-\textbf{Une nuance nécessaire :} comme $H$ engendre le groupe, tout point
-possède mathématiquement une ouverture à n'importe quelle valeur. Une simple
-affirmation d'appartenance existentielle ne suffit donc pas à lier une valeur
-métier. Le raisonnement utilise l'\emph{argument de connaissance} d'ouvertures
-et la liaison calculatoire aux ouvertures effectivement attestées.
+\textbf{A necessary distinction:} since $H$ generates the group, every point
+mathematically has an opening to any value. A mere existential membership
+statement is therefore insufficient to bind a business value. The argument
+uses the \emph{argument of knowledge} of openings and computational binding
+to the openings actually attested.
 
-\begin{assumption}[Primitive héritée]
-Le protocole Bulletproofs non interactif utilisé fournit la complétude,
-la connaissance calculatoire des ouvertures et la confidentialité appropriées
-à son modèle de sécurité et à ses transcriptions Fiat--Shamir.
-Son implémentation, ses paramètres, son aléa et son analyse de transcript
-correspondent à ce protocole. La version corrigée du papier est la référence ;
-ce dossier ne refait ni sa réduction ni un audit de la bibliothèque.
+\begin{assumption}[Inherited primitive]
+The noninteractive Bulletproofs protocol used provides completeness,
+computational knowledge of openings and confidentiality appropriate to its
+security model and Fiat--Shamir transcripts.
+Its implementation, parameters, randomness and transcript analysis match
+that protocol. The corrected paper is the reference; this dossier does not
+redo its reduction or audit the library.
 \end{assumption}
-Le papier ePrint signale une correction de sa section Fiat--Shamir en 2022
-\cite{bulletproofs}. Cette histoire interdit d'assimiler une citation de
-sécurité à une preuve automatique de toute adaptation logicielle.
+The ePrint paper reports a correction to its Fiat--Shamir section in 2022
+\cite{bulletproofs}. This history rules out treating a security citation
+as an automatic proof for every software adaptation.
 
-\begin{theorem}[Complétude conditionnelle]
-Si les signatures et métadonnées sont valides, la politique permet le mode,
-le challenge est celui attendu et non expiré, et
-$1\le a\le N$, $a\le c<a+N$, alors un prover honnête construit les deux
-engagements dérivés avec des valeurs admissibles. Sous la complétude de la
-primitive et en l'absence d'erreur d'exécution, sa preuve est acceptée.
+\begin{theorem}[Conditional completeness]
+If signatures and metadata are valid, the policy permits the mode,
+the challenge is the expected one and has not expired, and
+$1\le a\le N$, $a\le c<a+N$, then an honest prover constructs both
+derived commitments with admissible values. Under the primitive's
+completeness and in the absence of execution errors, its proof is accepted.
 \end{theorem}
 \begin{proof}
-$x=a-1\in[0,N-1]$ et $d=c-a\in[0,N-1]$. Par linéarité,
-$X=(a-1)G+r_aH$ et $D=(c-a)G+(r_c-r_a)H$.
-Ce sont exactement les entrées attendues par le vérifieur. Les autres
-préconditions sont testées séparément par celui-ci.
+$x=a-1\in[0,N-1]$ and $d=c-a\in[0,N-1]$. By linearity,
+$X=(a-1)G+r_aH$ and $D=(c-a)G+(r_c-r_a)H$.
+These are exactly the inputs expected by the verifier.
+It tests the other preconditions separately.
 \end{proof}
-Cette complétude ne garantit pas disponibilité réseau, absence de révocation
-après calcul, ni succès d'un effet métier.
+This completeness guarantees neither network availability, absence of
+revocation after computation nor success of a business effect.
 
-\begin{theorem}[Bornes entières et absence de wrap]\label{th:bounds}
-Supposons l'extraction des ouvertures de \eqref{eq:relation}, la liaison
-des engagements et l'émission dans le domaine entier \code{u64}. Alors les
-valeurs attestées satisfont
+\begin{theorem}[Integer bounds and absence of wraparound]\label{th:bounds}
+Assume extraction of the openings in \eqref{eq:relation}, binding of the
+commitments and issuance in the \code{u64} integer domain. Then the
+attested values satisfy
 \[
 1\le a\le2^{32},\qquad 0\le c-a<2^{32},\qquad c\le2^{33}-1.
 \]
 \end{theorem}
 \begin{proof}
-Les ouvertures extraites donnent une ouverture de $A$ à $a'=x+1$ avec
-masque $r_X$, et de $C$ à $c'=x+1+d$ avec masque $r_X+r_D$.
-Elles satisfont $1\le a'\le N$ et $a'\le c'\le2N-1$.
-Si $a'$ ou $c'$ diffèrent modulo $q$ des valeurs attestées, on obtient une
-violation de liaison. Sinon $a=a'\pmod q$ et $c=c'\pmod q$.
-Les valeurs attestées sont entre 0 et $2^{64}-1<q$, et les extraites entre
-0 et $2^{33}-1<q$. Deux entiers de $[0,q)$ congrus sont égaux ; les bornes
-sont donc des bornes entières, et non seulement modulaires.
+The extracted openings give an opening of $A$ to $a'=x+1$ with
+mask $r_X$, and of $C$ to $c'=x+1+d$ with mask $r_X+r_D$.
+They satisfy $1\le a'\le N$ and $a'\le c'\le2N-1$.
+If $a'$ or $c'$ differ modulo $q$ from the attested values, this
+violates binding. Otherwise $a=a'\pmod q$ and $c=c'\pmod q$.
+The attested values lie between 0 and $2^{64}-1<q$, and the extracted
+values between 0 and $2^{33}-1<q$. Two congruent integers in $[0,q)$
+are equal; the bounds are therefore integer bounds, not merely modular ones.
 \end{proof}
-Le plafond peut dépasser $2^{32}-1$ : il faut \code{u64}. Le maximum
-$8\,589\,934\,591$ centimes vaut $85\,899\,345{,}91$ EUR, sans engagement
-sur l'adéquation de ce maximum à un contrat d'assurance.
+The limit may exceed $2^{32}-1$: \code{u64} is needed. The maximum
+$8\,589\,934\,591$ cents equals $85\,899\,345.91$ EUR, without any claim
+that this maximum suits an insurance contract.
 
-\begin{theorem}[Correction calculatoire conditionnelle]
-Conditionnellement aux autorités honnêtes pour l'émission, à la liaison,
-à l'argument de connaissance hérité, à l'inforgeabilité des signatures
-et à une implémentation fidèle, accepter une valeur attestée qui viole les
-bornes de la proposition~\ref{th:bounds} exige de rompre au moins l'une de
-ces hypothèses ou les vérifications de liaison des contextes.
+\begin{theorem}[Conditional computational soundness]
+Conditional on honest authorities for issuance, binding, the inherited
+argument of knowledge, signature unforgeability and a faithful implementation,
+accepting an attested value that violates the bounds in
+Proposition~\ref{th:bounds} requires breaking at least one of these assumptions
+or the context-binding checks.
 \end{theorem}
 \begin{proof}
-Une signature sur une attestation non émise relève d'une contrefaçon.
-Pour les attestations émises, l'extraction et la proposition précédente
-imposent les bornes. Une mauvaise association de contexte exige soit une
-entrée de confiance erronée, soit une erreur d'encodage/comparaison,
-soit une rupture du mécanisme qui authentifie ce contexte.
+A signature on an unissued attestation is a forgery.
+For issued attestations, extraction and the previous proposition impose
+the bounds. An incorrect context association requires either an erroneous
+trusted input, an encoding/comparison error or a break in the mechanism
+that authenticates that context.
 \end{proof}
-On peut organiser une borne d'échec comme une somme des événements de
-contrefaçon, de collision, d'échec d'extraction et de rupture de liaison.
-Sans réduction complète et modèle des oracles, ce dossier ne donne ni
-constantes de réduction ni probabilité numérique de sécurité. Les 500
-rejets d'une campagne ne sont pas une estimation de la soundness.
+A failure bound can be organized as a sum of forgery, collision,
+extraction-failure and binding-break events.
+Without a complete reduction and oracle model, this dossier supplies neither
+reduction constants nor a numerical security probability. The 500 rejections
+in a campaign are not an estimate of soundness.
 
-\section{Composition avec signatures et challenge}
-Le challenge attendu est émis et stocké par le contrôleur. Il contient tenant,
-client, audience, action, opération, objet, sujet, politique et époque, époque
-de confiance, nonce de 32 octets, dates et méthode. L'égalité porte sur
-\emph{tous} ces champs, avant autorisation. L'agent ne fournit pas les racines
-de confiance. Les encodages sont du JSON typé en ordre de déclaration,
-avec domaines distincts ; ce n'est pas une promesse de JSON canonique universel.
+\section{Composition with signatures and challenge}
+The expected challenge is issued and stored by the controller. It contains
+tenant, client, audience, action, operation, object, subject, policy and epoch,
+trust epoch, 32-byte nonce, timestamps and method. Equality covers
+\emph{all} these fields before authorization. The agent does not supply
+trust roots. Encodings use typed JSON in declaration order with separate
+domains; this is not a promise of universal canonical JSON.
 
-\begin{theorem}[Liaison de la présentation]
-Supposons Ed25519 inforgeable pour les clés honnêtes, SHA-256 résistant aux
-collisions, les domaines distincts et l'encodage injectif sur les types
-admis. Une présentation acceptée sous un challenge indépendant est liée
-au couple d'attestations, au payload et à ce challenge par la clé du détenteur.
+\begin{theorem}[Presentation binding]
+Assume Ed25519 is unforgeable for honest keys, SHA-256 is collision-resistant,
+domains are distinct and encoding is injective over the admitted types.
+A presentation accepted under an independent challenge is bound to the
+attestation pair, payload and challenge by the holder key.
 \end{theorem}
 \begin{proof}
-La signature du détenteur porte sur le digest du tuple profil, attestations,
-challenge et payload, lui-même encodé sous un domaine distinct. Changer un
-de ces objets sans obtenir une nouvelle signature exige une collision ou
-une contrefaçon. Une entrée dotée d'un autre challenge est rejetée par
-l'égalité avec la valeur attendue. Les signatures des autorités couvrent
-chaque corps d'attestation séparément.
+The holder signature covers the digest of the profile, attestations,
+challenge and payload tuple, itself encoded under a separate domain.
+Changing any of these objects without obtaining a new signature requires
+a collision or forgery. An input with another challenge is rejected by
+equality with the expected value. Authority signatures cover each
+attestation body separately.
 \end{proof}
-RFC~8032 décrit EdDSA \cite{rfc8032} ; le code utilise une vérification stricte
-et refuse les clés faibles. Une clé compromise ou une autorité malveillante
-sort de l'hypothèse, et deux présentations identiques peuvent toujours être
-rejouées en l'absence d'un état de consommation.
+RFC~8032 describes EdDSA \cite{rfc8032}; the code uses strict verification
+and rejects weak keys. A compromised key or malicious authority lies
+outside the assumption, and two identical presentations can still be
+replayed without consumption state.
 
-\paragraph{Mode A.} Le challenge entier est aussi ajouté au transcript
-Merlin. La preuve de plages est recalculée par présentation. Il s'agit d'une
-liaison cryptographique au contexte, pas d'une horloge ou d'une preuve de
-vérité instantanée des sources.
-\paragraph{Mode B.} La preuve de plages est préparée sur les attestations
-immuables puis conservée. Une nouvelle signature du détenteur couvre le
-challenge et la preuve exacte. Cela atteste une autorisation fraîche par
-cette clé sur une preuve historique, \emph{pas} une connaissance fraîche du
-witness. Le vérifieur actuel vérifie toute la preuve à chaque appel.
-\paragraph{Politique C.} Si la confidentialité n'est pas exigée, le sélecteur
-choisit la divulgation signée. Sinon, il choisit B si la réutilisation est
-autorisée et A dans le cas contraire. Un refus cryptographique n'entraîne
-aucun fallback. L'autorisation des méthodes reste vérifiée indépendamment.
+\paragraph{Mode A.} The entire challenge is also added to the Merlin
+transcript. The range proof is recomputed for each presentation. This is
+cryptographic context binding, not a clock or proof of instantaneous
+source truth.
+\paragraph{Mode B.} The range proof is prepared over immutable attestations
+and retained. A new holder signature covers the challenge and the exact
+proof. This attests fresh authorization by that key over a historical proof,
+\emph{not} fresh knowledge of the witness. The current verifier checks the
+entire proof on every call.
+\paragraph{Policy C.} If confidentiality is not required, the selector
+chooses signed disclosure. Otherwise, it chooses B if reuse is permitted
+and A if not. Cryptographic rejection never triggers a fallback.
+Method authorization remains independently verified.
 
-\section{Anti-rejeu et frontière transactionnelle}
-L'identité d'opération du contrôleur est le hachage du tuple tenant, audience,
-action et objet. Elle ne contient pas le nonce. La garantie est locale à ce
-domaine de déduplication ; plusieurs audiences ou bases indépendantes ne
-partagent pas automatiquement une identité métier globale.
+\section{Replay prevention and transaction boundary}
+The controller's operation identity is the hash of the tenant, audience,
+action and object tuple. It does not contain the nonce. The guarantee is local
+to this deduplication domain; multiple audiences or independent databases do
+not automatically share a global business identity.
 
-\begin{assumption}[Modèle de stockage et de cible]
-Les transactions sont sérialisées et atomiques. Les états commis sont
-persistés sans rollback de sauvegarde, effacement administratif ou corruption.
-Tous les chemins d'effet passent par le même contrôleur, la même identité
-métier stable et la même base. Le résultat \code{Verified} provient du worker
-cryptographique de confiance, jamais d'un champ HTTP forgé. L'horloge et
-les racines de confiance sont contrôlées par le vérifieur.
+\begin{assumption}[Storage and target model]
+Transactions are serialized and atomic. Committed states persist without
+backup rollback, administrative deletion or corruption.
+All effect paths pass through the same controller, the same stable business
+identity and the same database. The \code{Verified} result comes from the
+trusted cryptographic worker, never from a forged HTTP field.
+The clock and trust roots are controlled by the verifier.
 \end{assumption}
 
-\begin{theorem}[Au plus un effet local par identité métier]
-Sous l'hypothèse précédente, le contrôleur produit au plus une ligne d'effet
-pour une identité d'opération, y compris avec plusieurs nonces, concurrence,
-arrêt après réservation ou réponse ambiguë.
+\begin{theorem}[At most one local effect per business identity]
+Under the preceding assumption, the controller produces at most one effect
+row for an operation identity, including with multiple nonces, concurrency,
+a crash after reservation or an ambiguous response.
 \end{theorem}
 \begin{proof}
-Initialement, aucune opération n'existe. Une transaction valide le contexte
-courant, consomme le nonce et insère l'opération sous une clé primaire unique.
-Toute réservation ultérieure avec cette clé est rejetée. La transaction
-de cible exige l'état réservé, recontrôle échéances et époques, puis insère
-l'effet sous la même clé primaire et termine l'opération. Un échec de ce
-recontrôle conserve une opération rejetée ; une réponse ambiguë conserve
-un état inconnu. Aucun de ces états n'est supprimé pour retenter. La
-réconciliation consulte les effets existants et ne redispatche pas.
-Par induction sur les transitions, le nombre d'effets reste au plus un.
+Initially, no operation exists. A transaction validates the current context,
+consumes the nonce and inserts the operation under a unique primary key.
+Any subsequent reservation with that key is rejected. The target transaction
+requires the reserved state, rechecks deadlines and epochs, then inserts the
+effect under the same primary key and completes the operation. Failure of
+this recheck preserves a rejected operation; an ambiguous response preserves
+an unknown state. None of these states is deleted to retry.
+Reconciliation queries existing effects and does not redispatch.
+By induction over transitions, the number of effects remains at most one.
 \end{proof}
-SQLite fournit les mécanismes transactionnels sous ses hypothèses documentées
-\cite{sqlite,sqliteatomic}. La preuve est un invariant abstrait, pas un
-théorème vérifié sur le moteur, le filesystem ou le code TypeScript.
-Elle ne prouve ni qu'un effet finira par arriver, ni une atomicité sur une
-API distante. Un arrêt après réservation peut laisser une opération bloquée.
-Le journal chaîné détecte certaines modifications si une racine est connue,
-mais un administrateur capable de réécrire toute la base n'est pas exclu
-par un simple hachage local.
+SQLite provides transaction mechanisms under its documented assumptions
+\cite{sqlite,sqliteatomic}. The proof is an abstract invariant, not a theorem
+verified over the engine, filesystem or TypeScript code.
+It proves neither that an effect will eventually occur nor atomicity over
+a remote API. A crash after reservation may leave an operation blocked.
+The chained log detects certain modifications if a root is known, but an
+administrator able to rewrite the entire database is not excluded by a
+mere local hash.
 
-La validité temporelle est l'intersection des intervalles :
+Temporal validity is the intersection of intervals:
 \[
 t_{\min}=\max(t_{\mathrm{challenge}},t_A,t_C),\qquad
 t_{\max}=\min(e_{\mathrm{challenge}},e_A,e_C),\qquad
 t_{\min}\le t<t_{\max}.
 \]
-Les revocations et époques sont recontrôlées après l'attente cryptographique
-et avant l'effet. Cela borne la validité d'un snapshot, sans prouver la
-fraîcheur d'un système externe indisponible en crise.
+Revocations and epochs are rechecked after the cryptographic wait and before
+the effect. This bounds a snapshot's validity without proving the freshness
+of an external system unavailable during a crisis.
 
-\section{Fuites et contre-exemples métier}
-Les valeurs et ouvertures sont privées face au vérifieur dans A/B, sous les
-hypothèses de la preuve. Les autorités connaissent leurs propres valeurs,
-le prover connaît les deux, et le mode divulgué les révèle toutes.
-Engagements, signatures, clés, dossier opaque, tenant, rôles, dates, politique
-et décision sont publics. Des engagements fixes rendent les sessions
-corrélables ; rerandomiser la preuve seule ne les rend pas anonymes.
-La décision apprend au moins l'inégalité et les bornes. Des politiques
-adaptatives, informations auxiliaires et canaux temporels peuvent révéler
-davantage ; aucune non-interférence système n'est démontrée.
+\section{Leakage and business counterexamples}
+Values and openings are private from the verifier in A/B under the proof's
+assumptions. Authorities know their own values, the prover knows both, and
+disclosed mode reveals them all.
+Commitments, signatures, keys, opaque case identifier, tenant, roles,
+timestamps, policy and decision are public. Fixed commitments make sessions
+linkable; rerandomizing the proof alone does not make them anonymous.
+The decision reveals at least the inequality and bounds. Adaptive policies,
+auxiliary information and timing channels may reveal more; no system-level
+noninterference is demonstrated.
 
 \begin{center}\small
 \begin{tabular}{p{.19\linewidth}p{.35\linewidth}p{.36\linewidth}}
 \toprule
-Contre-exemple & Énoncé accepté & Ce qui manque \\
+Counterexample & Accepted statement & What is missing \\
 \midrule
-Budget cumulé & Deux dossiers à 60 satisfont chacun $60\le100$. & Leur somme 120 excède un budget commun de 100 ; il faut un ledger concurrent. \\
-Franchise & Un versement 15000 est inférieur à 20000. & Si perte 15000 et franchise 5000, le montant prévu serait 10000 ; cette formule n'est pas prouvée. \\
-Exposant & Les entiers $1000\le10000$ passent. & 1000 EUR dépasse 10000 centimes ; le prototype empêche ce mélange en fixant EUR/exposant 2. \\
-Devise & Deux nombres égaux. & EUR et USD ne sont pas une unité commune ; conversion, source et instant doivent être authentifiés. \\
-Wrap & $103\equiv2\pmod{101}$. & Un domaine source non borné peut changer le sens entier ; le contrat \code{u64} exclut ce cas pour le vrai $q$. \\
-Nonce seul & Deux nonces différents sont chacun neufs. & Ils peuvent autoriser deux fois le même objet sans réservation métier. \\
+Cumulative budget & Two cases of 60 each satisfy $60\le100$. & Their sum 120 exceeds a shared budget of 100; a concurrent ledger is needed. \\
+Deductible & A payment of 15000 is below 20000. & With a loss of 15000 and a deductible of 5000, the expected amount is 10000; this formula is not proved. \\
+Exponent & Integers $1000\le10000$ pass. & 1000 EUR exceeds 10000 cents; the prototype prevents this mismatch by fixing EUR/exponent 2. \\
+Currency & Two equal numbers. & EUR and USD are not a common unit; conversion, source and time must be authenticated. \\
+Wraparound & $103\equiv2\pmod{101}$. & An unbounded source domain may change the integer meaning; the \code{u64} contract excludes this case for the real $q$. \\
+Nonce alone & Two different nonces are each fresh. & They may authorize the same object twice without business reservation. \\
 \bottomrule
 \end{tabular}\end{center}
-Ces exemples ne sont pas des contournements des contrôles présents ; ils
-délimitent l'énoncé. Une logique de sinistre complète doit expliciter exclusions,
-franchises, taxes, coassurance, dates de couverture et réserves. Aucun circuit
-ne devient « parfait » en augmentant seulement sa vitesse.
+These examples do not bypass existing controls; they delimit the statement.
+Complete insurance claim logic must specify exclusions, deductibles, taxes,
+coinsurance, coverage dates and reserves. No circuit becomes perfect
+merely by increasing its speed.
 
-\section{Mesures CPU, GPU, Vega et hypothèses quantiques}
-Les mesures conservées dans \code{docs/horizon/BENCHMARK_RESULTS.json}
-utilisent 500 observations après 30 échauffements. Les fonctions crypto Linux
-parcourent cinq cas ; les quantiles sont au rang supérieur. L'indépendance IID
-des observations n'est pas établie et les IC lui sont conditionnels.
-Les mêmes paramètres publics fixes sont initialisés une fois par processus
-avec \code{OnceLock} : ni preuve, ni witness, ni verdict, ni aléa n'y sont cachés.
-Le mode B conserve séparément sa preuve préparée, conformément à sa sémantique.
+\section{CPU, GPU and Vega measurements, and quantum assumptions}
+Measurements retained in \code{docs/horizon/BENCHMARK_RESULTS.json}
+use 500 observations after 30 warmups. Linux cryptographic functions cover
+five cases; quantiles use the upper rank. IID independence of observations
+is not established, and confidence intervals are conditional on it.
+The same fixed public parameters are initialized once per process with
+\code{OnceLock}: no proof, witness, verdict or randomness is cached there.
+Mode B retains its prepared proof separately, in accordance with its semantics.
 
 \begin{center}\small
 \begin{tabular}{p{.46\linewidth}p{.4\linewidth}}
 \toprule
-Mesure publiée du laboratoire & Observation, pas SLA \\
+Published laboratory measurement & Observation, not an SLA \\
 \midrule
-A, génération CPU p95 avant / après & 7,770 / 6,546 ms \\
-B, vérification complète CPU p95 avant / après & 2,266 / 1,247 ms \\
-B, présentation signée p95 après préparation & 0,065 ms ; pas une nouvelle preuve \\
-Preuve agrégée seule & 672 octets ; enveloppe et signatures exclues \\
-Baseline divulguée, vérification p95 & 0,245 ms \\
-Windows IPC, vérification et effet local durable & p95 13,014 ms ; maximum 180,310 ms, hors HTTP \\
-Vega MC SHA-256 2 Kio, 8 threads & Preuve 65,836 ms, vérification 19,885 ms ; estimations centrales Criterion, pas p95 \\
+A, CPU generation p95 before / after & 7.770 / 6.546 ms \\
+B, full CPU verification p95 before / after & 2.266 / 1.247 ms \\
+B, signed presentation p95 after preparation & 0.065 ms; not a new proof \\
+Aggregated proof alone & 672 bytes; envelope and signatures excluded \\
+Disclosed baseline, verification p95 & 0.245 ms \\
+Windows IPC, verification and durable local effect & p95 13.014 ms; maximum 180.310 ms, excluding HTTP \\
+Vega MC SHA-256 2 KiB, 8 threads & Proof 65.836 ms, verification 19.885 ms; Criterion central estimates, not p95 \\
 \bottomrule
 \end{tabular}\end{center}
-La taille de preuve est ici $32(2\log_2(2\cdot32)+9)=672$ octets pour
-le format agrégé utilisé. Elle n'inclut pas les engagements publics ou les
-autorisations. La réduction observée du p95 par conservation des paramètres
-est 15,75\% pour A et 44,97\% pour la vérification B ; aucun record externe
-n'en découle.
+The proof size here is $32(2\log_2(2\cdot32)+9)=672$ bytes for the
+aggregated format used. It does not include public commitments or
+authorizations. The observed p95 reduction from retaining parameters is
+15.75\% for A and 44.97\% for B verification; no external record follows.
 
-Vega s'intéresse à des présentations de credentials et à une préparation
-réutilisable \cite{vega,vegacode}. Le bench SHA-256 du dépôt public n'est pas
-le circuit applicatif complet des 92/23 ms du papier. Horizon exige au contraire
-une émission adaptée sur des engagements et laisse signatures et métadonnées
-publiques. Les relations, modèles de fuite et phases diffèrent : aucun rapport
-de vitesse ne permet de conclure que l'un bat l'autre sur une tâche commune.
+Vega addresses credential presentations and reusable preparation
+\cite{vega,vegacode}. The public repository's SHA-256 benchmark is not the
+full application circuit behind the paper's 92/23 ms figures. Horizon instead
+requires adapted issuance over commitments and leaves signatures and metadata
+public. Relations, leakage models and phases differ: no speed ratio supports
+concluding that one beats the other on a shared task.
 
-Le dossier GPU est conservé séparément dans \code{docs/experiments/gpu/}.
-Une tentative CUDA/RISC Zero n'est pas un portage GPU de cette relation
-Bulletproofs. Ce texte n'attribue aucune accélération GPU sans résultat
-reproduit, déclaration de relation, taille, transfert hôte/appareil, préparation,
-vérification indépendante et matériel exact. Une indisponibilité CUDA est
-un résultat de faisabilité négatif, pas une mesure de vitesse. Les chiffres
-GPU ne sont donc pas interpolés depuis ceux CPU.
+The GPU dossier is retained separately in \code{docs/experiments/gpu/}.
+A CUDA/RISC Zero attempt is not a GPU port of this Bulletproofs relation.
+This text attributes no GPU speedup without a reproduced result, a statement
+of the relation, size, host/device transfer, preparation, independent
+verification and exact hardware. CUDA unavailability is a negative feasibility
+result, not a speed measurement. GPU figures are therefore not interpolated
+from CPU figures.
 
-Enfin, GPU et résistance quantique sont des axes différents. Un calcul de
-logarithme discret efficace compromettrait la liaison et les signatures
-elliptiques ; l'algorithme de Shor motive cette distinction \cite{shor}.
-ML-DSA et SLH-DSA sont des standards de signature post-quantique
-\cite{fips204,fips205}. Remplacer Ed25519 par l'un d'eux ne rendrait pas
-Pedersen/Bulletproofs post-quantiques. Le fait d'utiliser SHA-256 ou SHA-3
-dans un transcript ne transforme pas un protocole elliptique en preuve
-entièrement fondée sur des hachages. Une migration demande une autre relation
-de preuve, une analyse de composition et de nouveaux benchmarks.
+Finally, GPU acceleration and quantum resistance are different axes.
+Efficient discrete-logarithm computation would compromise binding and elliptic
+curve signatures; Shor's algorithm motivates this distinction \cite{shor}.
+ML-DSA and SLH-DSA are post-quantum signature standards
+\cite{fips204,fips205}. Replacing Ed25519 with one of them would not make
+Pedersen/Bulletproofs post-quantum. Using SHA-256 or SHA-3 in a transcript does
+not turn an elliptic curve protocol into an entirely hash-based proof.
+Migration requires another proof relation, a composition analysis and
+new benchmarks.
 
-\section{Vérifications reproductibles et limites de preuve}
-\code{math/horizon_checks.m} énumère les paires entières d'un domaine réduit
-pour 1 à 6 bits, incluant des valeurs négatives ; contrôle les frontières
-32 bits en \code{uint64} ; reconstruit $q$ par chaînes décimales ; et explore
-tous les états atteignables d'un modèle fini de réservation à deux nonces
-et une opération. Les fonctions de calcul décimal ne manipulent que de petits
-chiffres, jamais $q$ en flottant. Aucune implémentation de courbe, signature
-ou Bulletproofs n'est recréée dans MATLAB/Octave.
+\section{Reproducible checks and limits of the evidence}
+\code{math/horizon_checks.m} enumerates integer pairs in a reduced domain
+for 1 to 6 bits, including negative values; checks 32-bit boundaries using
+\code{uint64}; reconstructs $q$ through decimal strings; and explores all
+reachable states of a finite reservation model with two nonces and one
+operation. Decimal arithmetic functions handle only small digits, never
+$q$ in floating point. No curve, signature or Bulletproofs implementation
+is recreated in MATLAB/Octave.
 
-Le résultat JSON indique explicitement runtime, version, date UTC et limites.
-Le conteneur fige le digest de base et le dossier conserve l'identifiant de
-l'image construite et les versions des paquets. Le Dockerfile dépend encore
-du dépôt de paquets au moment de sa reconstruction : ce n'est pas une
-promesse de build reproductible bit à bit. L'exécution est sans réseau après
-construction. MATLAB nécessite un runtime/licence distinct : une réussite
-Octave n'est pas présentée comme une exécution MATLAB.
+The JSON result explicitly states runtime, version, UTC date and limitations.
+The container pins the base digest, and the dossier retains the built image
+identifier and package versions. The Dockerfile still depends on the package
+repository at rebuild time: this is not a promise of bit-for-bit reproducible
+builds. Execution has no network after building. MATLAB requires a separate
+runtime/license: an Octave success is not presented as a MATLAB execution.
 
-Les tests adverses Rust et Node existants restent une preuve expérimentale
-séparée. Le modèle réduit ne remplace ni la vérification d'une vraie preuve
-cryptographique par un processus indépendant, ni un modèle-checker appliqué
-au code, ni une revue de sécurité indépendante. Le journal de compilation PDF
-et l'inspection des pages attestent seulement la fabrication du document.
+Existing Rust and Node adversarial tests remain separate experimental evidence.
+The reduced model replaces neither verification of a real cryptographic proof
+by an independent process, a model checker applied to the code nor an independent
+security review. The PDF compilation log and page inspection attest only to
+the document's production.
 
-\section{Décision technique}
-Le résultat défendable est un laboratoire de faisabilité : une relation étroite,
-des hypothèses explicites, des preuves réelles et un contrôleur local qui
-refuse avant son effet. La sécurité de production exige encore autorités
-qualifiées, gestion des clés, revocation, isolation, audit, modèle distant de
-reprise et validation du besoin économique. Les déploiements cloud restent
-des exemples de configuration réseau/IAM, pas une certification opérationnelle.
-Une affirmation de conformité, d'absence de concurrence ou de logique métier
-universellement correcte ne découle d'aucun théorème présenté ici.
+\section{Technical decision}
+The defensible result is a feasibility laboratory: a narrow relation, explicit
+assumptions, real proofs and a local controller that rejects before its effect.
+Production security still requires qualified authorities, key management,
+revocation, isolation, audit, a remote recovery model and validation of the
+economic need. Cloud deployments remain network/IAM configuration examples,
+not operational certification. No theorem presented here implies compliance,
+absence of competition or universally correct business logic.
 
 \bibliographystyle{plainnat}
 \bibliography{references}

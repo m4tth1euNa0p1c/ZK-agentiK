@@ -1,17 +1,17 @@
-# GitHub Actions pour les preuves et le sandbox
+# GitHub Actions for proofs and the sandbox
 
-« GA » désigne ici GitHub Actions, conformément au choix utilisateur du
-17 octobre 2026. Le dépôt fournit un workflow réutilisable et déclenchable
-manuellement : [proof-sandbox.yml](../../.github/workflows/proof-sandbox.yml).
+“GA” means GitHub Actions here, in accordance with the user's choice on
+October 17, 2026. The repository provides a reusable and manually triggerable
+workflow: [proof-sandbox.yml](../../.github/workflows/proof-sandbox.yml).
 
-Les workflows automatiques l'utilisent déjà : `ci.yml` lance Horizon et le
-sandbox après les tests ; `evidence.yml` contrôle le registre et l'historique,
-puis lance Octave et reconstruit le manuscrit. Aucun compte cloud n'est utilisé.
-Ils s'exécutent sur les PR et sur les pushes vers `main`, sans double campagne
-pour un même push de branche de PR. Une nouvelle révision annule les checks
-encore en cours de la même PR ; elle ne modifie pas les résultats déjà conservés.
+Automatic workflows already use it: `ci.yml` runs Horizon and the
+sandbox after tests; `evidence.yml` checks the register and history,
+then runs Octave and rebuilds the manuscript. No cloud account is used.
+They run on PRs and pushes to `main`, without a duplicate campaign
+for the same PR branch push. A new revision cancels checks
+still running on the same PR; it does not change already retained results.
 
-## Réutilisation dans ce dépôt ou un fork
+## Reuse in this repository or a fork
 
 ```yaml
 name: My proof experiment
@@ -26,61 +26,61 @@ jobs:
       deploy_sandbox: true
 ```
 
-Le caller doit posséder le code et les lockfiles de ZK-agentiK dans son checkout.
-Ce workflow n'est pas une action universelle exécutant automatiquement un projet
-arbitraire : adapter le profil et le registre exige une revue. Pour un appel par
-référence distante, épingler le commit du workflow et vérifier quel dépôt est
-checkout ; le contexte d'un workflow réutilisable est celui de l'appelant.
+The caller must have ZK-agentiK code and lockfiles in its checkout.
+This workflow is not a universal action that automatically runs an arbitrary
+project: adapting the profile and register requires review. For a call through
+a remote reference, pin the workflow commit and check which repository is
+checked out; a reusable workflow has the caller's context.
 
-Après intégration du fichier à la branche par défaut, utiliser Actions →
-**Reusable proof and local sandbox** → **Run workflow**, ou :
+After integrating the file into the default branch, use Actions →
+**Reusable proof and local sandbox** → **Run workflow**, or:
 
 ```sh
 gh workflow run proof-sandbox.yml --ref <reviewed-branch> -f profile=horizon -F deploy_sandbox=true
 ```
 
-Seuls `horizon` et `math` sont admis ; un nom arbitraire ne devient pas une
-commande. `deploy_sandbox=true` est réservé à Horizon. Il démarre Compose sur
-le runner éphémère, vérifie une preuve réelle, falsification, rejeu, redémarrage
-et vérification dans un conteneur indépendant. Il arrête ensuite les services.
-Ce n'est pas une publication d'API Internet ni un déploiement Azure/GCP.
+Only `horizon` and `math` are allowed; an arbitrary name does not become a
+command. `deploy_sandbox=true` is reserved for Horizon. It starts Compose on
+the ephemeral runner, checks a real proof, tampering, replay, restart
+and verification in an independent container. It then stops the services.
+This is neither publication of an Internet API nor an Azure/GCP deployment.
 
-## Artefacts et confiance
+## Artifacts and trust
 
-Les actions sont épinglées par commit et le token est en lecture seule.
-Aucun `pull_request_target`, secret cloud, clé longue durée ou permission
-`id-token: write` n'est ajouté. Les fichiers uploadés sont sélectionnés
-explicitement dans `public-artifacts/` : résumé de processus, résultats publics
-du smoke, JSON numériques de la nouvelle exécution Octave si applicable,
-fixture historique publique si applicable, PDF, registre, commit et
-empreintes. Ni `.tools`, witness, clé privée, base SQLite ou log brut n'est uploadé.
-La rétention des artefacts est de 14 jours ; le dépôt conserve les références
-historiques nécessaires hors de cette rétention temporaire.
-Une fois l'exécution commencée, le bundle est aussi conservé sur échec avec
-`RUN_STATUS.txt` et les résultats présents seulement. Le job reste en échec ;
-un PDF repris du checkout après un échec de reconstruction reste historique.
-Un échec avant le démarrage du profil peut ne produire aucun bundle.
+Actions are pinned by commit and the token is read-only.
+No `pull_request_target`, cloud secret, long-lived key or
+`id-token: write` permission is added. Uploaded files are explicitly
+selected in `public-artifacts/`: process summary, public smoke
+results, numerical JSON from the new Octave run if applicable,
+public historical fixture if applicable, PDF, register, commit and
+hashes. No `.tools`, witness, private key, SQLite database or raw log is uploaded.
+Artifact retention is 14 days; the repository retains the necessary
+historical references beyond this temporary retention period.
+Once execution has started, the bundle is also retained on failure with
+`RUN_STATUS.txt` and only the results that are present. The job remains failed;
+a PDF taken from the checkout after a failed rebuild remains historical.
+A failure before the profile starts may produce no bundle.
 
-Le SHA GitHub et les checks facilitent la traçabilité ; les fichiers d'empreintes
-ne sont ni une signature du mainteneur ni un horodatage TSA. Une mesure de temps
-de workflow inclut téléchargement, build et contention ; ce n'est pas un
-benchmark cryptographique. Le PDF reconstruit peut différer par sa date de build.
-Le manifeste vérifié par `evidence.yml` concerne le checkout avant reconstruction ;
-`SHA256SUMS` couvre les octets du bundle après reconstruction. Aucun des deux
-n'authentifie la vérité des résultats ou la date par un tiers.
+The GitHub SHA and checks help traceability; hash files
+are neither a maintainer signature nor a TSA timestamp. Workflow timing
+includes download, build and contention; it is not a
+cryptographic benchmark. The rebuilt PDF may differ due to its build date.
+The manifest verified by `evidence.yml` concerns the checkout before rebuilding;
+`SHA256SUMS` covers bundle bytes after rebuilding. Neither
+authenticates result truth or the date through a third party.
 
-Les profils Vega longs et CUDA ne sont pas lancés automatiquement sur des
-runners partagés. Le résultat CUDA local reste bloqué ; aucun runner GitHub
-hébergé n'est supposé fournir un GPU.
+Long Vega profiles and CUDA are not automatically run on
+shared runners. The local CUDA result remains blocked; no GitHub-hosted
+runner is assumed to provide a GPU.
 
-## Extension Azure/GCP
+## Azure/GCP extension
 
-Le choix confirmé est **comparaison sans déploiement pour l'instant**. Les
-fondations IaC restent validées localement. Un futur workflow cloud devra être
-séparé, avec environnement approuvé, identité fédérée limitée au dépôt/ref,
-permissions minimales, région, budget et tests H14/H17. Le workflow présent ne
-contient pas de faux stage `deploy` qui annoncerait un environnement inexistant.
+The confirmed choice is **comparison without deployment for now**. IaC
+foundations remain locally validated. A future cloud workflow must be
+separate, with an approved environment, federated identity restricted to the repository/ref,
+least privilege, region, budget and H14/H17 tests. The present workflow
+contains no fake `deploy` stage claiming a nonexistent environment.
 
-Sources primaires consultées le 17 octobre 2026 :
-[réutilisation de workflows GitHub](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows),
+Primary sources consulted on October 17, 2026:
+[GitHub workflow reuse](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows),
 [upload-artifact](https://github.com/actions/upload-artifact/tree/cf430e030ddbb5b0abf93d22962f4752f3646cd9).

@@ -1,43 +1,42 @@
-# Sécurité et signalement
+# Security and reporting
 
-ZK-agentiK est un laboratoire expérimental. Aucune version n'est actuellement
-déclarée qualifiée pour autoriser des paiements, protéger une plateforme
-critique ou satisfaire à elle seule un régime réglementaire. Les résultats
-connus et hypothèses sont décrits dans
-[le modèle de menace](docs/horizon/THREAT_MODEL.md),
-[la revue interne](docs/horizon/SECURITY_REVIEW.md) et
-[les assertions de publication](docs/publication/CLAIMS.md).
+ZK-agentiK is an experimental laboratory. No version is currently declared
+qualified to authorize payments, protect a critical platform or independently
+satisfy a regulatory regime. Known results and assumptions are described in
+the [threat model](docs/horizon/THREAT_MODEL.md),
+the [internal review](docs/horizon/SECURITY_REVIEW.md) and
+the [publication claims](docs/publication/CLAIMS.md).
 
-## Signalement privé
+## Private reporting
 
-Si l'onglet Security du dépôt propose **Report a vulnerability**, utiliser le
-signalement privé GitHub. Cette fonctionnalité doit être activée par le
-mainteneur ; ce document ne prétend pas qu'elle l'est. Si elle est absente,
-utiliser un canal privé déjà établi avec le mainteneur. À défaut, une issue
-publique peut demander un canal privé **sans détail exploitable ni donnée
-sensible**. Aucun délai contractuel, programme de prime ou adresse de contact
-non vérifiée n'est promis.
+Use [Report a vulnerability](https://github.com/m4tth1euNa0p1c/ZK-agentic/security/advisories/new)
+for private GitHub reporting. Its activation was verified through the GitHub API
+on 17 October 2026. If this feature is subsequently unavailable, use a private
+channel already established with the maintainer. Otherwise, a public issue may
+request a private channel **without exploitable details or sensitive data**.
+No contractual response time, bounty program or unverified contact address
+is promised.
 
-Fournir version/commit, configuration, préconditions, impact, reproduction
-minimale et comportement attendu. Utiliser des fixtures synthétiques ; ne pas
-joindre de secrets, données client, witness réel ou token. Ne pas tester un
-système tiers ou un service déployé sans son autorisation.
+Provide the version/commit, configuration, prerequisites, impact, minimal
+reproduction and expected behavior. Use synthetic fixtures; do not attach
+secrets, customer data, real witnesses or tokens. Do not test a third-party
+system or deployed service without its authorization.
 
-## Périmètre de revue prioritaire
+## Priority review areas
 
-- Vérification avant effet, liaison complète du contexte, politique imposée par
-  le contrôleur, absence de sélection de clé/backend par l'appelant.
-- Encodages, parsing, engagements, signatures, générateurs et transcript.
-- Rejeu et concurrence sur nonce **et** opération métier ; révocation et
-  échéances après attente ; reprise et état `UNKNOWN`.
-- Autorités de source, vérité des faits, transfert des ouvertures et clés.
-- Isolation des tenants, fuite de métadonnées/logs et dépendances verrouillées.
+- Verification before effects, complete context binding, controller-enforced
+  policy, no caller-selected key or backend.
+- Encodings, parsing, commitments, signatures, generators and transcript.
+- Replay and concurrency for both nonce **and** business operation; revocation
+  and deadlines after waits; recovery and the `UNKNOWN` state.
+- Source authorities, factual truth, transfer of openings and keys.
+- Tenant isolation, metadata/log leakage and locked dependencies.
 
-Le mode simulateur divulgue son witness et n'est pas une preuve ZK. Le profil
-Horizon utilise des hypothèses classiques, sans garantie post-quantique.
-La transaction SQLite locale ne démontre pas une mutation distante exactement
-une fois. Une revue d'agents ne remplace pas un audit cryptographique externe.
+Simulator mode discloses its witness and is not a ZK proof. The Horizon profile
+uses classical assumptions, without a post-quantum guarantee.
+A local SQLite transaction does not demonstrate exactly-once remote mutation.
+An agent review does not replace an external cryptographic audit.
 
-Le mainteneur doit vérifier le canal privé et ses destinataires avant une
-publication publique ; ne pas ajouter de détails sensibles dans les issues
-pour compenser l'absence de canal.
+The maintainer must verify the private channel and its recipients before public
+publication; do not add sensitive details to issues to compensate for the lack
+of a channel.

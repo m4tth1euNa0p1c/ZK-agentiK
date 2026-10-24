@@ -38,6 +38,7 @@ jobs:
       - run: npm run horizon:build
       - run: npm run test:horizon
       - run: npm run test:proofkit
+      - run: npm run release:check
       - run: npm run test:risc0:gpu
       - run: npm run proofkit -- check
   sandbox:

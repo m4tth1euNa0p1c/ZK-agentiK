@@ -1,30 +1,30 @@
-# Validation corrélée du circuit Horizon
+# Correlated Horizon circuit validation
 
-Ce banc relie des données synthétiques identiques à quatre observations : calcul
-BigInt, oracle Octave, prover Rust et vérifieur Rust dans un autre processus.
-Un job MATLAB explicite ajoute une cinquième observation sur **les mêmes octets**.
-La relation reste celle de `horizon-range-v1` ; aucun nouveau protocole n'est introduit.
+This testbed connects identical synthetic data to four observations: BigInt
+computation, Octave oracle, Rust prover and Rust verifier in another process.
+An explicit MATLAB job adds a fifth observation on **the same bytes**.
+The relation remains `horizon-range-v1`; no new protocol is introduced.
 
-[Résultats datés et pipelines réels](RESULTS_2026-10-17.md) ·
-[Rapport interactif](views/windows-e7fc348/report.html) ·
-[Démonstration mathématique PDF](../../whitepaper/circuit-validation.pdf).
+[Dated results and actual pipelines](RESULTS_2026-10-17.md) ·
+[Interactive report](views/windows-e7fc348/report.html) ·
+[Mathematical proof PDF](../../whitepaper/circuit-validation.pdf).
 
 ```text
-1 <= a <= 2^32  et  0 <= c-a < 2^32
+1 <= a <= 2^32  and  0 <= c-a < 2^32
 X = A-G = (a-1)G + r_a H
 D = C-A = (c-a)G + (r_c-r_a)H
 ```
 
-La [démonstration LaTeX](../../whitepaper/circuit-validation.tex) explicite les
-hypothèses de connaissance, de liaison et d'émission. L'oracle numérique ne
-prouve pas la sécurité des primitives. Les signatures Ed25519 sont vérifiées
-hors circuit ; le profil Bulletproofs/Ristretto n'est pas post-quantique.
+The [LaTeX proof](../../whitepaper/circuit-validation.tex) makes the knowledge,
+binding and issuance assumptions explicit. The numerical oracle does not
+prove the security of the primitives. Ed25519 signatures are verified outside
+the circuit; the Bulletproofs/Ristretto profile is not post-quantum.
 
-## Exécuter et inspecter
+## Run and inspect
 
-Rust 1.93, Node 24.11 et Docker sont nécessaires. Les dépendances cryptographiques
-restent verrouillées. Le Dockerfile fixe le digest Debian ; les paquets apt sont
-enregistrés dans le rapport, sans promesse de reconstruction bit à bit.
+Rust 1.93, Node 24.11 and Docker are required. Cryptographic dependencies
+remain locked. The Dockerfile pins the Debian digest; apt packages are recorded
+in the report, with no promise of bit-for-bit reconstruction.
 
 ```sh
 npm ci --ignore-scripts
@@ -32,91 +32,91 @@ npm run test:circuit
 npm run circuit:campaign -- --cases 4096 --output .tools/circuit-my-run --build
 ```
 
-Tailles autorisées : **128, 1024, 4096**. Le répertoire doit être nouveau. Sans
-`--build`, image et binaire doivent déjà exister. Les dates sont celles de
-l'horloge locale, sans TSA. `OsRng` génère clés, ouvertures et aléas de preuve ;
-seuls les montants du corpus sont reproductibles, pas les octets des preuves.
+Allowed sizes: **128, 1024, 4096**. The directory must be new. Without `--build`,
+the image and binary must already exist. Dates come from the local clock,
+without a TSA. `OsRng` generates keys, openings and proof randomness;
+only corpus amounts are reproducible, not proof bytes.
 
-Ouvrir `.tools/circuit-my-run/public/report.html` : filtres par famille, cas
-inspectables, graphique du domaine et distribution des durées réellement
-observées. Les graphiques Matplotlib existent également en PNG et SVG.
-Le rapport signale séparément MATLAB : le résultat Octave ne le remplace pas.
-Pour le profil court intégré à l'outillage : `npm run proofkit -- run circuit`.
+Open `.tools/circuit-my-run/public/report.html`: family filters, inspectable
+cases, domain plot and distribution of actually observed durations.
+Matplotlib plots are also available as PNG and SVG. The report flags MATLAB
+separately: the Octave result does not replace it. For the short profile
+integrated into the tooling: `npm run proofkit -- run circuit`.
 
-Le fichier `verification-requests.ndjson.gz` conserve **tout** le corpus public,
-avec attestations et preuves, y compris les candidats invalides et mutations.
-Les montants sont publics parce qu'ils sont synthétiques ; ni clés privées ni
-ouvertures des engagements ne sont exportées. Les journaux locaux restent hors
-du bundle. Aucune API de banque, assurance ou paiement n'est appelée.
+The `verification-requests.ndjson.gz` file retains the **entire** public corpus,
+with attestations and proofs, including invalid candidates and mutations.
+Amounts are public because they are synthetic; neither private keys nor
+commitment openings are exported. Local logs stay outside the bundle.
+No banking, insurance or payment API is called.
 
-Pour revérifier les reçus archivés, sans regénérer les preuves :
+To reverify archived receipts without regenerating proofs:
 
 ```sh
 npm run horizon:build
-node scripts/circuit-reverify.mjs <repertoire-public-archive> .tools/circuit-reverification-new
+node scripts/circuit-reverify.mjs <archived-public-directory> .tools/circuit-reverification-new
 ```
 
-Le vérifieur utilise le même code Rust verrouillé dans un autre processus.
-Il s'agit d'une vérification séparée du prover, pas d'une seconde implémentation
-cryptographique indépendante. La confiance et l'horloge des requêtes sont celles
-du banc synthétique : ce binaire ne doit pas être exposé comme serveur d'autorisation.
+The verifier uses the same locked Rust code in another process.
+This is verification separate from the prover, not a second independent
+cryptographic implementation. Request trust and clock values belong to the
+synthetic testbed: this binary must not be exposed as an authorization server.
 
-## Corrélation exigée
+## Required correlation
 
-| Couche | Observation exigée | Contre-épreuve |
+| Layer | Required observation | Negative test |
 | --- | --- | --- |
-| Domaine | Chaînes u64, bornes exactes et soustractions gardées | `0`, `2^32`, `2^33-1`, `2^53+1`, `u64::MAX`, hors plage |
-| BigInt / Octave / MATLAB | Même verdict et mêmes différences décimales par ID | Entrées invalides, arrondi/saturation, cas supprimé ou substitué |
-| Prover natif A/B | Même relation, mêmes motifs de refus | Contournement du preflight par l'API Bulletproofs amont |
-| Vérifieur A/B | Accepte chaque preuve valide, refuse les candidats hors domaine | Corruption algébrique parseable et résignée, transplantation A |
-| Contexte | Clés, signatures, politiques, dates et jointure des attestations | 14 familles de mutations par cas valide |
-| Artefacts | Statuts complets, ensemble exact de lignes, compteurs, SHA-256 des vecteurs et du corpus décompressé | Fichier manquant, doublon, statut échoué, hash incohérent, compteur falsifié |
+| Domain | u64 strings, exact bounds and guarded subtractions | `0`, `2^32`, `2^33-1`, `2^53+1`, `u64::MAX`, out of range |
+| BigInt / Octave / MATLAB | Same verdict and same decimal differences per ID | Invalid inputs, rounding/saturation, removed or substituted case |
+| Native prover A/B | Same relation, same denial reasons | Preflight bypass through the upstream Bulletproofs API |
+| Verifier A/B | Accepts every valid proof, rejects out-of-domain candidates | Parseable and re-signed algebraic corruption, A transplantation |
+| Context | Keys, signatures, policies, dates and attestation join | 14 mutation families per valid case |
+| Artifacts | Complete statuses, exact row set, counters, SHA-256 of vectors and decompressed corpus | Missing file, duplicate, failed status, inconsistent hash, falsified counter |
 
-Chaque cas valide génère deux preuves (A et B) et 16 vérifications, dont deux
-acceptations attendues. Chaque cas invalide génère deux **candidats invalides**
-directement via la bibliothèque amont, puis deux vérifications devant échouer
-à `INVALID_RANGE_PROOF`. Ces candidats ne sont pas comptés comme preuves valides.
-La vérification ignore l'annotation `expected_accept` ; un test l'inverse pour
-vérifier cette propriété. Une signature cassée ne peut pas tenir lieu de test
-de rejet algébrique : le corrélateur impose l'étape de refus exacte.
+Each valid case generates two proofs (A and B) and 16 verifications, including
+two expected acceptances. Each invalid case generates two **invalid candidates**
+directly through the upstream library, followed by two verifications that must
+fail with `INVALID_RANGE_PROOF`. These candidates are not counted as valid
+proofs. Verification ignores the `expected_accept` annotation; a test reverses
+it to check this property. A broken signature cannot substitute for an
+algebraic rejection test: the correlator enforces the exact rejection stage.
 
-Les candidats avec `a=0` ou `c<a` utilisent une soustraction `u64` avec retour
-modulo `2^64` pour contourner le preflight : leurs engagements diffèrent aussi
-des engagements dérivés attendus dans Ristretto. Leur rejet éprouve la relation
-complète, pas uniquement un comparateur. Les cas `a>2^32` ou `c-a>=2^32` sans
-sous-dépassement isolent mieux la contrainte de plage.
+Candidates with `a=0` or `c<a` use `u64` subtraction wrapping modulo `2^64`
+to bypass preflight: their commitments also differ from the expected derived
+commitments in Ristretto. Their rejection tests the complete relation, not
+just a comparator. Cases with `a>2^32` or `c-a>=2^32` without underflow
+better isolate the range constraint.
 
-Le manifeste relie les fichiers, les sources, le binaire, la machine, les étapes
-et leurs codes de sortie. Une empreinte ne démontre pas la vérité d'un rapport ;
-la reproduction et la revérification sont nécessaires. Les résultats anciens
-ne sont pas remplacés. Une exécution interrompue conserve un résultat d'échec.
+The manifest links files, sources, binary, machine, steps and their exit codes.
+A hash does not establish the truth of a report; reproduction and reverification
+are necessary. Old results are not replaced. An interrupted run retains a
+failure result.
 
-## Mathématiques, agent et pipeline
+## Mathematics, agent and pipeline
 
 ```mermaid
 flowchart LR
-  V[Vecteurs synthétiques] --> I[BigInt]
+  V[Synthetic vectors] --> I[BigInt]
   V --> O[Octave]
-  V --> M[MATLAB sur GitHub]
-  V --> P[Prover Rust A et B]
-  P --> A[Mutations et candidats hors domaine]
-  P --> R[Vérifieur Rust séparé]
+  V --> M[MATLAB on GitHub]
+  V --> P[Rust prover A and B]
+  P --> A[Mutations and out-of-domain candidates]
+  P --> R[Separate Rust verifier]
   A --> R
-  I --> J[Jointure par ID et empreinte]
+  I --> J[Join by ID and hash]
   O --> J
   M --> J
   R --> J
-  J --> D[Rapport JSON, HTML, figures]
+  J --> D[JSON report, HTML, figures]
 ```
 
-Le [workflow réutilisable GitHub Actions](GITHUB_ACTIONS.md) exécute des commandes
-revues et bornées. Il n'invente pas de circuit à partir d'un LLM. Le scénario
-agentique MCP reste testé par `npm run test:horizon` et `npm run horizon:demo` :
-proposition, challenge imposé, preuve réelle, contrôle, réservation et effet
-synthétique. La campagne mathématique ne clôt pas H14 (cible distante) ou H15
-(audit cryptographique externe).
+The [reusable GitHub Actions workflow](GITHUB_ACTIONS.md) runs reviewed,
+bounded commands. It does not invent a circuit from an LLM. The MCP agentic
+scenario remains tested by `npm run test:horizon` and `npm run horizon:demo`:
+proposal, enforced challenge, real proof, control, reservation and synthetic
+effect. The mathematical campaign does not close H14 (remote target) or H15
+(external cryptographic audit).
 
-Les durées de cette campagne sont des observations de tests sans échauffement
-dédié ni protocole de performance isolé. Ni record Vega, ni accélération GPU,
-ni probabilité de faux positif cryptographique ne s'en déduisent. Un bilan de
-zéro acceptation indue concerne les essais exécutés, pas toutes les attaques.
+This campaign's durations are test observations without dedicated warmup
+or an isolated performance protocol. They imply neither a Vega record,
+GPU speedup nor a cryptographic false-positive probability.
+Zero observed improper acceptances concerns the tests executed, not all attacks.

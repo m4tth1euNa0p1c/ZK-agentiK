@@ -1,29 +1,43 @@
-# Registre des assertions de publication
+# Publication claims register
 
-État éditorial : 17 octobre 2026. « Démontré » signifie uniquement dans le
-périmètre de l'artefact cité. Les résultats historiques ne sont pas une validation
-automatique d'un SDK ou d'un déploiement ultérieur. Le journal de release doit
-identifier le commit candidat et ses vérifications actuelles.
+Editorial status: October 17, 2026. “Demonstrated” means only within the
+scope of the cited artifact. Historical results do not automatically validate
+a later SDK or deployment. The release log must
+identify the candidate commit and its current checks.
 
-| ID | Assertion admissible | Statut et preuve | Limite / condition de réfutation |
+| ID | Admissible claim | Status and evidence | Limitation / falsification condition |
 | --- | --- | --- | --- |
-| P01 | Le profil Horizon prouve une relation sur deux montants engagés | Implémentation et [énoncé](../horizon/FORMAL_STATEMENT.md) | Vérité des faits et honnêteté d'émission hors preuve ; H13 |
-| P02 | Les montants a et c restent cachés au contrôleur dans la présentation prévue | Modèle et [analyse](../horizon/CRYPTOGRAPHIC_DESIGN.md) | Engagements A et C publics ; prover connaît les deux ouvertures ; métadonnées corrélables ; audit externe H15 absent |
-| P03 | B réutilise une preuve immuable et signe un challenge complet frais | [Architecture](../horizon/ARCHITECTURE.md) | Pas une nouvelle preuve de connaissance ; pas de promesse d'absence de corrélation |
-| P04 | Les demandes invalides des scénarios testés ne déclenchent pas l'effet local | Tests et [journal](../horizon/EXPERIMENT_LOG.md) | Énumérer les cas et le commit ; aucune universalité sur tous les inputs |
-| P05 | Anti-rejeu et réservation de l'opération survivent au redémarrage local testé | [Déploiement local](../horizon/DEPLOYMENT.md), SQLite | Cible locale ; H14 ouvert pour API distante et concurrence distribuée |
-| P06 | B vérifie au p95 1,247 ms dans le banc CPU après optimisation | [Rapport gelé](../horizon/BENCHMARK_RESULTS.json) et bruts associés | 500 échantillons/cas, machine et périmètre précis ; pas un SLA |
-| P07 | Le chemin durable observé a un p95 de 13,014 ms | Même rapport, campagne Windows IPC et SQLite | Objectif de 10 ms non atteint ; maximum 180,310 ms |
-| P08 | Une présentation B préparée peut être moins coûteuse qu'une preuve A fraîche | Mesures des phases séparées | Comparer les fonctions réellement fournies ; pas un record ZKP |
-| P09 | Le projet contient des points d'extension pour outils vérifiés | `packages/proofkit-sdk`, contrôles actuels à consigner dans le journal de release | Les adaptateurs restent une frontière de confiance ; aucun générateur universel de circuits sûrs |
-| P10 | Les fondations Azure/GCP sont validables localement | [Validation](VALIDATION.md), sources IaC | Aucun déploiement cloud ni test IAM/réseau effectué |
-| P11 | Le besoin acheteur justifie la complexité ZK | **Non établi**, H11 | Abandon si verdict signé/divulgation acceptable ou absence de budget et sponsor |
-| P12 | Une offre identique est absente du marché | **Non démontré** | [Recherche bornée](../horizon/NOVELTY_AND_PRIOR_ART.md) ; pas d'absence universelle ni de liberté d'exploitation juridique |
-| P13 | Le profil est post-quantique | **Faux pour Horizon** | Bulletproofs/Ristretto et Ed25519 ne donnent pas cette garantie |
-| P14 | Le système est qualifié DORA, AI Act ou bancaire | **Non établi** | Le code et un journal ne constituent pas une évaluation réglementaire |
-| P15 | Le paquet scellé est authentique et ses résultats vrais | **Non établi par une empreinte seule** | Une empreinte lie des octets ; identité du signataire, temps et véracité exigent d'autres preuves |
-| P16 | Le banc corrélé traite 4 096 vecteurs avec 4 086 preuves valides, 4 106 candidats invalides et 36 794 vérifications | [Campagnes Windows/Linux et MATLAB R2026b](../experiments/circuit/RESULTS_2026-10-17.md), 0 désaccord observé | Tests finis synthétiques ; même bibliothèque dans un processus vérifieur séparé ; candidats invalides distincts des preuves valides ; pas une borne de soundness |
+| P01 | The Horizon profile proves a relation over two committed amounts | Implementation and [statement](../horizon/FORMAL_STATEMENT.md) | Truth of facts and honest issuance outside the proof; H13 |
+| P02 | Amounts a and c remain hidden from the controller in the intended presentation | Model and [analysis](../horizon/CRYPTOGRAPHIC_DESIGN.md) | Public commitments A and C; prover knows both openings; correlatable metadata; external audit H15 absent |
+| P03 | B reuses an immutable proof and signs a complete fresh challenge | [Architecture](../horizon/ARCHITECTURE.md) | Not a new proof of knowledge; no promise of unlinkability |
+| P04 | Invalid requests in the tested scenarios do not trigger the local effect | Tests and [log](../horizon/EXPERIMENT_LOG.md) | List the cases and commit; no universality over all inputs |
+| P05 | Replay protection and operation reservation survive the tested local restart | [Local deployment](../horizon/DEPLOYMENT.md), SQLite | Local target; H14 open for remote APIs and distributed concurrency |
+| P06 | B verifies at p95 1.247 ms in the CPU benchmark after optimization | [Frozen report](../horizon/BENCHMARK_RESULTS.json) and associated raw data | 500 samples/case, specific machine and scope; not an SLA |
+| P07 | The observed durable path has a p95 of 13.014 ms | Same report, Windows IPC and SQLite campaign | 10 ms objective not met; maximum 180.310 ms |
+| P08 | A prepared B presentation can cost less than a fresh A proof | Measurements of separate phases | Compare the functions actually provided; not a ZKP record |
+| P09 | The project contains extension points for verified tools | `packages/proofkit-sdk`, current checks to record in the release log | Adapters remain a trust boundary; no universal generator of safe circuits |
+| P10 | Azure/GCP foundations can be validated locally | [Validation](VALIDATION.md), IaC sources | No cloud deployment or IAM/network test performed |
+| P11 | Buyer need justifies ZK complexity | **Not established**, H11 | Abandon if a signed verdict/disclosure is acceptable or there is no budget and sponsor |
+| P12 | No identical offering exists on the market | **Not demonstrated** | [Bounded search](../horizon/NOVELTY_AND_PRIOR_ART.md); no universal absence or legal freedom to operate |
+| P13 | The profile is post-quantum | **False for Horizon** | Bulletproofs/Ristretto and Ed25519 do not provide this guarantee |
+| P14 | The system is DORA, AI Act or banking qualified | **Not established** | Code and a log do not constitute a regulatory assessment |
+| P15 | The sealed package is authentic and its results true | **Not established by a hash alone** | A hash binds bytes; signer identity, time and truth require other evidence |
+| P16 | The correlated benchmark processes 4,096 vectors with 4,086 valid proofs, 4,106 invalid candidates and 36,794 verifications | [Windows/Linux and MATLAB R2026b campaigns](../experiments/circuit/RESULTS_2026-10-17.md), 0 observed disagreements | Synthetic finite tests; same library in a separate verifier process; invalid candidates distinct from valid proofs; not a soundness bound |
 
-Toute modification d'une ligne doit indiquer le nouveau support et les limites
-retirées ou ajoutées. Une assertion rejetée reste visible pour empêcher sa
-réintroduction commerciale accidentelle.
+Any change to a row must state the new supporting evidence and the limitations
+removed or added. A rejected claim remains visible to prevent
+its accidental reintroduction in commercial materials.
+
+## DevSecOps review for a customer presentation — October 17, 2026
+
+Sources examined: `1ff00fc8663bd88e0ba6ff7f571ddef62d16fc7f`.
+The [focused dossier](devsecops-client/README.md) separates code, execution and proposed integration.
+
+| ID | Admissible claim | Status and evidence | Limitation / falsification condition |
+| --- | --- | --- | --- |
+| P17 | The MCP DevSecOps flow enforces a policy and verifies before the simulated merge | **Verified locally**, [validation](devsecops-client/VALIDATION.json), 14 Rust tests, 25 Node/MCP tests and critical demo with 23 denials without an additional merge | Witness-disclosing simulator, fixtures and in-memory stores; no customer mutation or crash recovery |
+| P18 | The retained RISC Zero verifier accepts the historical authorizing receipt and rejects the five counter-cases for the expected reasons | **Reverified**, [six cases](devsecops-client/RISC0_REVERIFICATION.json) | Retained binary not rebuilt from HEAD; synthetic authority, fixed logical time; no dispatch or new proof generated |
+| P19 | Playwright and an autonomous LLM agent are integrated and evaluated on this flow | **Not demonstrated**, [inventory and target](devsecops-client/README.md) | No Playwright in the tracked files examined; tests use the MCP client with fixed arguments |
+| P20 | Authentic Jira/Sonar/GitLab APIs currently feed the authorization | **Not demonstrated**, [fixtures](../../packages/enterprise-gateway/src/connectors.ts) | Local collector HMAC and synthetic objects; do not attribute them to the vendors |
+| P21 | Proofkit SDK and registry tests pass for this validation | **Verified**, [21 tests after rerun](devsecops-client/VALIDATION.json) | Initial sandbox EPERM retained; adapters carry crypto, persistence and mutation; no SLA inferred |
+| P22 | Microsoft Research provides a scientific reference for proven actions and limited disclosure | **Primary sources consulted**, [dossier](devsecops-client/README.md) | Magnetar not integrated; Vega SHA-256 is a separate benchmark; no transferred endorsement, partnership, record or PQ guarantee |

@@ -1,28 +1,28 @@
-# Contradiction de la recommandation cloud et publication
+# Challenge of the cloud and publication recommendation
 
-17 octobre 2026. **Autorevue de l'auteur du dossier**, et non avis indépendant.
-Les validations syntaxiques sont rapportées dans [VALIDATION.md](VALIDATION.md).
-Le parent orchestrateur peut faire relire ce diff séparément ; ce document ne
-prétend pas qu'une telle revue a déjà eu lieu.
+October 17, 2026. **Self-review by the dossier's author**, not an independent opinion.
+Syntax validations are reported in [VALIDATION.md](VALIDATION.md).
+The parent orchestrator can arrange a separate review of this diff; this document
+does not claim that such a review has already taken place.
 
-| Objection | Réponse fondée sur le dossier | Condition qui changerait la décision |
+| Objection | Response supported by the dossier | Condition that would change the decision |
 | --- | --- | --- |
-| Un réseau fermé sans service ne prouve rien sur le produit | Exact. Le livrable est une fondation syntaxiquement validée, sans revendication d'isolation observée | Déploiement autorisé puis tests de refus ingress/egress, permissions héritées et accès plateforme |
-| La recommandation pourrait favoriser GCP sur un algorithme seulement logiciel | Aucune sélection fournisseur n'est faite. Le support Ed25519 logiciel ne satisfait pas une exigence HSM | Exigences acheteur explicites puis essai de signature/version/révocation avec niveau de protection adéquat |
-| Une base HA ne résout pas la mutation distante | Exact. Le module ne crée aucune base et H14 reste ouvert | Deux contrôleurs et cible séparée ; crash/ACK perdu/reprise ; compteur d'effets et contrat cible vérifiés |
-| Le réseau privé ne protège pas les données contre l'opérateur du prover | Exact. Horizon suppose un prover qui connaît les deux ouvertures | Si ce tiers est interdit, adopter et évaluer une autre architecture, éventuellement MPC/TEE, ou abandonner ce cas |
-| Le coût cloud pourrait dépasser la valeur d'un verdict signé | Coût et bénéfice acheteur restent inconnus ; aucune économie annoncée | H11 avec contrainte réelle et budget ; H16 avec même charge et disponibilité pour les deux solutions |
-| L'archive immuable peut pérenniser une fuite ou un fait faux | Exact. Aucun verrou n'est activé et la minimisation précède l'archivage | Politique de données réelle, tests d'export/restauration et validation de la durée par les responsables compétents |
-| Les skills peuvent donner une illusion d'assurance | Leurs validateurs contrôlent une structure, pas la sûreté de leurs décisions | Évaluations adverses de workflows et relecture humaine ; H15 reste externe |
-| Le manifeste d'empreintes pourrait être présenté comme un audit | Le registre P15 l'interdit : intégrité des octets, authenticité et vérité sont distinctes | Signatures et provenance attribuables plus revue des résultats, chacune avec son périmètre |
-| Les notices ne couvrent pas tous les binaires | L'inventaire est explicitement partiel | SBOM et notices de la distribution exacte avant redistribution de bundles/images |
+| A closed network without a service proves nothing about the product | Correct. The deliverable is a syntactically validated foundation, with no claim of observed isolation | Authorized deployment followed by ingress/egress denial tests, inherited permissions and platform access |
+| The recommendation could favor GCP based on a software-only algorithm | No provider is selected. Software Ed25519 support does not satisfy an HSM requirement | Explicit buyer requirements followed by signing/version/revocation tests at the appropriate protection level |
+| An HA database does not solve remote mutation | Correct. The module creates no database and H14 remains open | Two controllers and a separate target; crash/lost ACK/recovery; effect counter and target contract verified |
+| A private network does not protect data from the prover operator | Correct. Horizon assumes a prover that knows both openings | If this third party is prohibited, adopt and evaluate another architecture, possibly MPC/TEE, or abandon this case |
+| Cloud cost could exceed the value of a signed verdict | Buyer cost and benefit remain unknown; no savings announced | H11 with a real constraint and budget; H16 with the same workload and availability for both solutions |
+| An immutable archive can perpetuate a leak or false fact | Correct. No lock is enabled and minimization precedes archiving | Actual data policy, export/restoration tests and duration validated by the responsible authorities |
+| Skills can create an illusion of assurance | Their validators check structure, not the safety of their decisions | Adversarial workflow evaluations and human review; H15 remains external |
+| The hash manifest could be presented as an audit | Register entry P15 prohibits this: byte integrity, authenticity and truth are distinct | Attributable signatures and provenance plus a review of results, each with its scope |
+| Notices do not cover all binaries | The inventory is explicitly partial | SBOM and notices for the exact distribution before redistributing bundles/images |
 
-Décision : **GO pour un candidat documentaire et des fondations de laboratoire**,
-pas de choix cloud irréversible. **NO-GO pour une qualification de plateforme
-critique, une annonce de conformité ou une disponibilité générale de production**
-sur la seule base de ce dossier. Cette décision ne présume pas le sens que
-l'utilisateur donne au sigle « GA ».
+Decision: **GO for a documentary candidate and laboratory foundations**,
+no irreversible cloud choice. **NO-GO for qualification of a critical
+platform, a compliance announcement or general production availability**
+on the sole basis of this dossier. This decision does not presume what
+the user means by the acronym “GA”.
 
-Les prochains investissements doivent réduire H11/H13/H14/H15/H17, plutôt que
-multiplier les services cloud. Un besoin acheteur réfuté ou une divulgation
-acceptable peut rendre la solution signée plus pertinente que ZK.
+The next investments must reduce H11/H13/H14/H15/H17, rather than
+multiply cloud services. A refuted buyer need or acceptable disclosure
+may make the signed solution more relevant than ZK.
