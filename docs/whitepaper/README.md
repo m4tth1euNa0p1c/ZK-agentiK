@@ -56,7 +56,8 @@ error-free TeX output is not enough to qualify the rendering.
   error or `Overfull` box in the final passes. All thirteen Poppler PNG pages
   were inspected: English text, tables, equations, the boxed protocol diagram,
   bibliographic links and pagination legible, no overflow or residual French
-  observed. The only source change beyond the translation is in the two
+  observed. Beyond the translation, the source changes are four wording fixes from an
+  independent agent drift review (listed in `validation.json`) and the two
   `.bib` files: braces protect proper nouns (RangeProof, API, EdDSA, SQLite,
   GNU Octave, JSON) from BibTeX lowercasing and two MathWorks entries without
   a publication year print `n.d.`. No statement, number, date or citation

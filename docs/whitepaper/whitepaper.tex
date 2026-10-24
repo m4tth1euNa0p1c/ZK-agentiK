@@ -39,7 +39,7 @@ The \code{horizon-range-v1} profile is in
 \code{labs/horizon/proof/src/lib.rs}. The demonstration effect is
 \code{record_claim_authorization}, in a local SQLite registry, not a payment.
 The intended economic use case is delegated insurance claim authorization;
-no paying demand, automatic compliance or superiority over Vega is established.
+no solvent demand, automatic compliance or superiority over Vega is established.
 
 The library verifies a \emph{cryptographic statement}. The controller
 \code{packages/horizon-demo/src/store.ts} adds local expectations,
@@ -317,7 +317,7 @@ noninterference is demonstrated.
 Counterexample & Accepted statement & What is missing \\
 \midrule
 Cumulative budget & Two cases of 60 each satisfy $60\le100$. & Their sum 120 exceeds a shared budget of 100; a concurrent ledger is needed. \\
-Deductible & A payment of 15000 is below 20000. & With a loss of 15000 and a deductible of 5000, the expected amount is 10000; this formula is not proved. \\
+Deductible & A payment of 15000 is below 20000. & With a loss of 15000 and a deductible of 5000, the expected amount would be 10000; this formula is not proved. \\
 Exponent & Integers $1000\le10000$ pass. & 1000 EUR exceeds 10000 cents; the prototype prevents this mismatch by fixing EUR/exponent 2. \\
 Currency & Two equal numbers. & EUR and USD are not a common unit; conversion, source and time must be authenticated. \\
 Wraparound & $103\equiv2\pmod{101}$. & An unbounded source domain may change the integer meaning; the \code{u64} contract excludes this case for the real $q$. \\
@@ -326,7 +326,7 @@ Nonce alone & Two different nonces are each fresh. & They may authorize the same
 \end{tabular}\end{center}
 These examples do not bypass existing controls; they delimit the statement.
 Complete insurance claim logic must specify exclusions, deductibles, taxes,
-coinsurance, coverage dates and reserves. No circuit becomes perfect
+coinsurance, coverage dates and reserves. No circuit becomes ``perfect''
 merely by increasing its speed.
 
 \section{CPU, GPU and Vega measurements, and quantum assumptions}
