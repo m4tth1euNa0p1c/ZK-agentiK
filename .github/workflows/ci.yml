@@ -23,6 +23,8 @@ jobs:
       - run: cargo clippy --workspace --all-targets --locked -- -D warnings
       - run: cargo test --workspace --locked
       - run: npm ci --ignore-scripts
+      - name: Validate local agent workflow contract
+        run: node --test tests/agent-routine.test.mjs
       - run: npm test
       - run: npm run typecheck
       - run: npm run schema:check

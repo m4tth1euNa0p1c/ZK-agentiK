@@ -13,6 +13,8 @@ Rust for proofs and policies; strict TypeScript for the SDK, HTTP and MCP.
 The integrated profile demonstrates local insurance claim authorization. Banking
 qualification, commercial demand and post-quantum security have not been established.
 
+[Development routine with Claude Code](docs/development/WORK_ROUTINE.md) ·
+[Claude instructions](CLAUDE.md) ·
 [Developer quick start](packages/proofkit-sdk/README.md) ·
 [White paper PDF](docs/whitepaper/whitepaper.pdf) ·
 [Circuit: mathematics and correlated campaigns](docs/experiments/circuit/README.md) ·
