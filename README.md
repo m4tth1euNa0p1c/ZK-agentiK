@@ -8,6 +8,8 @@ Rust pour les preuves et les politiques ; TypeScript strict pour le SDK, HTTP et
 Le profil intégré démontre une autorisation locale de sinistre. La qualification
 bancaire, la demande commerciale et la sécurité post-quantique ne sont pas établies.
 
+[Routine de développement avec Claude Code](docs/development/WORK_ROUTINE.md) ·
+[Instructions Claude](CLAUDE.md) ·
 [Démarrage développeur](packages/proofkit-sdk/README.md) ·
 [White paper PDF](docs/whitepaper/whitepaper.pdf) ·
 [Circuit : mathématiques et campagnes corrélées](docs/experiments/circuit/README.md) ·

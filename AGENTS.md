@@ -95,3 +95,7 @@ Conserver les observations datées et les erreurs. MATLAB, Octave, démonstratio
 sur papier, modèle fini, test applicatif et preuve cryptographique ne sont pas
 interchangeables. SHA-256 lie les artefacts, sans certifier leur date ou leur
 vérité. Les anciennes mesures ne valident pas les nouveaux transports.
+
+## Claude Code local session workflow (2026-10-24)
+
+The repository includes root CLAUDE.md plus project-scoped .claude/agents/ and .claude/skills/. After a pull, run npm run agent:doctor and npm run agent:plan, select exactly one ready P0 task from docs/development/TASKS.json, and execute the required fixed validation profile. See docs/development/WORK_ROUTINE.md and the dated upstream risk watch. CI tests the orchestrator. An agent review does not establish an external audit, a proof of post-quantum security, or an equivalent-statement Vega record. Never auto-push or modify main without explicit authorization.
