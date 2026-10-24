@@ -1,8 +1,8 @@
-# Proofkit CLI — preuves et expériences explicites
+# Proofkit CLI — explicit proofs and experiments
 
-Cette CLI locale regroupe les profils de laboratoire et un registre d'artefacts.
-Elle ne constitue ni une primitive cryptographique ni un service d'horodatage.
-Node 24.11+ et `npm ci --ignore-scripts` ; lancer depuis le dépôt :
+This local CLI groups the laboratory profiles and an artifact register.
+It constitutes neither a cryptographic primitive nor a timestamping service.
+Node 24.11+ and `npm ci --ignore-scripts`; run from the repository:
 
 ```sh
 npm run proofkit -- doctor
@@ -13,60 +13,60 @@ npm run proofkit -- seal evidence/manifests/review-001.json
 npm run proofkit -- verify evidence/manifests/review-001.json
 ```
 
-`doctor` vérifie la disponibilité des outils, sans exécuter de preuve. `check`
-valide le schéma du catalogue et lit les artefacts explicitement déclarés.
-`seal` refuse d'écraser un fichier ; `verify` refuse toute différence de catalogue,
-d'ensemble de fichiers, taille ou empreinte. Cela établit une cohérence des octets
-avec le manifeste donné, pas l'authenticité du manifeste.
+`doctor` checks tool availability, without running any proof. `check`
+validates the catalog schema and reads the explicitly declared artifacts.
+`seal` refuses to overwrite a file; `verify` refuses any difference in catalog,
+file set, size or hash. This establishes consistency of the bytes
+with the given manifest, not the authenticity of the manifest.
 
-## Profils livrés
+## Shipped profiles
 
-| Profil | Travail réellement exécuté | Prérequis / coût |
+| Profile | Work actually executed | Prerequisites / cost |
 | --- | --- | --- |
-| `circuit` | 128 cas corrélés BigInt/Octave/Rust, preuves réelles et vérifieur séparé, figures et rapport | Rust, Docker ; [campagne et budgets](../../docs/experiments/circuit/README.md), MATLAB dans un job CI explicite |
-| `horizon` | Build, fixture Bulletproofs historique, puis preuve et action locale synthétique fraîches | Rust et Node ; minutes au premier build |
-| `risc0-public` | Vérification de receipts historiques acceptant/refusant la politique | Docker, laboratoire RISC Zero préparé ; voir son runner |
-| `vega-sha256` | Benchmarks amont SHA-256 SC/MC épinglés | Docker, téléchargements et compilation longs ; pas relation mDL complète |
-| `math` | Vérifications entières et modèle fini sous Octave | Docker ; première construction avec réseau, exécution sans réseau |
+| `circuit` | 128 correlated BigInt/Octave/Rust cases, real proofs and separate verifier, figures and report | Rust, Docker; [campaign and budgets](../../docs/experiments/circuit/README.md), MATLAB in an explicit CI job |
+| `horizon` | Build, historical Bulletproofs fixture, then fresh proof and synthetic local action | Rust and Node; minutes on first build |
+| `risc0-public` | Verification of historical receipts accepting/rejecting the policy | Docker, prepared RISC Zero laboratory; see its runner |
+| `vega-sha256` | Pinned upstream SHA-256 SC/MC benchmarks | Docker, long downloads and compilation; not the complete mDL relation |
+| `math` | Integer checks and finite model under Octave | Docker; first build with network, execution without network |
 
-Les profils sont du code revu dans `profiles.mjs`. Le catalogue n'autorise aucune
-commande, URL de backend, image ou clé de vérification. Chaque profil respecte
-son propre protocole ; le succès d'un processus ne valide pas toutes les
-assertions du catalogue. Aucun statut d'assertion n'est promu automatiquement.
+The profiles are reviewed code in `profiles.mjs`. The catalog authorizes no
+command, backend URL, image or verification key. Each profile follows
+its own protocol; the success of a process does not validate all the
+assertions in the catalog. No assertion status is promoted automatically.
 
 ```sh
 npm run proofkit -- run horizon --require-post-quantum
-# Échec explicite POST_QUANTUM_PROFILE_UNAVAILABLE avant exécution.
+# Explicit failure POST_QUANTUM_PROFILE_UNAVAILABLE before execution.
 ```
 
-Les résultats d'exécution sont `passed`, `failed`, `unavailable` ou `unknown`.
-Une interruption ou un résultat indéterminé ne devient pas un succès. Les logs
-bruts restent dans `.tools/proofkit/runs/<UTC>-<UUID>/`, exclus de Git. Sous POSIX
-les permissions sont restreintes ; elles ne remplacent pas une ACL Windows.
-Relire ces logs avant toute publication : les profils peuvent manipuler des
-chemins locaux et des fixtures privées. La durée d'une commande inclut ses
-builds/IPC ; ce n'est pas un benchmark cryptographique.
+Run results are `passed`, `failed`, `unavailable` or `unknown`.
+An interruption or an indeterminate result does not become a success. Raw
+logs remain in `.tools/proofkit/runs/<UTC>-<UUID>/`, excluded from Git. Under POSIX
+permissions are restricted; they do not replace a Windows ACL.
+Reread these logs before any publication: profiles may handle
+local paths and private fixtures. A command's duration includes its
+builds/IPC; it is not a cryptographic benchmark.
 
-## Garanties et limites du manifeste
+## Manifest guarantees and limits
 
-- Schémas stricts, doublons et omissions refusés, ensemble exact d'artefacts.
-- Chemins relatifs seulement ; traversal, liens symboliques/jonctions, hardlinks
-  et noms sensibles usuels refusés ; lectures bornées.
-- Dates UTC et commit Git sont **auto-déclarés**. Les changer dans un manifeste
-  ne permet pas d'authentifier le temps ou un auteur. Aucun TSA, signature de
-  mainteneur ou transparence externe n'est fourni.
-- Le manifeste ne suit pas récursivement les liens inclus dans les documents.
-  Ajouter explicitement au catalogue toute donnée brute nécessaire à une assertion.
-- Un écrivain local hostile capable de modifier les répertoires pendant la lecture
-  reste hors modèle ; ces vérifications de chemins ne sont pas une sandbox système.
-- Les chemins sensibles sont une précaution, pas un détecteur de secrets. La revue
-  de publication et le scan d'historique restent nécessaires.
+- Strict schemas, duplicates and omissions refused, exact set of artifacts.
+- Relative paths only; traversal, symbolic links/junctions, hardlinks
+  and usual sensitive names refused; bounded reads.
+- UTC dates and Git commit are **self-declared**. Changing them in a manifest
+  does not make it possible to authenticate time or an author. No TSA, maintainer
+  signature or external transparency is provided.
+- The manifest does not recursively follow links included in documents.
+  Explicitly add to the catalog any raw data needed for an assertion.
+- A hostile local writer able to modify directories during reading
+  remains outside the model; these path checks are not a system sandbox.
+- Sensitive paths are a precaution, not a secret detector. Publication
+  review and history scanning remain necessary.
 
-Les fixtures historiques sont vérifiables cryptographiquement pour leur date
-d'origine. Elles ne sont pas des autorisations fraîches réutilisables. Les preuves
-de nouvelles opérations viennent du profil et passent par le contrôleur durable.
+Historical fixtures are cryptographically verifiable for their date
+of origin. They are not fresh reusable authorizations. Proofs
+of new operations come from the profile and go through the durable controller.
 
-Tests : `npm run test:proofkit`. Pour intégrer un outil, suivre le
-[SDK](../../packages/proofkit-sdk/README.md), puis enrichir
-[`evidence/catalog.json`](../../evidence/catalog.json) avec relation, limites,
-sources primaires datées et fichiers publics explicitement sélectionnés.
+Tests: `npm run test:proofkit`. To integrate a tool, follow the
+[SDK](../../packages/proofkit-sdk/README.md), then enrich
+[`evidence/catalog.json`](../../evidence/catalog.json) with relation, limits,
+dated primary sources and explicitly selected public files.

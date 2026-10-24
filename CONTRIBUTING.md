@@ -1,26 +1,26 @@
-# Contribuer à ZK-agentiK
+# Contributing to ZK-agentiK
 
-Le dépôt est un laboratoire de preuves et d'autorisation d'outils. Lire
-[AGENTS.md](AGENTS.md), [l'architecture](docs/03-ARCHITECTURE.md) et le
-[verdict Horizon](docs/horizon/FINAL_VERDICT.md) avant de modifier une frontière
-de confiance. Consulter la RFC avant tout changement d'encodage.
+This repository is a laboratory for proofs and tool authorization. Read
+[AGENTS.md](AGENTS.md), the [architecture](docs/03-ARCHITECTURE.md) and the
+[Horizon verdict](docs/horizon/FINAL_VERDICT.md) before changing a trust boundary.
+Consult the RFC before any encoding change.
 
-## Contribution bornée
+## Bounded contributions
 
-Décrire le problème, le périmètre et le test qui pourrait réfuter la solution.
-Pour une modification de protocole, joindre relation, hypothèses, compatibilité
-et vecteurs partagés. Les adaptateurs non implémentés échouent explicitement.
-Les clés, ouvertures et données de test sont synthétiques ; aucune donnée client
-ni clé privée générée ne doit entrer dans Git.
+Describe the problem, scope and test that could refute the solution.
+For a protocol change, include the relation, assumptions, compatibility and
+shared vectors. Unimplemented adapters fail explicitly.
+Test keys, openings and data are synthetic; no customer data or generated
+private key may enter Git.
 
-Préserver les modifications existantes et annoncer les fichiers possédés si
-plusieurs agents travaillent ensemble. Les commits suivent Conventional Commits.
-Aucun commit ou push n'est requis pour proposer un diff local reviewable.
+Preserve existing changes and state file ownership when multiple agents work
+together. Commits follow Conventional Commits. No commit or push is required
+to propose a reviewable local diff.
 
-## Contrôles
+## Checks
 
-Utiliser les versions verrouillées et le toolchain propre à chaque workspace.
-Le workspace racine et les laboratoires peuvent avoir des versions distinctes.
+Use locked versions and the toolchain specific to each workspace.
+The root workspace and laboratories may use different versions.
 
 ```sh
 npm ci
@@ -31,27 +31,31 @@ npm test
 npm run typecheck
 ```
 
-Pour les changements Horizon/Proofkit, exécuter également les scripts
-`horizon:build`, `test:horizon` et `test:proofkit` applicables depuis `package.json`.
-Ne pas traiter les tests racine comme couvrant automatiquement un workspace
-Cargo séparé. Les tests d'autorisation doivent constater les effets externes,
-y compris zéro effet sur les refus. Un timeout ambigu exige une réconciliation.
+For Horizon/Proofkit changes, also run the applicable `horizon:build`,
+`test:horizon` and `test:proofkit` scripts from `package.json`.
+Do not treat root tests as automatically covering a separate Cargo workspace.
+Authorization tests must observe external effects, including zero effects
+on rejection. An ambiguous timeout requires reconciliation.
 
-Une modification documentaire n'exige pas une campagne cryptographique lourde
-sans lien avec le diff. Vérifier ses liens, sources, commandes et assertions.
-Pour une revendication de performance, conserver mesures brutes, phases,
-environnement, versions, taille et limites ; consulter
-[la méthode Horizon](docs/horizon/BENCHMARK_METHODOLOGY.md).
+A documentation change does not require a heavy cryptographic campaign
+unrelated to the diff. Check its links, sources, commands and claims.
+For a performance claim, retain raw measurements, phases, environment, versions,
+size and limitations; consult the
+[Horizon methodology](docs/horizon/BENCHMARK_METHODOLOGY.md).
 
-## Présenter le résultat
+## Presenting the result
 
-Une PR indique le comportement obtenu, les validations réellement exécutées et
-les inconnues restantes. Ne pas annoncer audit indépendant, conformité, absence
-universelle de concurrence ou record sur des relations non équivalentes.
-Le [registre des assertions](docs/publication/CLAIMS.md) et la
-[checklist de publication](docs/publication/RELEASE_CHECKLIST.md) guident la revue.
-Signaler les vulnérabilités selon [SECURITY.md](SECURITY.md).
+A PR states the resulting behavior, checks actually performed and remaining
+unknowns. Do not claim an independent audit, compliance, universal absence of
+competition or a record over non-equivalent relations.
+The [claims registry](docs/publication/CLAIMS.md) and
+[publication checklist](docs/publication/RELEASE_CHECKLIST.md) guide the review.
+Report vulnerabilities according to [SECURITY.md](SECURITY.md).
 
-Le code original est distribué sous [MIT](LICENSE). Ne proposer que du contenu
-dont les droits permettent cette distribution ; préserver les licences et
-notices tierces applicables. Aucun CLA séparé n'est annoncé par ce document.
+For SDK distribution, also run `npm run release:check`: this check covers the
+archive installed outside the monorepo. Versioning and publication are described
+in [PACKAGES.md](PACKAGES.md).
+
+Original code is distributed under [MIT](LICENSE). Only contribute content
+whose rights permit this distribution; preserve applicable third-party licenses
+and notices. This document does not announce a separate CLA.

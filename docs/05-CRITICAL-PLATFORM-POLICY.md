@@ -1,93 +1,93 @@
-# Scénario sensible : autorisation de changement d'une plateforme critique
+# Sensitive scenario: authorizing a change to a critical platform
 
-Scénario retenu : une modification de production transitant par une merge request
-GitLab. Il prolonge la demande DevSecOps du POC. L'action exécutée reste un
-**merge simulé** ; aucun déploiement de production ni API réelle n'est appelé.
+Selected scenario: a production change passing through a GitLab merge request.
+It extends the POC's DevSecOps request. The executed action remains a
+**simulated merge**; no production deployment or real API is called.
 
 ```bash
 npm ci
 npm run demo:critical
 ```
 
-La démo passe par un vrai client et serveur MCP, le worker Rust, le vérifieur et
-le connecteur simulé. Elle autorise le dossier complet puis essaie 23 modifications
-adverses isolées. Le compteur de merges ne doit pas augmenter pour ces 23 cas.
-`npm test` ajoute les cas d'arrêt d'urgence pendant la preuve, de suppression
-du profil critique et d'expiration pendant le traitement.
+The demo runs through a real MCP client and server, the Rust worker, the
+verifier and the simulated connector. It authorizes the complete evidence
+package, then tries 23 isolated adversarial modifications. The merge counter
+must not increase for these 23 cases. `npm test` adds emergency-stop cases
+during proof generation, removal of the critical profile and expiration
+during processing.
 
-## Politique métier
+## Business policy
 
-Le cœur exécutable est `crates/policy-engine-core/src/critical.rs`. Les fixtures
-et valeurs d'exemple sont dans `packages/enterprise-gateway/src/critical.ts`.
-Tous les contrôles sont **conjonctifs** : aucun score moyen ne compense un échec.
-Une demande de contournement bloque ; il n'y a pas de procédure break-glass
-automatique dans ce POC.
+The executable core is `crates/policy-engine-core/src/critical.rs`. Fixtures
+and example values are in `packages/enterprise-gateway/src/critical.ts`.
+All controls are **conjunctive**: no average score compensates for a failure.
+A bypass request blocks execution; there is no automatic break-glass procedure
+in this POC.
 
-| Contrôle | Condition autorisante du scénario |
+| Control | Authorizing condition in this scenario |
 |---|---|
-| Politique de base | Sonar `OK`, Jira `APPROVED`, aucune vulnérabilité critique, >= 3 approbations |
-| Séparation des rôles | Demandeur, sécurité, opérations et responsable de service : quatre identités non nulles distinctes |
-| Authentification | Vérification MFA des approbateurs attestée par le collecteur |
-| Portée des approbations | `approved_revision` = SHA-256 des octets ASCII du `head_sha` public exact |
-| Durée | Approbations non expirées, fenêtre de changement ouverte, observations de moins de 60 s |
-| Artefact | Signature, SBOM et provenance marquées vérifiées |
-| Sécurité | Scan terminé, zéro vulnérabilité élevée, zéro secret détecté |
-| Retour arrière | Restauration de sauvegarde et rollback testés |
-| Canary | >= 10 min, trafic > 0 et <= 5 %, erreurs <= 500 ppm (0,05 %), latence p99 > 0 et <= 250 ms |
-| État opérationnel | Aucun incident de sévérité 1, dépendances saines, arrêt d'urgence désactivé |
-| Intégrité de l'exécution | Même snapshot avant/après preuve, nonce à usage unique, expirations encore valides juste avant l'effet |
+| Base policy | Sonar `OK`, Jira `APPROVED`, no critical vulnerability, >= 3 approvals |
+| Separation of roles | Requester, security, operations and service owner: four distinct nonzero identities |
+| Authentication | Approvers' MFA verification attested by the collector |
+| Approval scope | `approved_revision` = SHA-256 of the ASCII bytes of the exact public `head_sha` |
+| Time | Unexpired approvals, open change window, observations less than 60 s old |
+| Artifact | Signature, SBOM and provenance marked verified |
+| Security | Scan complete, zero high vulnerabilities, zero secrets detected |
+| Recovery | Backup restoration and rollback tested |
+| Canary | >= 10 min, traffic > 0 and <= 5%, errors <= 500 ppm (0.05%), p99 latency > 0 and <= 250 ms |
+| Operational state | No severity 1 incident, healthy dependencies, emergency stop disabled |
+| Execution integrity | Same snapshot before/after proof generation, single-use nonce, expirations still valid immediately before the effect |
 
-Ces seuils sont des **valeurs de test**, à remplacer par des règles approuvées
-pour une plateforme réelle. Le moteur impose aussi des bornes de configuration
-prudentes pour empêcher une politique manifestement relâchée : âge <= 300 s,
-canary >= 10 min et <= 24 h, trafic <= 10 %, erreurs <= 1 000 ppm, latence <= 1 s.
-Une politique hors de ces bornes renvoie un refus, elle n'est pas corrigée en silence.
+These thresholds are **test values**, to be replaced by approved rules for
+a real platform. The engine also enforces conservative configuration bounds
+to prevent an obviously weakened policy: age <= 300 s, canary >= 10 min and
+<= 24 h, traffic <= 10%, errors <= 1,000 ppm, latency <= 1 s.
+A policy outside these bounds returns a denial; it is not silently corrected.
 
-## Preuve, temps et refus
+## Proof, time and denials
 
-Le profil ajoute deux objets optionnels au wire draft : `policy.critical` public
-et `facts.critical` privé. Ils MUST être présents ensemble. Un seuil
-`min_reviewers < 3` est interdit lorsque le profil critique est actif. Leur
-contenu complet est engagé par les mêmes hashes que le profil de base.
+The profile adds two optional objects to the wire draft: public `policy.critical`
+and private `facts.critical`. They MUST be present together. A threshold of
+`min_reviewers < 3` is prohibited when the critical profile is active.
+Their full contents are committed by the same hashes as the base profile.
 
-L'évaluation temporelle Rust utilise `public_inputs.issued_at_ms` ; elle n'accède
-jamais à une horloge. La gateway relit ensuite les faits, vérifie leur égalité
-et recontrôle les échéances à l'heure courante. Cette seconde vérification
-empêche une approbation valide à l'émission mais expirée avant mutation.
+Rust time evaluation uses `public_inputs.issued_at_ms`; it never accesses a
+clock. The gateway then rereads facts, checks their equality and rechecks
+deadlines against the current time. This second check prevents an approval
+that was valid at issuance but expired before mutation from being used.
 
-En cas de violation critique, le bit `32` de `violations_mask` est positionné et
-`critical_violations` contient les bits cumulés ci-dessous ; il est absent en
-cas d'autorisation. Une absence de faits critiques avec politique critique
-renvoie `INVALID_POLICY`, jamais un retour au profil simple.
+On a critical violation, bit `32` of `violations_mask` is set and
+`critical_violations` contains the accumulated bits below; it is absent when
+authorization is granted. Missing critical facts with a critical policy
+returns `INVALID_POLICY`, never a fallback to the basic profile.
 
-| Bit | Motif |
+| Bit | Reason |
 |---|---|
-| 1 | Arrêt d'urgence |
-| 2 | Politique invalide ou faits manquants |
-| 4 | Séparation des rôles / MFA |
-| 8 | Approbations expirées |
-| 16 | Fenêtre fermée |
-| 32 | Observations anciennes ou futures |
-| 64 | Révision différente |
-| 128 | Artefact, SBOM ou provenance non vérifiés |
-| 256 | Scan incomplet, vulnérabilité élevée ou secret |
-| 512 | Restauration / rollback non testés |
-| 1024 | Canary insuffisant ou dégradé |
-| 2048 | Incident majeur |
-| 4096 | Contournement demandé |
-| 8192 | Dépendances dégradées |
+| 1 | Emergency stop |
+| 2 | Invalid policy or missing facts |
+| 4 | Separation of roles / MFA |
+| 8 | Expired approvals |
+| 16 | Closed window |
+| 32 | Old or future observations |
+| 64 | Different revision |
+| 128 | Unverified artifact, SBOM or provenance |
+| 256 | Incomplete scan, high vulnerability or secret |
+| 512 | Untested restoration / rollback |
+| 1024 | Insufficient or degraded canary |
+| 2048 | Major incident |
+| 4096 | Bypass requested |
+| 8192 | Degraded dependencies |
 
-## Ce qui reste à établir pour un environnement réel
+## What remains to be established for a real environment
 
-Un booléen `artifact_signature_verified` ne vérifie pas lui-même une signature.
-Les fixtures représentent des résultats de collecteurs futurs : Sigstore ou PKI,
-scanner, IAM/MFA, observabilité, tests de restauration. Il faudra attester
-l'identité, le périmètre, la révision, l'âge et la version de chacun de ces résultats.
-Les identités et rôles doivent provenir d'un annuaire autoritatif et d'approbations
-effectives sur le même changement ; un compte numérique distinct ne prouve pas
-à lui seul une personne indépendante.
+An `artifact_signature_verified` boolean does not itself verify a signature.
+Fixtures represent the results of future collectors: Sigstore or PKI, scanner,
+IAM/MFA, observability, restoration tests. The identity, scope, revision, age
+and version of each result will need to be attested. Identities and roles must
+come from an authoritative directory and actual approvals for the same change;
+a distinct numeric account alone does not prove an independent person.
 
-Le simulateur n'est ni une preuve ZK ni un produit prêt pour une plateforme
-critique. Les tickets 01, 02, 07, 08 et 09 couvrent les primitives manquantes.
-Le contrôle apporte des conditions nécessaires pour ce scénario ; il ne démontre
-pas la sûreté complète d'un système, ni l'absence de faille, ni une certification.
+The simulator is neither a ZK proof nor a product ready for a critical platform.
+Issues 01, 02, 07, 08 and 09 cover the missing primitives.
+The control provides necessary conditions for this scenario; it demonstrates
+neither the complete safety of a system, nor the absence of flaws, nor certification.

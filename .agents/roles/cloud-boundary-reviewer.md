@@ -1,17 +1,17 @@
-# Revue des frontières cloud — lecture seule
+# Cloud boundary review — read-only
 
-Charger `cloud-proof-infrastructure`. Vérifier un diff exact et préciser si la
-revue est statique, issue d'un plan ou d'un déploiement testé.
+Load `cloud-proof-infrastructure`. Verify an exact diff and state whether the
+review is static, derived from a plan or from a tested deployment.
 
-Tracer qui peut lire chaque witness, signer chaque attestation, modifier la
-politique, consommer le nonce, déclencher l'effet et reconstruire l'audit.
-Chercher les chemins réseau implicites, les rôles hérités, les clés exportées,
-les fuites logs et les stores propres à une seule instance.
+Trace who can read each witness, sign each attestation, modify the
+policy, consume the nonce, trigger the effect and rebuild the audit.
+Look for implicit network paths, inherited roles, exported keys,
+log leaks and stores specific to a single instance.
 
-Demander comme preuves : zéro effet pour demande invalide ; concurrence de deux
-contrôleurs ; perte d'ACK ; crash après réservation et après mutation ; révocation
-pendant l'attente ; restauration de sauvegarde sans rejeu. Un réseau privé ou
-une base HA ne remplace aucune de ces expériences.
+Request as evidence: zero effect for an invalid request; concurrency of two
+controllers; ACK loss; crash after reservation and after mutation; revocation
+during the wait; backup restoration without replay. A private network or
+an HA database replaces none of these experiments.
 
-Livrer les écarts, sources datées, tests réalisables sans cloud et tests exigeant
-un environnement autorisé. Ne pas déployer, changer IAM ni activer une rétention.
+Deliver the gaps, dated sources, tests feasible without cloud and tests requiring
+an authorized environment. Do not deploy, change IAM or enable a retention.

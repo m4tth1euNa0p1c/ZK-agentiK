@@ -1,158 +1,159 @@
-# Journal d'expériences Horizon
+# Horizon experiment log
 
-## H00 — Baseline, 17 octobre 2026
+## H00 — Baseline, October 17, 2026
 
-Référence `d18fe65840d5f1cd9dc6155e404c942dabf2bcc7`. 14 tests Rust,
-25 tests Node, deux receipts RISC Zero historiques revérifiés. Aucun changement
-de relation initiale. Détails : [audit](AUDIT.md).
+Reference `d18fe65840d5f1cd9dc6155e404c942dabf2bcc7`. 14 Rust tests,
+25 Node tests, two historical RISC Zero receipts re-verified. No change to the
+initial relation. Details: [audit](AUDIT.md).
 
-## H01 — Reproduction Vega SHA-256 terminée
+## H01 — Vega SHA-256 reproduction completed
 
-Source officielle clonée à
-`c0ee259053cd12eaf43ed71b5cde375452b3ee4d`. Les deux benches publiés sont
-`sha256_vega_sc` et `sha256_vega_mc_zkp`. Ils mesurent des circuits SHA-256 ;
-la présence des chiffres de présentation mDL dans le README ne signifie pas
-que ces benches implémentent la relation complète mDL.
+Official source cloned at
+`c0ee259053cd12eaf43ed71b5cde375452b3ee4d`. The two published benches are
+`sha256_vega_sc` and `sha256_vega_mc_zkp`. They measure SHA-256 circuits; the
+presence of the mDL presentation figures in the README does not mean that these
+benches implement the complete mDL relation.
 
-Environnement : même CPU physique et conteneur 8 CPU / 12 GiB que le laboratoire
-RISC Zero, Rust 1.98.0, `RUSTFLAGS=-C target-cpu=native`. Une résolution Cargo
-est figée avant les mesures, car le dépôt de référence ne livre pas de lockfile.
-Les coûts setup / prep_prove / prove / verify restent distincts.
+Environment: same physical CPU and 8 CPU / 12 GiB container as the RISC Zero
+laboratory, Rust 1.98.0, `RUSTFLAGS=-C target-cpu=native`. A Cargo resolution
+is frozen before the measurements, because the reference repository ships no
+lockfile. The setup / prep_prove / prove / verify costs remain distinct.
 
-Les deux commandes amont non modifiées ont terminé avec code 0 :
+Both unmodified upstream commands finished with exit code 0:
 
 ```sh
 cargo bench --offline --locked --bench sha256_vega_mc_zkp
 cargo bench --offline --locked --bench sha256_vega_sc
 ```
 
-`BENCH_THREADS=8`, `RAYON_NUM_THREADS=8`. Sources/lock conservés dans les
-références et [bruts MC](raw/vega-mc.txt), [bruts SC](raw/vega-sc.txt),
-[échantillons Criterion et IC](raw/vega-criterion.json). MC utilise l'estimation
-de pente Criterion ; SC le mode flat et son estimation centrale. Les 10 groupes
-Criterion ne sont pas des requêtes individuelles donnant un p99 de service.
-Préparation MC 2 Kio : 75,765 ms ; preuve : 65,836 ms ; vérification : 19,885 ms.
-`node scripts/horizon-vega.mjs` reconstruit la référence avec le lock conservé.
+`BENCH_THREADS=8`, `RAYON_NUM_THREADS=8`. Sources/lock kept in the references
+and [MC raw output](raw/vega-mc.txt), [SC raw output](raw/vega-sc.txt),
+[Criterion samples and CIs](raw/vega-criterion.json). MC uses the Criterion
+slope estimate; SC the flat mode and its central estimate. The 10 Criterion
+groups are not individual requests yielding a service p99.
+MC 2 KiB preparation: 75.765 ms; proof: 65.836 ms; verification: 19.885 ms.
+`node scripts/horizon-vega.mjs` rebuilds the reference with the retained lock.
 
-**Résultat négatif** : pas de reproduction des 92/23 ms du credential complet.
-Les benches publics disponibles prouvent SHA-256, sans toute la relation mDL.
-La comparaison applicative reste ouverte, aucune victoire contre Vega.
+**Negative result**: no reproduction of the 92/23 ms of the complete credential.
+The available public benches prove SHA-256, without the whole mDL relation.
+The application-level comparison remains open; no victory against Vega.
 
-## H02–H04 — Recherche et arbitrage
+## H02–H04 — Research and arbitration
 
-Les trois responsabilités contradictoires ont produit état de l'art/design,
-marché/antériorités/coût, et sécurité/métrologie. Cinq domaines ont été évalués.
-Vote commun : laboratoire synthétique d'autorisation de sinistre déléguée,
-sans paiement ; pas de validation commerciale ou d'invention revendiquée.
-La transformation en deux plages est dans [l'énoncé](FORMAL_STATEMENT.md).
-Les sources approuvées doivent émettre des engagements depuis leurs valeurs.
-Si ce contrat d'émission est impossible ou la divulgation permise, le choix
-doit être abandonné au profit d'une alternative plus simple.
+The three adversarial responsibilities produced state of the art/design,
+market/prior art/cost, and security/metrology. Five domains were evaluated.
+Joint vote: synthetic laboratory for delegated claim authorization, without
+payment; no commercial validation or claimed invention. The transformation into
+two ranges is in [the statement](FORMAL_STATEMENT.md). The approved sources
+must issue commitments from their values. If this issuance contract is
+impossible or disclosure is permitted, the choice must be abandoned in favor of
+a simpler alternative.
 
-## H05 — Prototypes réels et correction contradictoire
+## H05 — Real prototypes and adversarial correction
 
-Commit `80b2202` : A preuve fraîche, B preuve historique et signature fraîche,
-C sélection par politique, baseline non-ZK. Le worker Rust vérifie toutes les
-signatures et la preuve complète. HTTP est séparé du chemin MCP historique.
-Le contrôleur SQLite consomme nonce et opération et conserve UNKNOWN.
+Commit `80b2202`: A fresh proof, B historical proof and fresh signature, C
+policy selection, non-ZK baseline. The Rust worker verifies all signatures and
+the complete proof. HTTP is separate from the historical MCP path. The SQLite
+controller consumes nonce and operation and retains UNKNOWN.
 
-Défauts détectés puis corrigés avant qualification : demande de divulgation au
-fournisseur malgré une politique privée ; recul de l'horloge avant la validité
-des sources après vérification ; réponse d'erreur pouvant suggérer zéro effet
-sans réconciliation. Le test statistique singleton p99 initial avait une
-attente erronée, corrigée après calcul binomial indépendant. Aucun de ces
-échecs n'est dissimulé dans le verdict.
+Defects detected then corrected before qualification: disclosure request to the
+provider despite a private policy; clock rollback before the sources' validity
+after verification; error response that could suggest zero effects without
+reconciliation. The initial singleton p99 statistical test had an erroneous
+expectation, corrected after an independent binomial computation. None of these
+failures is concealed in the verdict.
 
-## H06 — Optimisation contrôlée des paramètres publics
+## H06 — Controlled optimization of public parameters
 
-Avant : `80b2202`. Après : `353652d`. Même image, CPU, limites 8 CPU / 12 GiB,
-Rust 1.98.0, `RUSTFLAGS=-C target-cpu=native`, CPU seul. Réseau du conteneur
-déconnecté après compilation. Aucun autre benchmark/build lourd simultané.
-Exécution séquentielle avant/après, et ordre A/B alterné à l'intérieur de chaque
-run. L'activité générale Windows/WSL n'est pas intégralement contrôlée.
+Before: `80b2202`. After: `353652d`. Same image, CPU, 8 CPU / 12 GiB limits,
+Rust 1.98.0, `RUSTFLAGS=-C target-cpu=native`, CPU only. Container network
+disconnected after compilation. No other heavy benchmark/build running
+concurrently. Sequential before/after execution, and alternating A/B order
+inside each run. General Windows/WSL activity is not fully controlled.
 
 ```sh
 cargo build --offline --release --locked --manifest-path labs/horizon/Cargo.toml
 horizon-benchmark --samples 500 --warmup 30 --output horizon-before.json
-# reconstruire le commit 353652d dans le même environnement
+# rebuild commit 353652d in the same environment
 horizon-benchmark --samples 500 --warmup 30 --output horizon-after.json
 ```
 
-Le binaire et sources effectifs étaient sous `/lab/horizon/agentik` avec
-`CARGO_TARGET_DIR=/lab/horizon/target` dans le conteneur du lab. Les bruts
-[avant](raw/horizon-linux-before.json) et [après](raw/horizon-linux-after.json)
-conservent 13 phases × 500 échantillons, cinq cas et 30 échauffements exclus.
-Une première commande de chronométrage, mal transmise entre PowerShell et Bash,
-n'a produit aucun fichier ; elle a été corrigée avant ces deux runs. Aucun
-zéro issu de cette commande n'est compté comme mesure.
+The effective binary and sources were under `/lab/horizon/agentik` with
+`CARGO_TARGET_DIR=/lab/horizon/target` in the lab container. The raw
+[before](raw/horizon-linux-before.json) and [after](raw/horizon-linux-after.json)
+files keep 13 phases × 500 samples, five cases and 30 excluded warm-ups. A
+first timing command, badly passed between PowerShell and Bash, produced no
+file; it was corrected before these two runs. No zero from that command is
+counted as a measurement.
 
-Les deux `OnceLock` partagent uniquement les générateurs publics constants.
-Résultats p95 : A 7,770→6,546 ms ; vérification B 2,266→1,247 ms ; preuve 672
-octets dans les deux versions. Chaque run rejette 500 corruptions algébriques
-canoniques re-signées, au stade `INVALID_RANGE_PROOF`. La preuve publique
-produite avant optimisation est vérifiée après optimisation. Les IC et tailles
-d'enveloppe sont dans [le rapport](BENCHMARK_RESULTS.json).
+The two `OnceLock`s share only the constant public generators. p95 results:
+A 7.770→6.546 ms; B verification 2.266→1.247 ms; proof 672 bytes in both
+versions. Each run rejects 500 re-signed canonical algebraic corruptions at
+the `INVALID_RANGE_PROOF` stage. The public proof produced before optimization
+is verified after optimization. CIs and envelope sizes are in
+[the report](BENCHMARK_RESULTS.json).
 
-Temps CPU utilisateur de toute la campagne : 11,725→8,930 s ; durées murales
-11,764→9,054 s. Ces totaux incluent toutes les phases et les échauffements ;
-ils ne sont pas des coûts par opération. Pas de pic RSS Rust/énergie/GPU mesuré.
-Les simulations d'amortissement k=1/2/5/10/100 du rapport sont des calculs
-arithmétiques sur les moyennes observées, pas des séries k exécutées.
+User CPU time of the whole campaign: 11.725→8.930 s; wall-clock durations
+11.764→9.054 s. These totals include all phases and the warm-ups; they are not
+per-operation costs. No Rust RSS peak/energy/GPU measured. The k=1/2/5/10/100
+amortization simulations in the report are arithmetic computations over the
+observed means, not executed k series.
 
-## H07–H08 — Contrôleur durable et validation
+## H07–H08 — Durable controller and validation
 
-`npm run test:horizon` : 18 tests, 0 échec/skip. Sept groupes d'intégration avec
-de vraies preuves et 11 tests statistiques. Le contradicteur les a exécutés
-indépendamment, y compris deux nonces et deux présentations concurrents :
-quatre requêtes, une admission et un effet. Les autres suites historiques sont
-préservées : 14 Rust et 25 Node ; Horizon ajoute 9 Rust. Typecheck, formatage et
-Clippy strict passent. La CI a été étendue au laboratoire et au smoke Docker.
+`npm run test:horizon`: 18 tests, 0 failures/skips. Seven integration groups
+with real proofs and 11 statistical tests. The challenger executed them
+independently, including two concurrent nonces and two concurrent
+presentations: four requests, one admission and one effect. The other
+historical suites are preserved: 14 Rust and 25 Node; Horizon adds 9 Rust.
+Typecheck, formatting and strict Clippy pass. CI was extended to the laboratory
+and to the Docker smoke test.
 
-`node scripts/horizon-firewall-benchmark.mjs --samples 500 --warmup 30` :
-Windows 10.0.26200, Node 24.11.1, worker Rust release identifié par SHA-256.
-La campagne de 44,116 s crée 530 bases/actions synthétiques distinctes,
-réutilise une seule preuve B et ne rencontre aucune erreur. Création de base,
-émission du challenge, HTTP, réseau et clôture/checkpoint sont exclus.
-Les quatre phases chronométrées restent séparées dans le rapport brut.
+`node scripts/horizon-firewall-benchmark.mjs --samples 500 --warmup 30`:
+Windows 10.0.26200, Node 24.11.1, release Rust worker identified by SHA-256.
+The 44.116 s campaign creates 530 distinct synthetic databases/actions, reuses
+a single B proof and encounters no error. Database creation, challenge
+issuance, HTTP, network and close/checkpoint are excluded. The four timed
+phases remain separate in the raw report.
 
-Résultat p95 continu vérification IPC + réservations/effet/audit SQLite :
-**13,014 ms**, p99 **15,126 ms**, maximum **180,310 ms** conservé.
-L'hypothèse ≤10 ms de ce parcours est rejetée sur ce banc. RSS Node observé
-maximum 72 548 352 octets, excluant Rust et cache système ; ce n'est pas un
-pic mémoire total. Les fichiers smoke n=2 sont conservés comme smoke, sans IC
-de queue prétendument robuste et sans mélange avec n=500.
+Continuous p95 result for IPC verification + SQLite reservations/effect/audit:
+**13.014 ms**, p99 **15.126 ms**, maximum **180.310 ms** retained. The ≤10 ms
+hypothesis for this path is rejected on this bench. Observed Node RSS maximum
+72,548,352 bytes, excluding Rust and system cache; this is not a total memory
+peak. The n=2 smoke files are kept as smoke, without a purportedly robust tail
+CI and without mixing with n=500.
 
-## H09 — Déploiement local exécuté
+## H09 — Local deployment executed
 
-`docker compose -f deploy/horizon/compose.yaml up -d --build --wait` : images
-épinglées compilées, services non-root sains. Premier essai négatif : Docker
-Desktop ne publiait pas les ports de services attachés au seul réseau interne.
-Correction : relais sans secret, à destinations fixes, seul point d'entrée
-loopback ; prover/vérifieur conservent leur réseau interne.
+`docker compose -f deploy/horizon/compose.yaml up -d --build --wait`: pinned
+images compiled, non-root services healthy. First negative trial: Docker
+Desktop did not publish the ports of services attached only to the internal
+network. Correction: secret-free relay, with fixed destinations, sole loopback
+entry point; prover/verifier keep their internal network.
 
-`node scripts/horizon-http-smoke.mjs` : preuve réelle via HTTP, downgrade et
-altération refusés avec zéro effet, admission unique puis rejeu refusé.
-Après `docker compose ... restart`, `... smoke.mjs replay` refuse rejeu et
-nouveau challenge avec toujours un seul effet. Routes non autorisées, corps
-trop grand et origine étrangère refusés. Aucun système financier contacté.
+`node scripts/horizon-http-smoke.mjs`: real proof over HTTP, downgrade and
+tampering refused with zero effects, single admission then replay refused.
+After `docker compose ... restart`, `... smoke.mjs replay` refuses replay and
+new challenge with still a single effect. Unauthorized routes, oversized body
+and foreign origin refused. No financial system contacted.
 
-`node scripts/horizon-container-verify.mjs` : la preuve publique antérieure est
-vérifiée dans un conteneur neuf `--network none --read-only`, sans montage,
-sans witness ni clé privée. Cette vérification historique n'autorise aucune action.
-L'interface statique a été contrôlée aux largeurs desktop et mobile par l'agent
-frontend ; le navigateur interactif CUA n'était pas disponible pour le contrôle
-racine. Le parcours réel a été validé par l'API HTTP et le compteur de cible.
+`node scripts/horizon-container-verify.mjs`: the earlier public proof is
+verified in a fresh `--network none --read-only` container, without mount,
+without witness or private key. This historical verification authorizes no
+action. The static interface was checked at desktop and mobile widths by the
+frontend agent; the interactive CUA browser was not available for the root
+check. The real path was validated through the HTTP API and the target counter.
 
-La première CI GitHub Linux a passé les suites mais échoué au démarrage Compose :
-les fichiers bind en `0600`, appartenant au runner UID 1001, n'étaient pas
-accessibles aux services UID 1000. Ce cas était masqué par les montages Windows.
-Correction : fichier public seul en `0644` explicite, privé conservé en `0600`,
-UID du seul prover aligné sur le propriétaire non-root. Le vérifieur conserve
-son UID et volume propres. Référence de l'échec conservée :
+The first Linux GitHub CI run passed the suites but failed at Compose startup:
+the `0600` bind files, owned by runner UID 1001, were not accessible to the
+UID 1000 services. This case was masked by the Windows mounts. Correction:
+public file alone in explicit `0644`, private kept in `0600`, UID of the prover
+alone aligned with the non-root owner. The verifier keeps its own UID and
+volume. Reference of the failure retained:
 [run 38995262984](https://github.com/m4tth1euNa0p1c/ZK-agentiK/actions/runs/38995262984).
 
-## H10 — Décision
+## H10 — Decision
 
-POC utile et optimisation locale démontrés. Aucun record externe, aucune
-qualification client, aucune conformité ou sécurité de production établie.
-[Verdict](FINAL_VERDICT.md) et [expériences suivantes](../../issues/horizon/NEXT_EXPERIMENTS.md).
+Useful POC and local optimization demonstrated. No external record, no customer
+qualification, no production compliance or security established.
+[Verdict](FINAL_VERDICT.md) and [next experiments](../../issues/horizon/NEXT_EXPERIMENTS.md).

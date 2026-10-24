@@ -1,43 +1,43 @@
 ---
 name: mcp-protocol-security
-description: Modifier le SDK MCP, l'enveloppe _meta.zkp et le firewall ZK-agentiK en conservant les garanties de liaison, anti-rejeu et contrôle avant mutation.
+description: Modify the MCP SDK, the _meta.zkp envelope and the ZK-agentiK firewall while preserving the binding, anti-replay and verify-before-mutation guarantees.
 ---
 
-# MCP et enveloppes vérifiables
+# MCP and verifiable envelopes
 
-Lire la RFC locale et les types de la version **installée** du SDK MCP. Le dépôt
-utilise V1 par choix de bootstrap ; ne pas recopier une API V2 dans cet import.
-Le schéma Zod strict est la source du schéma JSON généré.
+Read the local RFC and the types of the **installed** version of the MCP SDK.
+The repository uses V1 as a bootstrap choice; do not copy a V2 API into this
+import. The strict Zod schema is the source of the generated JSON schema.
 
-## Séquence obligatoire
+## Mandatory sequence
 
-Préparer en lecture : collecter les faits approuvés, établir l'engagement et
-la politique côté serveur, puis demander la preuve. Avant tout effet :
-valider structure/bornes, backend et image épinglés, attentes indépendantes,
-journal prouvé, décision, expiration, réservation atomique du nonce et
-préconditions de la ressource. Relire les faits et échéances juste avant mutation.
+Prepare in read mode: collect the approved facts, establish the commitment and
+the policy server-side, then request the proof. Before any effect:
+validate structure/bounds, pinned backend and image, independent expectations,
+proven journal, decision, expiration, atomic nonce reservation and
+resource preconditions. Reread facts and deadlines just before mutation.
 
-Ne jamais accepter policy/min_reviewers, witness, URL de vérifieur, clé ou
-commande depuis les arguments de l'agent. L'agent peut fournir les identifiants
-autorisés de la ressource ; leur routage et les credentials restent serveur.
-Le backend non disponible et le profil simulation en production échouent fermés.
+Never accept policy/min_reviewers, witness, verifier URL, key or
+command from the agent's arguments. The agent may supply the authorized
+identifiers of the resource; their routing and the credentials stay server-side.
+An unavailable backend and the simulation profile in production fail closed.
 
-## Métadonnées et clients
+## Metadata and clients
 
-Attacher `zkp` dans une copie de `_meta`, préserver les autres métadonnées et
-le `content` MCP. Un client historique affiche le contenu ; seul un client
-conscient du profil revendique une vérification. La gateway impose le contrôle
-même si le client ignore `_meta`. Ne pas affirmer un support testé de Claude
-Desktop, Cursor ou LangChain sans exécuter leurs tests de compatibilité.
+Attach `zkp` in a copy of `_meta`, preserve the other metadata and
+the MCP `content`. A legacy client displays the content; only a
+profile-aware client claims a verification. The gateway enforces the control
+even if the client ignores `_meta`. Do not claim tested support for Claude
+Desktop, Cursor or LangChain without running their compatibility tests.
 
-Les erreurs d'outil retournent `isError=true` et un message sans witness ni
-secrets. Ne pas confondre preuve d'autorisation et preuve du résultat de l'API.
-La clé `zkp` est expérimentale et non enregistrée auprès de MCP.
+Tool errors return `isError=true` and a message without witness or
+secrets. Do not confuse the authorization proof with proof of the API result.
+The `zkp` key is experimental and not registered with MCP.
 
-## Essais
+## Trials
 
-Exécuter `npm test`, `npm run typecheck`, `npm run schema:check`. Tester l'altération
-de chaque champ lié, le rejet d'une preuve absente, le downgrade, le nonce
-concurrent, la panne du vérifieur, l'expiration pendant vérification et le
-compteur **zéro effet de bord** pour tous les refus. Une erreur API ambiguë
-conserve le nonce ; aucun retry automatique de merge.
+Run `npm test`, `npm run typecheck`, `npm run schema:check`. Test tampering
+with each bound field, rejection of a missing proof, downgrade, concurrent
+nonce, verifier failure, expiration during verification and the
+**zero side effect** counter for all refusals. An ambiguous API error
+keeps the nonce; no automatic merge retry.

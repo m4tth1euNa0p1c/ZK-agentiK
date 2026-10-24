@@ -1,41 +1,42 @@
-# Programme Horizon — tickets locaux
+# Horizon program — local tickets
 
-Référence initiale : `d18fe65840d5f1cd9dc6155e404c942dabf2bcc7`.
-Ces tickets sont des unités de travail et de validation, pas des déclarations
-de maturité. Les résultats finaux et blocages sont dans `docs/horizon/`.
+Initial reference: `d18fe65840d5f1cd9dc6155e404c942dabf2bcc7`.
+These tickets are units of work and validation, not statements
+of maturity. Final results and blockers are in `docs/horizon/`.
 
-| Ticket | Responsabilité | Livrable / critère d'acceptation |
+| Ticket | Responsibility | Deliverable / acceptance criterion |
 | --- | --- | --- |
-| H00 / M0 | Audit et DevOps | Branche dédiée, références, tests existants et receipts indépendamment revérifiés ; aucun historique perdu |
-| H01 / M1 | Cryptographie, algèbre, benchmark | Vega épinglé, papier/code examinés, bench publié exécuté ou erreur reproductible ; coûts offline/online séparés |
-| H02 / M2 | Métier et antériorités | Cinq domaines maximum, sources primaires, concurrents/brevets, acheteurs hypothétiques et critères d'abandon |
-| H03 / M3 | Comité contradictoire | Votes et objections documentés ; propriété requise qui exclut ou conserve la baseline signée |
-| H04 / M4 | Protocole et confidentialité | Statement/witness/relation, signatures et sujets liés, fuite, révocation et action exactes définis |
-| H05-A / M5 | Preuve spécialisée | Primitive existante, preuve réelle, tampering rejeté, coûts complets et comparaison signée |
-| H05-B / M5 | Réutilisation | Pré-calcul immuable séparé du challenge frais ; révocation, changement de politique et rejeu refusés |
-| H05-C / M5 | Sélection | Politique vérifieur impose les garanties ; aucune sélection par l'appelant ni fallback affaiblissant |
-| H06 / M6 | Optimisation | Comparaison équivalente avant/après, échantillons bruts ; résultat négatif conservé si gain non démontré |
-| H07 / M7 | Produit Rust/API | Bibliothèque, CLI, organisations synthétiques et interface web ; secrets hors réponse et aucun bypass de mutation |
-| H08 / M8 | Red team et métrologie | Falsification, omission, concurrence, crash/reprise, révocation, ambiguïté ; zéro mutation non autorisée dans les essais |
-| H09 / M9 | Sandbox et CI | Docker Compose local, test end-to-end, ressources bornées, aucun réseau bancaire ni déploiement production |
-| H10 / M10 | Décision scientifique/commerciale | Dossier complet, preuves et incertitudes, références non comparables séparées, coûts et critères restant ouverts |
+| H00 / M0 | Audit and DevOps | Dedicated branch, references, existing tests and receipts independently re-verified; no history lost |
+| H01 / M1 | Cryptography, algebra, benchmark | Vega pinned, paper/code examined, published bench executed or reproducible error; offline/online costs separated |
+| H02 / M2 | Business and prior art | Five domains at most, primary sources, competitors/patents, hypothetical buyers and abandonment criteria |
+| H03 / M3 | Adversarial committee | Votes and objections documented; required property that excludes or keeps the signed baseline |
+| H04 / M4 | Protocol and confidentiality | Statement/witness/relation, bound signatures and subjects, leakage, revocation and exact action defined |
+| H05-A / M5 | Specialized proof | Existing primitive, real proof, tampering rejected, complete costs and signed-baseline comparison |
+| H05-B / M5 | Reuse | Immutable precomputation separated from the fresh challenge; revocation, policy change and replay refused |
+| H05-C / M5 | Selection | Verifier policy imposes the guarantees; no selection by the caller and no weakening fallback |
+| H06 / M6 | Optimization | Equivalent before/after comparison, raw samples; negative result kept if no gain demonstrated |
+| H07 / M7 | Rust/API product | Library, CLI, synthetic organizations and web interface; secrets kept out of responses and no mutation bypass |
+| H08 / M8 | Red team and metrology | Forgery, omission, concurrency, crash/recovery, revocation, ambiguity; zero unauthorized mutation in the trials |
+| H09 / M9 | Sandbox and CI | Local Docker Compose, end-to-end test, bounded resources, no banking network or production deployment |
+| H10 / M10 | Scientific/commercial decision | Complete dossier, evidence and uncertainties, non-comparable references separated, costs and criteria still open |
 
-Commandes initiales : `cargo test --workspace --locked`, `npm test`,
-`npm run lab:risc0 -- verify`. Les commandes Horizon sont ajoutées à mesure
-que les expériences deviennent exécutables. Aucun record n'est reconnu sans
-relation, coût complet, machine et hypothèses comparables.
+Initial commands: `cargo test --workspace --locked`, `npm test`,
+`npm run lab:risc0 -- verify`. Horizon commands are added as
+experiments become executable. No record is recognized without a
+relation, complete cost, machine and comparable assumptions.
 
-## État du programme après les expériences
+## Program status after the experiments
 
-M0 : baseline préservée. M1 : benches Vega SHA-256 reproduits, application
-credential non reproductible depuis ces seuls benches. M2/M3 : cinq pistes et
-arbitrage contradictoire, GO laboratoire sans validation client. M4 : relation
-formalisée. M5 : A/B/C et baseline réellement exécutées. M6 : optimisation des
-paramètres publics mesurée avant/après. M7 : bibliothèque, CLI, API et application.
-M8 : suites adverses et bruts conservés. M9 : Docker local, admission unique et
-rejeu après redémarrage validés. M10 : verdict publié, sans record ni GO produit.
+M0: baseline preserved. M1: Vega SHA-256 benches reproduced, credential
+application not reproducible from these benches alone. M2/M3: five leads and
+adversarial arbitration, laboratory GO without customer validation. M4: relation
+formalized. M5: A/B/C and baseline actually executed. M6: optimization of
+public parameters measured before/after. M7: library, CLI, API and application.
+M8: adversarial suites and raw data preserved. M9: local Docker, single admission
+and replay after restart validated. M10: verdict published, with no record and no
+product GO.
 
-Les blocages de qualification et prochaines expériences sont détaillés dans
-[H11–H17](NEXT_EXPERIMENTS.md). Priorité H11, H13/H15, H14/H17, puis H16 ; H12
-est une piste scientifique indépendante. La cible complète de 10 ms est manquée
-sur le banc durable Windows et reste un résultat négatif à conserver.
+Qualification blockers and next experiments are detailed in
+[H11–H17](NEXT_EXPERIMENTS.md). Priority H11, H13/H15, H14/H17, then H16; H12
+is an independent scientific lead. The complete 10 ms target is missed
+on the durable Windows bench and remains a negative result to preserve.

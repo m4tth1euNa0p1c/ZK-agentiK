@@ -1,167 +1,168 @@
-# HORIZON — état de l'art cryptographique
+# HORIZON — cryptographic state of the art
 
-Revue des sources primaires du 17 octobre 2026. Les chiffres ci-dessous sont
-publiés par leurs auteurs ; les exécutions locales sont consignées séparément
-dans `EXPERIMENT_LOG.md`. HORIZON est une expérience d'intégration, pas une
-nouvelle primitive ni une démonstration de supériorité générale sur Vega.
+Review of primary sources dated October 17, 2026. The figures below are
+published by their authors; local executions are recorded separately in
+`EXPERIMENT_LOG.md`. HORIZON is an integration experiment, not a new
+primitive nor a demonstration of general superiority over Vega.
 
-## 1. Ce qui existe déjà
+## 1. What already exists
 
-[Vega](https://github.com/microsoft/vega-prover) fournit un système Rust de preuves
-sur données signées, avec circuits SC et MC et préparation réutilisable. Son
-README expose des benchmarks SHA-256 : `sha256_vega_sc` et
-`sha256_vega_mc_zkp`. Ces benchmarks isolent le système de preuves ; ils ne
-démontrent pas à eux seuls l'application mDL complète. L'ancienne URL
-[spartan2](https://github.com/microsoft/spartan2) redirige actuellement vers
-`vega-prover` : ce ne sont pas deux intégrations indépendantes à additionner.
+[Vega](https://github.com/microsoft/vega-prover) provides a Rust proof system
+over signed data, with SC and MC circuits and reusable preparation. Its README
+exposes SHA-256 benchmarks: `sha256_vega_sc` and `sha256_vega_mc_zkp`. These
+benchmarks isolate the proof system; on their own they do not demonstrate the
+complete mDL application. The old URL
+[spartan2](https://github.com/microsoft/spartan2) currently redirects to
+`vega-prover`: these are not two independent integrations to be added up.
 
-Le [blog Microsoft du 21 mai 2026](https://www.microsoft.com/en-us/research/blog/vega-zero-knowledge-proofs-for-digital-identity-in-the-age-of-ai/)
-présente une preuve d'âge sur credential existant, sans changement d'émetteur.
-Le hachage SHA-256 est divisé en étapes identiques ; un circuit central vérifie
-les signatures et le prédicat. Des lookups extraient les octets authentifiés,
-vérifient préfixes et continuité, et sélectionnent le digest final sans exposer
-la longueur exacte. La signature du dispositif lie une présentation à un nonce.
-La phrase annonçant alors une future ouverture du code doit être lue à sa date,
-car un dépôt public existe désormais. Aucun de ces mécanismes n'est une niche
-inexistante que HORIZON pourrait revendiquer.
+The [Microsoft blog of May 21, 2026](https://www.microsoft.com/en-us/research/blog/vega-zero-knowledge-proofs-for-digital-identity-in-the-age-of-ai/)
+presents an age proof over an existing credential, with no issuer change. The
+SHA-256 hash is split into identical steps; a central circuit verifies the
+signatures and the predicate. Lookups extract the authenticated bytes, verify
+prefixes and continuity, and select the final digest without exposing the
+exact length. The device signature binds a presentation to a nonce.
+The sentence announcing at that time a future opening of the code must be read
+as of its date, since a public repository now exists. None of these mechanisms
+is a nonexistent niche that HORIZON could claim.
 
-[Crescent](https://github.com/microsoft/crescent-credentials) propose déjà des
-preuves de possession de JWT/mDL, divulgation sélective, bornes, liaison au
-dispositif et présentations répétées. Son README décrit les phases
-`zksetup`, `prove`, `show`, `verify`, et indique que le code n'a pas reçu un audit
-de sécurité approfondi et ne doit pas être utilisé en production. Une séparation
-préparation/présentation ne suffit donc pas à différencier HORIZON.
+[Crescent](https://github.com/microsoft/crescent-credentials) already offers
+proofs of possession of JWT/mDL, selective disclosure, bounds, device binding
+and repeated presentations. Its README describes the phases `zksetup`,
+`prove`, `show`, `verify`, and states that the code has not received a
+thorough security audit and must not be used in production. A
+preparation/presentation separation is therefore not enough to differentiate
+HORIZON.
 
-## 2. Relation exacte et construction de Vega
+## 2. Exact relation and construction of Vega
 
-Le [contrat MC](https://microsoft.github.io/vega-prover/mc/overview.html) porte
-sur `n` instances d'un même circuit d'étape et une instance d'un circuit central,
-reliées par un witness partagé engagé. `n >= 2` est fixé au setup. Une instance
-unique relève de SC. Le circuit métier appartient à l'application ; le moteur
-ne prouve pas spontanément une règle métier, une signature ou la provenance
-d'une donnée absente de ses contraintes.
+The [MC contract](https://microsoft.github.io/vega-prover/mc/overview.html)
+covers `n` instances of the same step circuit and one instance of a central
+circuit, linked by a committed shared witness. `n >= 2` is fixed at setup. A
+single instance falls under SC. The business circuit belongs to the
+application; the engine does not spontaneously prove a business rule, a
+signature or the provenance of data absent from its constraints.
 
-La [forme R1CS](https://microsoft.github.io/vega-prover/building-blocks/r1cs.html)
-est `(Az) ∘ (Bz) = Cz`. La variante relaxée ajoute un scalaire `u` et un vecteur
-d'erreur engagé : `(Az) ∘ (Bz) = u Cz + E`. Les segments privés `shared`,
-`precommitted`, `rest` permettent de séparer les valeurs connues avant la
-session de celles déterminées après ses challenges. Les additions linéaires
-sont peu coûteuses en contraintes ; les décompositions en bits et les fonctions
-de hachage doivent réellement être contraintes.
+The [R1CS form](https://microsoft.github.io/vega-prover/building-blocks/r1cs.html)
+is `(Az) ∘ (Bz) = Cz`. The relaxed variant adds a scalar `u` and a committed
+error vector: `(Az) ∘ (Bz) = u Cz + E`. The private segments `shared`,
+`precommitted`, `rest` allow separating values known before the session from
+those determined after its challenges. Linear additions are cheap in
+constraints; bit decompositions and hash functions must actually be
+constrained.
 
-| Brique | Fonction utile à Vega | Limite à conserver |
+| Building block | Function useful to Vega | Limit to keep in mind |
 |---|---|---|
-| [Spartan](https://eprint.iacr.org/2019/550) | Arguments R1CS via sum-check et engagements polynomiaux | La transparence du setup ne signifie pas absence d'hypothèses cryptographiques |
-| [Nova](https://eprint.iacr.org/2021/370) | Réduction de plusieurs instances à une instance accumulée | Une opération de folding seule n'est pas une preuve finale vérifiée |
-| [NeutronNova](https://microsoft.github.io/vega-prover/building-blocks/neutronnova.html) | Compression aléatoire des résidus des contraintes puis des instances d'étapes | Même forme d'étape, transcript et challenges exacts ; pas un simple checksum des résultats |
-| [NovaBlindFold / HyperNova](https://eprint.iacr.org/2023/573) | Masquage d'une instance réelle par une instance aléatoire satisfaisante | Aléa neuf par preuve ; masquer un hash ne remplace pas cette construction |
+| [Spartan](https://eprint.iacr.org/2019/550) | R1CS arguments via sum-check and polynomial commitments | Setup transparency does not mean absence of cryptographic assumptions |
+| [Nova](https://eprint.iacr.org/2021/370) | Reduction of several instances to one accumulated instance | A folding operation alone is not a verified final proof |
+| [NeutronNova](https://microsoft.github.io/vega-prover/building-blocks/neutronnova.html) | Random compression of constraint residuals and then of step instances | Same step form, exact transcript and challenges; not a simple checksum of results |
+| [NovaBlindFold / HyperNova](https://eprint.iacr.org/2023/573) | Masking of a real instance by a satisfying random instance | Fresh randomness per proof; masking a hash does not replace this construction |
 
-Les deux foldings ont des fonctions distinctes : NeutronNova accumule les étapes,
-Nova masque le petit circuit de vérification. Le lien « NeutronNova » du blog
-renvoie au [papier Nebula](https://eprint.iacr.org/2024/1605), qui traite aussi
-des preuves de machines et de mémoire. Pour reproduire l'implémentation MC,
-utiliser le chapitre NeutronNova du livre et le commit effectivement compilé,
-sans extrapoler les résultats EVM de Nebula à HORIZON.
+The two foldings have distinct functions: NeutronNova accumulates the steps,
+Nova masks the small verification circuit. The blog's "NeutronNova" link
+points to the [Nebula paper](https://eprint.iacr.org/2024/1605), which also
+covers machine and memory proofs. To reproduce the MC implementation, use the
+book's NeutronNova chapter and the commit actually compiled, without
+extrapolating Nebula's EVM results to HORIZON.
 
-L'[instanciation canonique](https://microsoft.github.io/vega-prover/building-blocks/fields-and-groups.html)
-emploie T256, Hyrax et un transcript Fiat–Shamir Keccak256. Le corps scalaire
-T256 coïncide avec le corps de base P256, ce qui facilite l'arithmétique de
-signature P256. Il ne s'agit pas d'un cycle complet de deux courbes. Les
-engagements reposent sur des opérations de groupe elliptique : **Vega n'est pas
-un système entièrement fondé sur des hachages, ni un profil post-quantique**.
+The [canonical instantiation](https://microsoft.github.io/vega-prover/building-blocks/fields-and-groups.html)
+uses T256, Hyrax and a Keccak256 Fiat–Shamir transcript. The T256 scalar
+field coincides with the P256 base field, which eases P256 signature
+arithmetic. This is not a full two-curve cycle. The commitments rely on
+elliptic group operations: **Vega is neither an entirely hash-based system nor
+a post-quantum profile**.
 
-Le [modèle de sécurité](https://microsoft.github.io/vega-prover/overview/design-goals.html)
-combine correction des arguments algébriques, liaison et masquage des
-engagements, et transformation Fiat–Shamir de type oracle aléatoire. Le
-vérifieur doit épingler la clé correspondant aux circuits voulus. Le livre
-sépare explicitement ce moteur des choix de parsing et de signatures des
-credentials. Cette revue n'est ni une preuve de sécurité de composition, ni
-un audit indépendant de l'implémentation.
+The [security model](https://microsoft.github.io/vega-prover/overview/design-goals.html)
+combines soundness of the algebraic arguments, binding and hiding of the
+commitments, and a random-oracle-type Fiat–Shamir transformation. The
+verifier must pin the key corresponding to the intended circuits. The book
+explicitly separates this engine from the credential parsing and signature
+choices. This review is neither a proof of composition security nor an
+independent audit of the implementation.
 
-## 3. Prétraitement, coût en ligne et acceptation
+## 3. Preprocessing, online cost and acceptance
 
-Le [setup](https://microsoft.github.io/vega-prover/mc/setup.html) produit formes
-des circuits, paramètres d'engagement et clé de vérification. Les générateurs
-sont dérivés publiquement par hachage ; aucune cérémonie à secret toxique n'est
-nécessaire. Le digest de la clé lie notamment circuits et nombre d'étapes au
-transcript. « Sans trusted setup » ne signifie donc ni « aucun setup », ni
-« aucune mémoire », ni « la clé fournie par le prover est acceptable ».
+The [setup](https://microsoft.github.io/vega-prover/mc/setup.html) produces
+circuit shapes, commitment parameters and a verification key. The generators
+are publicly derived by hashing; no toxic-secret ceremony is needed. The key
+digest notably binds circuits and number of steps to the transcript. "Without
+trusted setup" therefore means neither "no setup", nor "no memory", nor "the
+key supplied by the prover is acceptable".
 
-La [préparation](https://microsoft.github.io/vega-prover/mc/prep.html) produit un
-état **privé du prover**, distinct d'une preuve et d'un cache de vérification.
-Le code peut conserver des produits matrice-vecteur et vérifie les valeurs
-publiques associées avant réutilisation. `prove` rerandomise les engagements,
-conserve leur cohérence entre étapes et cœur, puis rend l'état réutilisable.
-Un résultat d'autorisation mis en cache dans une gateway n'acquiert aucune de
-ces propriétés par analogie.
+The [preparation](https://microsoft.github.io/vega-prover/mc/prep.html)
+produces a **prover-private** state, distinct from a proof and from a
+verification cache. The code may retain matrix-vector products and verifies
+the associated public values before reuse. `prove` rerandomizes the
+commitments, keeps them consistent between steps and core, then returns the
+state for reuse. An authorization result cached in a gateway acquires none of
+these properties by analogy.
 
-Point d'intégration bloquant : selon le [contrat d'acceptation](https://microsoft.github.io/vega-prover/spec/scope.html),
-`verify(vk, num_instances)` retourne les valeurs publiques ; l'application doit
-les comparer aux valeurs attendues indépendamment. Accepter seulement `Ok`
-permettrait d'accepter une preuve valide d'un autre énoncé. Les octets peuvent
-différer entre deux preuves honnêtes ; ce test de différence ne démontre pas
-à lui seul la propriété zéro connaissance.
+Blocking integration point: according to the [acceptance contract](https://microsoft.github.io/vega-prover/spec/scope.html),
+`verify(vk, num_instances)` returns the public values; the application must
+compare them with the expected values independently. Accepting only `Ok`
+would allow accepting a valid proof of another statement. Bytes may differ
+between two honest proofs; this difference test does not on its own
+demonstrate the zero-knowledge property.
 
-Le [papier, §8 et figure 10, pages 14–15](https://www.microsoft.com/en-us/research/wp-content/uploads/2026/05/Vega_Low-Latency-Zero-Knowledge-Proofs-over-Existing-Credentials.pdf)
-mesure un MSO de 1920 octets sur Azure Standard F16as v7, 16 vCPU, 64 Go ; le
-dispositif signataire est simulé. Valeurs publiées, en millisecondes :
+The [paper, §8 and figure 10, pages 14–15](https://www.microsoft.com/en-us/research/wp-content/uploads/2026/05/Vega_Low-Latency-Zero-Knowledge-Proofs-over-Existing-Credentials.pdf)
+measures a 1920-byte MSO on Azure Standard F16as v7, 16 vCPU, 64 GB; the
+signing device is simulated. Published values, in milliseconds:
 
-| Mode | Threads | Setup | Préparation | Prove en ligne | Verify | Preuve / pk / vk (kB) |
+| Mode | Threads | Setup | Preparation | Online prove | Verify | Proof / pk / vk (kB) |
 |---|---:|---:|---:|---:|---:|---|
 | SC | 1 | 726 | 351 | 325 | 127 | 91 / 6588 / 6587 |
-| SC | 16 | 606 | 158 | 155 | 40 | idem |
+| SC | 16 | 606 | 158 | 155 | 40 | same |
 | MC | 1 | 210 | 390 | 237 | 57 | 108 / 464 / 464 |
-| MC | 16 | 51 | 65 | 92 | 23 | idem |
+| MC | 16 | 51 | 65 | 92 | 23 | same |
 
-Les 92 ms excluent setup et préparation. Ce tableau n'est pas une mesure locale,
-un résultat téléphone, ni un percentile de service réseau. Le PDF Microsoft de
-mai peut différer de la [révision ePrint du 5 septembre 2026](https://eprint.iacr.org/2025/2094) ;
-les résultats doivent conserver leur version. Nos benchmarks SHA publics ne
-doivent pas être renommés « preuve d'âge complète ».
+The 92 ms exclude setup and preparation. This table is not a local
+measurement, a phone result, nor a network service percentile. Microsoft's
+May PDF may differ from the [ePrint revision of September 5, 2026](https://eprint.iacr.org/2025/2094);
+results must keep their version. Our public SHA benchmarks must not be
+renamed "complete age proof".
 
-## 4. Bibliothèques pour une expérience spécialisée
+## 4. Libraries for a specialized experiment
 
-[Bulletproofs](https://crypto.stanford.edu/bulletproofs/) vise notamment les preuves
-de bornes sur valeurs engagées, sans setup de confiance. Il s'agit d'un choix
-classique approprié à un petit prédicat arithmétique ; ni Bulletproofs ni les
-engagements de Pedersen ne constituent une nouveauté HORIZON.
+[Bulletproofs](https://crypto.stanford.edu/bulletproofs/) notably targets
+range proofs over committed values, without trusted setup. It is a classical
+choice appropriate for a small arithmetic predicate; neither Bulletproofs nor
+Pedersen commitments constitute a HORIZON novelty.
 
-La [crate `bulletproofs` 5.0.0](https://docs.rs/crate/bulletproofs/5.0.0/source/Cargo.toml)
-utilise `curve25519-dalek` 4.1.x, Merlin 3, et propose une API `RangeProof`
-indépendante des circuits génériques. Le manifeste publié référence le dépôt
-`zkcrypto/bulletproofs`. Épingler crate, dépendances et lockfile réellement
-compilés, au lieu de déduire la compatibilité d'un ancien README.
+The [`bulletproofs` crate 5.0.0](https://docs.rs/crate/bulletproofs/5.0.0/source/Cargo.toml)
+uses `curve25519-dalek` 4.1.x, Merlin 3, and offers a `RangeProof` API
+independent of generic circuits. The published manifest references the
+`zkcrypto/bulletproofs` repository. Pin the crate, dependencies and lockfile
+actually compiled, instead of inferring compatibility from an old README.
 
-L'[API RangeProof](https://docs.rs/bulletproofs/5.0.0/bulletproofs/struct.RangeProof.html)
-permet de vérifier un ensemble ordonné d'engagements attendus. La
-[source du vérifieur](https://docs.rs/bulletproofs/5.0.0/src/bulletproofs/range_proof/mod.rs.html)
-accepte des tailles de plage 8, 16, 32 ou 64 bits. Charger une preuve n'est pas
-la vérifier. Les générateurs, le nombre de valeurs, les tailles et le transcript
-doivent être fixés par l'application, avec entrée bornée.
+The [RangeProof API](https://docs.rs/bulletproofs/5.0.0/bulletproofs/struct.RangeProof.html)
+allows verifying an ordered set of expected commitments. The
+[verifier source](https://docs.rs/bulletproofs/5.0.0/src/bulletproofs/range_proof/mod.rs.html)
+accepts range sizes of 8, 16, 32 or 64 bits. Loading a proof is not verifying
+it. The generators, the number of values, the sizes and the transcript must be
+fixed by the application, with bounded input.
 
-L'[API R1CS `yoloproofs`](https://github.com/zkcrypto/bulletproofs)
-est explicitement expérimentale et déclarée impropre au déploiement par ses
-auteurs. Le prototype HORIZON l'évite. Aucun audit indépendant de notre
-composition n'est établi ici ; la publication d'une bibliothèque, d'un papier
-ou d'un test positif ne remplace pas cet audit.
+The [`yoloproofs` R1CS API](https://github.com/zkcrypto/bulletproofs)
+is explicitly experimental and declared unfit for deployment by its authors.
+The HORIZON prototype avoids it. No independent audit of our composition is
+established here; the publication of a library, a paper or a passing test does
+not replace that audit.
 
-## 5. Décision de recherche
+## 5. Research decision
 
-L'expérience retenue est une **admission de dossier de sinistre avec montant et
-plafond engagés par deux autorités**, suivie d'un enregistrement simulé. Elle
-compare preuve liée au challenge, preuve statique accompagnée d'une signature
-fraîche du détenteur, et divulgation des mêmes faits attestés quand la politique
-l'autorise. Le contrat formel et ses limites sont dans
+The retained experiment is an **admission of an insurance claim case with
+amount and limit committed by two authorities**, followed by a simulated
+record. It compares a challenge-bound proof, a static proof accompanied by a
+fresh holder signature, and disclosure of the same attested facts when the
+policy allows it. The formal contract and its limits are in
 [`CRYPTOGRAPHIC_DESIGN.md`](CRYPTOGRAPHIC_DESIGN.md).
 
-Le compromis change le contrat d'émission : les autorités doivent produire des
-engagements signés. Il ne remplace pas sans adaptation les documents signés
-existants traités par Vega. La niche à valider est donc l'intégration opérationnelle
-et la minimisation de données entre organisations, pas l'invention de preuves
-privées, de précomputation ou d'autorisation par challenge.
+The compromise changes the issuance contract: authorities must produce signed
+commitments. It does not replace without adaptation the existing signed
+documents handled by Vega. The niche to validate is therefore operational
+integration and data minimization between organizations, not the invention
+of private proofs, precomputation or challenge-based authorization.
 
-Une comparaison admissible garde les mêmes faits, signatures, bornes, contexte,
-contrôles de fraîcheur et conditions de cache. Comparer une RangeProof seule à
-Vega mDL complet ou au guest RISC Zero DevSecOps ne donne **aucun ratio de
-supériorité**. Une préférence de bibliothèque reste provisoire tant que les
-mesures locales, tests adverses et besoins d'émetteurs ne sont pas établis.
+An admissible comparison keeps the same facts, signatures, bounds, context,
+freshness checks and cache conditions. Comparing a RangeProof alone with the
+complete Vega mDL or the DevSecOps RISC Zero guest yields **no superiority
+ratio**. A library preference remains provisional as long as local
+measurements, adversarial tests and issuer needs are not established.

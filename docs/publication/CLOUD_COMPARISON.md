@@ -1,143 +1,143 @@
-# Azure et GCP : plans d'expérience, pas offre de production
+# Azure and GCP: experiment plans, not a production offering
 
-État du dossier : **17 octobre 2026**. Les sources ci-dessous ont été consultées
-à cette date. Elles décrivent des capacités fournisseur, pas des tests exécutés
-sur ZK-agentiK. Aucune ressource cloud n'a été créée pour ce dossier.
+Dossier status: **October 17, 2026**. The sources below were consulted
+on that date. They describe provider capabilities, not tests run
+on ZK-agentiK. No cloud resource was created for this dossier.
 
-## Décision proposée
+## Proposed decision
 
-Conserver le laboratoire local pour les mesures actuelles. Préparer deux
-fondations réseau/identité à comparer ; choisir le cloud avec l'utilisateur
-après clarification des régions, achats existants, résidence des données et
-contraintes de clés. Le SDK `@zk-agentik/proofkit-sdk` expose des adaptateurs de
-confiance ; il ne génère pas automatiquement un circuit sûr ni un protocole
-distribué durable.
+Keep the local laboratory for current measurements. Prepare two
+network/identity foundations to compare; choose the cloud with the user
+after clarifying regions, existing purchases, data residency and
+key constraints. The `@zk-agentik/proofkit-sdk` SDK exposes trusted
+adapters; it does not automatically generate a safe circuit or a durable
+distributed protocol.
 
-**H14 et H17 bloquent la qualification multi-instance.** Le contrôleur Horizon
-et sa cible SQLite locale partagent actuellement leur transaction. Placer cette
-application dans un conteneur cloud ne préserve pas cette propriété pour une
-cible distante. PostgreSQL est un candidat pour l'état partagé ; il ne rend pas
-atomique un effet dans une autre API. Il faut un contrat d'idempotence, une
-précondition de version, une interrogation de statut et des essais de crash.
+**H14 and H17 block multi-instance qualification.** The Horizon controller
+and its local SQLite target currently share their transaction. Putting this
+application in a cloud container does not preserve that property for a
+remote target. PostgreSQL is a candidate for shared state; it does not make
+an effect in another API atomic. An idempotency contract, a
+version precondition, status queries and crash tests are required.
 
-## Capacités et décisions non prises
+## Capabilities and undecided matters
 
-| Frontière | Azure | GCP | Travail restant |
+| Boundary | Azure | GCP | Remaining work |
 | --- | --- | --- | --- |
-| Identité runtime | Identités managées distinctes pour prover et contrôleur [A1] | Service accounts distincts attachés au runtime [G1] | Permissions minimales et preuves de refus réels |
-| Identité de déploiement | Fédération Entra [A2] | Workload Identity Federation [G2] | Restreindre émetteur, audience et subject au projet/ref autorisé ; aucune clé durable de CI |
-| Conteneurs privés | Environnement Container Apps interne, réseau personnalisé [A3] | Cloud Run avec ingress authentifié choisi séparément du Direct VPC egress [G3] | Tester DNS, ingress, egress, accès APIs et dépendances de plateforme |
-| Clés du profil actuel | La table Key Vault ne liste pas Ed25519 [A4] | `EC_SIGN_ED25519` est listé en protection **software**, PureEdDSA sur message brut ; absent de la table HSM consultée [G4] | Aucun adaptateur KMS exécuté ; ne pas présenter l'un ou l'autre comme un HSM compatible prêt |
-| État partagé | PostgreSQL Flexible Server HA et accès privés possibles [A5,A6] | Cloud SQL PostgreSQL HA [G5] | Schéma de réservation, isolation, migration, reprise et H14 à implémenter |
-| Archives | Blob immuable avec politiques de rétention [A7] | Cloud Storage Bucket Lock [G6] | Durée contractuelle, minimisation des données, export et restauration ; aucun verrou activé |
-| GPU | Offre serverless documentée [A8] | GPU Cloud Run documenté [G7] | Régions, quota, modèle et gain à vérifier sur la relation exécutée ; aucun GPU prévu par défaut |
+| Runtime identity | Separate managed identities for prover and controller [A1] | Separate service accounts attached to the runtime [G1] | Least privilege and evidence of real denials |
+| Deployment identity | Entra federation [A2] | Workload Identity Federation [G2] | Restrict issuer, audience and subject to the authorized project/ref; no long-lived CI key |
+| Private containers | Internal Container Apps environment, custom network [A3] | Cloud Run with authenticated ingress chosen separately from Direct VPC egress [G3] | Test DNS, ingress, egress, API access and platform dependencies |
+| Current profile keys | The Key Vault table does not list Ed25519 [A4] | `EC_SIGN_ED25519` is listed under **software** protection, PureEdDSA over the raw message; absent from the consulted HSM table [G4] | No KMS adapter executed; do not present either as a ready compatible HSM |
+| Shared state | PostgreSQL Flexible Server HA and private access available [A5,A6] | Cloud SQL PostgreSQL HA [G5] | Reservation schema, isolation, migration, recovery and H14 to implement |
+| Archives | Immutable Blob with retention policies [A7] | Cloud Storage Bucket Lock [G6] | Contractual duration, data minimization, export and restoration; no lock activated |
+| GPU | Documented serverless offering [A8] | Documented Cloud Run GPU [G7] | Regions, quota, model and benefit to verify on the executed relation; no GPU planned by default |
 
-Une identité managée réduit la distribution de secrets ; elle ne valide pas les
-faits attestés. Les permissions d'identité peuvent être mises en cache : la
-révocation applicative et son `trust_epoch` ne doivent pas être assimilés à une
-révocation IAM instantanée [A1].
+A managed identity reduces secret distribution; it does not validate
+attested facts. Identity permissions may be cached: application
+revocation and its `trust_epoch` must not be equated with instantaneous
+IAM revocation [A1].
 
-Les key stores ne sont pas interchangeables. Un choix Azure impose soit un
-service de signature compatible dont la frontière sera examinée, soit un profil
-de signature différent, versionné et revu. Le support GCP logiciel permet
-d'envisager un adaptateur Ed25519, sous réserve d'un test des octets signés,
-formats publics, limites, rotation, latence et indisponibilité. Il ne répond pas
-à une exigence HSM sur la seule base de cette documentation [A4,G4].
+Key stores are not interchangeable. Choosing Azure requires either a
+compatible signing service whose boundary will be examined, or a different,
+versioned and reviewed signature profile. GCP software support allows
+an Ed25519 adapter to be considered, subject to testing signed bytes,
+public formats, limits, rotation, latency and unavailability. It does not satisfy
+an HSM requirement on the basis of this documentation alone [A4,G4].
 
-Le système de fichiers inscriptible de Cloud Run est lié à l'instance et ne
-constitue pas un store durable partagé [G8]. De même, monter un volume sur une
-instance Container Apps ne démontre pas la coordination de deux contrôleurs :
-cette dernière conclusion est notre analyse du protocole, pas une garantie fournisseur.
+Cloud Run's writable filesystem is instance-bound and is not
+a shared durable store [G8]. Likewise, mounting a volume on a
+Container Apps instance does not demonstrate coordination between two controllers:
+that latter conclusion is our protocol analysis, not a provider guarantee.
 
-## Deux plans techniques falsifiables
+## Two falsifiable technical plans
 
-### Plan Azure
+### Azure plan
 
-Fondation fournie : [Bicep](../../infra/azure/main.bicep), VNet, deux sous-réseaux,
-NSG avec refus explicites, deux identités sans RBAC. Compiler et lint localement.
-Ce n'est pas un environnement Container Apps prêt à exécuter : les délégations,
-règles de plateforme et endpoints restent absents. Aucun coût de runtime n'est
-engagé par la compilation.
+Provided foundation: [Bicep](../../infra/azure/main.bicep), VNet, two subnets,
+NSG with explicit denials, two identities without RBAC. Compile and lint locally.
+This is not a Container Apps environment ready to run: delegations,
+platform rules and endpoints remain absent. Compilation incurs no
+runtime cost.
 
-Expérience suivante, après choix et autorisation du périmètre cloud : runtime
-privé avec image par digest ; contrôleur seul habilité à appeler une cible
-sandbox ; PostgreSQL privé ; secrets et signature choisis après H13. Démontrer
-refus inter-tenant, refus de sortie du prover vers la cible, puis deux contrôleurs
-concurrents et panne aux transitions H14. La restauration doit conserver les
-opérations terminales et ne jamais libérer une opération `UNKNOWN` sans preuve
-de son état cible.
+Next experiment, after the cloud scope is chosen and authorized: private
+runtime with image pinned by digest; only the controller authorized to call a
+sandbox target; private PostgreSQL; secrets and signing chosen after H13. Demonstrate
+cross-tenant denial, denial of prover egress to the target, then two concurrent
+controllers and failures at H14 transitions. Restoration must retain
+terminal operations and never release an `UNKNOWN` operation without evidence
+of its target state.
 
-### Plan GCP
+### GCP plan
 
-Fondation fournie : [Terraform](../../infra/gcp/main.tf), VPC sans route par
-défaut, sous-réseaux IPv4, refus de trafic et deux service accounts sans rôles.
-Provider verrouillé ; aucune API activée. Les comptes ne possèdent aucune clé
-exportable créée par le module. Le trafic aux APIs privées reste à concevoir.
+Provided foundation: [Terraform](../../infra/gcp/main.tf), VPC without a default
+route, IPv4 subnets, traffic denial and two service accounts without roles.
+Locked provider; no API activated. The accounts have no exportable keys
+created by the module. Traffic to private APIs remains to be designed.
 
-Expérience suivante : séparer identité de déploiement et runtime ; Cloud Run avec
-ingress défini explicitement, routage egress `all-traffic` et règles minimales ;
-base distante transactionnelle ; cible sandbox indépendante. Un routage egress
-VPC ne rend pas l'ingress privé et `private-ranges-only` ne contrôle pas tout le
-trafic sortant [G3]. Exécuter les mêmes scénarios H14 que sur Azure, puis mesurer
-les latences froides, les reprises et le comportement à la perte du KMS.
+Next experiment: separate deployment and runtime identities; Cloud Run with
+explicitly defined ingress, `all-traffic` egress routing and minimal rules;
+remote transactional database; independent sandbox target. VPC egress
+routing does not make ingress private, and `private-ranges-only` does not control all
+outbound traffic [G3]. Run the same H14 scenarios as on Azure, then measure
+cold latencies, recovery and behavior on loss of KMS.
 
-Dans les deux plans, privilégier la mesure CPU du petit circuit Horizon. Un
-GPU peut concerner un autre profil, notamment une zkVM générale ; ce n'est pas
-une optimisation démontrée de la relation Bulletproofs actuelle.
+In both plans, prioritize CPU measurement of the small Horizon circuit. A
+GPU may apply to another profile, particularly a general-purpose zkVM; it is not
+a demonstrated optimization of the current Bulletproofs relation.
 
-## Coût paramétré, sans montant inventé
+## Parameterized cost, without invented amounts
 
-Comparer une **même charge** et un **même niveau de disponibilité**. Aucune
-facture, devise, région ni volume de production n'a été validé. Les tarifs sont
-à extraire au moment du chiffrage des pages officielles [A9,G9] et des services
-annexes retenus. Le coût complet reste inconnu, conformément à H16.
+Compare the **same workload** and the **same availability level**. No
+invoice, currency, region or production volume has been validated. Prices must
+be extracted at estimation time from official pages [A9,G9] and the selected
+ancillary services. Full cost remains unknown, as stated in H16.
 
 ```text
-C_mois = CPU_actif + RAM_active + éventuel_minimum_inactif
-       + base_primaire + réplica_HA + stockage + sauvegardes
-       + réseau_sortant + endpoints/connectivité + requêtes_KMS
-       + logs_ingérés + logs/archives_conservés + registre_images
-       + observabilité + support + coût_opérationnel_mesuré
+C_month = active_CPU + active_RAM + possible_idle_minimum
+        + primary_database + HA_replica + storage + backups
+        + outbound_network + endpoints/connectivity + KMS_requests
+        + ingested_logs + retained_logs/archives + image_registry
+        + observability + support + measured_operating_cost
 ```
 
-Pour chaque terme conserver unité, quantité, prix, devise, région, date, source,
-taxes et remise éventuelle. Séparer coût de préparation d'une preuve, coût d'une
-présentation B réutilisée et coût d'une autorisation complète. Les délais réseau,
-cold starts, refus, reprises et appels KMS ne figurent pas dans les mesures
-cryptographiques CPU actuelles. Ne pas extrapoler 1,247 ms en prix d'une
-transaction cloud. Le GPU est une ligne distincte, à zéro ressource prévue
-tant qu'aucun bénéfice n'a été établi.
+For each term retain unit, quantity, price, currency, region, date, source,
+taxes and any discount. Separate proof preparation cost, reused B
+presentation cost and complete authorization cost. Network delays,
+cold starts, denials, recovery and KMS calls are absent from current
+CPU cryptographic measurements. Do not extrapolate 1.247 ms into the price of a
+cloud transaction. GPU is a separate line item, with zero resources planned
+until a benefit has been established.
 
-## Archivage et conformité
+## Archiving and compliance
 
-Les verrous de rétention ont des conséquences irréversibles : après verrouillage,
-les politiques documentées ne peuvent plus être supprimées ou raccourcies
-[A7,G6]. Rien de tel n'est activé dans les squelettes. La durée ne doit pas être
-déduite du seul mot « banque » ; elle relève du périmètre réel de conservation.
-Un stockage immuable préserve des octets. Il ne prouve pas la vérité de leur
-contenu, l'exhaustivité d'un audit, l'heure d'un événement ou une conformité DORA.
+Retention locks have irreversible consequences: after locking,
+the documented policies can no longer be deleted or shortened
+[A7,G6]. Nothing of that kind is enabled in the skeletons. Duration must not be
+inferred from the word “bank” alone; it depends on the actual retention scope.
+Immutable storage preserves bytes. It does not prove the truth of their
+contents, audit completeness, an event's time or DORA compliance.
 
-## Sources primaires et portée
+## Primary sources and scope
 
-Toutes consultées le 17 octobre 2026. Confiance élevée pour l'existence des
-fonctionnalités décrites ; disponibilité dans un tenant/région, coût et aptitude
-au projet **non vérifiés expérimentalement**. Les pages peuvent changer.
+All consulted on October 17, 2026. High confidence in the existence of the
+described features; availability in a tenant/region, cost and suitability
+for the project **not experimentally verified**. Pages may change.
 
-- [A1 — Identités managées Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/managed-identity)
-- [A2 — Fédération d'identité Entra](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation)
-- [A3 — Réseau Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/networking)
-- [A4 — Types et algorithmes Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/keys/about-keys)
+- [A1 — Container Apps managed identities](https://learn.microsoft.com/en-us/azure/container-apps/managed-identity)
+- [A2 — Entra identity federation](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation)
+- [A3 — Container Apps networking](https://learn.microsoft.com/en-us/azure/container-apps/networking)
+- [A4 — Key Vault types and algorithms](https://learn.microsoft.com/en-us/azure/key-vault/keys/about-keys)
 - [A5 — PostgreSQL Flexible Server HA](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-high-availability)
 - [A6 — PostgreSQL Private Link](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-networking-private-link)
-- [A7 — Blob immuable](https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview)
-- [A8 — GPU Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/gpu-serverless-overview)
-- [A9 — Tarification Container Apps](https://azure.microsoft.com/en-us/pricing/details/container-apps/)
-- [G1 — Identité des services Cloud Run](https://docs.cloud.google.com/run/docs/configuring/services/service-identity)
+- [A7 — Immutable Blob](https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview)
+- [A8 — Container Apps GPU](https://learn.microsoft.com/en-us/azure/container-apps/gpu-serverless-overview)
+- [A9 — Container Apps pricing](https://azure.microsoft.com/en-us/pricing/details/container-apps/)
+- [G1 — Cloud Run service identity](https://docs.cloud.google.com/run/docs/configuring/services/service-identity)
 - [G2 — Workload Identity Federation](https://docs.cloud.google.com/iam/docs/workload-identity-federation)
 - [G3 — Direct VPC egress](https://docs.cloud.google.com/run/docs/configuring/vpc-direct-vpc)
-- [G4 — Algorithmes Cloud KMS, par niveau de protection](https://docs.cloud.google.com/kms/docs/algorithms)
+- [G4 — Cloud KMS algorithms by protection level](https://docs.cloud.google.com/kms/docs/algorithms)
 - [G5 — Cloud SQL PostgreSQL HA](https://docs.cloud.google.com/sql/docs/postgres/high-availability)
 - [G6 — Bucket Lock](https://docs.cloud.google.com/storage/docs/bucket-lock)
-- [G7 — GPU Cloud Run](https://docs.cloud.google.com/run/docs/configuring/services/gpu)
-- [G8 — Contrat du conteneur Cloud Run](https://docs.cloud.google.com/run/docs/container-contract)
-- [G9 — Tarification Cloud Run](https://cloud.google.com/run/pricing)
+- [G7 — Cloud Run GPU](https://docs.cloud.google.com/run/docs/configuring/services/gpu)
+- [G8 — Cloud Run container contract](https://docs.cloud.google.com/run/docs/container-contract)
+- [G9 — Cloud Run pricing](https://cloud.google.com/run/pricing)

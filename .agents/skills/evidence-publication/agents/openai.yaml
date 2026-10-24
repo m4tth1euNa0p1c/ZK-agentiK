@@ -1,4 +1,4 @@
 interface:
-  display_name: "Publication et preuves"
-  short_description: "Préparer un candidat auditable et ses limites"
-  default_prompt: "Utilise $evidence-publication pour vérifier le candidat ZK-agentiK, ses artefacts et ses revendications avant publication."
+  display_name: "Publication and evidence"
+  short_description: "Prepare an auditable candidate and its limitations"
+  default_prompt: "Use $evidence-publication to verify the ZK-agentiK candidate, its artifacts and its claims before publication."

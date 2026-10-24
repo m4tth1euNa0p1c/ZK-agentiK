@@ -6,300 +6,298 @@
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 \usepackage[numbers]{natbib}
 \newtheorem{theorem}{Proposition}
-\newtheorem{lemma}[theorem]{Lemme}
-\newtheorem{assumption}[theorem]{Hypothèse}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{assumption}[theorem]{Assumption}
 \newcommand{\code}[1]{\nolinkurl{#1}}
 \newcommand{\Com}{\operatorname{Com}}
 \newcommand{\Zq}{\mathbb Z_q}
-\hypersetup{pdftitle={Horizon : validation correlee de la relation de plages},pdfauthor={Dossier technique ZK-agentiK}}
-\title{Horizon : validation corrélée de la relation de plages\\
-  \large Supplément algébrique et protocole expérimental}
-\author{Dossier technique du dépôt ZK-agentiK}
-\date{17 octobre 2026 \quad Version expérimentale 1}
+\hypersetup{pdftitle={Horizon: correlated validation of the range relation},pdfauthor={ZK-agentiK technical dossier}}
+\title{Horizon: correlated validation of the range relation\\
+  \large Algebraic supplement and experimental protocol}
+\author{Technical dossier of the ZK-agentiK repository}
+\date{17 October 2026 \quad Experimental version 1}
 \begin{document}
 \maketitle
 \begin{abstract}
-Ce supplément relie la comparaison entière d'un montant et d'un plafond aux
-deux engagements dérivés vérifiés par Horizon. Il donne une démonstration
-conditionnelle et un protocole de corrélation entre calcul JavaScript BigInt,
-oracle MATLAB/GNU Octave et exécution réelle de Bulletproofs en Rust. Les
-conditions de succès distinguent refus applicatif et rejet cryptographique.
-Des essais finis, même concordants, ne prouvent ni l'absence de défaut, ni la
-sécurité de la primitive. La source numérique est portable ; le runtime
-effectivement exécuté doit être lu dans chaque artefact. Aucune exécution
-MATLAB n'est déduite d'un résultat Octave. Le profil n'est pas post-quantique.
+This supplement connects the integer comparison of an amount and a limit to
+the two derived commitments verified by Horizon. It provides a conditional
+derivation and a correlation protocol between JavaScript BigInt computation,
+a MATLAB/GNU Octave oracle and real Bulletproofs execution in Rust.
+Success conditions distinguish application rejection from cryptographic
+rejection. Finite tests, even when they agree, prove neither absence of defects
+nor the primitive's security. The numerical source is portable; the runtime
+actually executed must be read from each artifact. No MATLAB execution is
+inferred from an Octave result. The profile is not post-quantum.
 \end{abstract}
 
-\section{Énoncé : relation arithmétique et politique}
-Le profil examiné est \code{horizon-range-v1}, dans
-\code{labs/horizon/proof/src/lib.rs}. Ce supplément accompagne le manuscrit
-\code{docs/whitepaper/whitepaper.tex} sans le remplacer. La base de la campagne
-est le commit \code{5cf0ee2} ; chaque exécution doit identifier la révision
-effective de ses sources et ses éventuelles modifications locales.
+\section{Statement: arithmetic relation and policy}
+The examined profile is \code{horizon-range-v1}, in
+\code{labs/horizon/proof/src/lib.rs}. This supplement accompanies the manuscript
+\code{docs/whitepaper/whitepaper.tex} without replacing it. The campaign baseline
+is commit \code{5cf0ee2}; each run must identify its actual source revision
+and any local modifications.
 
-Posons $U=2^{64}-1$ et $N=2^{32}$. Le domaine d'entrée est
-$\mathcal D=\{0,\ldots,U\}^2$. La décision numérique est
+Set $U=2^{64}-1$ and $N=2^{32}$. The input domain is
+$\mathcal D=\{0,\ldots,U\}^2$. The numerical decision is
 \begin{equation}\label{eq:predicate}
  P(a,c)\ \Longleftrightarrow\ 1\le a\le N\quad\land\quad
  a\le c\quad\land\quad c-a<N.
 \end{equation}
-Cette relation n'est pas simplement $a\le c$. Par exemple $(0,0)$,
-$(N+1,N+1)$ et $(1,N+1)$ satisfont la comparaison mais pas $P$.
-Le plafond $c$ est un \code{u64} et peut atteindre $2^{33}-1$ ; imposer
-$c\le2^{32}-1$ changerait la relation.
+This relation is not simply $a\le c$. For example $(0,0)$,
+$(N+1,N+1)$ and $(1,N+1)$ satisfy the comparison but not $P$.
+The limit $c$ is a \code{u64} and may reach $2^{33}-1$;
+imposing $c\le2^{32}-1$ would change the relation.
 
-\paragraph{Frontière de politique.}
-Une acceptation cryptographique exige aussi les signatures, la jointure du
-dossier, la devise EUR, l'exposant 2, les clés et rôles épinglés, les dates,
-le challenge indépendant et le mode permis. L'autorisation d'un effet exige
-encore révocation, époque, nonce et opération métier dans le contrôleur.
-L'oracle numérique ne reçoit aucun de ces éléments. Il ne peut donc pas
-prononcer une autorisation métier. Le plafond reste par dossier : deux montants
-de 60 sous un plafond de 100 n'établissent pas un budget cumulé de 100 ;
-une franchise, une conversion d'unité et une règle de paiement seraient
-des relations supplémentaires.
+\paragraph{Policy boundary.}
+Cryptographic acceptance also requires signatures, the case join, EUR currency,
+exponent 2, pinned keys and roles, timestamps, the independent challenge and
+the permitted mode. Authorizing an effect further requires revocation, epoch,
+nonce and business operation checks in the controller.
+The numerical oracle receives none of these elements. It therefore cannot
+grant business authorization. The limit remains per-case: two amounts of 60
+under a limit of 100 do not establish a cumulative budget of 100;
+a deductible, unit conversion and payment rule would be additional relations.
 
-\section{Du witness entier aux engagements}
-Soit $\mathbb G$ le groupe Ristretto d'ordre premier
+\section{From the integer witness to commitments}
+Let $\mathbb G$ be the Ristretto group of prime order
 \[
  q=2^{252}+27742317777372353535851937790883648493.
 \]
-Les encodages canoniques et l'abstraction de groupe sont décrits dans
-RFC~9496 \cite{ristretto}. Les bases $G,H$ sont les paramètres publics fixes
-de \code{PedersenGens::default()}, jamais choisis par l'appelant. Deux
-autorités construisent les engagements signés
+Canonical encodings and the group abstraction are described in
+RFC~9496 \cite{ristretto}. Bases $G,H$ are the fixed public parameters
+of \code{PedersenGens::default()}, never chosen by the caller. Two
+authorities construct the signed commitments
 \[
  A=aG+r_aH,\qquad C=cG+r_cH,\qquad r_a,r_c\in\Zq.
 \]
-Le vérifieur dérive les points, sans accepter ceux proposés séparément par
-le prover :
+The verifier derives the points without accepting ones separately proposed
+by the prover:
 \begin{equation}\label{eq:derived}
  X=A-G,\qquad D=C-A.
 \end{equation}
-Le witness de la preuve de plages agrégée est
+The witness for the aggregated range proof is
 \[
  x=a-1,\quad d=c-a,\quad r_X=r_a,\quad r_D=r_c-r_a\pmod q.
 \]
-Horizon utilise \code{RangeProof} de Bulletproofs 5.0.0 avec deux valeurs et
-32 bits \cite{rangeapi}. Ce chemin est une preuve spécialisée de plages ;
-il ne compile pas la politique entière en un circuit R1CS universel.
-Le mot « circuit » dans la campagne désigne cette relation cryptographique.
+Horizon uses Bulletproofs 5.0.0 \code{RangeProof} with two values and
+32 bits \cite{rangeapi}. This path is a specialized range proof;
+it does not compile the entire policy into a universal R1CS circuit.
+The word ``circuit'' in the campaign refers to this cryptographic relation.
 
-\begin{lemma}[Équivalence entière]
-Pour $(a,c)\in\mathcal D$, $P(a,c)$ équivaut à l'existence d'entiers
-$x,d\in[0,N-1]$ tels que $a=x+1$ et $c=x+1+d$.
+\begin{lemma}[Integer equivalence]
+For $(a,c)\in\mathcal D$, $P(a,c)$ is equivalent to the existence of
+integers $x,d\in[0,N-1]$ such that $a=x+1$ and $c=x+1+d$.
 \end{lemma}
 \begin{proof}
-Si $P$ est vraie, $x=a-1$ et $d=c-a$ satisfont les bornes. Réciproquement,
-$a=x+1\in[1,N]$ et $c-a=d\in[0,N-1]$. Ces identités donnent aussi
-$c\le2N-1$, sans addition susceptible de dépasser $U$.
+If $P$ is true, $x=a-1$ and $d=c-a$ satisfy the bounds. Conversely,
+$a=x+1\in[1,N]$ and $c-a=d\in[0,N-1]$. These identities also give
+$c\le2N-1$, without any addition that could exceed $U$.
 \end{proof}
 
-\begin{lemma}[Complétude arithmétique]
-Si $P(a,c)$ est vraie, les ouvertures précédentes produisent exactement
-les points de \eqref{eq:derived}.
+\begin{lemma}[Arithmetic completeness]
+If $P(a,c)$ is true, the preceding openings produce exactly
+the points in \eqref{eq:derived}.
 \end{lemma}
 \begin{proof}
-$xG+r_XH=(a-1)G+r_aH=A-G$. De même,
-$dG+r_DH=(c-a)G+(r_c-r_a)H=C-A$. Les deux valeurs sont dans les plages
-requises ; la complétude cryptographique demeure celle de la primitive.
+$xG+r_XH=(a-1)G+r_aH=A-G$. Likewise,
+$dG+r_DH=(c-a)G+(r_c-r_a)H=C-A$. Both values are in the required
+ranges; cryptographic completeness remains that of the primitive.
 \end{proof}
 
-\section{Correction conditionnelle : connaissance et liaison}
-\begin{assumption}[Émission, primitive et implémentation]
-Les autorités ont construit ou contrôlé les ouvertures de $A$ et $C$ depuis
-des valeurs du domaine \code{u64}, avec les métadonnées appropriées.
-Le logarithme discret entre $G$ et $H$ n'est pas connu d'un adversaire
-efficace. La primitive fournit l'argument de connaissance des ouvertures
-dans les plages sous son modèle de sécurité. Encodages, paramètres,
-transcript, RNG et vérification implémentent fidèlement cette primitive.
+\section{Conditional soundness: knowledge and binding}
+\begin{assumption}[Issuance, primitive and implementation]
+The authorities have constructed or checked the openings of $A$ and $C$
+from values in the \code{u64} domain, with appropriate metadata.
+The discrete logarithm between $G$ and $H$ is unknown to an efficient adversary.
+The primitive provides an argument of knowledge of openings within the ranges
+under its security model. Encodings, parameters, transcript, RNG and
+verification faithfully implement this primitive.
 \end{assumption}
-Le papier Bulletproofs et sa révision corrigée sont la référence, sans
-réduction ni audit logiciel réinventé ici \cite{bulletproofs}.
-Une simple existence mathématique d'ouvertures serait insuffisante : puisque
-$H$ engendre $\mathbb G$, tout point admet une ouverture à toute valeur
-scalaire pour un masque approprié. Le passage à une valeur attestée exige
-la connaissance extractible et la liaison calculatoire.
+The Bulletproofs paper and its corrected revision are the reference, with
+no reduction or software audit reinvented here \cite{bulletproofs}.
+Mere mathematical existence of openings would be insufficient: since
+$H$ generates $\mathbb G$, every point admits an opening to any scalar
+value with an appropriate mask. Moving to an attested value requires
+extractable knowledge and computational binding.
 
-\begin{lemma}[Deux ouvertures incompatibles]
-Si $vG+rH=v'G+r'H$ et $v\not\equiv v'\pmod q$, alors
+\begin{lemma}[Two incompatible openings]
+If $vG+rH=v'G+r'H$ and $v\not\equiv v'\pmod q$, then
 \[
  \log_G H=(v-v')(r'-r)^{-1}\pmod q.
 \]
 \end{lemma}
 \begin{proof}
-L'égalité implique $(v-v')G=(r'-r)H$. Si $r'=r$, les valeurs seraient
-congrues ; sinon $r'-r$ est inversible dans le corps d'ordre premier.
-La formule donne la relation discrète supposée inconnue.
+Equality implies $(v-v')G=(r'-r)H$. If $r'=r$, the values would
+be congruent; otherwise $r'-r$ is invertible in the prime-order field.
+The formula gives the discrete relation assumed to be unknown.
 \end{proof}
 
-\begin{theorem}[Liaison aux entiers attestés, sans wrap]
-Supposons les hypothèses précédentes. Une preuve acceptée dont on extrait
-$(x,d,r_X,r_D)$ avec $0\le x,d<N$ impose $P(a,c)$ pour les valeurs
-attestées, sauf échec d'extraction ou rupture de liaison.
+\begin{theorem}[Binding to attested integers without wraparound]
+Assume the preceding assumptions. An accepted proof from which
+$(x,d,r_X,r_D)$ is extracted with $0\le x,d<N$ imposes $P(a,c)$
+on the attested values, except upon extraction failure or a binding break.
 \end{theorem}
 \begin{proof}
-Les points dérivés donnent une ouverture de $A$ à $a'=x+1$ avec masque
-$r_X$, et de $C$ à $c'=x+1+d$ avec masque $r_X+r_D$. Si ces valeurs
-diffèrent modulo $q$ des ouvertures attestées, le lemme précédent donne
-une rupture de liaison. Sinon $a\equiv a'$ et $c\equiv c'\pmod q$.
-Or $0\le a,c\le U<q$ et $0\le a',c'\le2^{33}-1<q$.
-Deux représentants dans $[0,q)$ congrus modulo $q$ sont égaux.
-Donc $a=a'$ et $c=c'$, et l'équivalence entière conclut.
+The derived points give an opening of $A$ to $a'=x+1$ with mask
+$r_X$, and of $C$ to $c'=x+1+d$ with mask $r_X+r_D$. If these values
+differ modulo $q$ from the attested openings, the preceding lemma yields
+a binding break. Otherwise $a\equiv a'$ and $c\equiv c'\pmod q$.
+Now $0\le a,c\le U<q$ and $0\le a',c'\le2^{33}-1<q$.
+Two representatives in $[0,q)$ congruent modulo $q$ are equal.
+Hence $a=a'$ and $c=c'$, and integer equivalence concludes the proof.
 \end{proof}
-La borne $U<q$ est essentielle : une autorité attestant un entier sans
-domaine pourrait signer une valeur $a'+q$ ayant le même scalaire. De même,
-la signature d'un point fourni aveuglément ne garantit pas que le point
-représente le montant issu du système métier. Ces risques ne sont pas
-supprimés par une concordance de tests.
+The bound $U<q$ is essential: an authority attesting an integer without
+a domain could sign a value $a'+q$ with the same scalar. Likewise,
+blindly signing a supplied point does not guarantee that the point
+represents the amount from the business system. Agreement among tests
+does not eliminate these risks.
 
-Les signatures d'autorité sont vérifiées hors preuve de plages. Le mode A
-inclut le challenge complet dans le transcript ; B réutilise une preuve
-historique et signe une nouvelle présentation sous la clé du détenteur.
-B ne démontre pas une connaissance fraîche du witness. La composition
-suppose aussi l'inforgeabilité des signatures, la résistance aux collisions
-du digest, la séparation des domaines et la comparaison complète du challenge.
-Aucune probabilité numérique de sécurité n'est déduite des essais.
+Authority signatures are verified outside the range proof. Mode A
+includes the full challenge in the transcript; B reuses a historical
+proof and signs a new presentation with the holder key.
+B does not demonstrate fresh knowledge of the witness. Composition also
+assumes signature unforgeability, collision resistance of the digest,
+domain separation and full challenge comparison.
+No numerical security probability is inferred from tests.
 
-\section{Oracle MATLAB/Octave : exactitude des entiers}
-L'entrée de \code{math/circuit/circuit_oracle.m} est un tableau JSON de
-1 à 10\,000 objets contenant exactement \code{id}, \code{category},
-\code{amount} et \code{cap}. Les valeurs numériques sont des chaînes
-décimales canoniques, jamais des nombres JSON convertis implicitement en
-\code{double}. L'API \code{jsondecode} documente cette conversion et la
-normalisation des noms de champs \cite{matlabjson}. Des contrôles de forme,
-de clés, de doublons et d'encodage complètent donc le décodage standard.
-Un champ \code{expected} est refusé. L'oracle ne lit aucune réponse attendue
-dans le corpus.
+\section{MATLAB/Octave oracle: exact integers}
+The input to \code{math/circuit/circuit_oracle.m} is a JSON array of
+1 to 10\,000 objects containing exactly \code{id}, \code{category},
+\code{amount} and \code{cap}. Numerical values are canonical decimal
+strings, never JSON numbers implicitly converted to \code{double}.
+The \code{jsondecode} API documents this conversion and field-name
+normalization \cite{matlabjson}. Shape, key, duplicate and encoding
+checks therefore supplement standard decoding.
+An \code{expected} field is rejected. The oracle reads no expected answer
+from the corpus.
 
-\begin{lemma}[Conversion décimale sans saturation]
-Posons $Q=\lfloor U/10\rfloor=1844674407370955161$ et $R=5$.
-Pour un préfixe $v\in[0,U]$ et un chiffre $b\in[0,9]$, l'opération
-$10v+b$ est représentable si et seulement si $v<Q$, ou $v=Q$ et $b\le R$.
+\begin{lemma}[Decimal conversion without saturation]
+Set $Q=\lfloor U/10\rfloor=1844674407370955161$ and $R=5$.
+For a prefix $v\in[0,U]$ and digit $b\in[0,9]$, the operation
+$10v+b$ is representable if and only if $v<Q$, or $v=Q$ and $b\le R$.
 \end{lemma}
 \begin{proof}
-$U=10Q+R$. Si $v<Q$, $10v+b\le10Q-1\le U$. Si $v=Q$, la condition
-est exactement $b\le R$. Si $v>Q$, $10v+b\ge10Q+10>U$.
-L'induction sur les chiffres justifie le contrôle avant multiplication et
-addition. $Q$ est construit depuis de petits blocs exactement représentables,
-sans conversion d'un grand littéral flottant.
+$U=10Q+R$. If $v<Q$, $10v+b\le10Q-1\le U$. If $v=Q$, the condition
+is exactly $b\le R$. If $v>Q$, $10v+b\ge10Q+10>U$.
+Induction over digits justifies checking before multiplication and addition.
+$Q$ is constructed from small, exactly representable blocks without
+converting a large floating-point literal.
 \end{proof}
 
-Le calcul de $x$ est précédé de $a\ge1$ et celui de $d$ de $c\ge a$.
-Cette garde est indispensable : les opérations entières peuvent saturer
-aux limites des types dans MATLAB et Octave \cite{matlabintegers,octaveintegers}.
-Une différence négative est rendue par la chaîne vide, pas par zéro ; les
-autres différences sont rendues exactement, y compris pour un cas refusé.
+Computing $x$ is preceded by $a\ge1$, and computing $d$ by $c\ge a$.
+This guard is essential: integer operations may saturate at type limits
+in MATLAB and Octave \cite{matlabintegers,octaveintegers}.
+A negative difference is returned as an empty string, not zero;
+other differences are returned exactly, including for a rejected case.
 
-Le formatage décimal évite aussi la division entière au bord du type.
-Pour une valeur supérieure à $2^{32}-1$, une division binaire par 10 garde
-un reste dans $[0,9]$ ; avant réduction, ce reste est au plus 19. Le
-quotient est construit bit par bit. Pour une valeur au plus $2^{32}-1$, le
-chemin court utilise \code{floor(double(v)/10)} : l'entier est représenté
-exactement et l'erreur d'arrondi du quotient est très inférieure à $0{,}1$,
-distance minimale d'un quotient non entier au prochain entier. Aucun
-grand \code{uint64} n'est envoyé dans ce chemin.
+Decimal formatting also avoids integer division at the type boundary.
+For a value greater than $2^{32}-1$, binary division by 10 keeps a
+remainder in $[0,9]$; before reduction, this remainder is at most 19.
+The quotient is constructed bit by bit. For a value at most $2^{32}-1$,
+the short path uses \code{floor(double(v)/10)}: the integer is represented
+exactly and the quotient's rounding error is far below $0.1$, the minimum
+distance from a noninteger quotient to the next integer.
+No large \code{uint64} is sent through this path.
 
-\paragraph{Observation de développement.}
-Sur GNU Octave 7.3.0 dans l'image locale enregistrée, une première version
-utilisant \code{idivide} au maximum du type n'a pas satisfait les tests de
-formatage : $2^{64}-1$ a été rendu avec une terminaison décimale erronée.
-Ces essais ont échoué avant toute publication d'un résultat positif.
-La source livrée n'utilise pas cette division. Ce constat est un résultat
-de runtime local, pas une conclusion sur toutes les versions MATLAB/Octave.
+\paragraph{Development observation.}
+On GNU Octave 7.3.0 in the recorded local image, an initial version using
+\code{idivide} at the type maximum did not pass formatting tests:
+$2^{64}-1$ was rendered with an incorrect decimal ending.
+These tests failed before any positive result was published.
+The supplied source does not use this division. This observation is a
+local runtime result, not a conclusion about all MATLAB/Octave versions.
 
-\section{Protocole de corrélation des trois chemins}
-Pour chaque vecteur $i$, notons $J_i$ la décision BigInt, $M_i$ celle du
-runtime numérique réellement exécuté et $R_i$ le résultat Rust approprié.
-Le corpus et chaque résultat doivent porter des identifiants uniques et
-être reliés par leurs empreintes. L'égalité des ensembles d'identifiants,
-des valeurs et des effectifs est vérifiée \emph{avant} celle des décisions.
-Une omission, duplication, erreur de processus ou sortie illisible ne vaut
-jamais un refus métier réussi.
+\section{Protocol for correlating the three paths}
+For each vector $i$, let $J_i$ denote the BigInt decision, $M_i$ that of
+the numerical runtime actually executed, and $R_i$ the appropriate Rust result.
+The corpus and every result must carry unique identifiers and be linked
+by their hashes. Equality of identifier sets, values and counts is checked
+\emph{before} equality of decisions.
+An omission, duplicate, process error or unreadable output never counts
+as a successful business rejection.
 
 \begin{center}
 \fbox{\begin{minipage}{.89\linewidth}\centering
-Corpus synthétique commun : identifiants, catégories, entiers décimaux\\[5pt]
+Shared synthetic corpus: identifiers, categories, decimal integers\\[5pt]
 $\swarrow\qquad\qquad\downarrow\qquad\qquad\searrow$\\[5pt]
-BigInt\quad\textbar\quad MATLAB ou Octave\quad\textbar\quad Rust + Bulletproofs\\[5pt]
+BigInt\quad\textbar\quad MATLAB or Octave\quad\textbar\quad Rust + Bulletproofs\\[5pt]
 $\searrow\qquad\qquad\downarrow\qquad\qquad\swarrow$\\[5pt]
-Jointure exacte, décisions comparées, étapes et erreurs conservées
+Exact join, compared decisions, preserved stages and errors
 \end{minipage}}
 \end{center}
-MATLAB et Octave exécutant la même source ne sont pas deux implémentations
-indépendantes du prédicat. Des chemins concordants peuvent partager une
-erreur de spécification. La preuve algébrique et les contre-exemples métier
-restent donc nécessaires.
+MATLAB and Octave running the same source are not two independent
+implementations of the predicate. Agreeing paths may share a specification
+error. The algebraic proof and business counterexamples therefore remain
+necessary.
 
 \begin{center}\small
 \begin{tabular}{p{.24\linewidth}p{.66\linewidth}}
 \toprule
-Classe d'essai & Condition de réussite et sens du résultat \\
+Test class & Success condition and meaning of the result \\
 \midrule
-Cas arithmétique valide & $J_i=M_i=\mathrm{vrai}$ ; preuves A et B générées,
- puis acceptées par un processus vérifieur distinct sur les attentes épinglées. \\
-Cas arithmétique invalide & $J_i=M_i=\mathrm{faux}$ ; le wrapper Rust peut
- refuser avant génération. Ce refus n'est pas un test du vérifieur de plages. \\
-Contournement du garde-fou du prover & Construire avec l'API de la bibliothèque
- une tentative hors plage ; observer séparément erreur de génération ou rejet
- cryptographique. Ne pas compter une absence de preuve comme une preuve rejetée. \\
-Preuve modifiée & Garder un encodage structurel valide et, lorsque requis,
- re-signer le bundle de fixture. Le refus doit atteindre l'étape cryptographique
- revendiquée, au lieu de s'arrêter à une signature extérieure incorrecte. \\
-Contexte ou politique modifiés & Refus d'autorisation distinct d'un échec
- arithmétique ; compte d'effets inchangé dans les essais applicatifs concernés. \\
+Valid arithmetic case & $J_i=M_i=\mathrm{true}$; A and B proofs generated,
+ then accepted by a separate verifier process against pinned expectations. \\
+Invalid arithmetic case & $J_i=M_i=\mathrm{false}$; the Rust wrapper may
+ reject before generation. This rejection does not test the range verifier. \\
+Bypassing the prover guard & Use the library API to construct an out-of-range
+ attempt; observe generation failure or cryptographic rejection separately.
+ Do not count the absence of a proof as a rejected proof. \\
+Modified proof & Preserve a structurally valid encoding and, when required,
+ re-sign the fixture bundle. Rejection must reach the claimed cryptographic
+ stage rather than stopping at an invalid outer signature. \\
+Modified context or policy & Authorization rejection distinct from arithmetic
+ failure; unchanged effect count in the relevant application tests. \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-Le vérifieur de campagne ne reçoit ni masques ni clé privée du détenteur.
-Les montants du corpus sont synthétiques et publics pour comparer les
-oracles ; cela ne constitue pas un test d'anonymat. Les preuves, métadonnées
-et engagements restent corrélables. Un processus séparé démontre une
-frontière d'entrée testée, pas une isolation matérielle ou un audit externe.
+The campaign verifier receives neither masks nor the holder's private key.
+Corpus amounts are synthetic and public to compare oracles; this is not
+an anonymity test. Proofs, metadata and commitments remain linkable.
+A separate process demonstrates a tested input boundary, not hardware
+isolation or an external audit.
 
-\section{Couverture, artefacts et interprétation}
-Les tailles 128, 1\,024 et 4\,096 sont des paramètres de campagne, pas des
-résultats présumés. Un rapport doit donner les cas effectivement terminés,
-leurs catégories, les deux verdicts arithmétiques, le point exact de refus
-Rust et les preuves réellement vérifiées. Les frontières comprennent
-$0$, $1$, $N-1$, $N$, $N+1$, $2N-1$, $2N$, $2^{53}\pm1$, $U$ et les
-relations $c<a$, $c=a$, $c-a=N-1$, $c-a=N$. Le parsing teste notamment
-$U+1$, les zéros initiaux, signes, nombres JSON, champs supplémentaires et
-identifiants dupliqués.
+\section{Coverage, artifacts and interpretation}
+Sizes 128, 1\,024 and 4\,096 are campaign parameters, not assumed results.
+A report must state cases actually completed, their categories, both
+arithmetic verdicts, the exact Rust rejection point and proofs actually
+verified. Boundaries include
+$0$, $1$, $N-1$, $N$, $N+1$, $2N-1$, $2N$, $2^{53}\pm1$, $U$ and the
+relations $c<a$, $c=a$, $c-a=N-1$, $c-a=N$. Parsing tests include
+$U+1$, leading zeros, signs, JSON numbers, extra fields and duplicate
+identifiers.
 
-L'autotest local exécuté sous Octave 7.3.0 le 17 octobre 2026 a vérifié
-11 cas de frontière, rejeté 36 entrées invalides et refusé un écrasement
-de fichier. Il a parcouru les 4\,096 paires du carré $[0,63]^2$, dont
-2\,016 satisfont $P$. Cet autotest est numérique ; il n'exécute pas Rust.
-Le statut d'une campagne corrélée complète est déterminé par ses artefacts,
-et non par ces nombres ou par la compilation du présent document.
+The local self-test run under Octave 7.3.0 on 17 October 2026 checked
+11 boundary cases, rejected 36 invalid inputs and refused a file overwrite.
+It traversed all 4\,096 pairs in the square $[0,63]^2$, of which
+2\,016 satisfy $P$. This self-test is numerical; it does not execute Rust.
+The status of a complete correlated campaign is determined by its artifacts,
+not by these numbers or by compilation of this document.
 
-Les fichiers publics prévus comprennent \code{vectors.json},
-\code{octave.json} ou \code{matlab.json}, \code{prover-results.json},
-\code{verifier-results.json}, \code{correlation.json}, les requêtes publiques
-de vérification compressées, un rapport HTML et ses figures. Ils sont placés
-dans un nouveau répertoire d'exécution ; aucune archive antérieure n'est
-écrasée. Les champs \code{runtime}, \code{runtime_version} et
-\code{executed_in_matlab} distinguent les moteurs réellement utilisés.
-Une exécution GitHub Actions ne remplace pas cette attribution ; une action
-configurée ou un job échoué ne vaut pas une exécution MATLAB réussie.
+Planned public files include \code{vectors.json},
+\code{octave.json} or \code{matlab.json}, \code{prover-results.json},
+\code{verifier-results.json}, \code{correlation.json}, compressed public
+verification requests, an HTML report and its figures. They are placed
+in a new run directory; no earlier archive is overwritten.
+The \code{runtime}, \code{runtime_version} and
+\code{executed_in_matlab} fields distinguish the engines actually used.
+A GitHub Actions run does not replace this attribution; a configured action
+or failed job is not a successful MATLAB execution.
 
-Les figures doivent dériver de résultats présents et porter effectifs,
-unités et erreurs. Un panneau sans mesure est marqué « non mesuré ».
-Les latences locales n'établissent ni SLA ni supériorité à Vega : les
-relations, contrats d'émission et conditions diffèrent. Aucun résultat GPU
-n'est déduit de ce test CPU. Des tailles de corpus croissantes ne mesurent
-pas la probabilité cryptographique de soundness et ne démontrent pas une
-couverture exhaustive du domaine $\mathcal D$.
+Figures must derive from available results and include counts, units and
+errors. A panel without measurements is marked as ``not measured''.
+Local latencies establish neither an SLA nor superiority over Vega:
+relations, issuance contracts and conditions differ.
+No GPU result is inferred from this CPU test. Increasing corpus sizes
+do not measure cryptographic soundness probability or demonstrate exhaustive
+coverage of domain $\mathcal D$.
 
-Les preuves conditionnelles ici sont rédigées et relues, sans assistant
-de preuve formelle. Les hypothèses de connaissance, de liaison et de
-signatures restent héritées ; l'autorisation distante exactement une fois,
-la vérité des sources, les canaux auxiliaires et la qualification bancaire
-restent hors portée. Un manifeste SHA-256 lie les octets sous une référence
-de confiance ; sa date locale n'est pas un horodatage tiers et son contenu
-ne prouve pas la sémantique d'une assertion.
+The conditional proofs here are written and reviewed without a formal proof
+assistant. Knowledge, binding and signature assumptions remain inherited;
+exactly-once remote authorization, source truth, side channels and banking
+qualification remain out of scope. A SHA-256 manifest binds bytes under a
+trusted reference; its local date is not a third-party timestamp and its
+content does not prove the semantics of a claim.
 
 \bibliographystyle{plainnat}
 \bibliography{circuit-validation}

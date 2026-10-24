@@ -1,32 +1,32 @@
-# 07 — Acquérir des faits authentifiés et complets
+# 07 — Acquire authenticated and complete facts
 
-Jalon : M3. Priorité : P0. Dépendances : contrat de pilote validé.
+Milestone: M3. Priority: P0. Dependencies: validated pilot contract.
 
 ## User story
 
-Comme client, j'accepte les autorités factuelles convenues mais ne dois pas
-croire des booléens librement fabriqués par le fournisseur ou le LLM.
+As a customer, I accept the agreed factual authorities but must not
+trust booleans freely fabricated by the supplier or the LLM.
 
-## Architecture technique
+## Technical architecture
 
-Connecteurs Jira/SonarQube/GitLab en lecture avec TLS, pagination, timeouts,
-allowlist et normalisation versionnée. Pour le profil critique, inclure IAM,
-scan complet, signature d'artefact, restauration et métriques canary. Réutiliser
-Sigstore/in-toto ; vérifier les possibilités d'Automata avant réécriture.
-Chaque attestation porte sujet, émetteur, date de mesure, date de collecte,
-couverture, configuration, révision et statut. Plusieurs clés d'un même opérateur
-ne sont pas automatiquement des autorités indépendantes.
+Read-only Jira/SonarQube/GitLab connectors with TLS, pagination, timeouts,
+allowlist and versioned normalization. For the critical profile, include IAM,
+complete scan, artifact signature, restoration and canary metrics. Reuse
+Sigstore/in-toto; check what Automata offers before rewriting.
+Each attestation carries subject, issuer, measurement date, collection date,
+coverage, configuration, revision and status. Several keys of the same operator
+are not automatically independent authorities.
 
-## Critères d'acceptation
+## Acceptance criteria
 
-- Pas de fallback conforme sur absence/erreur ; pas de renouvellement artificiel
-  de l'âge d'un vieux rapport lors d'une simple collecte.
-- Signatures vérifiables par 02, mapping ressources approuvé côté serveur.
-- Rapport omis, doublon, mauvais artefact, scan incomplet, source inconnue refusés.
-- Aucune signature HMAC de fixture présentée comme signature éditeur.
+- No compliant fallback on absence/error; no artificial renewal of an old
+  report's age during a mere collection.
+- Signatures verifiable by 02, resource mapping approved server-side.
+- Omitted report, duplicate, wrong artifact, incomplete scan, unknown source refused.
+- No fixture HMAC signature presented as a vendor signature.
 
-## Commandes de test
+## Test commands
 
-`npm test`, `npm run typecheck` ; ajouter serveurs HTTP factices pour 401/429,
-pagination, timeouts, redirections et signatures altérées. Intégration réelle
-uniquement en environnement de test avec comptes dédiés.
+`npm test`, `npm run typecheck`; add fake HTTP servers for 401/429,
+pagination, timeouts, redirects and tampered signatures. Real integration
+only in a test environment with dedicated accounts.

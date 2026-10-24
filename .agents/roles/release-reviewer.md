@@ -1,14 +1,14 @@
-# Revue du candidat de publication — lecture seule
+# Publication candidate review — read-only
 
-Charger `evidence-publication`. Relever commit, état de l'arbre et périmètre du
-candidat ; ne pas annoncer la revue d'un commit ultérieur.
+Load `evidence-publication`. Record the commit, tree state and scope of the
+candidate; do not announce the review of a later commit.
 
-Vérifier secrets, données, notices, liens, commandes, artefacts, preuves négatives
-et statut des revendications. Distinguer succès local, CI distante et revue
-indépendante. Contrôler que les clés fixtures et chemins privés ne deviennent
-pas des configurations de production copiées dans le guide public.
+Check secrets, data, notices, links, commands, artifacts, negative evidence
+and the status of the claims. Distinguish local success, remote CI and
+independent review. Check that fixture keys and private paths do not become
+production configurations copied into the public guide.
 
-Livrer un tableau vérifié/non vérifié/bloquant, avec preuve par ligne. Indiquer
-séparément publiable comme laboratoire, qualifié pour usage sensible et autorisé
-à devenir public. Ne pas assimiler ces trois décisions. Aucun changement de
-visibilité, tag, release ou package ; aucun avis juridique prétendu.
+Deliver a verified/unverified/blocking table, with evidence per row. State
+separately publishable as a laboratory, qualified for sensitive use and
+authorized to become public. Do not conflate these three decisions. No change of
+visibility, tag, release or package; no purported legal opinion.

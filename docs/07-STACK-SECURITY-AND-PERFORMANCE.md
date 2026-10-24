@@ -1,315 +1,307 @@
-# Pile RISC Zero : sécurité, confidentialité et performance
+# RISC Zero stack: security, confidentiality and performance
 
-État documentaire : 15 octobre 2026. Périmètre : laboratoire `labs/risc0`,
-séparé du gateway MCP en simulation. Les résultats d'exécution et les commandes
-reproductibles sont consignés dans [le rapport du banc](08-RISC0-LAB-RESULTS.md).
-La présence d'un contrôle dans le code n'est pas un résultat de test.
+Documentation status: October 15, 2026. Scope: the `labs/risc0` laboratory,
+separate from the simulated MCP gateway. Execution results and reproducible
+commands are recorded in [the testbed report](08-RISC0-LAB-RESULTS.md).
+The presence of a control in code is not a test result.
 
-## 1. Décision et limite d'emploi
+## 1. Decision and usage limitation
 
-Le laboratoire retient **RISC Zero 3.0.6, preuve STARK récursive `Succinct`,
-génération CPU locale et vérification séparée sans witness**. Cette décision
-permet de tester la relation métier partagée dans une vraie zkVM et de mesurer
-son coût. Elle n'homologue ni une plateforme critique ni la confidentialité de
-secrets réels. La [release 3.0.6](https://github.com/risc0/risc0/releases/tag/v3.0.6)
-est une version publiée ; le choix d'une version exacte facilite la
-reproduction, sans constituer une certification de sécurité.
+The laboratory selects **RISC Zero 3.0.6, recursive `Succinct` STARK proofs,
+local CPU generation and separate verification without the witness**.
+This decision enables testing the shared business relation in a real zkVM
+and measuring its cost. It qualifies neither a critical platform nor the
+confidentiality of real secrets. [Release 3.0.6](https://github.com/risc0/risc0/releases/tag/v3.0.6)
+is a published version; choosing an exact version facilitates reproduction
+without constituting security certification.
 
-Le pilote utilise exclusivement des fixtures. Son autorité Ed25519 possède
-une clé publique fixée dans le guest **et une graine privée de test publiée**
-dans le runner (`[7; 32]`). Tout lecteur peut donc signer ces fixtures. Le test
-démontre le mécanisme de vérification dans le guest ; il ne fournit aucune
-authenticité Jira, SonarQube, GitLab ou fournisseur.
+The pilot uses fixtures exclusively. Its Ed25519 authority has a public key
+fixed in the guest **and a published private test seed** in the runner
+(`[7; 32]`). Any reader can therefore sign these fixtures. The test demonstrates
+the verification mechanism in the guest; it provides no Jira, SonarQube,
+GitLab or supplier authenticity.
 
-Le vérifieur du laboratoire réalise une **vérification historique** : une
-preuve valide d'une décision à la date liée au challenge. Il n'a ni horloge
-d'autorisation, ni réserve durable de nonce, ni credentials, ni fonction de
-mutation. Son succès ne permet pas à lui seul un merge ou un déploiement.
+The laboratory verifier performs **historical verification**: a valid proof
+of a decision at the date bound to the challenge. It has no authorization
+clock, durable nonce reservation, credentials or mutation function.
+Its success alone does not permit a merge or deployment.
 
-## 2. Relation effectivement calculée
+## 2. Relation actually computed
 
-Le guest `labs/risc0/methods/guest` appelle `lab-statement`, qui réutilise
-`crates/policy-statement` et `crates/policy-engine-core`. La logique métier et
-les engagements sont ainsi partagés avec l'évaluation native. Le guest et le
-cœur sont déclarés `no_std` ; sérialisation et journal utilisent `alloc`.
+The `labs/risc0/methods/guest` guest calls `lab-statement`, which reuses
+`crates/policy-statement` and `crates/policy-engine-core`. Business logic and
+commitments are thus shared with native evaluation. The guest and core are
+declared `no_std`; serialization and the journal use `alloc`.
 
 ```mermaid
 flowchart LR
-    C[Challenge public attendu] --> A[Signature de fixture]
-    W[Faits privés et sel] --> G[Guest RISC Zero épinglé]
+    C[Expected public challenge] --> A[Fixture signature]
+    W[Private facts and salt] --> G[Pinned RISC Zero guest]
     A --> G
-    G --> J[Journal public et preuve Succinct]
-    J --> V[Vérifieur indépendant]
+    G --> J[Public journal and Succinct proof]
+    J --> V[Independent verifier]
     C --> V
-    V --> H[Verdict historique sans mutation]
+    V --> H[Historical verdict without mutation]
 ```
 
-Le calcul dans le guest suit ces étapes :
+Computation inside the guest follows these steps:
 
-1. Lire une entrée bornée à 16 384 octets et désérialiser `SignedRequest`.
-2. Vérifier strictement la signature Ed25519 avec la clé fixée dans le guest.
-   Le message signé est le digest canonique séparé par domaine de **tout le
-   challenge public**, domaine `zk-mcp/lab-source-attestation/v1`.
-3. Recalculer l'engagement des faits et du sel, ainsi que celui de la politique.
-   Les comparer aux valeurs du challenge. La signature lie donc les faits
-   indirectement, par leur engagement complet ; elle ne signe pas seulement
-   un booléen « conforme ».
-4. Vérifier bornes et format, puis évaluer les règles à `issued_at_ms` et sur
-   la révision liée au challenge. Le guest ne lit pas l'heure réelle.
-5. Publier le journal canonique : version, backend, profil, digest ELF déclaré,
-   hash des entrées publiques, décision et date liée au challenge.
+1. Read an input bounded at 16,384 bytes and deserialize `SignedRequest`.
+2. Strictly verify the Ed25519 signature using the key fixed in the guest.
+   The signed message is the domain-separated canonical digest of **the entire
+   public challenge**, domain `zk-mcp/lab-source-attestation/v1`.
+3. Recompute the commitment to the facts and salt, and the policy commitment.
+   Compare them with the challenge values. The signature therefore binds facts
+   indirectly through their complete commitment; it does not merely sign a
+   “compliant” boolean.
+4. Check bounds and format, then evaluate rules at `issued_at_ms` and against
+   the revision bound to the challenge. The guest does not read actual time.
+5. Publish the canonical journal: version, backend, profile, declared ELF digest,
+   public-input hash, decision and date bound to the challenge.
 
-Les entrées publiques couvrent audience, tenant, outil, projet, MR, SHA,
-politique, engagements, nonce et expiration. Les faits détaillés et le sel ne
-sont pas écrits dans le journal. Celui-ci divulgue cependant la décision et
-les codes de violation ; ces sorties sont des informations publiques du
-profil, pas des secrets protégés par la preuve.
+Public inputs cover audience, tenant, tool, project, MR, SHA, policy,
+commitments, nonce and expiration. Detailed facts and salt are not written to
+the journal. However, it discloses the decision and violation codes; these
+outputs are public information in the profile, not secrets protected by the proof.
 
-La vérification indépendante doit recevoir le challenge conservé par le
-vérifieur, jamais un challenge de remplacement extrait de la preuve. Le banc
-exporte ce fichier depuis son runner pour la reproductibilité : cela ne
-simule pas une émission indépendante par un client de production.
+Independent verification must receive the challenge retained by the verifier,
+never a replacement challenge extracted from the proof. The testbed exports
+this file from its runner for reproducibility: this does not simulate
+independent issuance by a production customer.
 
-## 3. Frontières de confiance
+## 3. Trust boundaries
 
-| Élément | Garantie recherchée dans le laboratoire | Limite restante |
+| Component | Guarantee sought in the laboratory | Remaining limitation |
 | --- | --- | --- |
-| Guest métier | Signature, engagements, bornes et règles exécutés dans l'image attendue | Un bug de spécification peut être exécuté et prouvé correctement |
-| Autorité de fixture | Chemin Ed25519 vérifié dans le guest | Secret de signature public ; aucune provenance fournisseur |
-| Prover local | Fournit un receipt vérifiable | Voit le witness ; machine, mémoire et fichiers doivent rester de confiance pour la confidentialité |
-| Vérifieur | Contrôle la preuve complète, l'image, le journal et le challenge attendu | Son binaire et sa configuration constituent une racine de confiance |
-| Horloge et fraîcheur | Dates liées cryptographiquement au challenge | L'heure présente, la révocation et la fraîcheur au dispatch restent hors preuve |
-| Nonce et état d'opération | Champs liés dans la relation | Unicité, concurrence, redémarrage et reprise exigent un stockage transactionnel externe |
-| API cible | Aucun appel dans ce banc | Préconditions, effet réel et résultat ambigu ne sont pas prouvés |
+| Business guest | Signature, commitments, bounds and rules executed in the expected image | A specification bug can be executed and proved correctly |
+| Fixture authority | Ed25519 path verified inside the guest | Public signing secret; no supplier provenance |
+| Local prover | Provides a verifiable receipt | Sees the witness; machine, memory and files must remain trusted for confidentiality |
+| Verifier | Checks the complete proof, image, journal and expected challenge | Its binary and configuration are a root of trust |
+| Clock and freshness | Dates cryptographically bound to the challenge | Current time, revocation and freshness at dispatch remain outside the proof |
+| Nonce and operation state | Fields bound in the relation | Uniqueness, concurrency, restart and recovery require external transactional storage |
+| Target API | No call in this testbed | Preconditions, actual effect and ambiguous result are not proved |
 
-Une extension fournisseur-client devra remplacer l'autorité publique de test
-par un registre de confiance administré côté client. La vérification de
-plusieurs attestations indépendantes, de leur objet commun, de leur chaîne de
-signature et de leur fraîcheur n'est pas démontrée par cette fixture unique.
-Un collecteur signé atteste ce qu'il affirme avoir observé ; il ne transforme
-pas des données déclaratives en vérité sur une plateforme.
+A supplier–customer extension will need to replace the public test authority
+with a customer-administered trust registry. Verification of multiple independent
+attestations, their common subject, signature chain and freshness is not
+demonstrated by this single fixture. A signed collector attests to what it
+claims to have observed; it does not turn declarative data into truth about
+a platform.
 
-L'agent ne choisit ni le guest accepté, ni la clé de confiance, ni le challenge
-attendu. La compromission d'un agent peut alors provoquer des refus ou un déni
-de service ; elle ne doit pas lui donner un chemin de mutation contournant le
-vérifieur. Cette dernière propriété exige les tests du gateway et de la cible,
-distincts de ce laboratoire sans effets de bord.
+The agent chooses neither the accepted guest, the trust key nor the expected
+challenge. A compromised agent may then cause denials or denial of service;
+it must not gain a mutation path that bypasses the verifier. This last property
+requires gateway and target tests, separate from this side-effect-free laboratory.
 
-## 4. Formats de preuve et vérification
+## 4. Proof formats and verification
 
-| Format RISC Zero | Caractéristique documentée | Décision du banc |
+| RISC Zero format | Documented characteristic | Testbed decision |
 | --- | --- | --- |
-| `Composite` / `fast()` | Preuves de segments ; taille liée à l'exécution ; compression récursive possible | Refus à l'import ; utile seulement comme comparaison future séparée |
-| `Succinct` | Compression récursive ; taille indépendante de la longueur d'exécution pour le format de preuve | Seul format accepté |
-| `Groth16` | Preuve compacte adaptée aux vérifieurs de blockchain ; génération requérant Docker | Non utilisé ; ajoute les hypothèses du SNARK et son setup |
+| `Composite` / `fast()` | Segment proofs; size tied to execution; recursive compression possible | Rejected on import; useful only as a separate future comparison |
+| `Succinct` | Recursive compression; proof-format size independent of execution length | Only accepted format |
+| `Groth16` | Compact proof suited to blockchain verifiers; generation requires Docker | Not used; adds SNARK assumptions and its setup |
 
-Ces caractéristiques viennent de l'[API `ProverOpts` 3.0.6](https://docs.rs/risc0-zkvm/3.0.6/risc0_zkvm/struct.ProverOpts.html).
-Une taille de preuve indépendante de la durée ne signifie pas que tout le
-bundle, son journal ou les métadonnées de transport ont une taille constante.
+These characteristics come from the [`ProverOpts` 3.0.6 API](https://docs.rs/risc0-zkvm/3.0.6/risc0_zkvm/struct.ProverOpts.html).
+Proof size independent of duration does not mean that the whole bundle,
+its journal or transport metadata has constant size.
 
-Le vérifieur épingle deux identités distinctes :
+The verifier pins two distinct identities:
 
-- `POLICY_PROOF_GUEST_ID`, l'image native RISC Zero utilisée par
-  `receipt.verify_with_context(...)` ;
-- le SHA-256 du fichier ELF intégré, comparé au champ `elf_image_id` du journal.
+- `POLICY_PROOF_GUEST_ID`, the native RISC Zero image used by
+  `receipt.verify_with_context(...)`;
+- the SHA-256 of the embedded ELF file, compared with the journal's
+  `elf_image_id` field.
 
-Le digest ELF fourni en entrée au guest n'est pas une identité que le guest
-se prouve lui-même. C'est la combinaison de l'image native vérifiée et de la
-comparaison au digest ELF connu du vérifieur qui le lie au profil accepté.
+The ELF digest supplied as input to the guest is not an identity that the
+guest proves about itself. The combination of the verified native image and
+comparison with the ELF digest known to the verifier binds it to the accepted
+profile.
 
-La méthode `verify_with_context` vérifie notamment l'image attendue, le
-journal et une terminaison réussie. `verify_integrity` seule ne remplace pas
-ce contrôle d'image et de résultat. Les métadonnées libres d'un receipt ne
-sont pas une autorité de sélection de version. Voir le
-[code du receipt 3.0.6](https://raw.githubusercontent.com/risc0/risc0/v3.0.6/risc0/zkvm/src/receipt.rs).
+The `verify_with_context` method checks, among other things, the expected
+image, journal and successful termination. `verify_integrity` alone does not
+replace this image and outcome check. Free-form receipt metadata is not an
+authority for selecting a version. See the
+[3.0.6 receipt code](https://raw.githubusercontent.com/risc0/risc0/v3.0.6/risc0/zkvm/src/receipt.rs).
 
-L'import local impose le format `zk-agentik-risc0-lab/1`, un bundle de 2 MiB
-au plus, un journal de 4 096 octets au plus, du Base64 canonique et une
-désérialisation bornée du type concret `SuccinctReceipt<ReceiptClaim>`.
-Il n'accepte pas un `Receipt` polymorphe dont l'émetteur choisirait la variante
-`Fake` ou `Composite`. Ces bornes réduisent la surface d'entrée ; elles ne
-remplacent pas un fuzzing du parseur et des essais de consommation mémoire.
+Local import enforces the `zk-agentik-risc0-lab/1` format, a bundle of at most
+2 MiB, a journal of at most 4,096 bytes, canonical Base64 and bounded
+deserialization of the concrete `SuccinctReceipt<ReceiptClaim>` type.
+It does not accept a polymorphic `Receipt` whose sender could choose the
+`Fake` or `Composite` variant. These bounds reduce the input surface;
+they do not replace parser fuzzing and memory-consumption tests.
 
-### Mode développement interdit
+### Development mode prohibited
 
-Le workspace hôte/vérifieur compile `risc0-zkvm` avec `disable-dev-mode` et
-`default-features = false`. Les options du prover et le contexte du vérifieur
-fixent aussi `with_dev_mode(false)`. Le processus rejette une activation de
-`RISC0_DEV_MODE`. Une fausse preuve est une entrée négative explicite du banc.
-Le [code amont de cette option](https://raw.githubusercontent.com/risc0/risc0/v3.0.6/risc0/zkvm/src/lib.rs)
-documente la désactivation à la compilation.
+The host/verifier workspace compiles `risc0-zkvm` with `disable-dev-mode` and
+`default-features = false`. Prover options and verifier context also set
+`with_dev_mode(false)`. The process rejects activation of `RISC0_DEV_MODE`.
+A fake proof is an explicit negative input in the testbed.
+The [upstream code for this option](https://raw.githubusercontent.com/risc0/risc0/v3.0.6/risc0/zkvm/src/lib.rs)
+documents compile-time disabling.
 
-Cette option Cargo ne recompilie pas rétroactivement le binaire externe
-`r0vm` installé. La frontière d'acceptation reste le vérifieur compilé avec
-l'interdiction et le format `Succinct` imposé. Modifier l'environnement ou
-remplacer le prover ne doit jamais suffire à faire accepter un receipt simulé.
+This Cargo option does not retroactively recompile the installed external
+`r0vm` binary. The acceptance boundary remains the verifier compiled with
+the prohibition and the enforced `Succinct` format. Changing the environment
+or replacing the prover must never suffice to get a simulated receipt accepted.
 
-## 5. Confidentialité et avis de sécurité
+## 5. Confidentiality and security advisories
 
-Le modèle officiel distingue intégrité du calcul et confidentialité. Il
-annonce des budgets de sécurité de 96 bits pour le composant RISC-V et de
-99 bits pour la récursion, sous ses hypothèses cryptographiques ; ces valeurs
-ne s'additionnent pas. Il précise aussi qu'une preuve mathématique de la
-propriété ZK n'est pas fournie. Les traces RISC-V non récursives exposent une
-information de longueur d'exécution ; la récursion traite ce point selon les
-auteurs. Voir le [modèle de sécurité officiel](https://dev.risczero.com/api/security-model).
+The official model distinguishes computation integrity from confidentiality.
+It claims security budgets of 96 bits for the RISC-V component and 99 bits
+for recursion under its cryptographic assumptions; these values do not add
+up. It also states that a mathematical proof of the ZK property is not provided.
+Nonrecursive RISC-V traces expose execution-length information; according to
+the authors, recursion addresses this point. See the
+[official security model](https://dev.risczero.com/api/security-model).
 
-L'[avis GHSA-5xgj-pmjj-gw49](https://github.com/risc0/risc0/security/advisories/GHSA-5xgj-pmjj-gw49),
-publié le 15 juillet 2024 et consulté le 15 octobre 2026, indique encore toutes
-versions affectées et aucune version corrigée. Il explique la limite des
-arguments de confidentialité pour certaines implémentations STARK ; les
-auteurs n'y rapportent pas d'attaque connue exploitant cette faiblesse.
-**Ce laboratoire ne peut donc pas justifier une promesse de confidentialité
-mathématiquement établie pour des secrets critiques.** Ne pas transmettre le
-witness au vérifieur est une propriété d'interface observable, plus limitée.
+[Advisory GHSA-5xgj-pmjj-gw49](https://github.com/risc0/risc0/security/advisories/GHSA-5xgj-pmjj-gw49),
+published July 15, 2024 and consulted October 15, 2026, still lists all versions
+as affected and no patched version. It explains the limitation of confidentiality
+arguments for certain STARK implementations; the authors report no known attack
+exploiting this weakness.
+**This laboratory therefore cannot justify a promise of mathematically
+established confidentiality for critical secrets.** Not sending the witness
+to the verifier is an observable interface property, with a narrower scope.
 
-La preuve n'efface pas les fuites possibles par le journal, des requêtes
-répétées, les durées, les profils de cycles ou les artefacts du prover.
-L'exécution locale évite de confier le witness à un service de preuve distant ;
-elle ne protège pas ce witness contre l'administrateur de l'hôte.
+The proof does not eliminate possible leaks through the journal, repeated
+queries, durations, cycle profiles or prover artifacts.
+Local execution avoids entrusting the witness to a remote proving service;
+it does not protect the witness from the host administrator.
 
-L'[avis CVE-2025-61588 / `sys_read`](https://github.com/risc0/risc0/security/advisories/GHSA-jqq4-c7wq-36h7)
-du 1er octobre 2025 concerne une possibilité de corruption du guest par
-l'hôte. Les correctifs sont annoncés pour `risc0-zkvm` 2.3.2 / 3.0.3 et
-`risc0-zkvm-platform` 2.1.0. Il faut reconstruire le guest et renouveler son
-image autorisée ; mettre à jour le prover seul ne corrige pas un ancien ELF.
-Pour le banc 3.0.6, contrôler également les dépendances réellement résolues :
+The [CVE-2025-61588 / `sys_read` advisory](https://github.com/risc0/risc0/security/advisories/GHSA-jqq4-c7wq-36h7)
+of October 1, 2025 concerns possible guest corruption by the host.
+Fixes are announced for `risc0-zkvm` 2.3.2 / 3.0.3 and
+`risc0-zkvm-platform` 2.1.0. The guest must be rebuilt and its authorized
+image renewed; updating only the prover does not fix an old ELF.
+For the 3.0.6 testbed, also check the dependencies actually resolved:
 
 ```sh
 cargo tree --depth 0 -p risc0-zkvm-platform --manifest-path labs/risc0/methods/guest/Cargo.toml
 ```
 
-Le pin 3.0.6 ne signifie pas « aucun défaut connu ou futur ». Les lockfiles,
-le guest reconstruit, les identités d'image et la revue des avis doivent être
-renouvelés ensemble lors d'une mise à jour. Ce document ne constitue pas un
-audit exhaustif des dépendances.
+Pinning 3.0.6 does not mean “no known or future defect”. Lockfiles, the rebuilt
+guest, image identities and advisory review must be renewed together during
+an update. This document is not an exhaustive dependency audit.
 
-Enfin, cette pile n'est pas entièrement post-quantique : l'autorité utilise
-Ed25519. Le choix d'un engagement SHA-256 ou d'une preuve STARK ne change pas
-la nature de cette signature. Le profil Groth16 ajouterait encore des
-hypothèses différentes ; il n'est pas inclus dans la décision du banc.
+Finally, this stack is not entirely post-quantum: the authority uses Ed25519.
+Choosing a SHA-256 commitment or a STARK proof does not change the nature of
+that signature. The Groth16 profile would add further different assumptions;
+it is not included in the testbed's decision.
 
-## 6. Patches cryptographiques et environnement local
+## 6. Cryptographic patches and local environment
 
-Le manifeste du guest épingle les forks RISC Zero suivants, sans
-réimplémenter les primitives :
+The guest manifest pins the following RISC Zero forks without reimplementing
+primitives:
 
-| Crate du guest | Révision fixée | Vérification de provenance |
+| Guest crate | Pinned revision | Provenance check |
 | --- | --- | --- |
-| `sha2` 0.10.9 | `8631fabdea7bdffa97b11868e04e73491d8e5bcf` | [Sélection du backend RISC Zero pour `riscv32`/`zkvm`](https://raw.githubusercontent.com/risc0/RustCrypto-hashes/8631fabdea7bdffa97b11868e04e73491d8e5bcf/sha2/src/sha256.rs) |
-| `curve25519-dalek` 4.1.3 | `385adda1fa3b66d9aaa8b8fcc99ddc324d33ba32` | [Commit d'intégration des accélérateurs RISC Zero](https://github.com/risc0/curve25519-dalek/commit/385adda1fa3b66d9aaa8b8fcc99ddc324d33ba32) |
-| `crypto-bigint` 0.5.5 | `3ab63a6f1048833f7047d5a50532e4a4cc789384` | [Fork officiel nécessaire au backend dalek accéléré](https://github.com/risc0/RustCrypto-crypto-bigint/commit/3ab63a6f1048833f7047d5a50532e4a4cc789384) |
+| `sha2` 0.10.9 | `8631fabdea7bdffa97b11868e04e73491d8e5bcf` | [RISC Zero backend selection for `riscv32`/`zkvm`](https://raw.githubusercontent.com/risc0/RustCrypto-hashes/8631fabdea7bdffa97b11868e04e73491d8e5bcf/sha2/src/sha256.rs) |
+| `curve25519-dalek` 4.1.3 | `385adda1fa3b66d9aaa8b8fcc99ddc324d33ba32` | [RISC Zero accelerator integration commit](https://github.com/risc0/curve25519-dalek/commit/385adda1fa3b66d9aaa8b8fcc99ddc324d33ba32) |
+| `crypto-bigint` 0.5.5 | `3ab63a6f1048833f7047d5a50532e4a4cc789384` | [Official fork required by the accelerated dalek backend](https://github.com/risc0/RustCrypto-crypto-bigint/commit/3ab63a6f1048833f7047d5a50532e4a4cc789384) |
 
-La documentation des [précompiles RISC Zero](https://dev.risczero.com/api/zkvm/precompiles)
-demande de vérifier leur résolution dans le `Cargo.lock` du guest et fournit
-`RISC0_INFO=1` pour observer leur utilisation. Elle prévient que ces chemins
-ne garantissent pas un temps constant d'exécution ou de preuve. Un patch
-déclaré n'est pas, à lui seul, une mesure d'accélération ; son gain doit être
-mesuré contre le même guest et les mêmes entrées sans ce patch.
+The [RISC Zero precompiles documentation](https://dev.risczero.com/api/zkvm/precompiles)
+requires checking their resolution in the guest's `Cargo.lock` and provides
+`RISC0_INFO=1` to observe their use. It warns that these paths do not guarantee
+constant execution or proving time. A declared patch is not itself a speedup
+measurement; its benefit must be measured against the same guest and inputs
+without that patch.
 
-Configuration visée pour le banc : conteneur Linux x86-64 sous Windows,
-limité à 8 CPU et 12 GiB, preuve CPU. Ces limites ne sont ni la RAM maximale
-observée ni une garantie que toute politique tient dans ce budget. La
-[documentation de preuve locale](https://dev.risczero.com/api/generating-proofs/local-proving)
-décrit le support CPU et le réglage des segments ; aucun GPU n'est requis
-pour ce profil.
+Target testbed configuration: Linux x86-64 container on Windows, limited to
+8 CPU and 12 GiB, CPU proof generation. These limits are neither the maximum
+RAM observed nor a guarantee that every policy fits this budget.
+The [local proving documentation](https://dev.risczero.com/api/generating-proofs/local-proving)
+describes CPU support and segment settings; no GPU is required for this profile.
 
-L'hôte construit explicitement `ExternalProver::new` avec le chemin local :
+The host explicitly constructs `ExternalProver::new` with the local path:
 
 ```text
 /root/.risc0/extensions/v3.0.6-cargo-risczero-x86_64-unknown-linux-gnu/r0vm
 ```
 
-Il n'utilise pas `default_prover`, ni la sélection Bonsai. Le chemin absolu
-évite une sélection accidentelle par le `PATH` ; il ne remplace pas la
-vérification de provenance et de digest du binaire installé. Le code fixe
-`segment_limit_po2(20)` et une limite de session de 16 000 000 cycles. Les
-versions effectives de l'outil guest, de `r0vm`, des lockfiles et du conteneur
-doivent accompagner les résultats.
+It uses neither `default_prover` nor Bonsai selection. The absolute path avoids
+accidental selection through `PATH`; it does not replace provenance and digest
+verification of the installed binary. The code sets `segment_limit_po2(20)`
+and a session limit of 16,000,000 cycles. Actual guest-tool, `r0vm`, lockfile
+and container versions must accompany the results.
 
-## 7. Mesures et critères réfutables
+## 7. Measurements and falsifiable criteria
 
-Le runner distingue génération de preuve, vérification, rejet d'un seal
-altéré et évaluation native signée. La génération inclut le lancement du
-sous-processus local ; elle ne comprend pas le réseau, la collecte ou un
-appel API. La taille du seal, celle du journal et celle du bundle sérialisé
-sont trois mesures différentes.
+The runner distinguishes proof generation, verification, tampered-seal rejection
+and signed native evaluation. Generation includes launching the local subprocess;
+it does not include network, collection or an API call. Seal size, journal size
+and serialized bundle size are three different measurements.
 
-Le runner utilise par défaut trois preuves et permet de un à vingt
-échantillons. Le champ `p95_ms` de cette petite série est un **quantile
-empirique exploratoire**, souvent son maximum ; ce n'est pas une estimation
-fiable du p95 d'un service. Le rapport doit publier toutes ces durées dans
-l'ordre, le nombre d'échantillons et distinguer lancement initial et suivants.
-La convention actuelle sélectionne, après tri, l'indice zéro-basé
-`min(floor(0.95 * n), n - 1)`.
+The runner defaults to three proofs and allows one to twenty samples.
+The `p95_ms` field of this small series is an **exploratory empirical quantile**,
+often its maximum; it is not a reliable estimate of a service p95.
+The report must publish all these durations in order, the sample count and
+distinguish the initial launch from subsequent ones. The current convention
+selects, after sorting, the zero-based index `min(floor(0.95 * n), n - 1)`.
 
-La vérification et le rejet de seal sont répétés 100 fois après échauffement.
-Cette expérience sur une même preuve renseigne le coût local à chaud. Elle
-ne représente pas la diversité des entrées adverses, des machines ou de la
-charge concurrente. Un p95 de service défendable exige une campagne séparée,
-un échantillonnage représentatif, une convention de quantile publiée et une
-incertitude statistique ; augmenter le nombre de répétitions identiques ne
-suffit pas.
+Verification and seal rejection are repeated 100 times after warmup.
+This experiment on the same proof characterizes local warm cost.
+It does not represent the diversity of adversarial inputs, machines or
+concurrent load. A defensible service p95 requires a separate campaign,
+representative sampling, a published quantile convention and statistical
+uncertainty; increasing identical repetitions is insufficient.
 
-| Hypothèse à tester | Expérience qui peut la réfuter | Condition de rejet |
+| Hypothesis to test | Experiment that can falsify it | Rejection condition |
 | --- | --- | --- |
-| Le calcul prouvé correspond au calcul partagé | Comparer journaux natif/guest pour les profils de base, critique et refusé | Toute divergence |
-| Le guest authentifie et lie ses entrées | Altérer signature, faits, engagement, politique ou contexte séparément | Acceptation d'une entrée dont la relation doit échouer |
-| Le vérifieur contrôle la preuve complète | Modifier un bit au milieu d'un seal correctement encadré, sans erreur de schéma préalable | Acceptation, même occasionnelle |
-| L'image et le challenge sont fixés par le vérifieur | Mauvaise image, journal modifié, autre tenant/projet/révision ou nonce | Verdict positif pour le mauvais énoncé |
-| Le mode simulé ne passe pas | Receipt `Fake`, activation du dev mode, type de preuve non accepté | Un chemin d'acceptation |
-| Une preuve valide peut porter un refus métier | Prouver le scénario `denied`, vérifier sa preuve, puis demander l'autorisation historique | Autorisation de la décision refusée |
-| Le vérifieur est utilisable sans witness | Exécuter le binaire séparé avec seulement preuve et challenge public attendu | Lecture requise des faits privés, du sel ou d'un fichier du prover |
-| La cible reste protégée en intégration future | Falsification, expiration, rejeu concurrent, crash et résultat API ambigu avec compteur externe | Mutation non autorisée ou réutilisation d'une opération consommée |
-| Le budget local est adapté | Mesurer cycles, temps, mémoire maximale et OOM sous les limites annoncées | Dépassement du budget décidé pour le pilote |
+| Proved computation matches shared computation | Compare native/guest journals for base, critical and denied profiles | Any divergence |
+| The guest authenticates and binds its inputs | Alter signature, facts, commitment, policy or context separately | Acceptance of an input whose relation must fail |
+| The verifier checks the complete proof | Change a bit in the middle of a correctly framed seal, without an earlier schema error | Acceptance, even occasionally |
+| Image and challenge are fixed by the verifier | Wrong image, changed journal, different tenant/project/revision or nonce | Positive verdict for the wrong statement |
+| Simulation mode cannot pass | `Fake` receipt, dev mode activation, unaccepted proof type | Any acceptance path |
+| A valid proof can carry a policy denial | Prove the `denied` scenario, verify its proof, then request historical authorization | Authorization of the denied decision |
+| The verifier is usable without the witness | Run the separate binary with only the proof and expected public challenge | Required reading of private facts, salt or a prover file |
+| The target remains protected in future integration | Tampering, expiration, concurrent replay, crash and ambiguous API result with external counter | Unauthorized mutation or reuse of a consumed operation |
+| The local budget is suitable | Measure cycles, time, peak memory and OOM under the stated limits | Exceeding the budget decided for the pilot |
 
-Les mutations de signature et de witness présentes dans le runner sont
-contrôlées par exécution du guest avec `execute`. Elles ne constituent pas
-à elles seules une campagne de preuves adverses. La ligne de tests sur la
-cible reste une obligation d'intégration : aucun compteur de mutation ne
-peut être présenté comme testé par ce laboratoire sans dispatch.
+Signature and witness mutations in the runner are checked by running the
+guest with `execute`. They do not alone constitute a campaign of adversarial
+proofs. The target test row remains an integration obligation: no mutation
+counter can be presented as tested by this testbed without dispatch.
 
-L'objectif « rejet sous 5 ms » doit porter sur une classe d'entrée et un
-périmètre nommés. Rejeter une expiration ou un JSON invalide sous ce seuil ne
-démontre pas la vérification cryptographique d'un seal falsifié sous ce même
-seuil. Si la mesure complète dépasse l'objectif, on conserve le refus fermé
-et on révise la latence attendue ou l'architecture.
+The “rejection under 5 ms” target must concern a named input class and scope.
+Rejecting an expiration or invalid JSON under that threshold does not
+demonstrate cryptographic verification of a forged seal under the same threshold.
+If the complete measurement exceeds the target, retain fail-closed rejection
+and revise the expected latency or architecture.
 
-### TTL de 30 secondes et preuve avant mutation
+### 30-second TTL and proof before mutation
 
-Les fixtures peuvent utiliser une durée de challenge de 30 secondes. Le
-banc historique ne contrôle pas cette durée contre l'heure de sa vérification.
-Il faut mesurer séparément :
+Fixtures may use a 30-second challenge lifetime. The historical testbed does
+not check this lifetime against the time of verification.
+The following must be measured separately:
 
 ```text
-collecte + attente en file + génération + transport + vérification
-+ contrôles de fraîcheur + réservation durable + préconditions API < TTL
+collection + queue wait + generation + transport + verification
++ freshness checks + durable reservation + API preconditions < TTL
 ```
 
-Si la génération seule dépasse le TTL, la variante synchrone est invalidée
-sur cette configuration. Une vérification historique réussie ne contourne
-pas cette conclusion et ne doit jamais devenir une autorisation tardive.
+If generation alone exceeds the TTL, the synchronous variant is invalidated
+on this configuration. Successful historical verification does not bypass
+this conclusion and must never become late authorization.
 
-Une piste à évaluer consiste à précalculer la preuve d'un état d'artefact
-immuable, puis à construire une preuve finale liant cette preuve au challenge
-client émis plus tard. Il faudrait prouver explicitement la liaison de
-l'objet, de la politique, de l'autorité et des engagements, puis traiter la
-fraîcheur et la révocation. Cette composition n'est pas implémentée ici ;
-modifier simplement le nonce d'une preuve existante est invalide. **La preuve
-finale complète reste vérifiée avant toute mutation**, même si une partie du
-calcul a été anticipée.
+One direction to evaluate is precomputing the proof of an immutable artifact
+state, then building a final proof that binds it to the customer challenge
+issued later. The binding of the subject, policy, authority and commitments
+would need to be explicitly proved, followed by handling freshness and
+revocation. This composition is not implemented here; merely changing the
+nonce of an existing proof is invalid. **The complete final proof remains
+verified before any mutation**, even if part of the computation was done
+in advance.
 
-## 8. Résultats et décision de poursuite
+## 8. Results and decision to proceed
 
-Ce document ne contient aucune mesure de performance inventée. Le
-[rapport d'exécution RISC Zero](08-RISC0-LAB-RESULTS.md) doit indiquer les
-commandes, versions, ressources, preuves produites, vérification dans un
-processus séparé et limites d'échantillonnage. Un build réussi seul ne valide
-pas l'exécution prouvée.
+This document contains no invented performance measurements.
+The [RISC Zero execution report](08-RISC0-LAB-RESULTS.md) must list commands,
+versions, resources, proofs produced, verification in a separate process and
+sampling limitations. A successful build alone does not validate proved execution.
 
-La poursuite est justifiée pour un **pilote de faisabilité à données
-synthétiques** si les preuves complètes sont effectivement produites et
-vérifiées, les refus observés et les coûts compatibles avec le scénario
-retenu. Une utilisation à confidentialité critique reste hors du périmètre
-validé tant que l'objection cryptographique documentée, la provenance réelle
-des sources et la frontière d'autorisation durable ne sont pas résolues.
+Proceeding is justified for a **feasibility pilot using synthetic data** if
+complete proofs are actually produced and verified, denials observed and
+costs compatible with the selected scenario. Use requiring critical
+confidentiality remains outside the validated scope until the documented
+cryptographic objection, real source provenance and durable authorization
+boundary are resolved.

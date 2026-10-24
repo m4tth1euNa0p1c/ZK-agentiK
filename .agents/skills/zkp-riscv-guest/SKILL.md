@@ -1,45 +1,45 @@
 ---
 name: zkp-riscv-guest
-description: Développer et optimiser le cœur Rust déterministe et les adaptateurs de guest RISC-V de ZK-agentiK, avec séparation du witness et du journal public.
+description: Develop and optimize the deterministic Rust core and the RISC-V guest adapters of ZK-agentiK, with separation of the witness and the public journal.
 ---
 
-# Guest RISC-V
+# RISC-V guest
 
-Lire `AGENTS.md`, la relation à prouver dans `docs/02-ZK-MCP-RFC-SPEC.md`, puis
-le profil concerné dans `crates/policy-engine-core`. L'ELF nu actuel est un test
-de compilation, pas un programme exécutable sur tous les backends.
+Read `AGENTS.md`, the relation to prove in `docs/02-ZK-MCP-RFC-SPEC.md`, then
+the relevant profile in `crates/policy-engine-core`. The current bare ELF is a
+compilation test, not a program executable on all backends.
 
-## Frontière de calcul
+## Computation boundary
 
-- Garder le cœur `#![no_std]`, sans heap, flottants, horloge, RNG, réseau,
-  filesystem, ordre de hash-map ou dépendance à la largeur de `usize`.
-- Utiliser des entiers explicites, opérations vérifiées et tailles bornées.
-  Un état absent/indéterminé bloque. Ne pas convertir un scan absent en zéro.
-- `private_inputs` contient les faits et le sel. `public_inputs` contient
-  politique, action, temps d'évaluation, engagement et challenge du vérifieur.
-- L'horloge de la plateforme n'entre pas dans le guest. L'instant est public
-  et prouvé ; le firewall vérifie encore les échéances au moment d'agir.
-- Dans un vrai guest, recalculer les engagements et publier le journal complet.
-  Un hash effectué uniquement par l'hôte ne lie pas le witness à la preuve.
+- Keep the core `#![no_std]`, with no heap, floats, clock, RNG, network,
+  filesystem, hash-map ordering or dependency on the width of `usize`.
+- Use explicit integers, checked operations and bounded sizes.
+  A missing/indeterminate state blocks. Do not convert a missing scan into zero.
+- `private_inputs` contains the facts and the salt. `public_inputs` contains
+  policy, action, evaluation time, commitment and verifier challenge.
+- The platform clock does not enter the guest. The instant is public
+  and proven; the firewall still checks deadlines at the time of acting.
+- In a real guest, recompute the commitments and publish the complete journal.
+  A hash performed only by the host does not bind the witness to the proof.
 
-## Portage et optimisation
+## Porting and optimization
 
-Ajouter un adaptateur par toolchain/ABI, avec versions épinglées et manifeste
-ELF → image/vkey native. Ne pas inventer d'API Magnetar. La source métier reste
-partagée ; syscalls, sérialisation d'entrée et journal diffèrent par backend.
-Pour SHA-256/SHA-3/Keccak, utiliser une bibliothèque revue ; vérifier le padding
-et les variantes exactes (Keccak n'est pas SHA3). Ne pas déclarer la chaîne
-post-quantique parce que le guest emploie SHA-256.
+Add one adapter per toolchain/ABI, with pinned versions and an
+ELF → native image/vkey manifest. Do not invent a Magnetar API. The business
+source stays shared; syscalls, input serialization and journal differ per backend.
+For SHA-256/SHA-3/Keccak, use a reviewed library; check the padding
+and the exact variants (Keccak is not SHA3). Do not declare the chain
+post-quantum because the guest uses SHA-256.
 
-Mesurer les cycles et la mémoire avant optimisation : nombre de hashes,
-copies, tailles d'entrée, tables de lookup, gestion des erreurs. Garder la
-preuve d'équivalence via vecteurs partagés et tests de limites. Éviter les
-optimisations qui retirent un contrôle d'engagement ou de sortie.
+Measure cycles and memory before optimizing: number of hashes,
+copies, input sizes, lookup tables, error handling. Keep the
+equivalence evidence through shared vectors and boundary tests. Avoid
+optimizations that remove a commitment or output check.
 
-## Validation attendue
+## Expected validation
 
 `cargo test --workspace --locked`, `cargo clippy --workspace --all-targets -- -D warnings`,
-`npm run build:guest`, puis un test prove/verify réel seulement pour un backend
-effectivement implémenté. Tester la substitution du witness, du journal et de
-l'image. Distinguer compilation, exécution native, exécution VM et preuve ZK
-dans le compte rendu. Ne jamais habiliter le simulateur pour des effets réels.
+`npm run build:guest`, then a real prove/verify test only for a backend
+actually implemented. Test substitution of the witness, the journal and
+the image. Distinguish compilation, native execution, VM execution and ZK proof
+in the report. Never enable the simulator for real effects.

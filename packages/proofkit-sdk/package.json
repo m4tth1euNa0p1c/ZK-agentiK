@@ -1,12 +1,19 @@
 {
-  "name": "@zk-agentik/proofkit-sdk",
-  "version": "0.1.0",
-  "private": true,
+  "name": "@m4tth1euna0p1c/proofkit-sdk",
+  "version": "0.1.0-alpha.1",
   "description": "Experimental toolkit for bounded, verifier-controlled tools with explicit authorization adapters",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/m4tth1euNa0p1c/ZP3ntiProof.git",
+    "directory": "packages/proofkit-sdk"
+  },
+  "homepage": "https://github.com/m4tth1euNa0p1c/ZP3ntiProof/tree/v0.1.0-alpha.1/packages/proofkit-sdk#readme",
+  "bugs": { "url": "https://github.com/m4tth1euNa0p1c/ZP3ntiProof/issues" },
   "engines": { "node": ">=24.11" },
+  "publishConfig": { "registry": "https://npm.pkg.github.com", "tag": "alpha" },
   "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
-  "files": ["dist", "README.md"],
+  "files": ["dist/*.js", "dist/*.d.ts", "README.md", "LICENSE"],
   "dependencies": { "zod": "4.6.7" }
 }

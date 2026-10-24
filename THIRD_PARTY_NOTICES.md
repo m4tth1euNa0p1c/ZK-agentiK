@@ -1,17 +1,17 @@
-# Dépendances et notices tierces
+# Dependencies and third-party notices
 
-État de l'inventaire : 17 octobre 2026. Le code original de ce dépôt est sous
-[licence MIT](LICENSE). Les composants tiers conservent leurs licences. Ce
-document identifie des composants structurants ; **ce n'est pas l'inventaire
-exhaustif des dépendances transitives ni un avis juridique**.
+Inventory status: 17 October 2026. Original code in this repository is under
+the [MIT license](LICENSE). Third-party components retain their licenses. This
+document identifies major components; **it is neither an exhaustive inventory
+of transitive dependencies nor legal advice**.
 
-Les versions ci-dessous ont été relevées dans les manifests/lockfiles et les
-métadonnées des paquets installés pour ce laboratoire. Avant redistribution d'un
-binaire, conteneur ou bundle, établir l'inventaire de cette distribution exacte
-et inclure les textes, copyrights et éventuels fichiers NOTICE exigés. Une URL
-de licence ne remplace pas l'inclusion d'un texte quand la licence l'exige.
+The versions below were collected from manifests/lockfiles and installed
+package metadata for this laboratory. Before redistributing a binary, container
+or bundle, inventory that exact distribution and include the required license
+texts, copyrights and any NOTICE files. A license URL does not replace inclusion
+of the text when the license requires it.
 
-| Composant | Version observée | Licence déclarée | Origine |
+| Component | Observed version | Declared license | Origin |
 | --- | --- | --- | --- |
 | MCP TypeScript SDK | 1.32.1 | MIT | [modelcontextprotocol/typescript-sdk](https://github.com/modelcontextprotocol/typescript-sdk) |
 | Zod | 4.6.7 | MIT | [colinhacks/zod](https://github.com/colinhacks/zod) |
@@ -23,39 +23,37 @@ de licence ne remplace pas l'inclusion d'un texte quand la licence l'exige.
 | SHA-2 | 0.10.9 | MIT OR Apache-2.0 | [RustCrypto/hashes](https://github.com/RustCrypto/hashes) |
 | Serde | 1.0.228 | MIT OR Apache-2.0 | [serde-rs/serde](https://github.com/serde-rs/serde) |
 | serde_json | 1.0.149 | MIT OR Apache-2.0 | [serde-rs/json](https://github.com/serde-rs/json) |
-| rand | 0.8.6 (Horizon courant ; 0.8.5 historique) | MIT OR Apache-2.0 | [rust-random/rand](https://github.com/rust-random/rand) |
+| rand | 0.8.6 (current Horizon; 0.8.5 historical) | MIT OR Apache-2.0 | [rust-random/rand](https://github.com/rust-random/rand) |
 
-« OR » signifie une alternative déclarée par le composant, pas un cumul de
-licences. Les notices des dépendances transitives restent à inventorier pour
-chaque artefact redistribué. Les images Node/Rust/Debian et outils de construction
-contiennent également des composants avec leurs propres obligations.
+“OR” denotes a choice declared by the component, not cumulative licenses.
+Notices for transitive dependencies still need to be inventoried for each
+redistributed artifact. Node/Rust/Debian images and build tools also contain
+components with their own obligations.
 
-## Sources de comparaison et laboratoire RISC Zero
+## Comparison sources and RISC Zero laboratory
 
-Les campagnes Vega utilisent un checkout externe de
-[microsoft/vega-prover](https://github.com/microsoft/vega-prover), révision
-`c0ee259053cd12eaf43ed71b5cde375452b3ee4d`. Son fichier LICENSE consulté indique
-MIT, copyright Microsoft Corporation. Le checkout local n'est pas inclus dans
-le dépôt ; les sorties de benchmark ne confèrent aucun aval de Microsoft et ne
-représentent pas une preuve complète de credential mDL.
+The Vega campaigns use an external checkout of
+[microsoft/vega-prover](https://github.com/microsoft/vega-prover), revision
+`c0ee259053cd12eaf43ed71b5cde375452b3ee4d`. The LICENSE file consulted states
+MIT, copyright Microsoft Corporation. The local checkout is not included in
+the repository; benchmark outputs imply no Microsoft endorsement and do not
+represent a complete mDL credential proof.
 
-Le laboratoire RISC Zero constitue un workspace distinct. Les licences de ses
-crates, binaires et patches doivent être inventoriées à partir de son lockfile
-avant redistribution ; la ligne SHA-2 ou Dalek ci-dessus ne couvre pas
-automatiquement les forks RISC Zero. Les révisions de patches utilisées sont
-consignées dans les manifests du laboratoire et
-[le dossier de stack](docs/07-STACK-SECURITY-AND-PERFORMANCE.md).
+The RISC Zero laboratory is a separate workspace. Licenses for its crates,
+binaries and patches must be inventoried from its lockfile before redistribution;
+the SHA-2 or Dalek entries above do not automatically cover RISC Zero forks.
+The patch revisions used are recorded in the laboratory manifests and
+the [stack dossier](docs/07-STACK-SECURITY-AND-PERFORMANCE.md).
 
-Les téléchargements de Bicep, Terraform et de son provider utilisés pour valider
-`infra/` restent dans des caches locaux ; ils ne sont pas embarqués par cette
-contribution. Leurs licences et conditions s'appliquent lors d'une redistribution
-éventuelle. Les sources de documentation citées demeurent celles de leurs
-auteurs ; le dépôt contient une synthèse avec attribution, pas une copie complète.
+Downloads of Bicep, Terraform and its provider used to validate `infra/`
+remain in local caches; they are not bundled by this contribution. Their
+licenses and terms apply to any redistribution. Cited documentation sources
+remain their authors' work; the repository contains an attributed synthesis,
+not a complete copy.
 
-## Limites de publication
+## Publication limitations
 
-L'inventaire complet, les notices des distributions finales et les éventuels
-droits sur données doivent être vérifiés dans la
-[checklist de publication](docs/publication/RELEASE_CHECKLIST.md).
-Cette revue de licences ne démontre aucune absence de brevet ou liberté
-d'exploitation. La recherche d'antériorité du projet est technique et bornée.
+The full inventory, notices for final distributions and any data rights must
+be checked in the [publication checklist](docs/publication/RELEASE_CHECKLIST.md).
+This license review establishes neither the absence of patents nor freedom
+to operate. The project's prior-art search is technical and bounded.

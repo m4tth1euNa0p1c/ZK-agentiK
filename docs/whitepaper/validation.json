@@ -1,25 +1,77 @@
 {
-  "schema": "horizon-whitepaper-validation-v1",
-  "generated_at_utc": "2026-10-17T14:40:09.345815+00:00",
+  "schema": "horizon-whitepaper-validation-v2",
+  "generated_at_utc": "2026-10-24T21:07:05Z",
   "date_is_self_reported": true,
   "signature_or_tsa": false,
+  "language": "en",
+  "source_commit_before_rebuild": "0623ae90857ca6153c1ec354d128cb1ed1d55a99",
+  "source_tree_was_dirty": true,
+  "image": {
+    "name": "horizon-math-paper:local",
+    "id": "sha256:34f91a54d3dd4514f4e5737b503bf8476486ce92c9d688cba2182d5b6ac5d910",
+    "base_digest": "debian@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587",
+    "packages": {
+      "texlive-binaries": "2022.20220321.62855-5.1+deb12u2",
+      "texlive-latex-base": "2022.20230122-3",
+      "texlive-latex-recommended": "2022.20230122-3",
+      "texlive-fonts-recommended": "2022.20230122-3",
+      "lmodern": "2.005-1",
+      "poppler-utils": "22.12.0-2+deb12u3",
+      "octave": "7.3.0-2",
+      "python3": "3.11.2-1+b1"
+    },
+    "pdf_producer": "pdfTeX-1.40.24"
+  },
+  "command": [
+    "docker run --rm --network none --cpus 2 --memory 2g --mount type=bind,source=<repo>,target=/work horizon-math-paper:local sh /work/docs/whitepaper/build.sh",
+    "docker run --rm --network none --cpus 2 --memory 2g --mount type=bind,source=<repo>,target=/work horizon-math-paper:local sh /work/docs/whitepaper/build-circuit.sh"
+  ],
   "pdf": "docs/whitepaper/whitepaper.pdf",
-  "pdf_sha256": "9ebd63ff3fe20ebfb68ad66ae5f77ebabaafbff348712ea363b2c24395d13794",
+  "pdf_sha256": "9ba56dbfd5bc295f2961182d053eb8f3162f698ba90748ab4e17ae4fb8993903",
+  "pdf_creation_date_utc": "2026-10-24T21:06:50Z",
   "pages": 8,
   "latex_final_warnings": 0,
   "overfull_boxes": 0,
-  "visual_review": "All eight Poppler PNG pages inspected; no clipping, overlap, missing glyphs or unreadable tables observed.",
+  "underfull_hboxes": 3,
+  "underfull_note": "Underfull \\hbox at source lines 27-33 (abstract) and 55, 57-63 (status table). Not flagged by the CI diagnostics filter (Warning|Overfull|^!); no visible gap observed in the rendered pages.",
+  "visual_review": "All eight Poppler PNG pages inspected on 2026-10-24: English text, tables, equations, bibliographic links and pagination legible; no clipping, overlap, missing glyph or residual French observed.",
   "visual_review_is_automated_proof": false,
-  "marker_helper_executed": true,
-  "command": "docker run --rm --network none --cpus 2 --memory 2g --mount type=bind,source=<repo>,target=/work horizon-math-paper:local sh /work/docs/whitepaper/build.sh",
+  "pdf_skill_helper_executed": false,
+  "supplement": {
+    "pdf": "docs/whitepaper/circuit-validation.pdf",
+    "pdf_sha256": "41c929d460081a1d7fa3aec3848bdd42b2e49a28900eceb62db1a6bab7254206",
+    "pdf_creation_date_utc": "2026-10-24T21:07:05Z",
+    "pages": 5,
+    "latex_final_warnings": 0,
+    "overfull_boxes": 0,
+    "underfull_hboxes": 1,
+    "underfull_note": "Underfull \\hbox at source line 242 (test-class table).",
+    "visual_review": "All five Poppler PNG pages inspected on 2026-10-24: English text, boxed protocol diagram, tables and references legible; no clipping, overlap or residual French observed."
+  },
+  "source_sha256": {
+    "docs/whitepaper/whitepaper.tex": "d5e2d6983c63e7f42b11b9936ad7a93b18a214206a2bf62e08b7e615c1a40e58",
+    "docs/whitepaper/references.bib": "cca86235d05ae1565d01f7c27258d5c2618be3a8c120bac5e5e3584fe09180a8",
+    "docs/whitepaper/build.sh": "ac21d8a1858de0388a6e7c4158f30640c4a967d3d22692637b49c1c7896aa6d1",
+    "docs/whitepaper/circuit-validation.tex": "beaaa89b33ef0b5e453b0f406878a9305e0b74a60b413b6e066fd12a93ab80b2",
+    "docs/whitepaper/circuit-validation.bib": "93a9c278e382711938575fd8fc1f4aab74afb17473fbc1734a2db67dbcac0a32",
+    "docs/whitepaper/build-circuit.sh": "d83507f0c058cbda87f874bb3ad388462740f97e8a81ce5e0a5cd5bc24bbb51b",
+    "math/Dockerfile": "df996a296e164aa0408b312c3a882d7ad098148d3b3835a9a29ae95e36d79065"
+  },
+  "changes_since_previous_record": [
+    "Both LaTeX sources were translated from French to English on 2026-10-17 (commit 2d2db18) while the committed PDFs remained the French builds of 2026-10-17; the PDFs are rebuilt here from the English sources.",
+    "Bibliography only: braces protect RangeProof, API, EdDSA, SQLite, GNU, Octave and JSON from BibTeX title lowercasing; the two MathWorks entries without a publication year print n.d. instead of an empty field. No mathematical statement, number, date or citation target changed.",
+    "Manuscript wording only, after an independent agent drift review of the English text against the French originals, the Rust code and the frozen result files (no finding on bounds, quantifiers, negations, numbers, hashes or citations): \"no paying demand\" becomes \"no solvent demand\"; \"The argument uses the argument of knowledge\" becomes \"The reasoning relies on the argument of knowledge\"; the deductible counterexample keeps the French conditional (\"would be 10000\"); the French guillemets around perfect, circuit and not measured are restored as quotation marks.",
+    "The 17 October 2026 record (French PDF, sha256 9ebd63ff3fe20ebfb68ad66ae5f77ebabaafbff348712ea363b2c24395d13794, whitepaper.tex sha256 cc7c97be1e6ef85443d2633c9a5fa9f8f9a70e3a00b2888425e52c7e0dd763c7) is superseded for the current tree but remains the reference for the sealed manifests under evidence/manifests/ at their own source.commit."
+  ],
+  "ci_cross_check": {
+    "run": "https://github.com/m4tth1euNa0p1c/ZK-agentic/actions/runs/40126320368/job/120968537701",
+    "note": "The GitHub Actions math profile rebuilt both PDFs on ubuntu-latest from the same .tex sources before the bibliography fix: 8 pages / 306078 bytes and 5 pages / 281956 bytes, no Warning, Overfull or error line. PDF hashes are not compared across machines because pdfTeX embeds the build timestamp."
+  },
   "limitations": [
     "PDF is not tagged for accessibility.",
-    "Rendering inspection does not validate cryptographic or business claims.",
-    "PDF creation timestamp is self-reported."
+    "Rendering inspection does not validate cryptographic or business claims; the manuscripts keep their 17 October 2026 content date and remain Experimental version 1.",
+    "PDF creation timestamps are self-reported; SHA-256 values bind bytes without certifying date, authorship or truth.",
+    "Visual review performed by an agent reading the rendered PNGs; no independent human review or external audit is claimed (H15 open)."
   ],
-  "source_sha256": {
-    "docs/whitepaper/whitepaper.tex": "cc7c97be1e6ef85443d2633c9a5fa9f8f9a70e3a00b2888425e52c7e0dd763c7",
-    "docs/whitepaper/references.bib": "e2ec2436b9ef9d606042ba2e4e366d35a103a664526f7ada0cea4fc998e33223",
-    "docs/whitepaper/build.sh": "ac21d8a1858de0388a6e7c4158f30640c4a967d3d22692637b49c1c7896aa6d1"
-  }
+  "source_sha256_note": "SHA-256 of the Git blob bytes (LF line endings), identical on a Linux checkout; a Windows working copy with CRLF produces different hashes for the text files."
 }

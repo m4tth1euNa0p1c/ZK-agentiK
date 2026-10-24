@@ -1,29 +1,29 @@
-# 06 — Exemple d'agent et pilote d'admission interentreprises
+# 06 — Agent example and inter-company admission pilot
 
-Jalon : M2. Priorité : P2. Dépendances : 04, 05, 07–08.
+Milestone: M2. Priority: P2. Dependencies: 04, 05, 07–08.
 
 ## User story
 
-Comme fournisseur et client distincts, nous validons un changement concret sans
-partager les faits bruts ni donner à l'agent le droit de contourner l'admission.
+As a distinct supplier and customer, we validate a concrete change without
+sharing raw facts or giving the agent the right to bypass admission.
 
-## Architecture technique
+## Technical architecture
 
-Conserver les démos merge/critique comme simulation. Ajouter un exemple sandbox
-de **promotion d'un artefact immuable**, avec prover fournisseur et vérifieur
-client dans deux domaines distincts. L'action inclut cible, environnement,
-configuration, version attendue et digest. Un agent scripté suffit pour tester
-le contrôle ; aucun abonnement LLM nécessaire.
+Keep the merge/critical demos as a simulation. Add a sandbox example of
+**promotion of an immutable artifact**, with the supplier's prover and the
+customer's verifier in two distinct domains. The action includes target,
+environment, configuration, expected version and digest. A scripted agent is
+enough to test the control; no LLM subscription required.
 
-## Critères d'acceptation
+## Acceptance criteria
 
-- Un flux accepté et corpus adverse, preuve vérifiée avant dispatch réel sandbox.
-- Le client ne reçoit pas le witness, même via erreurs/logs.
-- Les credentials de mutation ne sont pas accessibles à l'agent/prover.
-- Appropriations commerciales validées par un fournisseur et un client, sans
-  prétendre que ce couple suffit à démontrer un marché mondial.
+- One accepted flow and an adversarial corpus, proof verified before real sandbox dispatch.
+- The customer does not receive the witness, even through errors/logs.
+- Mutation credentials are not accessible to the agent/prover.
+- Commercial fit validated by one supplier and one customer, without
+  pretending that this pair is enough to demonstrate a global market.
 
-## Commandes de test
+## Test commands
 
 `npm run demo`, `npm run demo:critical`, `npm test`.
-Ajouter un runner d'exemple ZK séparé ; la démo actuelle reste clairement marquée.
+Add a separate ZK example runner; the current demo remains clearly marked.

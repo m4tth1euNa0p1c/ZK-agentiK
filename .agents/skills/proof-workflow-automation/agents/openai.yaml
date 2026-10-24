@@ -1,4 +1,4 @@
 interface:
-  display_name: "Preuves avec GitHub Actions"
-  short_description: "Maintenir les preuves CI et le sandbox local"
-  default_prompt: "Utilise $proof-workflow-automation pour maintenir les workflows GitHub Actions de ZK-agentiK, leurs preuves publiques et leurs résultats négatifs."
+  display_name: "Proofs with GitHub Actions"
+  short_description: "Maintain the CI proofs and the local sandbox"
+  default_prompt: "Use $proof-workflow-automation to maintain the ZK-agentiK GitHub Actions workflows, their public evidence and their negative results."

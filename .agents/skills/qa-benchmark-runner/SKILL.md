@@ -1,59 +1,59 @@
 ---
 name: qa-benchmark-runner
-description: Vérifier les règles, l'intégration MCP et les performances de ZK-agentiK avec scénarios adverses, compteurs d'effets et séparation des mesures simulation/ZK.
+description: Verify the rules, MCP integration and performance of ZK-agentiK with adversarial scenarios, effect counters and separation of simulation/ZK measurements.
 ---
 
-# Tests et mesures
+# Tests and measurements
 
-Lire `docs/04-VALIDATION.md`, les fixtures partagées et le profil critique.
-Le simulateur doit exercer le vrai Rust, pas une imitation TypeScript.
+Read `docs/04-VALIDATION.md`, the shared fixtures and the critical profile.
+The simulator must exercise the real Rust, not a TypeScript imitation.
 
-## Invariants d'abord
+## Invariants first
 
-Exécuter `cargo test --workspace --locked`, `npm test`, `npm run typecheck`,
+Run `cargo test --workspace --locked`, `npm test`, `npm run typecheck`,
 `cargo fmt --all -- --check`, `cargo clippy --workspace --all-targets -- -D warnings`
-et `npm run build:guest`. Vérifier le succès de chaque commande séparément.
-Les tests négatifs inspectent l'absence de mutation et pas seulement un message.
+and `npm run build:guest`. Check the success of each command separately.
+Negative tests inspect the absence of mutation and not just a message.
 
-Maintenir les cas : 16 combinaisons de politique de base, bornes entières,
-witness/journal/image substitués, preuve absente, backend inconnu, reprise après
-échec, rejeu concurrent, expiration pendant prove/verify, faits changés,
-suppression des contrôles critiques et arrêt d'urgence pendant la preuve.
-Faire passer les scénarios MCP sur le client officiel, dont stdio.
+Maintain the cases: 16 base policy combinations, integer bounds,
+substituted witness/journal/image, missing proof, unknown backend, recovery after
+failure, concurrent replay, expiration during prove/verify, changed facts,
+removal of critical controls and emergency stop during the proof.
+Run the MCP scenarios on the official client, including stdio.
 
-## Protocole performance
+## Performance protocol
 
-`npm run benchmark` construit le worker release, effectue 30 échauffements et
-300 mesures par catégorie. Le rapport distingue génération, vérification
-autorisante, rejet métier et reçu corrompu ; il conserve p50, p95, maximum,
-tailles, machine, runtime et identifiant d'image. Le chemin IPC est inclus,
-les APIs distantes sont exclues. Les buffers privés ne vont pas dans le rapport.
+`npm run benchmark` builds the release worker, performs 30 warm-ups and
+300 measurements per category. The report distinguishes generation, authorizing
+verification, business rejection and corrupted receipt; it keeps p50, p95,
+maximum, sizes, machine, runtime and image identifier. The IPC path is included,
+remote APIs are excluded. Private buffers do not go into the report.
 
-La commande `npm run benchmark -- --enforce-5ms` vérifie **p95 < 5 ms** pour
-les deux catégories de refus. Conserver aussi le maximum observé et signaler
-tout dépassement. Une campagne finie ne prouve pas « systématiquement moins
-de 5 ms » ; un OS non temps réel ne donne pas cette garantie.
+The command `npm run benchmark -- --enforce-5ms` checks **p95 < 5 ms** for
+the two refusal categories. Also keep the observed maximum and report
+any overrun. A finite campaign does not prove "systematically less
+than 5 ms"; a non-real-time OS does not give this guarantee.
 
-Ne pas comparer le reçu de quelques centaines d'octets du simulateur aux
-preuves Magnetar/SP1/RISC Zero. Pour un backend réel : publier version, type
-de preuve, paramètres de sécurité/ZK, cycles, prétraitement, RAM, threads,
-accélération, coûts cold/warm, tailles et résultats de vérification falsifiée.
+Do not compare the simulator's receipt of a few hundred bytes with the
+Magnetar/SP1/RISC Zero proofs. For a real backend: publish version, proof
+type, security/ZK parameters, cycles, preprocessing, RAM, threads,
+acceleration, cold/warm costs, sizes and results of forged verification.
 
-## Campagne corrélée Horizon
+## Horizon correlated campaign
 
-Lire `docs/experiments/circuit/README.md`. `npm run test:circuit` vérifie les
-gardes du banc. `npm run circuit:campaign -- --cases 128 --output <nouveau-dossier> --build`
-exécute le vrai prover, un vérifieur séparé et Octave ; 1024 et 4096 sont les
-autres budgets autorisés. Ne pas remplir le rapport avec des mocks. Relier
-chaque ID aux différences entières exactes, aux deux modes de preuve et aux
-étapes de rejet attendues. Les contrôles négatifs incluent un prover contournant
-les gardes natives et des corruptions algébriques résignées.
+Read `docs/experiments/circuit/README.md`. `npm run test:circuit` checks the
+bench guards. `npm run circuit:campaign -- --cases 128 --output <new-folder> --build`
+runs the real prover, a separate verifier and Octave; 1024 and 4096 are the
+other authorized budgets. Do not fill the report with mocks. Link
+each ID to the exact integer differences, to both proof modes and to the
+expected rejection steps. Negative controls include a prover bypassing
+the native guards and re-signed algebraic corruptions.
 
-Exiger les SHA-256 concordants des vecteurs et du corpus public décompressé,
-les compteurs complets et un statut terminé. MATLAB exige son propre résultat
-et une jointure séparée ; Octave seul ne suffit pas. Le workflow
-`.github/workflows/circuit-validation.yml` prévoit cette exécution. Les durées
-de correction sont descriptives, sans échauffement ni revendication de SLA.
-Conserver le bundle complet et les résultats négatifs, puis faire relire les
-mathématiques, l'oracle et le banc par un agent autre que leur auteur lorsque
-la mission demande une équipe. Une revue d'agents n'est pas un audit externe.
+Require matching SHA-256s of the vectors and of the decompressed public corpus,
+the complete counters and a completed status. MATLAB requires its own result
+and a separate join; Octave alone is not enough. The workflow
+`.github/workflows/circuit-validation.yml` provides for this execution.
+Correctness durations are descriptive, with no warm-up or SLA claim.
+Keep the complete bundle and the negative results, then have the
+mathematics, the oracle and the bench re-read by an agent other than their
+author when the mission calls for a team. An agent review is not an external audit.

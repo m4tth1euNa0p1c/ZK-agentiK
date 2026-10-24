@@ -1,16 +1,16 @@
 {
   "schema": "proofkit-catalog-v1",
-  "title": "Horizon / Proofkit : registre expérimental, sans certification sémantique",
+  "title": "Horizon / Proofkit: experimental registry, without semantic certification",
   "claims": [
     {
       "id": "horizon-conditional-mathematics",
       "kind": "mathematical-derivation",
       "status": "derived",
-      "relation": "Connaissance d'ouvertures de A-G et C-A dans deux plages 32 bits, liaison aux engagements signés et domaine source u64 ; 1 <= a <= 2^32, 0 <= c-a < 2^32.",
+      "relation": "Knowledge of openings of A-G and C-A in two 32-bit ranges, binding to the signed commitments and u64 source domain; 1 <= a <= 2^32, 0 <= c-a < 2^32.",
       "limitations": [
-        "Démonstrations conditionnelles, pas preuve formelle machine ou audit de la bibliothèque.",
-        "La simple existence d'une ouverture Pedersen ne suffit pas ; connaissance extractible, binding et contrat d'émission sont requis.",
-        "Ni cumul, franchise, vérité source, anonymat, nouveauté ou sécurité post-quantique."
+        "Conditional derivations, not a machine-checked formal proof or an audit of the library.",
+        "The mere existence of a Pedersen opening is not enough; extractable knowledge, binding and an issuance contract are required.",
+        "Neither aggregation, deductible, source truth, anonymity, novelty nor post-quantum security."
       ],
       "artifacts": [
         "docs/whitepaper/whitepaper.tex",
@@ -38,11 +38,11 @@
       "id": "octave-integer-model",
       "kind": "numerical-check",
       "status": "reproduced",
-      "relation": "24 510 paires entières réduites, dix frontières u64/32 bits, 20 états et 160 transitions d'un modèle anti-rejeu abstrait.",
+      "relation": "24,510 reduced integer pairs, ten u64/32-bit boundaries, 20 states and 160 transitions of an abstract anti-replay model.",
       "limitations": [
-        "Exécuté sous GNU Octave 7.3.0 ; MATLAB n'a pas été exécuté.",
-        "Pas un test du logarithme discret, de Bulletproofs, du disque ou du code TypeScript.",
-        "Horodatages auto-déclarés et SHA-256 sans signature ni TSA."
+        "Executed under GNU Octave 7.3.0; MATLAB was not executed.",
+        "Not a test of the discrete logarithm, Bulletproofs, the disk or the TypeScript code.",
+        "Self-declared timestamps and SHA-256 without signature or TSA."
       ],
       "artifacts": [
         "math/horizon_checks.m",
@@ -64,11 +64,11 @@
       "id": "horizon-public-proof",
       "kind": "cryptographic-proof",
       "status": "reproduced",
-      "relation": "Fixture publique historique Bulletproofs agrégée 2x32 avec deux attestations Ed25519 et autorisation du détenteur ; mode B historique.",
+      "relation": "Historical public fixture, aggregated 2x32 Bulletproofs with two Ed25519 attestations and holder authorization; historical mode B.",
       "limitations": [
-        "Sources synthétiques ; fixture historique, pas autorisation présente.",
-        "Vérification cryptographique réelle distincte de la vérification SHA-256 du registre.",
-        "Montants cachés au vérifieur, métadonnées corrélables ; aucune sécurité PQ."
+        "Synthetic sources; historical fixture, not a present authorization.",
+        "Real cryptographic verification distinct from the registry's SHA-256 verification.",
+        "Amounts hidden from the verifier, correlatable metadata; no PQ security."
       ],
       "artifacts": [
         "tests/fixtures/horizon/public-presentation.json",
@@ -88,11 +88,11 @@
       "id": "risc0-public-receipts",
       "kind": "cryptographic-proof",
       "status": "reproduced",
-      "relation": "Receipts RISC Zero historiques sur la politique DevSecOps signée ; acceptation critique et refus métier cryptographiquement valide.",
+      "relation": "Historical RISC Zero receipts over the signed DevSecOps policy; critical acceptance and cryptographically valid business denial.",
       "limitations": [
-        "Relation différente d'Horizon ; pas de ratio de vitesse scientifique entre les deux.",
-        "Vérifieur de laboratoire préparé requis pour réexécuter ; un fichier absent ne sera pas simulé.",
-        "Fixture historique et signature d'autorité de démonstration ; pas dispatch ou qualification production."
+        "Relation different from Horizon; no scientific speed ratio between the two.",
+        "A prepared laboratory verifier is required to re-execute; a missing file will not be simulated.",
+        "Historical fixture and demonstration authority signature; no dispatch or production qualification."
       ],
       "artifacts": [
         "tests/fixtures/risc0/critical-proof.json",
@@ -113,11 +113,11 @@
       "id": "horizon-cpu-observations",
       "kind": "benchmark",
       "status": "measured",
-      "relation": "Deux campagnes crypto Linux n=500 avant/après conservation des paramètres publics fixes, et parcours durable local Windows séparé.",
+      "relation": "Two Linux crypto campaigns n=500 before/after retaining the fixed public parameters, and a separate local Windows durable path.",
       "limitations": [
-        "Même relation Horizon ; aucun record externe ou SLA.",
-        "IID non établi, une machine, aucune qualification matérielle de durabilité.",
-        "0,065 ms en B est une présentation signée après préparation, pas une nouvelle preuve."
+        "Same Horizon relation; no external record or SLA.",
+        "IID not established, one machine, no hardware durability qualification.",
+        "0.065 ms in B is a signed presentation after preparation, not a new proof."
       ],
       "artifacts": [
         "docs/horizon/BENCHMARK_RESULTS.json",
@@ -135,11 +135,11 @@
       "id": "vega-sha256-reference",
       "kind": "benchmark",
       "status": "measured",
-      "relation": "Benchmarks amont SHA-256 SC/MC au commit c0ee259053cd12eaf43ed71b5cde375452b3ee4d ; pas circuit complet de credentials.",
+      "relation": "Upstream SHA-256 SC/MC benchmarks at commit c0ee259053cd12eaf43ed71b5cde375452b3ee4d; not a complete credential circuit.",
       "limitations": [
-        "Estimations centrales Criterion, pas percentiles Horizon.",
-        "Relations et divulgations différentes ; aucune comparaison équivalente battant Vega.",
-        "Le profil de reproduction télécharge et compile des outils, et peut être long."
+        "Criterion central estimates, not Horizon percentiles.",
+        "Different relations and disclosures; no equivalent comparison beating Vega.",
+        "The reproduction profile downloads and compiles tools, and may be long."
       ],
       "artifacts": [
         "docs/horizon/raw/vega-criterion.json",
@@ -158,10 +158,10 @@
       "id": "gpu-horizon-speedup",
       "kind": "limitation",
       "status": "not-demonstrated",
-      "relation": "Aucune accélération GPU de la relation Horizon Bulletproofs n'est établie ; le laboratoire CUDA séparé utilise RISC Zero DevSecOps.",
+      "relation": "No GPU acceleration of the Horizon Bulletproofs relation is established; the separate CUDA laboratory uses RISC Zero DevSecOps.",
       "limitations": [
-        "GPU visible ou build réussi ne signifie pas preuve générée et vérifiée.",
-        "Consulter les résultats datés du laboratoire GPU ; aucune valeur manquante n'est interpolée."
+        "A visible GPU or a successful build does not mean a proof was generated and verified.",
+        "Consult the dated GPU laboratory results; no missing value is interpolated."
       ],
       "artifacts": [
         "docs/whitepaper/whitepaper.tex",
@@ -173,11 +173,11 @@
       "id": "end-to-end-post-quantum",
       "kind": "limitation",
       "status": "not-demonstrated",
-      "relation": "Aucun profil Proofkit livré ne fournit une garantie post-quantique de bout en bout.",
+      "relation": "No shipped Proofkit profile provides an end-to-end post-quantum guarantee.",
       "limitations": [
-        "Pedersen/Bulletproofs et Ed25519 sont elliptiques ; un hachage dans le transcript ne change pas cette hypothèse.",
-        "ML-DSA ou SLH-DSA ne rendent pas à eux seuls la relation de preuve post-quantique.",
-        "--require-post-quantum refuse les profils avant toute exécution."
+        "Pedersen/Bulletproofs and Ed25519 are elliptic; a hash in the transcript does not change this assumption.",
+        "ML-DSA or SLH-DSA alone do not make the proof relation post-quantum.",
+        "--require-post-quantum rejects the profiles before any execution."
       ],
       "artifacts": [
         "docs/whitepaper/whitepaper.tex",
@@ -198,11 +198,11 @@
       "id": "risc0-cuda-build-blocked",
       "kind": "limitation",
       "status": "blocked",
-      "relation": "Tentative RISC Zero 3.0.6 Succinct sur RTX 5060 Ti : compilation CUDA récursive arrêtée par OOM sous 12 GiB, avec quatre puis un job ; zéro receipt GPU.",
+      "relation": "RISC Zero 3.0.6 Succinct attempt on RTX 5060 Ti: recursive CUDA compilation stopped by OOM under 12 GiB, with four then one job; zero GPU receipt.",
       "limitations": [
-        "Aucun temps de génération ou de vérification GPU mesuré ; N=0.",
-        "Ni incompatibilité Blackwell ni gain GPU Horizon démontrés.",
-        "Premier essai avec script live, reprise avec script figé ; limites de provenance détaillées dans le rapport."
+        "No GPU generation or verification time measured; N=0.",
+        "Neither Blackwell incompatibility nor a Horizon GPU gain demonstrated.",
+        "First attempt with a live script, retry with a frozen script; provenance limits detailed in the report."
       ],
       "artifacts": [
         "docs/experiments/gpu/ARTIFACT_HASHES.json",
@@ -280,11 +280,11 @@
       "id": "verified-tool-local-authorization",
       "kind": "adversarial-test",
       "status": "reproduced",
-      "relation": "SDK strict partagé HTTP/MCP, vérification réelle Horizon et réservation SQLite ; 31 tests Horizon après intégration opérateur, dont 162 refus sans changement du snapshot.",
+      "relation": "Strict SDK shared by HTTP/MCP, real Horizon verification and SQLite reservation; 31 Horizon tests after operator integration, including 162 denials without snapshot change.",
       "limitations": [
-        "Le SDK fait confiance aux adaptateurs, au store, à la configuration et à la sélection du vérifieur.",
-        "Les 103 tests du premier relevé sont historiques à ce relevé ; deux groupes Horizon ont ensuite été ajoutés. Les temps de test ne sont pas des benchmarks de service.",
-        "Cible locale synthétique, pas exactement une fois distant, IAM bancaire, audit externe ou preuve formelle du programme."
+        "The SDK trusts the adapters, the store, the configuration and the verifier selection.",
+        "The 103 tests of the first record are historical to that record; two Horizon groups were added afterwards. Test times are not service benchmarks.",
+        "Synthetic local target, no remote exactly-once, banking IAM, external audit or formal proof of the program."
       ],
       "artifacts": [
         "packages/proofkit-sdk/README.md",
@@ -325,11 +325,11 @@
       "id": "dependency-qualification-open",
       "kind": "limitation",
       "status": "blocked",
-      "relation": "Deux dépendances Horizon corrigées ; alerte de maintenance Horizon et avis RustSec du laboratoire RISC Zero conservés. Aucun audit global sans alerte.",
+      "relation": "Two Horizon dependencies fixed; Horizon maintenance alert and RustSec advisory of the RISC Zero laboratory retained. No global audit without alerts.",
       "limitations": [
-        "Base RustSec figée, versions yanked non contrôlées dans la capture locale ; ne couvre pas les vulnérabilités inconnues, le r0vm externe ou toutes les images.",
-        "Analyse de features limitée, sans preuve générale de non-exploitabilité ; conserver les anciens lockfiles avec les campagnes historiques.",
-        "Les licences de futures distributions binaires nécessitent un inventaire propre ; le dépôt distribue ici ses sources et résultats expérimentaux."
+        "Frozen RustSec database, yanked versions not checked in the local capture; does not cover unknown vulnerabilities, the external r0vm or all images.",
+        "Limited feature analysis, without a general proof of non-exploitability; keep the old lockfiles with the historical campaigns.",
+        "Licenses of future binary distributions require their own inventory; the repository distributes its sources and experimental results here."
       ],
       "artifacts": [
         "docs/publication/dependencies/ARTIFACT_HASHES.json",
@@ -393,11 +393,11 @@
       "id": "cloud-deployment-not-executed",
       "kind": "deployment",
       "status": "not-demonstrated",
-      "relation": "Comparaison Azure/GCP et fondations réseau/identité validées localement ; aucun déploiement cloud effectué.",
+      "relation": "Azure/GCP comparison and network/identity foundations validated locally; no cloud deployment performed.",
       "limitations": [
-        "Compilation Bicep et validation Terraform ne prouvent pas les permissions, politiques ou disponibilités d’un abonnement réel.",
-        "Pas de runtime qualifié, IAM bancaire, KMS compatible validé, restauration distribuée ni coût commercial mesuré.",
-        "Ed25519 logiciel GCP ne signifie pas Ed25519 HSM ; le profil elliptique reste classique."
+        "Bicep compilation and Terraform validation do not prove the permissions, policies or availability of a real subscription.",
+        "No qualified runtime, banking IAM, validated compatible KMS, distributed restoration or measured commercial cost.",
+        "GCP software Ed25519 does not mean HSM Ed25519; the elliptic profile remains classical."
       ],
       "artifacts": [
         "infra/azure/README.md",
@@ -422,11 +422,11 @@
       "id": "buyer-and-production-validation-open",
       "kind": "limitation",
       "status": "not-demonstrated",
-      "relation": "Hypothèse d’autorisation confidentielle de sinistre délégué ; acheteur, budget, émissions réelles et qualification de production non établis.",
+      "relation": "Hypothesis of confidential delegated insurance claim authorization; buyer, budget, real issuances and production qualification not established.",
       "limitations": [
-        "Aucun entretien ou accord de client inventé ; la ZK doit être abandonnée si une attestation signée plus simple satisfait les exigences.",
-        "Le prédicat montant/plafond ne couvre ni cumul, franchise, fraude, provisions ou vérité des données.",
-        "Les rôles et skills sont des instructions portables ; leurs revues ne remplacent pas un audit externe."
+        "No invented customer interview or agreement; ZK must be abandoned if a simpler signed attestation satisfies the requirements.",
+        "The amount/limit predicate covers neither aggregation, deductible, fraud, provisions nor data truth.",
+        "Roles and skills are portable instructions; their reviews do not replace an external audit."
       ],
       "artifacts": [
         "README.md",
@@ -467,13 +467,13 @@
       "id": "github-actions-local-reproduction",
       "kind": "deployment",
       "status": "reproduced",
-      "relation": "Deux workflows et quatre jobs réussis sur le candidat acc6e98 : 105 tests, preuve Horizon et sandbox Docker avec rejeu après redémarrage, Octave/PDF et contrôle du registre.",
+      "relation": "Two workflows and four jobs succeeded on candidate acc6e98: 105 tests, Horizon proof and Docker sandbox with replay after restart, Octave/PDF and registry check.",
       "limitations": [
-        "Déploiement éphémère sur le runner GitHub, sans Azure/GCP ou production. Les dates et états API ne constituent pas un horodatage TSA des assertions scientifiques.",
-        "Les appels workflow_call ont été exécutés ; workflow_dispatch n’a pas été exécuté dans ce relevé.",
-        "Les résumés de processus, JSON numériques et observations sont conservés ; les bundles complets GitHub ont une rétention de 14 jours.",
-        "Aucun benchmark de latence n’est déduit du temps de CI ; les preuves publiques historiques ne sont pas des autorisations fraîches.",
-        "Un scan de secrets et une revue d’agent ne prouvent pas l’absence de vulnérabilité ni la qualification du produit."
+        "Ephemeral deployment on the GitHub runner, without Azure/GCP or production. API dates and states are not a TSA timestamp of the scientific claims.",
+        "The workflow_call invocations were executed; workflow_dispatch was not executed in this record.",
+        "Process summaries, numerical JSON and observations are retained; complete GitHub bundles have a 14-day retention.",
+        "No latency benchmark is derived from CI time; historical public proofs are not fresh authorizations.",
+        "A secret scan and an agent review do not prove the absence of vulnerabilities or the qualification of the product."
       ],
       "artifacts": [
         "docs/publication/checks/ci-candidate-acc6e98/horizon/commit.txt",

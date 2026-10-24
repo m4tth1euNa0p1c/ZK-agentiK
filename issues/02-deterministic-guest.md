@@ -1,34 +1,34 @@
-# 02 — Prouver le journal et les faits attestés dans le guest
+# 02 — Prove the journal and the attested facts in the guest
 
-Jalon : M1. Priorité : P0. Dépendance : contrat des sources 07.
+Milestone: M1. Priority: P0. Dependency: source contract 07.
 
-Avancement : le guest `labs/risc0/methods/guest` utilise `policy-statement`,
-recalcule les engagements, publie le journal complet et vérifie une signature
-Ed25519 de fixture dans la VM. Le probe ELF nu est conservé séparément.
-Les attestations de plusieurs sources réelles et leur complétude restent à réaliser.
+Progress: the `labs/risc0/methods/guest` guest uses `policy-statement`,
+recomputes the commitments, publishes the complete journal and verifies a
+fixture Ed25519 signature inside the VM. The bare ELF probe is kept separately.
+Attestations from several real sources and their completeness remain to be done.
 
 ## User story
 
-Comme vérifieur, je sais que les règles ont porté sur les attestations autorisées
-du même artefact, de la même cible et de la bonne période.
+As a verifier, I know that the rules applied to the authorized attestations
+of the same artifact, the same target and the right period.
 
-## Architecture technique
+## Technical architecture
 
-Remplacer le probe ELF par un adaptateur d'entrées/journal natif à la zkVM choisie.
-Dans le guest : vérifier signatures, émetteurs, sujet, schéma et complétude ;
-lier révision, artefact, environnement, configuration, politique et challenge.
-Évaluer le cœur `no_std`, recalculer engagements et publier le journal.
-Les collections et tailles de signatures sont bornées. Pas de crypto maison.
+Replace the ELF probe with an input/journal adapter native to the chosen zkVM.
+In the guest: verify signatures, issuers, subject, schema and completeness;
+bind revision, artifact, environment, configuration, policy and challenge.
+Evaluate the `no_std` core, recompute commitments and publish the journal.
+Collections and signature sizes are bounded. No home-made crypto.
 
-## Critères d'acceptation
+## Acceptance criteria
 
-- Une attestation omise, périmée, d'un autre sujet ou d'une clé inconnue refuse.
-- Vecteurs identiques hôte/guest, cas limites temps/nombres et statut inconnu.
-- Aucune donnée secrète dans journal/logs ; politique et divulgations déclarées.
-- Le nombre de cycles et la mémoire du guest sont mesurés.
+- An attestation that is omitted, expired, for another subject or from an unknown key is refused.
+- Identical host/guest vectors, time/number edge cases and unknown status.
+- No secret data in journal/logs; policy and disclosures declared.
+- Guest cycle count and memory are measured.
 
-## Commandes de test
+## Test commands
 
 `cargo test --locked -p policy-engine-core`, `npm run build:guest`.
-Ajouter au backend réel un test prove/verify du guest complet et son invocation
-reproductible ; la compilation freestanding actuelle n'en tient pas lieu.
+Add to the real backend a prove/verify test of the complete guest and its
+reproducible invocation; the current freestanding compilation does not stand in for it.

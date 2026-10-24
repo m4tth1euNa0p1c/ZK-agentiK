@@ -1,83 +1,89 @@
-# Dossier de recherche ZK-agentiK
+# ZK-agentiK research dossier
 
-Travaux réunis pour le dépôt le **17 octobre 2026**. Les recherches et mesures
-ci-dessous sont datées du **15 octobre 2026** ; cette mise en dépôt ne constitue
-pas une nouvelle vérification de l'état du marché ou des publications.
+Work assembled for the repository on **October 17, 2026**. The research and
+measurements below are dated **October 15, 2026**; adding them to the repository
+does not constitute a new verification of the market or publication landscape.
 
-## Parcours de lecture
+## Reading guide
 
-**Finition publique et SDK : [dossier de publication](publication/README.md).**
-[White paper](whitepaper/whitepaper.pdf), [mathématiques](../math/),
-[registre d'artefacts](../evidence/), [outillage Proofkit](../tools/proofkit/README.md)
-et [comparaison Azure/GCP](publication/CLOUD_COMPARISON.md). Ce dossier ajoute
-ses observations datées sans remplacer les campagnes historiques ci-dessous.
+**DevSecOps customer presentation: [verified dossier and Teams message](publication/devsecops-client/README.md).**
+October 17 review at `1ff00fc`: Jira/Sonar/GitLab fixtures, MCP tested,
+RISC Zero receipts independently reverified, Playwright and an AI client
+proposed for a pilot.
 
-**Nouvelle campagne du 17 octobre : [Horizon](horizon/FINAL_VERDICT.md).**
-Recherche contradictoire banque/assurance, reproduction Vega SHA-256, preuve
-spécialisée réelle, optimisation mesurée et sandbox durable. Son énoncé diffère
-du guest RISC Zero historique. [Méthode et données](horizon/BENCHMARK_METHODOLOGY.md),
+**Public release preparation and SDK: [publication dossier](publication/README.md).**
+[White paper](whitepaper/whitepaper.pdf), [mathematics](../math/),
+[artifact registry](../evidence/), [Proofkit tooling](../tools/proofkit/README.md)
+and [Azure/GCP comparison](publication/CLOUD_COMPARISON.md). This dossier adds
+its dated observations without replacing the historical campaigns below.
+
+**New October 17 campaign: [Horizon](horizon/FINAL_VERDICT.md).**
+Adversarial banking/insurance research, Vega SHA-256 reproduction, real
+specialized proof, measured optimization and durable sandbox. Its statement
+differs from the historical RISC Zero guest.
+[Method and data](horizon/BENCHMARK_METHODOLOGY.md),
 [relation](horizon/FORMAL_STATEMENT.md), [application](horizon/DEPLOYMENT.md).
 
-[Inventaire vérifié au commit 684b567](horizon/INVENTORY_2026-10-17.md) et
-[protocole de qualification H11](horizon/REVIEW_PROTOCOL.md) : bilan figé,
-revue métier/sécurité, alternatives et critères de décision. Aucun entretien
-client n'est déclaré réalisé par ces documents.
+[Verified inventory at commit 684b567](horizon/INVENTORY_2026-10-17.md) and
+[H11 qualification protocol](horizon/REVIEW_PROTOCOL.md): frozen assessment,
+business/security review, alternatives and decision criteria. These documents
+do not claim that any customer interview has been conducted.
 
-| Document | Contenu et portée |
+| Document | Content and scope |
 | --- | --- |
-| [01 — Recherche initiale et analyse d'écart](01-RESEARCH-AND-GAP-ANALYSIS.md) | Magnetar, BinarySpartan, Spartan, Lasso, SP1, RISC Zero, Jolt et MCP ; liens vers les sources primaires et limites des annonces |
-| [06 — Équivalents, niche et contradictions](06-MARKET-NICHE-AND-CHALLENGE.md) | Concurrents et antériorités, revues technique/confidentialité/acheteur/crise, hypothèse fournisseur-client, critères de poursuite et d'arrêt |
-| [02 — Proposition de protocole](02-ZK-MCP-RFC-SPEC.md) | Enveloppe expérimentale `_meta.zkp`, relation prouvée, liaisons, anti-rejeu et modèle de menace |
-| [03 — Architecture](03-ARCHITECTURE.md) | Modules Rust/TypeScript, frontières de confiance, séquence de vérification et limites d'exploitation |
-| [05 — Politique de plateforme critique](05-CRITICAL-PLATFORM-POLICY.md) | Règles déterministes, rôles, révisions, fraîcheur, scans, récupération et arrêt d'urgence |
-| [04 — Validation du simulateur](04-VALIDATION.md) | Campagne initiale, tests MCP et mesures natives ; aucune preuve ZK dans ce chemin |
-| [07 — Sécurité et performance de la pile réelle](07-STACK-SECURITY-AND-PERFORMANCE.md) | Choix RISC Zero, signature vérifiée dans le guest, hypothèses, avis de sécurité, confidentialité et méthode de mesure |
-| [08 — Résultats du laboratoire RISC Zero](08-RISC0-LAB-RESULTS.md) | Quatre preuves réelles, tests adverses, mesures CPU, reproduction et conséquences pour la latence et la fraîcheur |
+| [01 — Initial research and gap analysis](01-RESEARCH-AND-GAP-ANALYSIS.md) | Magnetar, BinarySpartan, Spartan, Lasso, SP1, RISC Zero, Jolt and MCP; links to primary sources and limitations of announcements |
+| [06 — Alternatives, niche and adversarial reviews](06-MARKET-NICHE-AND-CHALLENGE.md) | Competitors and prior art, technical/confidentiality/buyer/crisis reviews, supplier–customer hypothesis, go and stop criteria |
+| [02 — Protocol proposal](02-ZK-MCP-RFC-SPEC.md) | Experimental `_meta.zkp` envelope, proved relation, bindings, anti-replay and threat model |
+| [03 — Architecture](03-ARCHITECTURE.md) | Rust/TypeScript modules, trust boundaries, verification sequence and operational limitations |
+| [05 — Critical-platform policy](05-CRITICAL-PLATFORM-POLICY.md) | Deterministic rules, roles, revisions, freshness, scans, recovery and emergency stop |
+| [04 — Simulator validation](04-VALIDATION.md) | Initial campaign, MCP tests and native measurements; no ZK proof in this path |
+| [07 — Security and performance of the real stack](07-STACK-SECURITY-AND-PERFORMANCE.md) | RISC Zero choice, signature verified in the guest, assumptions, security advisories, confidentiality and measurement method |
+| [08 — RISC Zero laboratory results](08-RISC0-LAB-RESULTS.md) | Four real proofs, adversarial tests, CPU measurements, reproduction and consequences for latency and freshness |
 
-Les rapports sont des synthèses de recherche, avec leurs sources et leurs
-limites. Les articles et codes tiers liés conservent leurs licences respectives.
-La recherche initiale est conservée comme historique ; le rapport 08 décrit le
-dernier état expérimental de ce backend RISC Zero. Le laboratoire Horizon
-constitue une expérience supplémentaire sur une relation spécialisée différente.
+The reports are research summaries with their sources and limitations.
+Linked third-party papers and code retain their respective licenses.
+The initial research is retained as history; report 08 describes the latest
+experimental state of this RISC Zero backend. The Horizon laboratory is an
+additional experiment on a different specialized relation.
 
-## Conclusions conservées
+## Retained conclusions
 
-- Une antériorité du nom zk-MCP et plusieurs offres proches ont été identifiées.
-  Aucune revendication de premier standard mondial ou de marché vierge.
-- La piste d'admission confidentielle d'artefacts entre fournisseur et client
-  reste à qualifier auprès des deux parties et à comparer à un verdict signé.
-- Le cœur métier partagé et le guest RISC Zero ont produit des preuves réelles
-  sur des données synthétiques. L'autorité de signature est une fixture dont
-  la graine privée est publique ; elle n'authentifie aucun fournisseur réel.
-- La campagne CPU a mesuré 154–163 s de génération autorisante, 13,70 ms de
-  vérification p95 et 6,95 ms de rejet cryptographique p95. Elle ne valide ni
-  un objectif de 5 ms ni un challenge synchrone de 30 s.
-- La confidentialité critique, les sources authentiques, la durabilité,
-  l'intégration au firewall et le fonctionnement en crise restent à qualifier.
-  Aucun benchmark GPU n'avait été réalisé dans cette campagne historique ;
-  consulter les [tentatives GPU ultérieures](experiments/gpu/README.md).
+- Prior use of the zk-MCP name and several related offerings were identified.
+  No claim of a world's first standard or an untapped market.
+- Confidential artifact admission between supplier and customer remains to
+  be qualified with both parties and compared with a signed verdict.
+- The shared business core and RISC Zero guest produced real proofs on synthetic
+  data. The signing authority is a fixture whose private seed is public;
+  it authenticates no real supplier.
+- The CPU campaign measured 154–163 s for authorizing proof generation,
+  13.70 ms verification p95 and 6.95 ms cryptographic rejection p95.
+  It validates neither a 5 ms target nor a synchronous 30 s challenge.
+- Critical confidentiality, authentic sources, durability, firewall integration
+  and crisis operation remain to be qualified. No GPU benchmark had been run
+  in that historical campaign; consult the
+  [later GPU attempts](experiments/gpu/README.md).
 
-## Code et éléments de reproduction
+## Code and reproduction materials
 
-- [Cœur des règles](../crates/policy-engine-core/) et
-  [relation canonique partagée](../crates/policy-statement/).
-- [Bridge Rust](../crates/zkvm-bridge/), [SDK MCP](../packages/zk-mcp-sdk/) et
-  [gateway de démonstration](../packages/enterprise-gateway/).
-- [Laboratoire RISC Zero](../labs/risc0/) : guest, adaptateur, vérifieur,
-  versions et dépendances verrouillées.
-- [Receipts publics et manifeste d'empreintes](../tests/fixtures/risc0/README.md).
-- Rapports CPU : [critique](../tests/benchmarks/risc0-cpu-2026-10-15-critical.json),
-  [refus](../tests/benchmarks/risc0-cpu-2026-10-15-denied.json),
-  [environnement du run de refus](../tests/benchmarks/risc0-cpu-2026-10-15-environment.json).
-- Baselines natives : [initiale](../tests/benchmarks/baseline-2026-10-15.json) et
-  [reçu JSON valide altéré](../tests/benchmarks/baseline-2026-10-15-bound-receipt.json).
-- [Dix issues et trois jalons](../issues/README.md), [instructions agents](../AGENTS.md)
-  et [quatre skills locaux](../.agents/skills/).
+- [Rules core](../crates/policy-engine-core/) and
+  [shared canonical relation](../crates/policy-statement/).
+- [Rust bridge](../crates/zkvm-bridge/), [MCP SDK](../packages/zk-mcp-sdk/) and
+  [demonstration gateway](../packages/enterprise-gateway/).
+- [RISC Zero laboratory](../labs/risc0/): guest, adapter, verifier,
+  pinned versions and locked dependencies.
+- [Public receipts and hash manifest](../tests/fixtures/risc0/README.md).
+- CPU reports: [critical](../tests/benchmarks/risc0-cpu-2026-10-15-critical.json),
+  [denied](../tests/benchmarks/risc0-cpu-2026-10-15-denied.json),
+  [denied-run environment](../tests/benchmarks/risc0-cpu-2026-10-15-environment.json).
+- Native baselines: [initial](../tests/benchmarks/baseline-2026-10-15.json) and
+  [tampered valid JSON receipt](../tests/benchmarks/baseline-2026-10-15-bound-receipt.json).
+- [Ten issues and three milestones](../issues/README.md), [agent instructions](../AGENTS.md)
+  and [four local skills](../.agents/skills/).
 
-Avec Docker Linux, `npm run lab:risc0 -- verify` reconstruit le vérifieur et
-contrôle les deux receipts conservés sans générer de nouvelle preuve.
-Le [README principal](../README.md) documente les autres commandes.
+With Linux Docker, `npm run lab:risc0 -- verify` rebuilds the verifier and
+checks the two retained receipts without generating a new proof.
+The [main README](../README.md) documents the other commands.
 
-Les installations, caches, binaires de build et fichiers d'environnement ne
-font pas partie du dossier versionné. Les fixtures et mesures nécessaires à
-la reproduction sont conservées explicitement dans `tests/`.
+Installations, caches, build binaries and environment files are not part
+of the versioned dossier. Fixtures and measurements needed for reproduction
+are explicitly retained in `tests/`.

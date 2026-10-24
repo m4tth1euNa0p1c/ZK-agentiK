@@ -1,19 +1,19 @@
-# Contrats de rôles portables
+# Portable role contracts
 
-Ces fichiers sont des instructions Markdown à charger explicitement dans le
-client utilisé. Leur présence ne crée pas de sous-agent et ne garantit aucune
-autodécouverte par Claude Code, Cursor ou un autre client. Les skills adjacents
-peuvent être chargés selon le mécanisme documenté du client.
+These files are Markdown instructions to load explicitly in the client
+in use. Their presence does not create a subagent and does not guarantee any
+autodiscovery by Claude Code, Cursor or another client. The adjacent skills
+can be loaded according to the client's documented mechanism.
 
-| Rôle | Écriture autorisée | Produit attendu |
+| Role | Write access | Expected product |
 | --- | --- | --- |
-| [Auteur scientifique](scientific-author.md) | Manuscrit et assertions assignés | Résultats sourcés, hypothèses, limitations |
-| [Contradicteur](claim-challenger.md) | Lecture seule | Réfutation reproductible ou objection bornée |
-| [Revue cloud](cloud-boundary-reviewer.md) | Lecture seule | Frontières absentes, plans de panne, prérequis |
-| [Revue publication](release-reviewer.md) | Lecture seule | Verdict sur un commit candidat exact |
+| [Scientific author](scientific-author.md) | Assigned manuscript and claims | Sourced results, assumptions, limitations |
+| [Challenger](claim-challenger.md) | Read-only | Reproducible refutation or bounded objection |
+| [Cloud review](cloud-boundary-reviewer.md) | Read-only | Missing boundaries, failure plans, prerequisites |
+| [Publication review](release-reviewer.md) | Read-only | Verdict on an exact candidate commit |
 
-L'orchestrateur assigne les chemins possédés, transmet le commit de départ et
-interdit de révoquer les changements des autres. Une revue se conclut par des
-faits, des limites et un verdict conditionné ; le nombre d'agents favorables
-n'est pas une preuve. Ne pas inventer un second avis quand aucun autre agent
-n'a été exécuté. Aucun rôle n'autorise un contact externe ou un déploiement.
+The orchestrator assigns the owned paths, passes on the starting commit and
+forbids reverting other agents' changes. A review concludes with
+facts, limits and a conditional verdict; the number of favorable agents
+is not a proof. Do not invent a second opinion when no other agent
+was executed. No role authorizes external contact or a deployment.

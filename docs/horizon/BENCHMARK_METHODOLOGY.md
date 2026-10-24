@@ -1,219 +1,217 @@
-# Horizon — méthode de comparaison et critères de décision
+# Horizon — comparison method and decision criteria
 
-Date : 17 octobre 2026. Ce protocole fixe les conditions d'une comparaison
-avant d'en lire les résultats. Les commandes, versions et mesures effectives
-appartiennent au [journal d'expériences](EXPERIMENT_LOG.md). Il complète le
-[contrat de sécurité](SECURITY_REVIEW.md) et ne remplace aucun contrôle négatif.
+Date: October 17, 2026. This protocol fixes the conditions of a comparison
+before its results are read. The actual commands, versions and measurements
+belong to the [experiment log](EXPERIMENT_LOG.md). It complements the
+[security contract](SECURITY_REVIEW.md) and replaces no negative control.
 
-## 1. Figer ce qui est comparé
+## 1. Freezing what is compared
 
-Chaque rapport identifie `relation_id`, profil de divulgation, action, racines
-de confiance, type de signature, backend/version, paramètres de preuve,
-bornes entières, encodages et contrôles hors preuve. Deux temps ne sont
-comparables comme accélération que si ces dimensions sont équivalentes.
+Each report identifies `relation_id`, disclosure profile, action, trust roots,
+signature type, backend/version, proof parameters, integer bounds, encodings and
+out-of-proof controls. Two timings are only comparable as a speedup if these
+dimensions are equivalent.
 
-| Expérience | Relation / portée | Comparaison autorisée |
+| Experiment | Relation / scope | Permitted comparison |
 | --- | --- | --- |
-| RISC Zero historique | Politique DevSecOps complète et attestation Ed25519 de fixture dans le guest | Référence historique de cette relation seulement |
-| Vega amont | Circuit précis du bench exécuté ; SHA-256 si bench SHA-256 | Reproduction du même circuit, taille et phases |
-| A : plages + attestations adaptées | Deux signatures publiques, jointure et preuve `1<=a<=2^32`, `0<=c-a<2^32`, contexte frais | B/C avec même relation d'admission et divulgations déclarées |
-| B : preuve immuable + signature fraîche | Même inégalité, preuve préalable entière et autorisation du détenteur liée au bundle et au contexte | A avec hypothèses de réutilisation et limites de corrélation visibles |
-| C : sélection serveur | Chemin choisi par la politique, toujours identifié dans le rapport | Coût par chemin et fréquence ; pas une moyenne masquant les garanties |
-| Ouvertures + vérification native | Même règle mais montants divulgués au vérifieur | Baseline de coût avec changement de confidentialité explicite |
-| Verdict signé par tiers | Le vérifieur fait confiance au calcul du tiers | Substitut métier, pas preuve ZK équivalente |
+| Historical RISC Zero | Complete DevSecOps policy and fixture Ed25519 attestation inside the guest | Historical reference for this relation only |
+| Upstream Vega | Exact circuit of the executed bench; SHA-256 if SHA-256 bench | Reproduction of the same circuit, size and phases |
+| A: ranges + adapted attestations | Two public signatures, join and proof `1<=a<=2^32`, `0<=c-a<2^32`, fresh context | B/C with the same admission relation and declared disclosures |
+| B: immutable proof + fresh signature | Same inequality, complete prior proof and holder authorization bound to the bundle and context | A with visible reuse assumptions and correlation limits |
+| C: server-side selection | Path chosen by policy, always identified in the report | Cost per path and frequency; not an average masking the guarantees |
+| Openings + native verification | Same rule but amounts disclosed to the verifier | Cost baseline with an explicit change in confidentiality |
+| Third-party signed verdict | The verifier trusts the third party's computation | Business substitute, not an equivalent ZK proof |
 
-Vega annonce des mesures de présentation de credentials ; les benches SHA-256
-publiés ne suffisent pas à reproduire cette application. Le cycle
-`setup / prep_prove / prove / verify` doit rester visible. Sources primaires :
-[publication Vega](https://www.microsoft.com/en-us/research/publication/vega-low-latency-zero-knowledge-proofs-over-existing-credentials/),
-[cycle de preuve](https://raw.githubusercontent.com/microsoft/vega-prover/main/book/src/overview/lifecycle.md).
+Vega announces credential-presentation measurements; the published SHA-256
+benches are not sufficient to reproduce that application. The
+`setup / prep_prove / prove / verify` cycle must remain visible. Primary sources:
+[Vega publication](https://www.microsoft.com/en-us/research/publication/vega-low-latency-zero-knowledge-proofs-over-existing-credentials/),
+[proof lifecycle](https://raw.githubusercontent.com/microsoft/vega-prover/main/book/src/overview/lifecycle.md).
 
-**Interdiction de publier « X fois plus rapide que RISC Zero »** à partir
-du bench A/B et du rapport DevSecOps historique : primitives, formats,
-relation, signatures dans/hors preuve et divulgations diffèrent. Le même
-interdit vaut pour « Vega mDL reproduit » après un test SHA ou cubique.
+**Publishing "X times faster than RISC Zero" is prohibited** on the basis of
+the A/B bench and the historical DevSecOps report: primitives, formats,
+relation, in-proof/out-of-proof signatures and disclosures differ. The same
+prohibition applies to "Vega mDL reproduced" after a SHA or cubic test.
 
-## 2. Mesures séparées et frontières de chronométrage
+## 2. Separate measurements and timing boundaries
 
-Les horloges de durée sont monotones. L'horloge civile est conservée pour
-identifier les runs et tester la fraîcheur, sans servir au chronométrage.
+Duration clocks are monotonic. The wall clock is kept to identify runs and test
+freshness, without being used for timing.
 
-| Mesure | Inclus | Exclu ou publié séparément |
+| Measurement | Included | Excluded or published separately |
 | --- | --- | --- |
-| Build / installation | Résolution figée, compilation et outils nécessaires | Jamais présenté comme preuve en ligne |
-| Setup | Générateurs, paramètres et clés dépendant de la relation | Création des credentials |
-| Émission adaptée | Engagements, signature des autorités, validations d'ouverture | Proving du détenteur |
-| Préparation par credential | Travail dépendant du witness réutilisable | Setup et signature fraîche |
-| Première présentation | Préparation non disponible, preuve et liaisons | Préciser l'inclusion du lancement processus |
-| Présentation réutilisée | Rerandomisation/proof en ligne, ou signature fraîche B | Coût initial conservé dans une autre colonne |
-| Vérification froide | Démarrage, chargement/décodage, contrôles natifs et preuve complète | Installation/compilation |
-| Vérification chaude complète | Même chemin d'acceptation sans lancement processus | Cache de verdict interdit dans cette catégorie |
-| Hit du cache B | Recherche bornée, signature fraîche, recontrôles courants | Preuve initiale amortie identifiée ; ne pas appeler cela vérification ZK complète |
-| Autorisation avant effet | Parse, signatures, preuve/cache, confiance courante, horloge, réserve durable et préconditions | Collecte/réseau et cible mesurés distinctement si absents |
-| Résultat cible | Dispatch, latence cible, observation/réconciliation | Ne prouve pas la sécurité du logiciel cible |
+| Build / installation | Pinned resolution, compilation and required tools | Never presented as online proof |
+| Setup | Generators, parameters and keys depending on the relation | Credential creation |
+| Adapted issuance | Commitments, authority signatures, opening validations | Holder proving |
+| Per-credential preparation | Reusable witness-dependent work | Setup and fresh signature |
+| First presentation | Preparation unavailable, proof and bindings | State whether process launch is included |
+| Reused presentation | Rerandomization/online proof, or fresh signature B | Initial cost kept in another column |
+| Cold verification | Startup, loading/decoding, native controls and complete proof | Installation/compilation |
+| Warm complete verification | Same acceptance path without process launch | Verdict cache prohibited in this category |
+| B cache hit | Bounded lookup, fresh signature, current rechecks | Amortized initial proof identified; do not call this complete ZK verification |
+| Authorization before effect | Parse, signatures, proof/cache, current trust, clock, durable reservation and preconditions | Collection/network and target measured separately if absent |
+| Target result | Dispatch, target latency, observation/reconciliation | Does not prove the security of the target software |
 
-Le benchmark de fonction et le benchmark de processus sont deux expériences.
-L'IPC, JSON/Base64, stockage et fsync ne disparaissent pas d'une mesure annoncée
-« avant effet ». Si un composant est simulé, cette propriété figure dans le
-nom et les exclusions du run. Aucun credential privé réel dans les rapports.
+The function benchmark and the process benchmark are two experiments. IPC,
+JSON/Base64, storage and fsync do not disappear from a measurement announced as
+"before effect". If a component is simulated, that property appears in the
+run's name and exclusions. No real private credential in the reports.
 
-## 3. Préparation, cache et coût total
+## 3. Preparation, cache and total cost
 
-Pour B, conserver séparément `initial_full_verify_ms`, `fresh_holder_sign_ms`,
-`cache_hit_authorize_ms` et `cache_miss_authorize_ms`. Rejouer sans cache doit
-réussir par vérification complète ; le gain ne doit pas dépendre d'un
-cache prérempli par des données non authentifiées.
+For B, keep `initial_full_verify_ms`, `fresh_holder_sign_ms`,
+`cache_hit_authorize_ms` and `cache_miss_authorize_ms` separately. Replaying
+without a cache must succeed through complete verification; the gain must not
+depend on a cache prefilled with unauthenticated data.
 
-Publier les coûts mesurés pour une première utilisation et, si l'usage le
-permet, pour 2, 5, 10 et 100 réutilisations. Le coût total de la série est :
+Publish the measured costs for a first use and, if the usage allows it, for 2,
+5, 10 and 100 reuses. The total cost of the series is:
 
 ```text
-setup + émission + préparation + somme(présentations + vérifications)
-+ coûts d'invalidation/régénération effectivement survenus.
+setup + issuance + preparation + sum(presentations + verifications)
++ invalidation/regeneration costs that actually occurred.
 ```
 
-L'amortissement suppose des attestations immuables encore valides. Il faut
-exécuter des séries où changent détenteur, source, engagement, version,
-politique, expiration et révocation. Noter si le changement exige une nouvelle
-preuve, une nouvelle préparation ou seulement un contrôle courant. Ne pas
-inventer un taux de réutilisation ni un taux de hit pour conclure à l'économie.
+Amortization assumes immutable attestations that are still valid. Series must
+be run where the holder, source, commitment, version, policy, expiration and
+revocation change. Note whether the change requires a new proof, a new
+preparation or only a current check. Do not invent a reuse rate or a hit rate
+to conclude that there are savings.
 
-Une signature fraîche sur preuve historique n'est pas un temps de génération
-d'une preuve ZK fraîche. Une preuve générée après effet n'entre jamais dans
-la catégorie autorisation ZK avant effet.
+A fresh signature over a historical proof is not the generation time of a
+fresh ZK proof. A proof generated after the effect never enters the category
+of ZK authorization before effect.
 
-## 4. Corpus et essais de refus
+## 4. Corpus and refusal trials
 
-Fixer un corpus synthétique avant mesure : cas nominal, égalité `a=c`, borne
-basse `a=1`, borne haute `a=2^32`, différence maximale `2^32-1`, puis cas
-refusés. Inclure plusieurs dossiers et montants de même relation, pas seulement
-100 répétitions d'un unique bundle déjà chargé. Les échantillons d'une même
-preuve chaude sont signalés comme répétitions conditionnelles.
+Fix a synthetic corpus before measuring: nominal case, equality `a=c`, lower
+bound `a=1`, upper bound `a=2^32`, maximum difference `2^32-1`, then refused
+cases. Include several cases and amounts of the same relation, not only 100
+repetitions of a single already-loaded bundle. Samples of the same warm proof
+are flagged as conditional repetitions.
 
-Classes de refus chronométrées séparément :
+Refusal classes timed separately:
 
-1. Structure invalide ou entrée trop grande : mesure du parseur/limiteur.
-2. Mauvaise signature, rôle, jointure ou contexte : mesure native.
-3. Preuve structurellement valide mais corrompue : le vérifieur cryptographique
-   doit être effectivement appelé ; garder la raison et l'étape du refus.
-4. Inégalité fausse avec attestations valides : refus relationnel, sans compter
-   une panne du harness comme réussite.
-5. Preuve et signatures valides mais politique/révocation/date courantes
-   invalides : refus de l'autorisation, y compris sur cache hit.
-6. Concurrence, rejeu, crash et résultat `UNKNOWN` : nombre d'effets et état
-   durable, pas seulement durée d'une réponse HTTP.
+1. Invalid structure or oversized input: measurement of the parser/limiter.
+2. Wrong signature, role, join or context: native measurement.
+3. Structurally valid but corrupted proof: the cryptographic verifier must
+   actually be called; keep the reason and the stage of the refusal.
+4. False inequality with valid attestations: relational refusal, without
+   counting a harness failure as a success.
+5. Valid proof and signatures but invalid current policy/revocation/date:
+   authorization refusal, including on a cache hit.
+6. Concurrency, replay, crash and `UNKNOWN` result: number of effects and
+   durable state, not only the duration of an HTTP response.
 
-Ne pas confondre la génération impossible d'une preuve pour un faux witness
-avec la vérification d'une preuve falsifiée fournie par un adversaire. Les
-deux essais sont utiles mais attestent des chemins différents.
+Do not confuse the impossibility of generating a proof for a false witness
+with the verification of a forged proof supplied by an adversary. Both trials
+are useful but attest to different paths.
 
-## 5. Plan d'échantillonnage et statistiques
+## 5. Sampling plan and statistics
 
-Chaque commande publie son nombre d'échauffements et le nombre prévu de
-mesures avant lancement. Les durées individuelles sont conservées dans
-l'ordre d'exécution, avec les échecs et timeouts. Aucun échantillon lent
-n'est retiré silencieusement. Si un incident invalide un run, garder le run
-et sa raison puis exécuter une nouvelle série identifiée.
+Each command publishes its number of warm-ups and the planned number of
+measurements before launch. Individual durations are kept in execution order,
+with failures and timeouts. No slow sample is removed silently. If an incident
+invalidates a run, keep the run and its reason, then execute a new identified
+series.
 
-Pour les expériences rapides, viser 30 échauffements et 500 mesures par
-catégorie sur plusieurs fixtures, sous réserve du budget décidé. Une preuve
-lourde peut être limitée à quelques exécutions : publier alors tous les
-échantillons et qualifier le résultat d'exploratoire. Un petit N n'est pas
-compensé par davantage de décimales ou par un p99 calculé sur trois preuves.
+For fast experiments, aim for 30 warm-ups and 500 measurements per category
+over several fixtures, subject to the decided budget. A heavy proof may be
+limited to a few executions: then publish all samples and qualify the result
+as exploratory. A small N is not compensated by more decimal places or by a
+p99 computed over three proofs.
 
-Publier `N`, minimum, moyenne, médiane, p95, p99 empiriques, maximum et échecs. Pour ce
-protocole, un quantile empirique de rang supérieur prend après tri l'indice
-zéro-basé `ceil(p * N) - 1`, borné à `[0, N-1]`. Si le runner utilise une
-autre convention, il doit la publier et les quantiles doivent être recalculés
-avant regroupement. La convention historique RISC Zero n'est pas modifiée
-rétroactivement pour améliorer un résultat.
+Publish `N`, minimum, mean, median, empirical p95, p99, maximum and failures.
+For this protocol, an upper-rank empirical quantile takes, after sorting, the
+zero-based index `ceil(p * N) - 1`, bounded to `[0, N-1]`. If the runner uses
+another convention, it must publish it and the quantiles must be recomputed
+before being grouped. The historical RISC Zero convention is not modified
+retroactively to improve a result.
 
-Le module [`scripts/horizon-stats.mjs`](../../scripts/horizon-stats.mjs)
-conserve tous les échantillons et calcule des intervalles de confiance de
-quantiles par statistiques d'ordre, avec couverture d'au moins 95 %
-**sous l'hypothèse IID**. Cette hypothèse n'est pas établie par le module ;
-les répétitions chaudes d'une fixture ne deviennent pas automatiquement un
-échantillon IID représentatif du service. Les intervalles restent conditionnels
-et exploratoires lorsque le plan de mesure ne justifie pas cette hypothèse.
+The [`scripts/horizon-stats.mjs`](../../scripts/horizon-stats.mjs) module
+keeps all samples and computes quantile confidence intervals through order
+statistics, with coverage of at least 95% **under the IID assumption**. This
+assumption is not established by the module; warm repetitions of one fixture
+do not automatically become an IID sample representative of the service. The
+intervals remain conditional and exploratory when the measurement plan does
+not justify this assumption.
 
-Pour `B ~ Binomial(N,p)`, on choisit le plus grand `L` tel que
-`P(B<L)<=0,025` et le plus petit `U` tel que `P(B>=U)<=0,025`.
-L'intervalle est `[X_(L), X_(U)]`, avec `X_(0)=-infini` et
-`X_(N+1)=+infini`. Les masses aux quantiles rendent la couverture conservative.
-Le JSON encode une borne infinie par `null` et un indicateur explicite ;
-il ne la remplace pas par le minimum ou maximum observé. À `N=500`, le
-p99 utilise les rangs 490 et 500 ; avec 300 échantillons sa borne supérieure
-reste infinie selon cette convention à deux queues. Les probabilités sont
-calculées en double précision et ne constituent pas des bornes numériques
-certifiées. Le test indépendant des petits corpus compare les rangs à une
-somme binomiale directe ; aucun bootstrap ne sert à inventer une queue finie.
+For `B ~ Binomial(N,p)`, choose the largest `L` such that `P(B<L)<=0.025` and
+the smallest `U` such that `P(B>=U)<=0.025`. The interval is
+`[X_(L), X_(U)]`, with `X_(0)=-infinity` and `X_(N+1)=+infinity`. The masses
+at the quantiles make the coverage conservative. The JSON encodes an infinite
+bound as `null` plus an explicit flag; it does not replace it with the observed
+minimum or maximum. At `N=500`, the p99 uses ranks 490 and 500; with 300
+samples its upper bound remains infinite under this two-tailed convention.
+Probabilities are computed in double precision and do not constitute certified
+numerical bounds. The independent small-corpus test compares the ranks against
+a direct binomial sum; no bootstrap is used to invent a finite tail.
 
-Les quantiles observés décrivent cette campagne. Ils ne sont pas un SLA
-universel ni une estimation robuste de la queue d'un service à partir d'une
-fixture. Une comparaison A/B utilise le même environnement et des ordres de
-passage alternés/randomisés enregistrés, pour limiter biais thermique/cache.
-La concurrence constitue une campagne distincte avec débit, files, erreurs,
-mémoire et latences ; accélérer un travail avec plus de threads ne démontre
-pas un meilleur débit sous charge.
+The observed quantiles describe this campaign. They are neither a universal SLA
+nor a robust estimate of a service's tail from one fixture. An A/B comparison
+uses the same environment and recorded alternating/randomized execution orders,
+to limit thermal/cache bias. Concurrency is a separate campaign with throughput,
+queues, errors, memory and latencies; speeding up one job with more threads does
+not demonstrate better throughput under load.
 
-Si un budget de temps est testé, publier le nombre et la fraction de
-dépassements ainsi que le maximum. « Aucune violation observée » ne signifie
-pas « toujours sous le seuil ». Le seuil de 5 ms du simulateur historique
-ne devient pas automatiquement le seuil métier d'Horizon.
+If a time budget is tested, publish the number and fraction of overruns as well
+as the maximum. "No violation observed" does not mean "always under the
+threshold". The historical simulator's 5 ms threshold does not automatically
+become Horizon's business threshold.
 
-## 6. Ressources et taille
+## 6. Resources and size
 
-Pour chaque run conserver : commit du dépôt et des dépendances, lockfiles,
-toolchain, flags CPU, mode release, OS, CPU, threads, accélérateur, fréquence
-ou mode d'alimentation connu, conteneur/image et limites cgroup, mémoire
-physique disponible, paramètres backend et identités de preuve.
+For each run keep: repository and dependency commits, lockfiles, toolchain,
+CPU flags, release mode, OS, CPU, threads, accelerator, known frequency or
+power mode, container/image and cgroup limits, available physical memory,
+backend parameters and proof identities.
 
-Mesurer le pic mémoire dans un processus/cgroup remis à zéro pour le run.
-Une limite Docker de 12 GiB n'est pas un pic mesuré ; le maximum cumulé d'un
-conteneur ayant aussi compilé n'est pas le pic du prover. Compter les
-sous-processus et distinguer RAM, cache disque, état préparé et cache de
-vérification. OOM et refus d'allocation restent des résultats d'échec.
+Measure peak memory in a process/cgroup reset to zero for the run. A 12 GiB
+Docker limit is not a measured peak; the cumulative maximum of a container that
+also compiled is not the prover's peak. Count subprocesses and distinguish RAM,
+disk cache, prepared state and verification cache. OOM and allocation refusals
+remain failure results.
 
-Publier séparément octets de preuve, engagements, signatures, paramètres,
-journal/statement, bundle binaire et message JSON/Base64. Un cache peut
-réduire le transfert sur hit ; son état conservé et le transfert initial
-restent dans le coût total. Aucune comparaison 108 kB/108 KiB sans unités.
+Publish separately proof bytes, commitments, signatures, parameters,
+journal/statement, binary bundle and JSON/Base64 message. A cache may reduce
+transfer on a hit; its retained state and the initial transfer remain in the
+total cost. No 108 kB/108 KiB comparison without units.
 
-## 7. Vérification indépendante et reproductibilité
+## 7. Independent verification and reproducibility
 
-Un processus séparé vérifie le bundle avec seulement les éléments publics,
-la configuration de confiance et les attentes qu'il a émises. Le test sans
-réseau et sans witness est obligatoire pour le profil privé ; il démontre
-une indépendance d'interface, pas à lui seul la sécurité ZK.
+A separate process verifies the bundle with only the public elements, the trust
+configuration and the expectations it issued. The test without network and
+without witness is mandatory for the private profile; it demonstrates interface
+independence, not ZK security on its own.
 
-Les fixtures synthétiques permettent une reproduction sans credentials
-externes. Les autorités de test et leurs clés publiques/privées sont décrites
-comme telles. Les assertions de provenance réelle ou d'acceptation d'un
-assureur restent absentes tant qu'elles ne sont pas établies séparément.
+Synthetic fixtures allow reproduction without external credentials. The test
+authorities and their public/private keys are described as such. Assertions of
+real provenance or of acceptance by an insurer remain absent as long as they
+are not established separately.
 
-Le rapport de chaque expérience contient : commande exacte, heures de début
-et fin, code de sortie, stdout/stderr utiles sans secrets, empreinte des
-entrées et artefacts publics, étapes couvertes et non couvertes, résultats
-bruts, statistiques et conclusion bornée. Un benchmark upstream exécuté
-sans changement demeure une reproduction, pas une nouvelle invention.
+The report of each experiment contains: exact command, start and end times,
+exit code, useful stdout/stderr without secrets, fingerprint of the inputs and
+public artifacts, covered and uncovered steps, raw results, statistics and a
+bounded conclusion. An upstream benchmark executed without change remains a
+reproduction, not a new invention.
 
-## 8. Critères d'arrêt
+## 8. Stopping criteria
 
-- **Sécurité** : arrêt de la variante si un refus attendu donne un effet,
-  si une liaison signée manque, si le cache conserve une autorisation expirée,
-  ou si un changement de mode divulgue les données sans politique explicite.
-- **Comparabilité** : retirer le ratio si la relation, les garanties ou le
-  contrat d'émission diffèrent ; publier les mesures descriptives séparément.
-- **Performance** : hypothèse de délai rejetée si le chemin complet requis
-  dépasse le budget fixé ; aucune réduction de la relation pour sauver le chiffre.
-- **Confidentialité** : rejet du profil si ses sorties/artefacts exposent les
-  montants malgré l'engagement annoncé. La corrélation publique admise n'est
-  jamais rebaptisée unlinkability.
-- **Produit** : aucune décision commerciale positive à partir de latences
-  seules. Comparer coût d'intégration/émission, exploitation, revue humaine et
-  alternatives signées sur un dossier commun à deux organisations.
+- **Security**: stop the variant if an expected refusal produces an effect, if
+  a signed binding is missing, if the cache retains an expired authorization,
+  or if a mode change discloses the data without an explicit policy.
+- **Comparability**: withdraw the ratio if the relation, guarantees or issuance
+  contract differ; publish the descriptive measurements separately.
+- **Performance**: the latency hypothesis is rejected if the required complete
+  path exceeds the fixed budget; no reduction of the relation to save the figure.
+- **Confidentiality**: reject the profile if its outputs/artifacts expose the
+  amounts despite the announced commitment. The admitted public correlation is
+  never renamed unlinkability.
+- **Product**: no positive commercial decision from latencies alone. Compare
+  integration/issuance cost, operations, human review and signed alternatives
+  on a common case shared by two organizations.
 
-Le verdict final peut être « preuve faisable mais inutile économiquement »,
-« variante B acceptable sous hypothèses explicites » ou « toutes variantes
-rejetées ». Il n'est pas nécessaire de déclarer un gagnant si les preuves
-recueillies ne justifient pas ce choix.
+The final verdict may be "proof feasible but economically useless", "variant B
+acceptable under explicit assumptions" or "all variants rejected". It is not
+necessary to declare a winner if the collected evidence does not justify that
+choice.

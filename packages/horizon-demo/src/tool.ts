@@ -1,6 +1,6 @@
 import { isDeepStrictEqual } from 'node:util';
 import { z } from 'zod';
-import { defineVerifiedTool } from '@zk-agentik/proofkit-sdk';
+import { defineVerifiedTool } from '@m4tth1euna0p1c/proofkit-sdk';
 import type { AuthorizationStore } from './store.js';
 import type { ProofWorker } from './worker.js';
 import { Challenge, Verified, type PublicConfig } from './types.js';

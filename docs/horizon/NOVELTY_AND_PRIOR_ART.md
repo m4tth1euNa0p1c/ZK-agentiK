@@ -1,153 +1,153 @@
-# HORIZON — nouveauté, substituts et antériorités
+# HORIZON — novelty, substitutes and prior art
 
-État de recherche : **17 octobre 2026**. Cette revue documentaire ne démontre
-ni l'absence universelle d'un concurrent ni une liberté d'exploitation.
-Les publications de brevets sont examinées comme descriptions techniques ;
-leur validité, portée et statut juridique demanderaient une analyse distincte.
-La sélection de recherche est décrite dans [MARKET_DISCOVERY.md](MARKET_DISCOVERY.md).
+Research state: **October 17, 2026**. This documentary review demonstrates
+neither the universal absence of a competitor nor freedom to operate.
+Patent publications are examined as technical descriptions; their validity,
+scope and legal status would require a separate analysis.
+The research selection is described in [MARKET_DISCOVERY.md](MARKET_DISCOVERY.md).
 
-**Conclusion : aucune nouveauté générale de ZK appliqué aux décisions
-d'assurance, aux attestations signées ou au contrôle avant action n'est
-établie.** Le travail défendable à ce stade est un protocole reproductible et
-un essai comparatif d'intégration. L'émission adaptée, la restriction de
-divulgation et l'acceptation de la preuve par un acheteur restent à démontrer.
+**Conclusion: no general novelty of ZK applied to insurance decisions, signed
+attestations or pre-action control is established.** The defensible work at
+this stage is a reproducible protocol and a comparative integration trial.
+Adapted issuance, disclosure restriction and acceptance of the proof by a
+buyer remain to be demonstrated.
 
-## 1. Méthode et limites
+## 1. Method and limits
 
-Les axes examinés sont : preuve de couverture, automatisation privée des
-sinistres, paiement préalable conforme, fraude au financement, attestations
-sélectives et contrôle d'agent. La recherche a ouvert documentation officielle,
-dépôts, articles des auteurs et textes de publications de brevets. Les résultats
-d'indexation non récupérés ne servent pas de preuve quantitative.
+The axes examined are: proof of coverage, private claims automation, compliant
+prior payment, financing fraud, selective attestations and agent control. The
+research opened official documentation, repositories, authors' articles and
+patent publication texts. Unretrieved indexing results do not serve as
+quantitative evidence.
 
-Les études précédentes restent accessibles : [recherche initiale](../01-RESEARCH-AND-GAP-ANALYSIS.md),
-[concurrents du gateway et de l'admission fournisseur](../06-MARKET-NICHE-AND-CHALLENGE.md).
-Les produits commerciaux n'ont pas été essayés. Aucune recherche exhaustive
-par classes de brevets, langues, familles ou revendications n'a été menée.
-L'absence d'un exemple exact dans cette sélection est une limite de recherche.
+The earlier studies remain accessible: [initial research](../01-RESEARCH-AND-GAP-ANALYSIS.md),
+[competitors of the gateway and of provider admission](../06-MARKET-NICHE-AND-CHALLENGE.md).
+Commercial products were not tried. No exhaustive search by patent classes,
+languages, families or claims was conducted. The absence of an exact example
+in this selection is a research limit.
 
-## 2. Antériorités qui réfutent les revendications larges
+## 2. Prior art refuting broad claims
 
-| Source primaire, date | Recouvrement établi | Ce que la source ne démontre pas pour HORIZON |
+| Primary source, date | Established overlap | What the source does not demonstrate for HORIZON |
 |---|---|---|
-| [WO2021030246A1](https://patents.google.com/patent/WO2021030246A1/en), publication 18 février 2021, priorité déclarée 9 août 2019 | §0119 : preuve d'une couverture supérieure à un seuil sans révéler sa limite entière | Produit ZK déployé, validité juridique du brevet ou identité avec notre jonction de deux émetteurs |
-| [CN113706323A](https://patents.google.com/patent/CN113706323A/en), publication 26 novembre 2021 | Description de règlement automatique privé, pièces médicales signées et preuve zkSNARK ; étapes 8.1–8.3 | Sécurité de la construction, disponibilité de code et déploiement ; la traduction comporte des ambiguïtés cryptographiques |
-| [Hao, Qian, Chau](https://arxiv.org/abs/2305.08384), soumission 15 mai 2023 | Assurance paramétrique, sources hétérogènes privées et authenticité ; prototype | Demande solvable ou équivalence à un paiement délégué hors chaîne |
-| [BIS Mandala](https://www.bis.org/project/mandala), mise à jour 30 novembre 2025 | Conformité démontrée avant paiement, ZKP/MPC et coopération bancaire | Même relation numérique, mêmes autorités ou performances de notre cible |
-| [ERC-8354](https://ercs.ethereum.org/ERCS/erc-8354), proposition consultée le 17 octobre 2026 | Verdict confidentiel, engagement d'action, exécuteur, expiration, nullifier et vérification bloquant l'exécution | Adoption universelle, audit de toutes les références ou usage assurance en production |
-| [LIMOSS DDM](https://limoss.london/ddm) et [FCP](https://limoss.london/fcp), pages courantes | Normalisation, contrôle d'accès et processus opérationnels des sinistres délégués | Preuve ZK de notre relation ; leur absence de mention ZK ne prouve pas un manque acheteur |
+| [WO2021030246A1](https://patents.google.com/patent/WO2021030246A1/en), published February 18, 2021, declared priority August 9, 2019 | §0119: proof of coverage above a threshold without revealing its entire limit | Deployed ZK product, legal validity of the patent or identity with our join of two issuers |
+| [CN113706323A](https://patents.google.com/patent/CN113706323A/en), published November 26, 2021 | Description of private automatic settlement, signed medical documents and zkSNARK proof; steps 8.1–8.3 | Security of the construction, code availability and deployment; the translation contains cryptographic ambiguities |
+| [Hao, Qian, Chau](https://arxiv.org/abs/2305.08384), submitted May 15, 2023 | Parametric insurance, heterogeneous private sources and authenticity; prototype | Solvent demand or equivalence to an off-chain delegated payment |
+| [BIS Mandala](https://www.bis.org/project/mandala), updated November 30, 2025 | Compliance demonstrated before payment, ZKP/MPC and banking cooperation | Same numerical relation, same authorities or performance of our target |
+| [ERC-8354](https://ercs.ethereum.org/ERCS/erc-8354), proposal consulted on October 17, 2026 | Confidential verdict, action commitment, executor, expiration, nullifier and verification blocking execution | Universal adoption, audit of all references or production insurance use |
+| [LIMOSS DDM](https://limoss.london/ddm) and [FCP](https://limoss.london/fcp), current pages | Normalization, access control and operational processes for delegated claims | ZK proof of our relation; their lack of any ZK mention does not prove a buyer gap |
 
-La famille WO comporte notamment une publication américaine
+The WO family notably includes a US publication
 [US20220405852A1](https://patents.google.com/patent/US20220405852A1/en).
-Elle ne constitue pas une deuxième invention indépendante. Les étiquettes de
-statut de Google Patents ne sont pas utilisées pour conclure à l'absence de
-droits : elles ne remplacent pas les registres et l'analyse des revendications.
+It does not constitute a second independent invention. Google Patents status
+labels are not used to conclude an absence of rights: they do not replace the
+registers and the analysis of the claims.
 
-Le site [TrustLayer](https://www.trustlayer.io/) présente un produit de gestion
-de conformité assurantielle. Le texte d'une publication de brevet attribuée
-à cette société ne démontre pas que son produit commercial utilise ZK.
-Inversement, l'absence d'une mention détaillée sur sa page publique ne démontre
-pas que cette fonctionnalité n'existe pas.
+The [TrustLayer](https://www.trustlayer.io/) site presents an insurance
+compliance management product. The text of a patent publication attributed to
+this company does not demonstrate that its commercial product uses ZK.
+Conversely, the absence of a detailed mention on its public page does not
+demonstrate that this feature does not exist.
 
-## 3. Alternatives à battre, avec leurs frontières de confiance
+## 3. Alternatives to beat, with their trust boundaries
 
-| Alternative | Ce qu'elle peut déjà résoudre | Objection à une vente de ZK |
+| Alternative | What it can already solve | Objection to selling ZK |
 |---|---|---|
-| Valeurs ouvertes, signatures et règle native | Authenticité des valeurs acceptées et calcul reproductible par le destinataire | Si leur divulgation est autorisée, la preuve privée ajoute un coût sans bénéfice établi |
-| Verdict signé DSSE | Un émetteur accepte la responsabilité d'un verdict lié à une action | Si cet émetteur est jugé digne de confiance pour le calcul, pas besoin de prouver l'évaluation |
-| Credential BBS standard | Révéler seulement certains attributs signés, avec présentations dérivées | Un booléen de conformité signé par l'émetteur peut suffire ; le standard BBS seul n'est pas un moteur de ranges arbitraires |
-| AnonCreds | Prédicats entiers et présentations combinées | Les seuils et identités de détenteur peuvent déjà satisfaire le cas simple |
-| Dock composite proofs | Relations et prédicats sur plusieurs credentials, dont ranges selon les primitives choisies | La combinaison de sources privées et de comparaisons n'est pas une primitive nouvelle |
-| TEE avec attestation | Exécuter le calcul sur données privées sous une identité de logiciel attestée | Si les parties acceptent le matériel, l'opérateur et cette confiance, le coût d'intégration peut dominer le choix |
-| MPC | Calcul réparti quand les parties ne veulent pas réunir leurs valeurs chez un prover | Un prover ZK central ne résout pas cette contrainte ; MPC ou preuve distribuée change le protocole |
+| Open values, signatures and native rule | Authenticity of the accepted values and computation reproducible by the recipient | If their disclosure is authorized, the private proof adds a cost without an established benefit |
+| DSSE signed verdict | An issuer accepts responsibility for a verdict bound to an action | If this issuer is deemed trustworthy for the computation, no need to prove the evaluation |
+| Standard BBS credential | Reveal only certain signed attributes, with derived presentations | A compliance boolean signed by the issuer may suffice; the BBS standard alone is not an arbitrary range engine |
+| AnonCreds | Integer predicates and combined presentations | Thresholds and holder identities may already satisfy the simple case |
+| Dock composite proofs | Relations and predicates over several credentials, including ranges depending on the chosen primitives | The combination of private sources and comparisons is not a new primitive |
+| TEE with attestation | Execute the computation on private data under an attested software identity | If the parties accept the hardware, the operator and that trust, the integration cost may dominate the choice |
+| MPC | Distributed computation when the parties do not want to gather their values at a prover | A central ZK prover does not solve this constraint; MPC or distributed proving changes the protocol |
 
-Le format [DSSE](https://github.com/secure-systems-lab/dsse) protège le type et
-le payload signé. Il ne prouve pas l'exécution d'une règle. Il peut néanmoins
-lier nonce, audience, version et échéance : attribuer l'anti-rejeu à ZK seul
-serait une comparaison biaisée.
+The [DSSE](https://github.com/secure-systems-lab/dsse) format protects the
+type and the signed payload. It does not prove the execution of a rule. It can
+nevertheless bind nonce, audience, version and deadline: attributing
+anti-replay to ZK alone would be a biased comparison.
 
-[W3C BBS, Candidate Recommendation Draft du 10 septembre 2026](https://www.w3.org/TR/vc-di-bbs/)
-spécifie divulgation sélective et preuves dérivées ; ce statut ne vaut pas
-recommandation finale. [AnonCreds](https://anoncreds.github.io/anoncreds-spec/)
-documente des prédicats `<`, `<=`, `>` et `>=` contre des seuils entiers, ainsi
-que des présentations de credentials liées au détenteur. Un link secret
-commun ne démontre pas automatiquement que deux pièces concernent le même
-sinistre, ni une comparaison arbitraire entre deux attributs secrets.
+[W3C BBS, Candidate Recommendation Draft of September 10, 2026](https://www.w3.org/TR/vc-di-bbs/)
+specifies selective disclosure and derived proofs; this status is not a final
+recommendation. [AnonCreds](https://anoncreds.github.io/anoncreds-spec/)
+documents `<`, `<=`, `>` and `>=` predicates against integer thresholds, as
+well as holder-bound credential presentations. A common link secret does not
+automatically demonstrate that two documents concern the same insurance claim,
+nor an arbitrary comparison between two secret attributes.
 
-[Dock crypto-wasm-ts](https://docknetwork.github.io/crypto-wasm-ts/) documente
-des preuves composites, des égalités d'attributs cachés, des ranges et des
-circuits. Les ranges relèvent des mécanismes documentés par cette bibliothèque,
-pas d'une propriété à attribuer au seul standard W3C BBS. Cette alternative
-est techniquement proche ; elle n'a pas été exécutée ni auditée dans cette
-recherche.
+[Dock crypto-wasm-ts](https://docknetwork.github.io/crypto-wasm-ts/) documents
+composite proofs, hidden attribute equalities, ranges and circuits. Ranges
+belong to the mechanisms documented by this library, not to a property to be
+attributed to the W3C BBS standard alone. This alternative is technically
+close; it was neither executed nor audited in this research.
 
 [AWS Nitro Enclaves](https://docs.aws.amazon.com/enclaves/latest/user/set-up-attestation.html)
-documente des attestations signées contenant les mesures de l'enclave,
-vérifiables par un service externe. C'est une frontière de confiance différente
-de ZK, pas une absence de protection. La validité des sources et la politique
-d'accès doivent être traitées dans les deux cas. Mandala fournit aussi une
-référence primaire d'utilisation de MPC ; aucun classement universel de
-latence ou de sécurité entre ces familles n'est justifié ici.
+documents signed attestations containing the enclave measurements, verifiable
+by an external service. This is a trust boundary different from ZK, not an
+absence of protection. Source validity and access policy must be handled in
+both cases. Mandala also provides a primary reference for the use of MPC; no
+universal ranking of latency or security between these families is justified
+here.
 
-## 4. Ce que le profil spécialisé change réellement
+## 4. What the specialized profile really changes
 
-Le comité choisit pour le laboratoire une relation de ranges sur engagements
-signés. Les signatures sont vérifiées **hors de la preuve**, sur des
-engagements et métadonnées publics. La preuve démontre les contraintes sur
-leurs ouvertures. Cela exige que l'émetteur atteste correctement ce nouvel
-objet ; une signature d'un PDF ou d'un JSON existant ne se transforme pas
-gratuitement en signature de son engagement Pedersen.
+The committee chooses for the laboratory a range relation over signed
+commitments. Signatures are verified **outside the proof**, over public
+commitments and metadata. The proof demonstrates the constraints on their
+openings. This requires the issuer to correctly attest this new object; a
+signature over an existing PDF or JSON does not turn for free into a signature
+over its Pedersen commitment.
 
-Cette distinction interdit trois raccourcis :
+This distinction forbids three shortcuts:
 
-- « Plus rapide que le guest » ne signifie pas « même calcul plus rapide ».
-  Le guest précédent vérifiait une signature et des engagements à l'intérieur
-  du calcul prouvé ; le profil spécialisé déplace ces vérifications.
-- « Deux autorités » ne signifie pas « aucune confiance ». Chaque autorité
-  reste responsable du sens et de la justesse de sa valeur, de la devise,
-  du dossier, de la période et de la garde de sa clé.
-- « Preuve réutilisable » ne signifie pas « autorisation réutilisable ».
-  Les faits peuvent être immuables, mais la confiance, le droit d'action,
-  l'expiration et la réservation doivent être contrôlés à nouveau.
+- "Faster than the guest" does not mean "same computation faster". The
+  earlier guest verified a signature and commitments inside the proven
+  computation; the specialized profile moves these verifications out.
+- "Two authorities" does not mean "no trust". Each authority remains
+  responsible for the meaning and correctness of its value, the currency, the
+  case, the period and the custody of its key.
+- "Reusable proof" does not mean "reusable authorization". The facts may be
+  immutable, but trust, the right to act, expiration and reservation must be
+  checked again.
 
-Bulletproofs et Pedersen sur courbes reposent sur des hypothèses différentes
-du profil hash-based initial. Ce choix ne doit pas être présenté comme
-post-quantique. Les [ranges agrégés de Dalek](https://github.com/dalek-cryptography/bulletproofs)
-sont une implémentation publique existante ; l'API expérimentale R1CS décrite
-par le dépôt n'est pas nécessairement le profil utilisé. Les dépendances et
-features exactes doivent être épinglées dans le laboratoire.
+Bulletproofs and Pedersen over curves rest on assumptions different from the
+initial hash-based profile. This choice must not be presented as post-quantum.
+The [Dalek aggregated ranges](https://github.com/dalek-cryptography/bulletproofs)
+are an existing public implementation; the experimental R1CS API described by
+the repository is not necessarily the profile used. The exact dependencies and
+features must be pinned in the laboratory.
 
-Le détenteur connaît les deux valeurs. Les engagements et signatures publics
-permettent de relier les présentations ; le profil ne revendique pas
-l'unlinkability de certaines credentials. Le résultat révèle la relation
-d'ordre et les bornes du profil, même si aucun montant n'est public. Des
-requêtes adaptatives avec des faits choisis peuvent apprendre plus qu'un seul
-verdict ; une preuve ZK ne supprime pas cette fuite fonctionnelle.
+The holder knows both values. The public commitments and signatures allow
+presentations to be linked; the profile does not claim the unlinkability of
+certain credentials. The result reveals the order relation and the profile
+bounds, even if no amount is public. Adaptive queries with chosen facts can
+learn more than a single verdict; a ZK proof does not remove this functional
+leak.
 
-## 5. Revendications autorisées et réfutables
+## 5. Permitted and refutable claims
 
-| Formulation | Décision |
+| Formulation | Decision |
 |---|---|
-| Premier contrôle privé de sinistre, premier zk-MCP, marché vierge | Écartée : antériorités explicites |
-| Nouvelle primitive de ranges ou de jonction de credentials | Écartée : primitives et bibliothèques disponibles |
-| Nouvelle supériorité de Vega sur la relation assurance | Non démontrée : relations différentes |
-| Émission compatible sans changement avec les assureurs existants | Non démontrée : format d'engagement à faire adopter |
-| Comparaison reproductible de profils de confiance sur une action sandbox | Objectif légitime, à confirmer par rapports et tests |
-| Réduction mesurée de données divulguées pour un contrôle métier accepté | Hypothèse ; exige restrictions validées et analyse de fuite |
-| Produit achetable pour une niche précise | NO-GO actuel : besoin, budget et coûts inconnus |
+| First private claims control, first zk-MCP, virgin market | Dismissed: explicit prior art |
+| New range or credential-join primitive | Dismissed: primitives and libraries available |
+| New superiority of Vega on the insurance relation | Not demonstrated: different relations |
+| Issuance compatible without change with existing insurers | Not demonstrated: commitment format to be adopted |
+| Reproducible comparison of trust profiles on a sandbox action | Legitimate objective, to be confirmed by reports and tests |
+| Measured reduction of disclosed data for an accepted business control | Hypothesis; requires validated restrictions and leak analysis |
+| Purchasable product for a precise niche | Current NO-GO: need, budget and costs unknown |
 
-Le gain potentiellement défendable serait une intégration acceptée à un
-contrôle précis, accompagnée d'un format d'émission, de tests adversariaux et
-de coûts vérifiés. Aucun de ces éléments ne crée à lui seul une exclusivité.
-La niche serait réfutée si DSSE, partage contractuel, credentials existantes
-ou service déjà installé satisfont les mêmes exigences à coût acceptable.
+The potentially defensible gain would be an accepted integration into a
+precise control, accompanied by an issuance format, adversarial tests and
+verified costs. None of these elements creates exclusivity on its own.
+The niche would be refuted if DSSE, contractual sharing, existing credentials
+or an already-installed service satisfy the same requirements at an acceptable
+cost.
 
-## 6. Registre de confiance documentaire
+## 6. Documentary confidence register
 
-Les textes de brevets et spécifications établissent avec confiance élevée
-qu'une idée est décrite. Ils n'établissent ni sa sécurité ni sa mise en marché.
-Les documentations de produits établissent leurs fonctions annoncées avec
-confiance moyenne sur le comportement réel, faute d'essai. Les restrictions
-contractuelles, intentions d'achat et économies de HORIZON restent inconnues.
-Une vérification ciblée complémentaire serait nécessaire avant publication
-d'une revendication de nouveauté, dépôt de brevet ou négociation commerciale.
+Patent texts and specifications establish with high confidence that an idea is
+described. They establish neither its security nor its market placement.
+Product documentation establishes announced functions with medium confidence
+on actual behavior, for lack of a trial. HORIZON's contractual restrictions,
+purchase intents and savings remain unknown. A complementary targeted
+verification would be necessary before publishing a novelty claim, filing a
+patent or negotiating commercially.

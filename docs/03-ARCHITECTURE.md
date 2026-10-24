@@ -1,169 +1,166 @@
-# Architecture et décisions
+# Architecture and decisions
 
-## État du bootstrap
+## Bootstrap status
 
-Un monorepo Cargo/npm fournit un POC exécutable : serveur MCP officiel sur stdio,
-SDK de vérification, worker Rust persistant, noyau déterministe et connecteurs
-de fixtures. Le mode de production est bloqué. Les backends ZK, connecteurs
-réels, stockage d'audit durable et déploiement de production sont des travaux
-explicitement suivis dans `issues/`.
+A Cargo/npm monorepo provides an executable POC: official MCP server over stdio,
+verification SDK, persistent Rust worker, deterministic core and fixture
+connectors. Production mode is blocked. ZK backends, real connectors, durable
+audit storage and production deployment are work explicitly tracked in `issues/`.
 
-Le banc opt-in `labs/risc0` ajoute un guest et un adaptateur RISC Zero réels,
-avec vérification indépendante d'une attestation de fixture. Il est distinct
-du serveur MCP de démonstration. La relation commune est désormais dans
-`crates/policy-statement` (`no_std + alloc`) ; ni hashes ni règles ne sont
-réimplémentés dans le lab. Voir [le modèle de sécurité](07-STACK-SECURITY-AND-PERFORMANCE.md).
+The opt-in `labs/risc0` testbed adds a real RISC Zero guest and adapter,
+with independent verification of a fixture attestation. It is separate from
+the demonstration MCP server. The common relation now resides in
+`crates/policy-statement` (`no_std + alloc`); neither hashes nor rules are
+reimplemented in the lab. See [the security model](07-STACK-SECURITY-AND-PERFORMANCE.md).
 
 ```mermaid
 flowchart LR
-  A[Client / agent MCP] -->|tools/call| M[Serveur MCP TypeScript]
-  M --> C[Collecteur de fixtures signé HMAC]
-  C --> N[Normalisation stricte]
-  N --> P[Worker Rust natif]
+  A[MCP client / agent] -->|tools/call| M[TypeScript MCP server]
+  M --> C[HMAC-signed fixture collector]
+  C --> N[Strict normalization]
+  N --> P[Native Rust worker]
   P --> K[policy-engine-core no_std]
   K --> P
-  P -->|Reçu simulation| F[Verifier Firewall]
-  F --> R[Réservation nonce en mémoire]
-  R --> O[Réservation de l'opération en mémoire]
-  O --> V[Relecture finale des faits]
-  V --> E[Recontrôle des échéances]
-  E --> G[GitLab simulé]
+  P -->|Simulation receipt| F[Verifier Firewall]
+  F --> R[In-memory nonce reservation]
+  R --> O[In-memory operation reservation]
+  O --> V[Final reread of facts]
+  V --> E[Deadline recheck]
+  E --> G[Simulated GitLab]
   G --> M
   M -->|CallToolResult + _meta.zkp| A
 ```
 
-Le noyau évalue la règle simple et le profil critique détaillé dans
-`05-CRITICAL-PLATFORM-POLICY.md`. TypeScript ne réimplémente pas les décisions
-métier. Le firewall contrôle les attentes serveur, la fraîcheur et l'expiration
-au moment de l'exécution ; ces contrôles restent nécessaires même avec une
-preuve cryptographique valide.
+The core evaluates the basic rule and the critical profile detailed in
+`05-CRITICAL-PLATFORM-POLICY.md`. TypeScript does not reimplement business
+decisions. The firewall checks server expectations, freshness and expiration
+at execution time; these checks remain necessary even with a valid
+cryptographic proof.
 
-La réservation d'opération lie audience, tenant, projet, MR et SHA, indépendamment
-du nonce. Deux challenges frais pour le même changement ne peuvent donc pas
-déclencher deux mutations dans cette instance. Les états `RESERVED`, `COMPLETED`,
-`UNKNOWN` et `REJECTED` restent consommés ; le store mémoire ne survit pas à un
-redémarrage. L'issue 08 couvre la durabilité et la réconciliation.
+Operation reservation binds audience, tenant, project, MR and SHA independently
+of the nonce. Two fresh challenges for the same change therefore cannot trigger
+two mutations in this instance. The `RESERVED`, `COMPLETED`, `UNKNOWN` and
+`REJECTED` states remain consumed; the in-memory store does not survive a restart.
+Issue 08 covers durability and reconciliation.
 
-La recherche complémentaire resserre la cible produit sur l'admission
-confidentielle entre organisations : voir
-[le pilote proposé](06-MARKET-NICHE-AND-CHALLENGE.md). Les architectures ci-dessous
-restent des cibles de déploiement, sans garantie de confidentialité déjà livrée.
+Additional research narrows the product target to confidential admission
+between organizations: see [the proposed pilot](06-MARKET-NICHE-AND-CHALLENGE.md).
+The architectures below remain deployment targets, with no confidentiality
+guarantee already delivered.
 
-## Frontières des modules
+## Module boundaries
 
-| Module | Responsabilité | Ne peut pas faire |
+| Module | Responsibility | Cannot do |
 |---|---|---|
-| `policy-engine-core` | Comparaisons, masques de refus, profil critique ; sans heap/réseau/horloge | Collecter les preuves d'origine ou effectuer un merge |
-| `policy-statement` | Types, formats, engagements et journal communs aux backends ; `no_std + alloc` | Lire l'heure réelle ou authentifier une source externe à lui seul |
-| `policy-guest-riscv` | Adapter le cœur à une interface d'exécution ; ELF nu de faisabilité | Affirmer un support ABI SP1/RISC Zero déjà livré |
-| `zkvm-bridge` | Encodage, engagements, trait, simulation, protocole JSONL borné | Accéder à des credentials d'API |
-| `@zk-mcp/sdk` | Schémas, worker, vérification, hooks MCP, réservation de nonce | Faire confiance à une image/politique fournie par l'agent |
-| `enterprise-gateway` | Autoriser le projet, collecter, prouver, vérifier, relire, muter | Exposer un bypass de merge ou brancher une API live dans la démo |
+| `policy-engine-core` | Comparisons, denial masks, critical profile; no heap/network/clock | Collect source evidence or perform a merge |
+| `policy-statement` | Types, formats, commitments and journal shared by backends; `no_std + alloc` | Read actual time or authenticate an external source on its own |
+| `policy-guest-riscv` | Adapt the core to an execution interface; bare feasibility ELF | Claim already delivered SP1/RISC Zero ABI support |
+| `zkvm-bridge` | Encoding, commitments, trait, simulation, bounded JSONL protocol | Access API credentials |
+| `@zk-mcp/sdk` | Schemas, worker, verification, MCP hooks, nonce reservation | Trust an image/policy supplied by the agent |
+| `enterprise-gateway` | Authorize the project, collect, prove, verify, reread, mutate | Expose a merge bypass or connect a live API in the demo |
 
-Le worker reçoit des messages JSONL avec `request_id`, `op`, `payload` ; les
-opérations sont `image_id`, `prove`, `verify`. Aucun shell ni téléchargement
-de code n'est déclenché par ces messages. Taille maximale 2 MiB, file de 64
-requêtes au plus, timeout par défaut de 10 s. Ce worker local est une commodité
-du simulateur, pas une frontière de confidentialité face au même utilisateur OS.
+The worker receives JSONL messages with `request_id`, `op`, `payload`; operations
+are `image_id`, `prove`, `verify`. These messages trigger no shell or code
+download. Maximum size is 2 MiB, with a queue of at most 64 requests and a
+default timeout of 10 s. This local worker is a simulator convenience, not a
+confidentiality boundary against the same OS user.
 
-## Cible SaaS — non déployée
+## SaaS target — not deployed
 
 ```mermaid
 flowchart TB
-  A[Agent / CI client] --> I[Authentification et autorisation tenant]
-  I --> G[Gateway MCP]
-  G --> C[Collecteurs approuvés et attestations]
-  C --> Q[File de jobs de preuve isolés par tenant]
-  Q --> P[Provers sans credential de mutation]
-  P --> F[Firewall / vérifieur indépendant]
-  T[Registre signé politiques et images] --> F
-  F --> R[Datastore durable anti-rejeu]
-  R --> X[Connecteur mutation avec credentials restreints]
-  X --> L[GitLab : préconditions natives]
-  F --> U[Journal append-only / stockage WORM]
+  A[Agent / CI client] --> I[Tenant authentication and authorization]
+  I --> G[MCP gateway]
+  G --> C[Approved collectors and attestations]
+  C --> Q[Proof job queue isolated by tenant]
+  Q --> P[Provers without mutation credentials]
+  P --> F[Independent firewall / verifier]
+  T[Signed policy and image registry] --> F
+  F --> R[Durable anti-replay datastore]
+  R --> X[Mutation connector with restricted credentials]
+  X --> L[GitLab: native preconditions]
+  F --> U[Append-only journal / WORM storage]
   X --> U
 ```
 
-L'agent et le prover sont hors de la frontière d'autorisation. L'autorité des
-sources, le registre d'images, le vérifieur, l'horloge, le datastore et le
-connecteur de mutation demeurent des éléments de confiance. Les données
-privées envoyées à un prover SaaS restent visibles de ce prover. Préférer un
-prover dans le périmètre du client si le witness est confidentiel.
+The agent and prover are outside the authorization boundary. Source authority,
+image registry, verifier, clock, datastore and mutation connector remain trusted
+components. Private data sent to a SaaS prover remains visible to that prover.
+Prefer a prover within the customer's perimeter if the witness is confidential.
 
-Les éléments attendus avant production : AuthN/AuthZ par tenant, limites de
-ressources, signature/rotation des collecteurs, génération reproductible des
-ELF, vkeys épinglées, preuves ZK réelles, store transactionnel anti-rejeu,
-réconciliation des mutations ambiguës et contrôle GitLab au point de mutation.
+Requirements before production: per-tenant AuthN/AuthZ, resource limits,
+collector signing/rotation, reproducible ELF generation, pinned vkeys, real ZK
+proofs, transactional anti-replay store, reconciliation of ambiguous mutations
+and GitLab enforcement at the mutation point.
 
-## Cible on-premise — non déployée
+## On-premises target — not deployed
 
 ```mermaid
 flowchart LR
-  subgraph Réseau_client
-    A[Agent ou CI] --> M[Gateway MCP]
-    J[Jira / Sonar / IAM / scans] --> C[Collecteurs]
+  subgraph Customer_network
+    A[Agent or CI] --> M[MCP gateway]
+    J[Jira / Sonar / IAM / scans] --> C[Collectors]
     C --> M
-    M --> P[Prover local]
+    M --> P[Local prover]
     P --> F[Verifier Firewall]
-    F --> D[Anti-rejeu durable]
-    D --> L[GitLab interne]
-    F --> U[Archive chiffrée et append-only]
+    F --> D[Durable anti-replay]
+    D --> L[Internal GitLab]
+    F --> U[Encrypted append-only archive]
   end
-  T[Bundles de confiance signés hors bande] --> F
-  U --> E[Export de reçus pour vérification indépendante]
+  T[Out-of-band signed trust bundles] --> F
+  U --> E[Receipt export for independent verification]
 ```
 
-Un fonctionnement hors réseau peut vérifier une preuve passée avec des clés
-épinglées. Il ne peut pas garantir que Jira, les approbations ou l'arrêt d'urgence
-n'ont pas changé depuis la collecte. La politique de crise doit définir
-explicitement la fraîcheur admissible et les actions bloquées en l'absence de
-sources autoritatives ; le POC refuse les faits expirés.
+Offline operation can verify a past proof with pinned keys. It cannot guarantee
+that Jira, approvals or the emergency stop have not changed since collection.
+The crisis policy must explicitly define acceptable freshness and the actions
+blocked when authoritative sources are unavailable; the POC rejects expired facts.
 
-## Décisions d'architecture
+## Architecture decisions
 
-1. **Un seul cœur métier.** Les politiques Rust ne dépendent d'aucun backend.
-   Les comparaisons ont des bornes et utilisent des entiers (ppm pour les erreurs).
-2. **Simulation explicite.** Un reçu natif révèle le witness et ne protège pas
-   contre un faux prover cryptographique. Un backend absent retourne
-   `BACKEND_UNAVAILABLE`, jamais un fallback implicite.
-3. **Portabilité de sources.** Chaque véritable zkVM nécessite son ABI, son
-   journal, sa toolchain et son identité de programme. Pas d'ELF universel.
-4. **Vérifier avant mutation.** La fonction de préparation est en lecture ; le
-   hook d'effet n'est invoqué qu'après vérification et réservation du nonce.
-5. **Pas d'exactly-once inventé.** Un timeout peut laisser un résultat externe
-   inconnu. Garder le nonce consommé, enregistrer l'état et réconcilier.
-6. **Authenticité séparée du calcul.** HMAC local aujourd'hui ; attestations
-   d'origine vérifiables et politiques de collecte à construire.
-7. **Métadonnées compatibles.** Extension `_meta.zkp` et contenu MCP conservé.
-   Version SDK demandée V1 épinglée ; migration V2 avant publication stable.
-8. **Latence mesurée.** Rejets et vérification séparés. Ni les chiffres Magnetar
-   ni ceux du simulateur ne sont des mesures du futur service.
+1. **One business logic core.** Rust policies do not depend on any backend.
+   Comparisons are bounded and use integers (ppm for errors).
+2. **Explicit simulation.** A native receipt reveals the witness and does not
+   protect against a malicious cryptographic prover. A missing backend returns
+   `BACKEND_UNAVAILABLE`, never an implicit fallback.
+3. **Source portability.** Each real zkVM needs its own ABI, journal, toolchain
+   and program identity. No universal ELF.
+4. **Verify before mutation.** The preparation function is read-only; the effect
+   hook is invoked only after verification and nonce reservation.
+5. **No invented exactly-once guarantee.** A timeout may leave an external result
+   unknown. Keep the nonce consumed, record the state and reconcile.
+6. **Authenticity separate from computation.** Local HMAC today; verifiable
+   source attestations and collection policies still to be built.
+7. **Compatible metadata.** `_meta.zkp` extension and MCP content retained.
+   Requested SDK version V1 pinned; migration to V2 before stable release.
+8. **Measured latency.** Rejections and verification separated. Neither Magnetar
+   nor simulator figures measure the future service.
 
-## Source adapters : contrat à réaliser
+## Source adapters: contract to implement
 
-Le connecteur Jira doit résoudre le ticket associé au changement côté serveur
-et mapper des statuts autorisés via une configuration versionnée. Sonar doit
-fournir le quality gate d'une analyse identifiée, rattachée au même commit ; une
-analyse `PENDING` ou un scan incomplet ne valent pas zéro vulnérabilité.
-GitLab doit fournir approbateurs distincts, règles applicables et SHA courant.
-Les rôles critiques doivent venir d'un IAM, et les preuves de restauration /
-rollback d'exécutions identifiées.
+The Jira connector must resolve the ticket associated with the change on the
+server side and map allowed statuses through versioned configuration. Sonar
+must provide the quality gate of an identified analysis tied to the same commit;
+a `PENDING` analysis or an incomplete scan does not mean zero vulnerabilities.
+GitLab must provide distinct approvers, applicable rules and the current SHA.
+Critical roles must come from IAM, and restoration / rollback evidence from
+identified executions.
 
-Les schémas des normalizers livrés testent des fragments de réponses, pas une
-acquisition complète. Les futurs adaptateurs HTTP exigent origine configurée,
-timeouts, limites de réponse, pagination complète, validation TLS, refus de
-redirection vers une autre origine et absence de retries aveugles sur mutation.
+The delivered normalizer schemas test response fragments, not complete
+acquisition. Future HTTP adapters require a configured origin, timeouts, response
+limits, complete pagination, TLS validation, rejection of cross-origin redirects
+and no blind retries on mutation.
 
-Sources de contrats : [Jira REST v3](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/),
+Contract sources: [Jira REST v3](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/),
 [Sonar Web API](https://docs.sonarsource.com/sonarqube-server/extension-guide/web-api),
 [GitLab merge requests](https://docs.gitlab.com/api/merge_requests/).
-L'accès web Jira a échoué pendant la session : vérifier le contrat exact sur
-l'instance cible à l'implémentation. GitLab expose un paramètre `sha` pour
-conditionner le merge au HEAD ; il ne rend pas les autres services transactionnels.
+Jira web access failed during the session: verify the exact contract on the
+target instance during implementation. GitLab exposes a `sha` parameter to
+condition the merge on HEAD; it does not make the other services transactional.
 
-## Déploiement et qualité
+## Deployment and quality
 
-La CI livrée compile Rust et TS, teste, applique Clippy/rustfmt, génère le schéma
-et compile l'ELF de faisabilité. Les tests ne nécessitent aucune clé ni service
-cloud. Aucun Docker de production n'est présenté comme prêt : l'issue 10 est
-conditionnée par les contrôles de production des issues 07–09.
+The delivered CI compiles Rust and TS, runs tests, applies Clippy/rustfmt,
+generates the schema and compiles the feasibility ELF. Tests require no key
+or cloud service. No production Docker setup is presented as ready: issue 10
+depends on the production controls in issues 07–09.

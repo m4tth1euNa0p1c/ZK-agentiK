@@ -1,64 +1,68 @@
-# Candidat public — 17 octobre 2026
+# Laboratory publication
 
-Cette livraison prépare un **dépôt de recherche et un SDK expérimental**. Elle
-ne qualifie pas une plateforme bancaire ni un produit en disponibilité générale.
-Les résultats historiques restent consultables ; chaque nouvelle expérience
-indique son propre périmètre et ses limites.
+This release presents a **research repository and an experimental SDK**. It
+does not qualify a banking platform or a generally available product.
+Historical results remain available; each new experiment
+states its own scope and limitations.
 
-## Lire et reproduire
+## Read and reproduce
 
-| Objectif | Artefacts |
+| Objective | Artifacts |
 | --- | --- |
-| Comprendre le problème client et décider s'il faut ZK | [Protocole H11](../horizon/REVIEW_PROTOCOL.md), [business case](../horizon/BUSINESS_CASE.md) |
-| Comprendre la relation prouvée et les hypothèses | [White paper PDF](../whitepaper/whitepaper.pdf), [LaTeX](../whitepaper/whitepaper.tex), [bibliographie](../whitepaper/references.bib) |
-| Exécuter les vérifications arithmétiques | [MATLAB/Octave](../../math/README.md), exécution observée sous Octave |
-| Créer un outil HTTP/MCP à contrôle indépendant | [SDK](../../packages/proofkit-sdk/README.md), [adaptateur compilé](../../packages/horizon-demo/src/tool.ts) |
-| Exécuter un profil ou vérifier les artefacts | [CLI Proofkit](../../tools/proofkit/README.md), [catalogue](../../evidence/catalog.json) |
-| Automatiser preuves et sandbox | [GitHub Actions réutilisable](GITHUB_ACTIONS.md) |
-| Évaluer Azure/GCP et personnaliser les fondations | [Comparaison](CLOUD_COMPARISON.md), [validation locale](VALIDATION.md) |
-| Examiner l'expérience CUDA | [Rapport GPU](../experiments/gpu/README.md), résultats négatifs conservés |
-| Contrôler les affirmations publiques | [Registre éditorial](CLAIMS.md), [checklist](RELEASE_CHECKLIST.md) |
-| Lire la décision et les checks réellement exécutés | [Revue de publication datée](PUBLICATION_REVIEW_2026-10-17.md) |
-| Lire les corrections et limites de sécurité | [Contre-revue d'agents](INDEPENDENT_AGENT_REVIEW.md), [dépendances](DEPENDENCY_REVIEW.md), [validation locale](LOCAL_VALIDATION_2026-10-17.json) |
-| Poursuivre le travail | [Prompt exact](NEXT_PROMPT.md), [issues H11–H17](../../issues/horizon/NEXT_EXPERIMENTS.md) |
+| Install a version and view its artifacts | [Packages](../../PACKAGES.md), [changelog](../../CHANGELOG.md), [0.1.0-alpha.1 notes](../releases/v0.1.0-alpha.1.md) |
+| Understand the customer problem and decide whether ZK is needed | [H11 protocol](../horizon/REVIEW_PROTOCOL.md), [business case](../horizon/BUSINESS_CASE.md) |
+| Understand the proven relation and assumptions | [White paper PDF](../whitepaper/whitepaper.pdf), [LaTeX](../whitepaper/whitepaper.tex), [bibliography](../whitepaper/references.bib) |
+| Run the arithmetic checks | [MATLAB/Octave](../../math/README.md), [correlated campaigns and MATLAB R2026b](../experiments/circuit/RESULTS_2026-10-17.md) |
+| Create an HTTP/MCP tool with independent control | [SDK](../../packages/proofkit-sdk/README.md), [compiled adapter](../../packages/horizon-demo/src/tool.ts) |
+| Run a profile or verify artifacts | [Proofkit CLI](../../tools/proofkit/README.md), [catalog](../../evidence/catalog.json) |
+| Automate proofs and sandbox | [Reusable GitHub Actions](GITHUB_ACTIONS.md) |
+| Evaluate Azure/GCP and customize the foundations | [Comparison](CLOUD_COMPARISON.md), [local validation](VALIDATION.md) |
+| Examine the CUDA experiment | [GPU report](../experiments/gpu/README.md), negative results retained |
+| Check public claims | [Editorial register](CLAIMS.md), [checklist](RELEASE_CHECKLIST.md) |
+| Read the decision and the checks actually run | [Dated publication review](PUBLICATION_REVIEW_2026-10-17.md) |
+| Read security fixes and limitations | [Agent counter-review](INDEPENDENT_AGENT_REVIEW.md), [dependencies](DEPENDENCY_REVIEW.md), [local validation](LOCAL_VALIDATION_2026-10-17.json) |
+| Continue the work | [Exact prompt](NEXT_PROMPT.md), [H11–H17 issues](../../issues/horizon/NEXT_EXPERIMENTS.md) |
 
-Les [skills](../../.agents/skills/) et [contrats d'agents](../../.agents/roles/)
-permettent d'assigner rédaction, contradiction, frontières cloud et revue de
-publication. Une revue d'agent ne remplace pas un auditeur externe.
+The [skills](../../.agents/skills/) and [agent contracts](../../.agents/roles/)
+allow writing, challenge, cloud boundaries and publication review to be
+assigned. An agent review does not replace an external auditor.
 
-## Décision métier et sécurité
+## Business decision and security
 
-Le cas exploré est une **autorisation confidentielle de sinistre délégué**.
-Le circuit actuel établit une relation bornée sur deux engagements attestés ; il
-ne calcule pas franchise, agrégat de sinistres, provisionnement, fraude ou budget
-restant. L'action est l'enregistrement d'une autorisation synthétique locale.
+The case explored is **confidential authorization of a delegated insurance claim**.
+The current circuit establishes a bounded relation over two attested commitments; it
+does not calculate deductibles, aggregate claims, reserves, fraud or remaining
+budget. The action records a local synthetic authorization.
 
-Le besoin commercial reste conditionnel : il faut deux sources autoritatives,
-une raison documentée de cacher les valeurs au contrôleur, un détenteur autorisé
-à connaître leurs ouvertures et une alternative signée insuffisante. Aucun
-entretien, acheteur, budget ou gain économique absent des sources n'est ajouté.
+The commercial need remains conditional: it requires two authoritative sources,
+a documented reason to hide values from the controller, a holder authorized
+to know their openings, and an insufficient signed alternative. No
+interview, buyer, budget or economic benefit absent from the sources is added.
 
-Les fronts encore ouverts sont H11 (qualification client), H13 (émission réelle),
-H14 (contrôleur et cible distants), H15 (audit externe), H16 (coût complet) et
-H17 (exploitation). Azure/GCP fournissent ici des fondations réseau/identité,
-sans runtime bancaire prêt à déployer. Aucun service cloud n'a été déployé.
+The remaining open areas are H11 (customer qualification), H13 (real issuance),
+H14 (remote controller and target), H15 (external audit), H16 (full cost) and
+H17 (operations). Azure/GCP provide network/identity foundations here,
+without a banking runtime ready to deploy. No cloud service has been deployed.
 
-## Lecture correcte des preuves
+## Reading the evidence correctly
 
-- Les calculs Octave sont des tests exacts d'entiers et d'un modèle fini ; MATLAB
-  n'a pas été exécuté. La démonstration écrite est conditionnelle aux primitives.
-- Les preuves Bulletproofs et receipts RISC Zero sont réels dans leurs profils.
-  Le simulateur MCP DevSecOps historique reste explicitement une simulation.
-- Les résultats Vega SHA-256 sont des références reproduites sur une autre
-  relation ; aucun dépassement équivalent ni record global n'est établi.
-- La pile Horizon utilise des groupes elliptiques et Ed25519. Elle n'est pas
-  post-quantique. FIPS 204/205 ne suffisent pas à rendre son circuit PQ.
-- Les empreintes du registre lient des octets sélectionnés. Dates et commits
-  déclarés dans un manifeste ne sont pas authentifiés par ces empreintes.
-- Les benchmarks CPU historiques ne mesurent pas automatiquement les nouveaux
-  transports ; une tentative CUDA bloquée ne devient pas une mesure GPU.
+- Numerical calculations are integer and finite-model tests. The
+  [correlated campaigns](../experiments/circuit/RESULTS_2026-10-17.md) distinguish
+  Octave and MATLAB R2026b runs. The written proof remains
+  conditional on the primitives.
+- Bulletproofs proofs and RISC Zero receipts are real within their profiles.
+  The historical MCP DevSecOps simulator remains explicitly a simulation.
+- Vega SHA-256 results are references reproduced on a different
+  relation; no equivalent outperformance or global record is established.
+- The Horizon stack uses elliptic-curve groups and Ed25519. It is not
+  post-quantum. FIPS 204/205 are not sufficient to make its circuit PQ.
+- Register hashes bind selected bytes. Dates and commits
+  declared in a manifest are not authenticated by these hashes.
+- Historical CPU benchmarks do not automatically measure new
+  transports; a blocked CUDA attempt does not become a GPU measurement.
 
-La publication du code, celle d'un package npm, un déploiement et une qualification
-de production sont des décisions distinctes. Les packages restent privés pour
-npm. Consulter le journal de validation du candidat pour les checks exécutés,
-la révision Git et l'état effectif de GitHub.
+Publishing code, publishing an npm package, deployment and production
+qualification are separate decisions. Only the Proofkit SDK is distributed
+separately with this prerelease; the other npm workspaces remain private.
+See [PACKAGES.md](../../PACKAGES.md), the workflows and the release
+manifest for the Git revision, checks run and actual artifacts.
