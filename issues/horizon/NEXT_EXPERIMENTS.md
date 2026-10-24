@@ -54,6 +54,9 @@ sources and side channels. Validate metadata leakage/correlation with
 the stakeholders. Prove the limits of Ed25519/Ristretto against quantum attacks,
 without a post-quantum label. No-Go if an anonymity need is incompatible with this
 profile. Tests: `cargo test --locked --manifest-path labs/horizon/Cargo.toml`.
+Local input for the auditor (not a substitute): the SEC-1 binding regression
+suite and its mutation check, [docs/horizon/VERIFIER_BINDING_TESTS_2026-10-25.md](../../docs/horizon/VERIFIER_BINDING_TESTS_2026-10-25.md),
+plus `npm run test:horizon` and `npm run test:proofkit`.
 
 ## H16 — Complete cost and load, P1 performance
 

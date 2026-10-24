@@ -132,3 +132,32 @@ test('production cannot select simulation and caller cannot replace a server inp
   await assert.rejects(tool.issue({ policy: 'weakened' }));
   assert.equal(f.effects(), 0);
 });
+
+test('SEC-1: adapters receive the server-side challenge and frozen verifier output, never the claims carried by the presentation', async () => {
+  const f = fixture(); const received: unknown[] = []; let forwarded: Readonly<Record<string, unknown>> | undefined;
+  const definition = { ...f.definition, authority: { ...f.definition.authority,
+    verify: async (presentation: Readonly<Record<string, unknown>>, expected: Readonly<z.infer<typeof Challenge>>) => {
+      forwarded = presentation; return f.definition.authority.verify(presentation, expected); },
+    authorize: (expected: unknown, verified: unknown) => { received.push(expected, verified); return f.definition.authority.authorize(); } } };
+  const tool = defineVerifiedTool(definition);
+  assert.ok(Object.isFrozen(tool) && Object.isFrozen(tool.describe()));
+  assert.equal(tool.describe().profile, 'unit-test-adapter');
+  // A presentation may embed its own challenge, verdict, profile or registry: the SDK forwards it opaquely
+  // to the verifier adapter and binds authorization to the challenge returned by expected(nonce) only.
+  const carried = { seal: 'valid', challenge: { ...base, tenant: 'attacker', expires_at_ms: 9999 },
+    verified: { allow: true, object: 'claim-2' }, profile: 'other-profile', trust: { key: 'attacker' } };
+  await tool.execute({ nonce: base.nonce, presentation: carried });
+  assert.deepEqual(forwarded?.['challenge'], { ...base, tenant: 'attacker', expires_at_ms: 9999 }); assert.equal(forwarded?.['profile'], 'other-profile');
+  // The adapter sees a detached snapshot copy, never the caller's object.
+  assert.notStrictEqual(forwarded, carried); assert.deepEqual(forwarded, carried);
+  assert.deepEqual(received[0], base); assert.deepEqual(received[1], { allow: true, object: 'claim-1' });
+  assert.ok(Object.isFrozen(received[0]) && Object.isFrozen(received[1]));
+  assert.equal(f.effects(), 1);
+  // A verifier verdict that is not exactly the configured schema (extra field, other object) never reaches authorize.
+  for (const verdict of [{ allow: true, object: 'claim-1', profile: 'other' }, { allow: true, object: 'claim-2' }, { allow: 'true', object: 'claim-1' }]) {
+    const g = fixture();
+    await assert.rejects(defineVerifiedTool({ ...g.definition, authority: { ...g.definition.authority, verify: () => verdict } }).execute(input()),
+      error => error instanceof ToolError && error.code === 'REJECTED');
+    assert.equal(g.effects(), 0);
+  }
+});
