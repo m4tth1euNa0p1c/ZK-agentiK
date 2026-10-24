@@ -12,6 +12,11 @@ export const PROFILES=Object.freeze({
  crypto:[['node','scripts/cargo.mjs','test','--manifest-path','labs/horizon/Cargo.toml','--locked'],['npm','run','horizon:build'],['npm','run','test:horizon'],['npm','run','test:proofkit']],
  full:[['node','--test','tests/agent-routine.test.mjs'],['node','scripts/cargo.mjs','test','--workspace','--locked'],['node','scripts/cargo.mjs','test','--manifest-path','labs/horizon/Cargo.toml','--locked'],['npm','run','horizon:build'],['npm','test'],['npm','run','typecheck'],['npm','run','test:horizon'],['npm','run','test:proofkit'],['npm','run','test:circuit'],['npm','run','test:risc0:gpu'],['npm','run','proofkit','--','check']]
 });
+// Fixed commands only. On Windows, npm is a .cmd shim and needs a shell; a pre-joined string avoids
+// Node's DEP0190 warning about concatenating an argument array under shell:true.
+const spawnStep=(step,options)=>process.platform==='win32'
+ ?spawnSync(step.join(' '),{cwd:ROOT,shell:true,...options})
+ :spawnSync(step[0],step.slice(1),{cwd:ROOT,...options});
 const git=args=>{const r=spawnSync('git',args,{cwd:ROOT,encoding:'utf8',timeout:5000});return r.status===0?r.stdout.trim():null;};
 export function parseArgs(argv){
  if(!argv.length||!['plan','doctor','check','help'].includes(argv[0]))throw Error('USAGE: plan|doctor|help|check --profile docs|quick|crypto|full');
@@ -43,8 +48,9 @@ function plan(){
  process.stdout.write('Choose ONE ready task, test it and document actual results. Never silently push, merge or deploy.\n');
 }
 function doctor(){
- for(const [name,cmd,args] of [['Node','node',['--version']],['npm','npm',['--version']],['git','git',['--version']],['Cargo','cargo',['--version']],['Docker','docker',['--version']]]){
-  const r=spawnSync(cmd,args,{cwd:ROOT,encoding:'utf8',timeout:6000,shell:process.platform==='win32'});
+ // Cargo is probed through the repository wrapper, as the check profiles use it (Windows PATH may lack cargo).
+ for(const [name,cmd,args] of [['Node','node',['--version']],['npm','npm',['--version']],['git','git',['--version']],['Cargo','node',['scripts/cargo.mjs','--version']],['Docker','docker',['--version']]]){
+  const r=spawnStep([cmd,...args],{encoding:'utf8',timeout:6000});
   process.stdout.write(name+': '+(r.status===0?r.stdout.trim():'unavailable (check PATH)')+'\n');
  }
  process.stdout.write('Offline check only; cannot establish CUDA, MATLAB, cloud or ZK proof availability.\n');
@@ -56,8 +62,8 @@ export function check(profile){
  const path=join(directory,report.date_utc.replace(/[:.]/g,'-')+'-'+process.pid+'.json');
  try{
   for(const step of steps){
-   const [bin,...args]=step;process.stdout.write('\n> '+step.join(' ')+'\n');
-   const start=Date.now(),r=spawnSync(bin,args,{cwd:ROOT,stdio:'inherit',timeout:15*60*1000,shell:process.platform==='win32'});
+   process.stdout.write('\n> '+step.join(' ')+'\n');
+   const start=Date.now(),r=spawnStep(step,{stdio:'inherit',timeout:15*60*1000});
    const status=r.status===0?'PASS':'FAIL';report.steps.push({command:step,status,exit_code:r.status,elapsed_ms:Date.now()-start,error:r.error?.code??null});
    if(status==='FAIL'){process.stderr.write('FAIL: '+step.join(' ')+'\n');break;}
   }
