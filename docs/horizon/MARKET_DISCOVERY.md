@@ -1,199 +1,198 @@
-# HORIZON — découverte métier et sélection contradictoire
+# HORIZON — business discovery and adversarial selection
 
-Recherche arrêtée au **17 octobre 2026**. Ce dossier explore cinq domaines au
-maximum. Il complète les [antériorités](NOVELTY_AND_PRIOR_ART.md) et le
-[dossier économique](BUSINESS_CASE.md). Les sources ci-dessous ont été ouvertes ;
-une annonce d'éditeur est distinguée d'une mesure indépendante. Aucun prospect
-n'a été contacté, aucune donnée financière réelle collectée.
+Research frozen on **October 17, 2026**. This dossier explores at most five
+domains. It complements the [prior art](NOVELTY_AND_PRIOR_ART.md) and the
+[business case](BUSINESS_CASE.md). The sources below were opened; a vendor
+announcement is distinguished from an independent measurement. No prospect
+was contacted, no real financial data collected.
 
-**Décision du comité de recherche : GO pour un laboratoire falsifiable du
-cas 1 ; NO-GO pour un produit ou une niche commerciale déclarée validée.**
-L'action retenue est `record_claim_authorization` dans une sandbox. Elle
-enregistre une autorisation synthétique ; elle ne déclenche aucun paiement.
-Le comité réunit intégration, cryptographie, recherche métier et contradiction
-indépendante. Cette décision ne constitue pas une validation par un assureur.
+**Research committee decision: GO for a falsifiable laboratory of case 1;
+NO-GO for a product or a commercial niche declared validated.**
+The selected action is `record_claim_authorization` in a sandbox. It records
+a synthetic authorization; it triggers no payment. The committee brings
+together integration, cryptography, business research and independent
+challenge. This decision does not constitute a validation by an insurer.
 
-## 1. Conditions recherchées
+## 1. Conditions sought
 
-Une piste doit réunir trois éléments distincts :
+A lead must combine three distinct elements:
 
-- **A — contrôle** : un décideur applique une règle explicite avant une action.
-- **B — données** : des faits d'autorités différentes doivent être joints ; une
-  restriction réelle empêche le vérifieur de recevoir certaines valeurs.
-- **C — faiblesse** : le processus existant a un coût, un délai ou un défaut
-  mesuré. Une faiblesse inconnue est notée comme telle, sans chiffre inventé.
+- **A — control**: a decision-maker applies an explicit rule before an action.
+- **B — data**: facts from different authorities must be joined; a real
+  restriction prevents the verifier from receiving certain values.
+- **C — weakness**: the existing process has a measured cost, delay or defect.
+  An unknown weakness is noted as such, with no invented figure.
 
-Une règle sur un montant confidentiel ne rend pas ZK nécessaire. Si l'émetteur
-peut calculer le verdict et le signer sous une politique acceptée, cette
-solution est un concurrent de référence. Si personne n'est autorisé à connaître
-l'ensemble du witness, un prover central ordinaire ne satisfait pas B.
+A rule on a confidential amount does not make ZK necessary. If the issuer can
+compute the verdict and sign it under an accepted policy, that solution is a
+reference competitor. If nobody is authorized to know the whole witness, an
+ordinary central prover does not satisfy B.
 
-Les résultats antérieurs du dépôt démontrent seulement le coût d'une autre
-relation : trois preuves RISC Zero autorisantes produites en 153,681 à
-163,232 secondes sur CPU, vérification à chaud p95 de 13,697 ms. Ils justifient
-l'essai d'une relation spécialisée ; ils ne mesurent aucun processus assurance
-ni le nouveau laboratoire. [Mesures et limites du banc antérieur](../08-RISC0-LAB-RESULTS.md).
+The repository's earlier results demonstrate only the cost of another
+relation: three authorizing RISC Zero proofs produced in 153.681 to
+163.232 seconds on CPU, warm verification p95 of 13.697 ms. They justify
+trying a specialized relation; they measure neither an insurance process
+nor the new laboratory. [Measurements and limits of the earlier bench](../08-RISC0-LAB-RESULTS.md).
 
-## 2. Shortlist de cinq domaines
+## 2. Shortlist of five domains
 
-| Domaine | A : contrôle documenté | B : faits privés multiacteurs | C : faiblesse constatée | Verdict recherche |
+| Domain | A: documented control | B: multi-party private facts | C: observed weakness | Research verdict |
 |---|---|---|---|---|
-| 1. Autorisation bornée d'un sinistre délégué | Limite de délégation documentée ; contrôle numérique précis à contractualiser | Montant admissible attesté par expert et plafond attesté par délégant ; restriction de divulgation **hypothétique** | Coût de revue, taux d'erreur, délai ajouté par ce contrôle **inconnus** | Laboratoire limité retenu ; demande commerciale non validée |
-| 2. Couverture d'assurance au-dessus d'un seuil | Vérification de couverture | Assureur/courtier, assuré et destinataire ; souvent une seule autorité suffit | Coût marginal d'une preuve privée **inconnu** | Antériorité trop directe ; écarté comme nouveauté |
-| 3. Conformité d'un paiement transfrontalier | Contrôles avant instruction de paiement | Banques et autorités de plusieurs juridictions | Gain incrémental de notre dispositif **inconnu** | Mandala occupe déjà le problème général |
-| 4. Double financement d'une facture | Détection de documents déjà financés | Prêteurs concurrents, documents et états privés | Risque reconnu par les fournisseurs ; perte évitable localement **non mesurée** | Registre partagé et adoption déterminants ; pas un simple circuit de seuil |
-| 5. Sinistre paramétrique à sources privées multiples | Déclenchement selon observation et contrat | Capteurs, télédétection, assuré, assureur | Coût opérationnel et besoin de confidentialité **inconnus** | Prototype scientifique proche ; problème d'oracle persistant |
+| 1. Bounded authorization of a delegated insurance claim | Documented delegation limit; precise numerical control to be contractualized | Eligible amount attested by an adjuster and limit attested by the delegating party; disclosure restriction **hypothetical** | Review cost, error rate, delay added by this control **unknown** | Limited laboratory retained; commercial demand not validated |
+| 2. Insurance coverage above a threshold | Coverage verification | Insurer/broker, insured and recipient; often a single authority suffices | Marginal cost of a private proof **unknown** | Prior art too direct; dismissed as novelty |
+| 3. Compliance of a cross-border payment | Checks before payment instruction | Banks and authorities of several jurisdictions | Incremental gain of our mechanism **unknown** | Mandala already occupies the general problem |
+| 4. Double financing of an invoice | Detection of already-financed documents | Competing lenders, private documents and states | Risk acknowledged by vendors; locally avoidable loss **not measured** | Shared registry and adoption are decisive; not a simple threshold circuit |
+| 5. Parametric insurance claim with multiple private sources | Trigger according to observation and contract | Sensors, remote sensing, insured, insurer | Operational cost and confidentiality need **unknown** | Close scientific prototype; persistent oracle problem |
 
-### Cas 1 — autorisation bornée d'un sinistre délégué
+### Case 1 — bounded authorization of a delegated insurance claim
 
-La guidance de Lloyd's de mai 2023 décrit une délégation documentée et des
-limites d'autorité des gestionnaires délégués ; elle distingue limite par
-sinistre et limite par contrat de délégation (§3.27–3.30, page imprimée 12).
-Elle étaye **A**, pas une obligation d'utiliser ZK. L'applicabilité et les
-termes du contrat du futur pilote restent à vérifier.
+Lloyd's guidance of May 2023 describes a documented delegation and authority
+limits of delegated claims handlers; it distinguishes a per-claim limit from a
+per-delegation-contract limit (§3.27–3.30, printed page 12).
+It supports **A**, not an obligation to use ZK. The applicability and the
+contract terms of a future pilot remain to be verified.
 [Guidance on Lloyd's Claims Lead Arrangements](https://assets.lloyds.com/media/722c1caa-960f-43c9-a210-3635038f25d7/Guidance-on-the-Lloyds-Claims-Lead-Arrangements-0523.pdf).
 
-Le laboratoire propose deux autorités synthétiques : l'une atteste un montant
-admissible `a`, l'autre un plafond `c`. Les deux montants restent privés ;
-le destinataire vérifie `1 <= a <= c`, avec même dossier, devise, version et
-période, ainsi que les bornes du profil décrites plus bas. Il n'y a pas de
-montant de paiement public dans cette relation. Ce modèle n'encode ni
-l'intégralité d'une police ni la validité juridique d'un sinistre. Il ne
-vérifie pas un ordre de paiement et ne traite pas un plafond cumulé : celui-ci
-exigerait aussi un état comptable actuel et une réservation atomique.
+The laboratory proposes two synthetic authorities: one attests an eligible
+amount `a`, the other a limit `c`. Both amounts remain private; the recipient
+verifies `1 <= a <= c`, with the same case, currency, version and period, as
+well as the profile bounds described below. There is no public payment amount
+in this relation. This model encodes neither an entire policy nor the legal
+validity of an insurance claim. It does not verify a payment order and does
+not handle a cumulative limit: that would also require a current accounting
+state and an atomic reservation.
 
-L'expert et le délégant sont des rôles plausibles, pas des partenaires acquis.
-Le détenteur qui génère la preuve connaît les valeurs et leurs ouvertures.
-Le destinataire apprend les engagements, les émetteurs et la satisfaction
-des bornes. Le droit de cacher `a` ou `c` au destinataire n'est pas démontré ;
-les pièces complètes peuvent rester nécessaires à un audit ou à un litige.
+The adjuster and the delegating party are plausible roles, not acquired
+partners. The holder who generates the proof knows the values and their
+openings. The recipient learns the commitments, the issuers and the
+satisfaction of the bounds. The right to hide `a` or `c` from the recipient is
+not demonstrated; the complete documents may remain necessary for an audit or
+a dispute.
 
-Le marché dispose déjà de DDM, qui normalise et valide les bordereaux avec
-contrôles d'accès, et de FCP, qui organise le financement et le règlement des
-sinistres délégués. Ces services sont des points d'intégration potentiels et
-des substituts fonctionnels ; ils empêchent de présenter le contrôle comme un
-marché vide. [LIMOSS DDM](https://limoss.london/ddm),
+The market already has DDM, which normalizes and validates bordereaux with
+access controls, and FCP, which organizes the funding and settlement of
+delegated claims. These services are potential integration points and
+functional substitutes; they prevent presenting the control as an empty
+market. [LIMOSS DDM](https://limoss.london/ddm),
 [LIMOSS FCP](https://limoss.london/fcp).
 
-**Acheteur hypothétique :** responsable des contrôles sinistres d'un managing
-agent, avec exploitation des paiements et sécurité. Le gestionnaire délégué
-et l'expert sont des parties à convaincre, pas nécessairement les payeurs.
-**Abandon commercial :** partage des valeurs acceptable, verdict signé
-suffisant, aucun coût de revue mesurable, ou refus de l'émission adaptée.
+**Hypothetical buyer:** head of claims controls at a managing agent, with
+payment operations and security. The delegated claims handler and the adjuster
+are parties to convince, not necessarily the payers.
+**Commercial abandonment:** value sharing acceptable, signed verdict
+sufficient, no measurable review cost, or refusal of the adapted issuance.
 
-### Cas 2 — prouver une couverture minimale sans révéler sa limite totale
+### Case 2 — proving minimum coverage without revealing the total limit
 
-La publication de brevet **WO2021030246A1**, §0119, décrit explicitement une
-preuve que la couverture dépasse une exigence sans divulguer son montant
-complet. Elle a été publiée le 18 février 2021. L'existence de cette description
-réfute la nouveauté générale du cas ; elle n'établit pas qu'un produit déployé
-exécute ce mécanisme. [Texte de la publication](https://patents.google.com/patent/WO2021030246A1/en).
+Patent publication **WO2021030246A1**, §0119, explicitly describes a proof
+that coverage exceeds a requirement without disclosing its full amount. It was
+published on February 18, 2021. The existence of this description refutes the
+general novelty of the case; it does not establish that a deployed product
+executes this mechanism. [Publication text](https://patents.google.com/patent/WO2021030246A1/en).
 
-**Acheteur hypothétique :** acheteur professionnel ou gestionnaire du risque
-fournisseur. **Protocole synthétique :** assureur signe couverture, périmètre et
-période ; destinataire compare à son seuil. **Alternative décisive :** assureur
-signe directement le prédicat requis, ou credential à divulgation sélective.
-**Abandon :** absence de seconde relation nécessaire, ou contrat existant qui
-donne déjà accès à la police. Le plafond secret seul ne constitue pas un
-avantage défendable.
+**Hypothetical buyer:** professional buyer or supplier risk manager.
+**Synthetic protocol:** insurer signs coverage, scope and period; recipient
+compares with its threshold. **Decisive alternative:** insurer directly signs
+the required predicate, or selective-disclosure credential.
+**Abandonment:** absence of a necessary second relation, or an existing
+contract that already grants access to the policy. The secret limit alone
+does not constitute a defensible advantage.
 
-### Cas 3 — conformité préalable d'un paiement transfrontalier
+### Case 3 — prior compliance of a cross-border payment
 
-Le BIS décrit dans Mandala une preuve de conformité avant initiation du
-paiement, avec ZKP et calcul multipartite. La phase 2 vise notamment une
-évaluation empirique des bénéfices. C'est une antériorité directe du concept
-général, pas une mesure des performances de notre implémentation.
-[Project Mandala, page mise à jour le 30 novembre 2025](https://www.bis.org/project/mandala).
+The BIS describes in Mandala a proof of compliance before payment initiation,
+with ZKP and multi-party computation. Phase 2 notably targets an empirical
+evaluation of the benefits. This is direct prior art for the general concept,
+not a measurement of our implementation's performance.
+[Project Mandala, page updated November 30, 2025](https://www.bis.org/project/mandala).
 
-**Acheteur hypothétique :** banque, responsable conformité paiements.
-**Protocole synthétique :** deux attestations de contrôles et une instruction
-canonique liées à une politique de test. **Abandon :** proposition identique
-aux travaux existants sans lacune précise confirmée par une banque. Une
-déclinaison MCP ne crée pas à elle seule un marché distinct.
+**Hypothetical buyer:** bank, head of payments compliance.
+**Synthetic protocol:** two control attestations and one canonical instruction
+bound to a test policy. **Abandonment:** proposal identical to existing work
+without a precise gap confirmed by a bank. An MCP variant does not by itself
+create a distinct market.
 
-### Cas 4 — empêcher le double financement d'une facture
+### Case 4 — preventing the double financing of an invoice
 
-MonetaGo présente Secure Financing comme une solution opérationnelle de
-détection des financements dupliqués, utilisant chiffrement et confidential
-computing, avec intégration à l'écosystème Swift. Ce sont des déclarations du
-fournisseur ; ni ses pertes évitées ni son efficacité n'ont été auditées ici.
-[MonetaGo, offre et historique](https://www.monetago.com/).
+MonetaGo presents Secure Financing as an operational solution for detecting
+duplicate financing, using encryption and confidential computing, with
+integration into the Swift ecosystem. These are vendor statements; neither its
+avoided losses nor its effectiveness have been audited here.
+[MonetaGo, offering and history](https://www.monetago.com/).
 
-**Acheteur hypothétique :** responsable trade finance ou réseau de prêteurs.
-**Protocole synthétique :** registre local de deux prêteurs, engagement de
-facture et tentative concurrente de réservation. **Abandon :** besoin réel
-centré sur la couverture du réseau ou la qualité des identifiants. Une preuve
-correcte sur un registre incomplet ne prouve pas l'absence de dette ailleurs.
-Les droits d'accès et la coordination restent plus difficiles que l'inégalité.
+**Hypothetical buyer:** head of trade finance or lender network.
+**Synthetic protocol:** local registry of two lenders, invoice commitment and
+concurrent reservation attempt. **Abandonment:** real need centered on network
+coverage or identifier quality. A correct proof over an incomplete registry
+does not prove the absence of debt elsewhere. Access rights and coordination
+remain harder than the inequality.
 
-### Cas 5 — assurance paramétrique à observations privées
+### Case 5 — parametric insurance with private observations
 
-Hao, Qian et Chau ont publié en mai 2023 une construction d'assurance
-paramétrique vérifiant validité de demande et authenticité de sources privées,
-avec prototype Ethereum sur incendies. L'étude est une antériorité technique ;
-elle ne prouve pas une adoption commerciale ni une certification des données.
+Hao, Qian and Chau published in May 2023 a parametric insurance construction
+verifying claim validity and authenticity of private sources, with an Ethereum
+prototype on wildfires. The study is technical prior art; it proves neither
+commercial adoption nor data certification.
 [Privacy-preserving Blockchain-enabled Parametric Insurance](https://arxiv.org/abs/2305.08384).
 
-**Acheteur hypothétique :** assureur paramétrique et fournisseur d'observation.
-**Protocole synthétique :** deux capteurs signent des observations bornées ;
-preuve d'un seuil et de leur rattachement à une période. **Abandon :** capteurs
-non fiables, observation déjà publique, ou décision signée suffisante.
-Prouver le calcul ne rend pas l'événement assuré authentique.
+**Hypothetical buyer:** parametric insurer and observation provider.
+**Synthetic protocol:** two sensors sign bounded observations; proof of a
+threshold and of their attachment to a period. **Abandonment:** unreliable
+sensors, already-public observation, or sufficient signed decision.
+Proving the computation does not make the insured event authentic.
 
-## 3. Expérience retenue par le comité
+## 3. Experiment retained by the committee
 
-Le comité retient le cas 1 pour sa relation finie et réfutable, pas pour une
-supériorité commerciale établie. Trois variantes doivent partager les mêmes
-données synthétiques, autorités et action sandbox :
+The committee retains case 1 for its finite and refutable relation, not for
+an established commercial superiority. Three variants must share the same
+synthetic data, authorities and sandbox action:
 
-1. **A : preuve spécialisée.** Deux engagements de montants, attestés par des
-   autorités distinctes ; signatures vérifiées publiquement et preuves de
-   bornes Bulletproofs. L'émission doit connaître les ouvertures et attester
-   leur signification. La relation est `A = aG + rA H`, `C = cG + rC H`, avec
-   `Range32(A - G, C - A)`. Elle porte sur `x = a - 1` et `d = c - a` dans
-   `[0, 2^32 - 1]`, donc `a` dans `[1, 2^32]` et `c` dans
-   `[a, a + 2^32 - 1]`. Les montants sont des entiers `u64` ; les émetteurs
-   doivent construire leurs engagements à partir des faits autoritatifs dans
-   ces bornes. Les générateurs Ristretto Dalek `G/H` sont fixés par le profil.
-   Ce n'est pas une comparaison de deux `u64` quelconques : une valeur hors
-   des bornes du profil doit être refusée, même si elle serait licite dans
-   un autre contrat.
-2. **B : réutilisation contrôlée.** Réutiliser une preuve portant sur des faits
-   immuables, puis vérifier une signature fraîche du détenteur sur l'action
-   complète, les identifiants des preuves, la politique et l'époque de
-   confiance. La révocation et l'unicité sont vérifiées à l'admission. Une
-   preuve réutilisée ne transforme pas un fait ancien en fait actuel.
-3. **C : choix par politique de divulgation.** Comparer avec valeurs ouvertes
-   signées et verdict signé DSSE. Le mode est imposé par le destinataire ; une
-   erreur de preuve ne doit jamais déclencher une divulgation ou une
-   autorisation moins protectrice.
+1. **A: specialized proof.** Two amount commitments, attested by distinct
+   authorities; publicly verified signatures and Bulletproofs range proofs.
+   Issuance must know the openings and attest their meaning. The relation is
+   `A = aG + rA H`, `C = cG + rC H`, with `Range32(A - G, C - A)`. It covers
+   `x = a - 1` and `d = c - a` in `[0, 2^32 - 1]`, hence `a` in `[1, 2^32]`
+   and `c` in `[a, a + 2^32 - 1]`. Amounts are `u64` integers; issuers must
+   build their commitments from the authoritative facts within these bounds.
+   The Dalek Ristretto generators `G/H` are fixed by the profile.
+   This is not a comparison of two arbitrary `u64` values: a value outside
+   the profile bounds must be refused, even if it would be lawful under
+   another contract.
+2. **B: controlled reuse.** Reuse a proof covering immutable facts, then
+   verify a fresh holder signature over the complete action, the proof
+   identifiers, the policy and the trust epoch. Revocation and uniqueness are
+   verified at admission. A reused proof does not turn an old fact into a
+   current fact.
+3. **C: choice by disclosure policy.** Compare with signed open values and a
+   DSSE signed verdict. The mode is imposed by the recipient; a proof error
+   must never trigger a less protective disclosure or authorization.
 
-Les primitives de ranges sont déjà disponibles dans
-[la bibliothèque Bulletproofs Dalek](https://github.com/dalek-cryptography/bulletproofs).
-Leur existence ne constitue pas un résultat HORIZON. Ce profil spécialisé
-n'est ni la relation mDL de Vega, ni le guest RISC Zero antérieur. Un gain entre
-eux serait un gain de **relation et de profil**, pas une accélération du même
-calcul démontrée.
+Range primitives are already available in
+[the Dalek Bulletproofs library](https://github.com/dalek-cryptography/bulletproofs).
+Their existence does not constitute a HORIZON result. This specialized profile
+is neither Vega's mDL relation nor the earlier RISC Zero guest. A gain between
+them would be a gain of **relation and profile**, not a demonstrated speed-up
+of the same computation.
 
-Les scénarios doivent inclure dépassement de chaque borne, substitution de
-dossier/devise/autorité, signature invalide, engagement remplacé, preuve
-altérée, expiration, époque révoquée et rejeu concurrent. Zéro écriture cible
-est attendu pour tout refus. Une panne entre réservation et écriture doit
-aboutir à une réconciliation explicite, pas à une nouvelle autorisation.
-Les résultats effectifs et les limites de mesure relèvent du
-[journal d'expériences](EXPERIMENT_LOG.md), pas de cette étude de marché.
+The scenarios must include overrun of each bound, substitution of
+case/currency/authority, invalid signature, replaced commitment, altered
+proof, expiration, revoked epoch and concurrent replay. Zero target writes are
+expected for every refusal. A failure between reservation and write must lead
+to an explicit reconciliation, not to a new authorization.
+The actual results and the measurement limits belong to the
+[experiment log](EXPERIMENT_LOG.md), not to this market study.
 
-## 4. Niveau de confiance et conditions de réexamen
+## 4. Confidence level and conditions for reexamination
 
-| Élément | Niveau et raison |
+| Element | Level and reason |
 |---|---|
-| Existence du contrôle de délégation | Élevé sur le texte Lloyd's de 2023 ; adéquation au contrat pilote inconnue |
-| Existence des antériorités citées | Élevé sur leurs textes ; maturité et adoption variables |
-| Existence des services DDM/FCP | Élevé sur documentation opérateur ; efficacité locale non auditée |
-| Restriction réelle d'accès aux deux montants | Inconnue ; aucun contrat ni interlocuteur métier validant B |
-| Coût du contrôle existant et budget acheteur | Inconnus ; aucune observation de dossiers ni intention d'achat |
-| Avantage du circuit spécialisé | Hypothèse à mesurer sur le matériel et la relation retenus |
+| Existence of the delegation control | High on the 2023 Lloyd's text; fit with the pilot contract unknown |
+| Existence of the cited prior art | High on their texts; maturity and adoption variable |
+| Existence of the DDM/FCP services | High on operator documentation; local effectiveness not audited |
+| Real restriction of access to both amounts | Unknown; no contract or business contact validating B |
+| Cost of the existing control and buyer budget | Unknown; no observation of case files or purchase intent |
+| Advantage of the specialized circuit | Hypothesis to be measured on the selected hardware and relation |
 
-Réexaminer la décision uniquement avec un dossier concret : contrôle exact,
-droits de chaque partie, données attestables, baseline acceptable, coût actuel
-et seuil économique. Aucun résultat de microbenchmark ne clôt ces questions.
+Reexamine the decision only with a concrete dossier: exact control, rights of
+each party, attestable data, acceptable baseline, current cost and economic
+threshold. No microbenchmark result closes these questions.

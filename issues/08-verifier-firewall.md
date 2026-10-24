@@ -1,30 +1,30 @@
-# 08 — Rendre l'admission durable et vérifier la cible
+# 08 — Make admission durable and verify the target
 
-Jalon : M3. Priorité : P0. Dépendances : 01, 07.
+Milestone: M3. Priority: P0. Dependencies: 01, 07.
 
 ## User story
 
-Comme opérateur, je veux qu'une concurrence, panne ou réponse perdue ne réactive
-jamais un droit déjà consommé et n'autorise aucune mutation hors contexte.
+As an operator, I want concurrency, a failure or a lost response to never
+reactivate an already-consumed right or authorize any out-of-context mutation.
 
-## Architecture technique
+## Technical architecture
 
-Remplacer les stores mémoire nonce/opération par transactions durables partagées.
-Identité d'opération indépendante du challenge, états RESERVED/REJECTED/UNKNOWN/
-COMPLETED, fencing/epoch pour récupération. Revérifier les échéances après chaque
-attente avant dispatch. Cible sandbox avec précondition atomique de version et
-digest ; classifier explicitement les ressources sans cette capacité.
+Replace the in-memory nonce/operation stores with shared durable transactions.
+Operation identity independent of the challenge, RESERVED/REJECTED/UNKNOWN/
+COMPLETED states, fencing/epoch for recovery. Recheck deadlines after every
+wait before dispatch. Sandbox target with an atomic version and digest
+precondition; explicitly classify resources without this capability.
 
-## Critères d'acceptation
+## Acceptance criteria
 
-- 32 appels, deux processus, crash puis redémarrage : au plus un dispatch autorisé.
-- Une réponse perdue donne UNKNOWN et impose réconciliation, pas un retry aveugle.
-- Partition du store, snapshot ancien, image/politique changée : refus.
-- Horloge franchissant deadline pendant chaque attente : zéro mutation.
-- Pas de claim exactly-once ni de rollback distribué automatique.
+- 32 calls, two processes, crash then restart: at most one authorized dispatch.
+- A lost response yields UNKNOWN and requires reconciliation, not a blind retry.
+- Store partition, stale snapshot, changed image/policy: refusal.
+- Clock crossing the deadline during each wait: zero mutation.
+- No exactly-once claim or automatic distributed rollback.
 
-## Commandes de test
+## Test commands
 
-`npm test`, `npm run demo:critical` ; ajouter une suite chaos sur datastore et
-cible sandbox avec traces indépendantes. Les tests mémoire actuels sont une
-base et ne démontrent pas la durabilité interinstances.
+`npm test`, `npm run demo:critical`; add a chaos suite on the datastore and
+sandbox target with independent traces. The current in-memory tests are a
+baseline and do not demonstrate inter-instance durability.

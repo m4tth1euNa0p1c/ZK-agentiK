@@ -1,118 +1,119 @@
-# H11 — Revue de nécessité et protocole de qualification
+# H11 — Necessity review and qualification protocol
 
-Version du dossier : **17 octobre 2026**. Baseline technique : `684b567`.
-Statut : **PRÉPARÉ, AUCUN ENTRETIEN CLIENT EXÉCUTÉ**.
-Ce protocole rend la décision H11 vérifiable. Il ne transforme pas une revue
-d'agents, une démonstration synthétique ou l'intérêt d'un interlocuteur en
-validation commerciale. [Inventaire vérifié](INVENTORY_2026-10-17.md),
-[ticket H11](../../issues/horizon/NEXT_EXPERIMENTS.md),
-[modèle économique](BUSINESS_CASE.md).
+Dossier version: **October 17, 2026**. Technical baseline: `684b567`.
+Status: **PREPARED, NO CUSTOMER INTERVIEW CONDUCTED**.
+This protocol makes the H11 decision verifiable. It does not turn an agent
+review, a synthetic demonstration or a contact's interest into commercial
+validation. [Verified inventory](INVENTORY_2026-10-17.md),
+[H11 ticket](../../issues/horizon/NEXT_EXPERIMENTS.md),
+[business model](BUSINESS_CASE.md).
 
-## Décision recherchée
+## Decision sought
 
-Identifier un contrôle réel où le destinataire doit vérifier `0 < a <= c`,
-ne peut pas recevoir les deux valeurs et n'accepte pas de déléguer ce calcul
-à un signataire. Un acteur autorisé doit néanmoins pouvoir réunir les deux
-valeurs et ouvertures pour produire la preuve Horizon actuelle.
+Identify a real control where the recipient must verify `0 < a <= c`, cannot
+receive both values and does not accept delegating this computation to a
+signer. An authorized actor must nevertheless be able to gather both values
+and openings to produce the current Horizon proof.
 
-Le profil implémenté est plus étroit que l'inégalité seule : **entiers en
-centimes EUR**, `1 <= a <= 2^32` et `0 <= c - a < 2^32`, donc
-`c <= 2^33 - 1`. Le responsable métier doit confirmer ces unités et bornes,
-pas seulement le principe `a <= c`. [Relation exacte](FORMAL_STATEMENT.md).
+The implemented profile is narrower than the inequality alone: **integers in
+EUR cents**, `1 <= a <= 2^32` and `0 <= c - a < 2^32`, hence
+`c <= 2^33 - 1`. The business owner must confirm these units and bounds, not
+only the principle `a <= c`. [Exact relation](FORMAL_STATEMENT.md).
 
-L'expérience est réfutée pour ce cas d'usage si une alternative acceptée
-rend le même service à moindre coût, si le prover ne peut pas réunir les
-secrets, ou si le contrôle réellement demandé porte sur un budget cumulé.
-Le plafond par dossier, le montant admissible et le droit de paiement sont
-trois notions à distinguer. La preuve ne décide pas de la réalité du sinistre.
+The experiment is refuted for this use case if an accepted alternative
+renders the same service at lower cost, if the prover cannot gather the
+secrets, or if the control actually requested concerns a cumulative budget.
+The per-case limit, the eligible amount and the right to pay are three
+notions to distinguish. The proof does not decide the reality of the
+insurance claim.
 
-## Participants et pièces minimales
+## Participants and minimum documents
 
-Rechercher, dans une revue organisée par le porteur du projet, les responsabilités
-suivantes : propriétaire du contrôle métier, représentant des sources,
-évaluateur sécurité/confidentialité et responsable du budget expérimental.
-Plusieurs rôles peuvent appartenir à la même organisation ; un avis sécurité
-distinct de celui de l'auteur du prototype doit être consigné. Ces personnes
-ne sont ni identifiées ni contactées par ce dossier.
+Seek, in a review organized by the project lead, the following
+responsibilities: owner of the business control, representative of the
+sources, security/confidentiality evaluator and owner of the experimental
+budget. Several roles may belong to the same organization; a security opinion
+distinct from that of the prototype's author must be recorded. These people
+are neither identified nor contacted by this dossier.
 
-Utiliser un schéma de processus anonymisé, une règle écrite, les catégories de
-données et des statistiques agrégées dont le partage est autorisé. Aucun
-dossier client, identifiant personnel, clé privée ou ouverture réelle n'est
-nécessaire pour cette revue. Conserver les entretiens et pièces commerciales
-dans l'espace approuvé par leurs propriétaires ; seule une synthèse autorisée
-et dépourvue de données sensibles peut être ajoutée au dépôt.
+Use an anonymized process diagram, a written rule, the data categories and
+aggregated statistics whose sharing is authorized. No customer file, personal
+identifier, private key or real opening is necessary for this review. Keep
+interviews and commercial documents in the space approved by their owners;
+only an authorized synthesis free of sensitive data may be added to the
+repository.
 
-## Déroulé proposé, 60 minutes
+## Proposed agenda, 60 minutes
 
-| Durée indicative | Travail | Trace attendue |
+| Indicative duration | Work | Expected trace |
 | --- | --- | --- |
-| 0–15 min | Décrire un contrôle qui pose effectivement problème avant de présenter le produit | Opération, acteurs, règle, fréquence, cas de blocage, preuve de provenance de ces observations |
-| 15–25 min | Répartir les droits d'accès aux valeurs, au verdict et aux métadonnées | Matrice de confiance et motif précis de chaque interdiction |
-| 25–35 min | Examiner les alternatives et le système existant | Alternative admissible la moins coûteuse ; justification de chaque rejet |
-| 35–45 min | Exécuter la démonstration synthétique et un refus | Sorties de commandes, commit, compteur d'effets, limites observées |
-| 45–55 min | Estimer émission, intégration, exploitation et traitement des exceptions | Entrées sourcées du modèle économique et inconnues |
-| 55–60 min | Décider séparément métier et sécurité | CONTINUER, RÉORIENTER ou INCONCLUSIF ; objections conservées |
+| 0–15 min | Describe a control that actually causes a problem before presenting the product | Operation, actors, rule, frequency, blocking cases, evidence of provenance of these observations |
+| 15–25 min | Allocate access rights to the values, the verdict and the metadata | Trust matrix and precise reason for each prohibition |
+| 25–35 min | Examine the alternatives and the existing system | Least costly admissible alternative; justification of each rejection |
+| 35–45 min | Run the synthetic demonstration and one refusal | Command outputs, commit, effect counter, observed limits |
+| 45–55 min | Estimate issuance, integration, operations and exception handling | Sourced inputs of the business model and unknowns |
+| 55–60 min | Decide business and security separately | CONTINUE, REORIENT or INCONCLUSIVE; objections kept |
 
-Une durée de réunion n'est pas une taille d'échantillon. Un entretien peut
-réfuter une hypothèse ; il ne permet pas d'estimer un marché ni un ROI.
+A meeting duration is not a sample size. An interview can refute a
+hypothesis; it does not allow estimating a market or an ROI.
 
-## Questions qui peuvent invalider le profil
+## Questions that can invalidate the profile
 
-1. Quelle décision est bloquée aujourd'hui ? Quel exemple de processus,
-   expurgé et daté, le montre ? Faire décrire le même contrôle par les
-   organisations émettrice et destinataire. Qui porte le risque du refus et de
-   l'acceptation ? Un avis d'expert ne remplace pas ces deux confirmations.
-2. Pourquoi le contrôleur ne peut-il pas connaître `a`, `c` ou l'un des deux ?
-   Distinguer contrainte documentée, préférence et hypothèse non vérifiée.
-3. Qui peut connaître **les deux** valeurs et leurs ouvertures, y compris
-   opérateurs du prover et accès aux sauvegardes ? Puisque cet acteur existe
-   dans Horizon, pourquoi son verdict signé ne serait-il pas
-   accepté ? Distinguer confiance dans l'accès aux données et confiance dans
-   la justesse du calcul. Une réponse absente laisse la nécessité ZK inconnue.
-4. Qui établit le montant et le plafond ? Ces sources calculeront-elles leurs
-   engagements depuis leurs données validées, avec unité, dossier, version,
-   rôle, échéance et révocation ? Qui finance ce changement d'émission ?
-5. Le contrôle est-il un plafond par dossier ou un budget consommable partagé ?
-   Y a-t-il franchises, devises, arrondis, corrections et cumuls ? Un besoin
-   absent de la relation actuelle impose un nouveau statement avant tout pilote.
-   Exemple synthétique à soumettre : deux dossiers de 80 avec plafond 100
-   satisfont chacun la relation ; un plafond cumulé de 100 serait dépassé.
-   C'est une question de portée de la règle, pas une attaque de Bulletproofs.
-6. Quelles métadonnées peuvent être vues et corrélées ? L'accès du prover aux
-   secrets, la corrélation des preuves et l'absence de résistance post-quantique
-   sont-ils compatibles avec les exigences écrites ?
-7. Quelle est l'action exacte autorisée ? Qui détient les credentials, gère
-   `UNKNOWN`, confirme l'état cible et décide d'une exception en crise ? La
-   démo SQLite ne répond pas encore pour une API financière distante.
-8. Le décideur peut-il nommer un sponsor et un budget de test, mesurer le coût
-   actuel et impliquer les émetteurs ? Un intérêt oral n'est pas un engagement.
+1. Which decision is blocked today? Which redacted and dated process example
+   shows it? Have the issuing and recipient organizations each describe the
+   same control. Who bears the risk of refusal and of acceptance? An expert
+   opinion does not replace these two confirmations.
+2. Why can the controller not know `a`, `c` or either of them? Distinguish a
+   documented constraint, a preference and an unverified hypothesis.
+3. Who can know **both** values and their openings, including prover
+   operators and backup access? Since this actor exists in Horizon, why would
+   its signed verdict not be accepted? Distinguish trust in data access from
+   trust in the correctness of the computation. A missing answer leaves the
+   ZK necessity unknown.
+4. Who establishes the amount and the limit? Will these sources compute their
+   commitments from their validated data, with unit, case, version, role,
+   deadline and revocation? Who funds this issuance change?
+5. Is the control a per-case limit or a shared consumable budget? Are there
+   deductibles, currencies, rounding, corrections and accumulations? A need
+   absent from the current relation requires a new statement before any
+   pilot. Synthetic example to submit: two cases of 80 with a limit of 100
+   each satisfy the relation; a cumulative limit of 100 would be exceeded.
+   This is a question of rule scope, not an attack on Bulletproofs.
+6. Which metadata can be seen and correlated? Are the prover's access to the
+   secrets, proof correlation and the absence of post-quantum resistance
+   compatible with the written requirements?
+7. What is the exact authorized action? Who holds the credentials, handles
+   `UNKNOWN`, confirms the target state and decides an exception in a crisis?
+   The SQLite demo does not yet answer for a remote financial API.
+8. Can the decision-maker name a sponsor and a test budget, measure the
+   current cost and involve the issuers? Oral interest is not a commitment.
 
-## Comparaison à service et confiance explicites
+## Comparison with explicit service and trust
 
-Fixer avant l'essai la même règle, les mêmes sources, l'action, les préconditions
-de fraîcheur, le régime de révocation et les droits d'accès acceptables. Ne
-retirer ni anti-rejeu ni persistance de la baseline pour favoriser Horizon.
-Les mécanismes qui ne satisfont pas les exigences doivent être écartés avec
-une raison documentée, et non classés sur leur seule vitesse.
+Fix before the trial the same rule, the same sources, the action, the
+freshness preconditions, the revocation regime and the acceptable access
+rights. Remove neither anti-replay nor persistence from the baseline to favor
+Horizon. Mechanisms that do not meet the requirements must be dismissed with
+a documented reason, not ranked on their speed alone.
 
-| Variante | Question décisive | État dans le dépôt |
+| Variant | Decisive question | State in the repository |
 | --- | --- | --- |
-| Système existant / contrôle déterministe avec données accessibles | Résout-il déjà le problème au coût admis ? | À observer chez le participant |
-| Attestations signées + valeurs divulguées | Le contrôleur peut-il recevoir les valeurs et refaire le calcul ? | Baseline crypto exécutée ; pas un pilote métier |
-| Verdict signé lié à l'action, par exemple enveloppé DSSE | Une partie qui connaît les valeurs est-elle acceptée pour signer le résultat ? | Alternative analysée ; chemin complet de verdict signé **non implémenté ni benchmarké** |
-| Credentials / divulgation sélective / preuve de prédicat existante | L'émission existante couvre-t-elle la règle et les droits requis ? | Recherche documentaire ; qualification comparative non exécutée |
-| Horizon A/B | Faut-il vérifier la relation sans valeurs ni tiers accepté pour le calcul ? | Preuves réelles et firewall sur données synthétiques |
-| MPC ou autre architecture | Les sources interdisent-elles de réunir les secrets chez le prover ? | Hors prototype actuel ; nouveau chantier à arbitrer |
+| Existing system / deterministic control with accessible data | Does it already solve the problem at the accepted cost? | To be observed at the participant |
+| Signed attestations + disclosed values | Can the controller receive the values and redo the computation? | Crypto baseline executed; not a business pilot |
+| Signed verdict bound to the action, for example DSSE-enveloped | Is a party that knows the values accepted to sign the result? | Alternative analyzed; complete signed-verdict path **neither implemented nor benchmarked** |
+| Credentials / selective disclosure / existing predicate proof | Does existing issuance cover the required rule and rights? | Documentary research; comparative qualification not executed |
+| Horizon A/B | Must the relation be verified without values and without an accepted third party for the computation? | Real proofs and firewall on synthetic data |
+| MPC or other architecture | Do the sources forbid gathering the secrets at the prover? | Outside the current prototype; new workstream to arbitrate |
 
-Un accord pour expérimenter Horizon exige une objection vérifiable à la
-meilleure alternative admise. La baseline divulguée plus rapide ne suffit
-pas à justifier le profil privé ; le verdict signé peut lui aussi cacher
-les montants au contrôleur, avec une hypothèse de confiance différente.
+An agreement to experiment with Horizon requires a verifiable objection to the
+best accepted alternative. The faster disclosed baseline is not enough to
+justify the private profile; the signed verdict can also hide the amounts from
+the controller, with a different trust assumption.
 
-## Démonstration reproductible à montrer
+## Reproducible demonstration to show
 
-Prérequis et versions : [DEPLOYMENT](DEPLOYMENT.md). Depuis la racine, avec
-dépendances installées, utiliser un scénario frais créé par la démo :
+Prerequisites and versions: [DEPLOYMENT](DEPLOYMENT.md). From the root, with
+dependencies installed, use a fresh scenario created by the demo:
 
 ```sh
 git rev-parse HEAD
@@ -122,110 +123,112 @@ npm run test:horizon
 npm run horizon:demo
 ```
 
-La fixture vérifie une présentation publique avec son temps historique ; elle
-n'autorise aucune opération actuelle. La démo crée un nouveau répertoire
-temporaire, utilise des ports loopback libres et conserve ses artefacts locaux.
-Ne pas les publier : ils contiennent aussi la configuration privée synthétique.
-Le résumé terminal ne contient ni witness ni clé privée.
+The fixture verifies a public presentation with its historical time; it
+authorizes no current operation. The demo creates a new temporary directory,
+uses free loopback ports and keeps its local artifacts. Do not publish them:
+they also contain the synthetic private configuration. The terminal summary
+contains neither witness nor private key.
 
-| Observation à consigner | Valeur attendue et portée |
+| Observation to record | Expected value and scope |
 | --- | --- |
-| Vérification de fixture | `public_fixture_verified: true`, `live_authorization: false` |
-| Type de preuve de la démo | `real Bulletproofs + Ed25519`, sources synthétiques |
-| Présentation altérée, divulgation forcée, rejeu | Refus ; dans cette démo l'altération vise la signature du détenteur |
-| Effets non autorisés / autorisés | `unauthorized_effects: 0`, `authorized_effects: 1` sur la nouvelle cible locale |
-| Reprise et concurrence | Les tests Horizon doivent réussir ; vérifier le compteur d'effets, pas seulement le message d'erreur |
+| Fixture verification | `public_fixture_verified: true`, `live_authorization: false` |
+| Demo proof type | `real Bulletproofs + Ed25519`, synthetic sources |
+| Tampered presentation, forced disclosure, replay | Refusal; in this demo the tampering targets the holder signature |
+| Unauthorized / authorized effects | `unauthorized_effects: 0`, `authorized_effects: 1` on the new local target |
+| Recovery and concurrency | The Horizon tests must pass; check the effect counter, not only the error message |
 
-Les altérations algébriques de la preuve de plage sont couvertes par les tests Rust et les
-campagnes décrites dans [SECURITY_REVIEW](SECURITY_REVIEW.md) ; ne pas présenter
-l'altération de signature de la démo comme une nouvelle attaque de la preuve.
-L'application persistante et la vérification isolée en conteneur sont décrites
-dans [DEPLOYMENT](DEPLOYMENT.md). Une base déjà consommée ou des attestations
-expirées doivent rester refusées ; ne pas les effacer pour obtenir un succès.
+Algebraic tampering of the range proof is covered by the Rust tests and the
+campaigns described in [SECURITY_REVIEW](SECURITY_REVIEW.md); do not present
+the demo's signature tampering as a new attack on the proof.
+The persistent application and the isolated verification in a container are
+described in [DEPLOYMENT](DEPLOYMENT.md). An already-consumed database or
+expired attestations must remain refused; do not erase them to obtain a
+success.
 
-La présentation des performances doit rappeler : 672 octets pour la preuve
-seule ; vérification crypto Linux p95 1,247 ms ; parcours durable Windows
-p95 13,014 ms et maximum 180,310 ms. Ces mesures ne sont pas une promesse sur
-le système du participant. Aucun classement global face à Vega n'est établi.
+The performance presentation must recall: 672 bytes for the proof alone;
+Linux crypto verification p95 1.247 ms; Windows durable path p95 13.014 ms
+and maximum 180.310 ms. These measurements are not a promise about the
+participant's system. No global ranking against Vega is established.
 
-## Mesures économiques à recueillir
+## Economic measurements to collect
 
-Pour chaque variable, noter unité, période, population, source, propriétaire,
-plage d'incertitude et méthode. Une valeur inconnue reste inconnue, jamais zéro.
+For each variable, note unit, period, population, source, owner, uncertainty
+range and method. An unknown value remains unknown, never zero.
 
-- Dossiers réellement éligibles, fréquence des blocages et part exigeant la
-  non-divulgation ; ne pas prendre tous les sinistres comme marché adressable.
-- Minutes de travail et délais actuels, tâches qui disparaîtraient effectivement,
-  coût horaire complet et traitement des refus/contestations.
-- Coût initial de chaque source, de la cible et du contrôle ; répartition entre
-  organisations et financement accepté de ces changements.
-- Coûts récurrents d'émission, correction, révocation, calcul, stockage, IAM/KMS,
-  audit, support, réconciliation et continuité d'activité.
-- Coût de la meilleure alternative admissible sur le même périmètre. Les pertes
-  évitées restent nulles dans une projection prudente sans causalité documentée.
+- Actually eligible cases, frequency of blockings and share requiring
+  non-disclosure; do not take all insurance claims as the addressable market.
+- Current work minutes and delays, tasks that would actually disappear, fully
+  loaded hourly cost and handling of refusals/disputes.
+- Initial cost of each source, of the target and of the control; split between
+  organizations and accepted funding of these changes.
+- Recurring costs of issuance, correction, revocation, computation, storage,
+  IAM/KMS, audit, support, reconciliation and business continuity.
+- Cost of the best admissible alternative on the same scope. Avoided losses
+  remain zero in a prudent projection without documented causality.
 
-Appliquer le modèle de [BUSINESS_CASE](BUSINESS_CASE.md) avec scénarios bas,
-central et haut sourcés. Préenregistrer avec le sponsor les seuils économiques
-et opérationnels avant de mesurer le pilote. Aucun seuil monétaire ni ROI
-universel n'est déduit du microbenchmark.
+Apply the [BUSINESS_CASE](BUSINESS_CASE.md) model with sourced low, central
+and high scenarios. Preregister with the sponsor the economic and operational
+thresholds before measuring the pilot. No universal monetary threshold or ROI
+is derived from the microbenchmark.
 
-## Portes de décision, sans moyenne compensatoire
+## Decision gates, with no compensating average
 
-| Porte | Éléments requis pour continuer | Si absent ou négatif |
+| Gate | Elements required to continue | If absent or negative |
 | --- | --- | --- |
-| G1 — Contrôle réel | Responsable, règle, périmètre, bornes/unités du profil et exemple de problème confirmés par les organisations émettrice et destinataire | INCONCLUSIF si inconnus ; RÉORIENTER si aucun problème |
-| G2 — Confidentialité | Matrice d'accès motivée, accès du prover autorisé, fuites acceptables pour l'essai | INCONCLUSIF si inconnus ; RÉORIENTER si incompatibles |
-| G3 — Alternatives | Examen du verdict signé et des solutions existantes, raison vérifiable de leur insuffisance | INCONCLUSIF si non évaluées ; RÉORIENTER si une solution simple suffit |
-| G4 — Sources | Responsables d'émission identifiés, faisabilité et responsabilité acceptées pour un test | INCONCLUSIF sans preuve ; RÉORIENTER en cas de refus |
-| G5 — Valeur | Coût actuel documenté, coût incrémental estimé, sponsor et budget de test explicites | INCONCLUSIF tant que non mesurés ; RÉORIENTER si valeur insuffisante |
-| G6 — Sécurité du pilote | Avis distinct, périmètre synthétique, critères d'arrêt et travaux H13/H15 écrits | Bloquer le pilote en cas de défaut non traité |
+| G1 — Real control | Owner, rule, scope, profile bounds/units and problem example confirmed by the issuing and recipient organizations | INCONCLUSIVE if unknown; REORIENT if no problem |
+| G2 — Confidentiality | Reasoned access matrix, authorized prover access, acceptable leaks for the trial | INCONCLUSIVE if unknown; REORIENT if incompatible |
+| G3 — Alternatives | Examination of the signed verdict and existing solutions, verifiable reason for their insufficiency | INCONCLUSIVE if not evaluated; REORIENT if a simple solution suffices |
+| G4 — Sources | Issuance owners identified, feasibility and responsibility accepted for a test | INCONCLUSIVE without evidence; REORIENT in case of refusal |
+| G5 — Value | Documented current cost, estimated incremental cost, explicit sponsor and test budget | INCONCLUSIVE until measured; REORIENT if value insufficient |
+| G6 — Pilot security | Distinct opinion, synthetic scope, stop criteria and H13/H15 work written | Block the pilot in case of an unaddressed defect |
 
-**CONTINUER H11** exige toutes les portes justifiées. Cela autorise seulement
-la proposition d'un pilote borné ; H13/H15 et les autorisations de ce pilote
-restent nécessaires. H14/H17 sont requis avant tout effet distant réel.
-Un résultat inconnu bloque une conclusion positive ; il ne réfute pas à lui
-seul le besoin. Les objections non résolues restent visibles.
-Une alternative signée admissible réfute une nécessité cryptographique de ZK ;
-la décision économique exige encore une comparaison complète des coûts.
-Même toutes les portes satisfaites étayent seulement ce cas pour un pilote,
-sans établir un achat, un marché ou la nécessité universelle de ZK.
+**CONTINUE H11** requires all gates to be justified. This only authorizes the
+proposal of a bounded pilot; H13/H15 and the authorizations for that pilot
+remain necessary. H14/H17 are required before any real remote effect.
+An unknown result blocks a positive conclusion; it does not by itself refute
+the need. Unresolved objections remain visible.
+An admissible signed alternative refutes a cryptographic necessity of ZK; the
+economic decision still requires a complete cost comparison.
+Even with all gates satisfied, this only supports this case for a pilot,
+without establishing a purchase, a market or the universal necessity of ZK.
 
-## Fiche de résultat à remplir après une revue réelle
+## Result sheet to fill in after a real review
 
 ```text
-Identifiant de revue : NON ATTRIBUÉ
-Date / commit démontré : NON RENSEIGNÉS
-Statut : NON EXÉCUTÉ
-Rôles présents et mandats (identifiants non nominatifs) : NON RENSEIGNÉS
-Références des pièces autorisées / lieu de conservation : AUCUNE
-Règle et action métier précises : NON CONFIRMÉES
-Qui voit a / c / les deux / les métadonnées : NON CONFIRMÉ
-Motif de rejet ou d'acceptation du verdict signé : NON ÉVALUÉ
-Engagement des émetteurs / sponsor / budget : AUCUN ÉTABLI
-G1 : INCONNU ; G2 : INCONNU ; G3 : INCONNU
-G4 : INCONNU ; G5 : INCONNU ; G6 : INCONNU
-Commandes, sorties publiques et compteur d'effets : NON EXÉCUTÉS EN REVUE
-Hypothèses réfutées / défauts / objections : À CONSIGNER
-Décision métier : INCONCLUSIF
-Décision sécurité : INCONCLUSIF
-Prochaine expérience, responsable, critères d'arrêt : NON DÉFINIS
-Autorisation de partager une synthèse : NON ÉTABLIE
+Review identifier: NOT ASSIGNED
+Date / demonstrated commit: NOT FILLED IN
+Status: NOT EXECUTED
+Roles present and mandates (non-nominative identifiers): NOT FILLED IN
+References of authorized documents / storage location: NONE
+Precise business rule and action: NOT CONFIRMED
+Who sees a / c / both / the metadata: NOT CONFIRMED
+Reason for rejecting or accepting the signed verdict: NOT EVALUATED
+Commitment of issuers / sponsor / budget: NONE ESTABLISHED
+G1: UNKNOWN; G2: UNKNOWN; G3: UNKNOWN
+G4: UNKNOWN; G5: UNKNOWN; G6: UNKNOWN
+Commands, public outputs and effect counter: NOT EXECUTED IN REVIEW
+Refuted hypotheses / defects / objections: TO BE RECORDED
+Business decision: INCONCLUSIVE
+Security decision: INCONCLUSIVE
+Next experiment, owner, stop criteria: NOT DEFINED
+Authorization to share a synthesis: NOT ESTABLISHED
 ```
 
-Le dossier actuel fournit les éléments techniques à examiner. Il ne remplit
-aucun champ client par inférence et ne déclenche aucun contact externe.
+The current dossier provides the technical elements to examine. It fills in
+no customer field by inference and triggers no external contact.
 
-## Vérification de la préparation, 17 octobre 2026
+## Preparation check, October 17, 2026
 
-Les commandes du parcours technique ont été rejouées pendant la rédaction :
-23 tests Rust et 43 tests Node réussis, formatage et Clippy des deux workspaces,
-TypeScript strict, schéma et compilation du guest nu réussis. La fixture publique
-est vérifiée sans autorisation actuelle. La démo produit une preuve réelle,
-zéro effet non autorisé et une seule admission synthétique. Les données de
-benchmark historiques sont conservées ; aucune nouvelle mesure de performance
-n'est déduite des durées de ces tests.
+The commands of the technical path were replayed during drafting:
+23 Rust tests and 43 Node tests passed, formatting and Clippy of both
+workspaces, strict TypeScript, schema and compilation of the bare guest
+passed. The public fixture is verified without any current authorization. The
+demo produces a real proof, zero unauthorized effects and a single synthetic
+admission. The historical benchmark data is retained; no new performance
+measurement is derived from the durations of these tests.
 
-Une relecture contradictoire par agent a imposé la comparaison au verdict signé,
-la visibilité du prover et de ses opérateurs, les bornes/unités exactes et le
-cas du plafond cumulé. Cette vérification prépare la séance ; elle ne constitue
-ni un entretien métier, ni un avis humain indépendant, ni un audit externe.
+An adversarial re-read by an agent imposed the comparison with the signed
+verdict, the visibility of the prover and its operators, the exact
+bounds/units and the cumulative-limit case. This check prepares the session;
+it constitutes neither a business interview, nor an independent human
+opinion, nor an external audit.

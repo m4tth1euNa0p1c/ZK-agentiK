@@ -1,159 +1,161 @@
-# Verdict Horizon — 17 octobre 2026
+# Horizon verdict — October 17, 2026
 
-**GO pour un laboratoire reproductible. NO-GO pour un produit bancaire ou
-assurantiel qualifié. Aucun record face à Microsoft Vega n'est établi.**
+**GO for a reproducible laboratory. NO-GO for a qualified banking or insurance
+product. No record against Microsoft Vega is established.**
 
-Le programme livre une bibliothèque de preuves réelles, CLI, API, application
-web, contrôleur durable, déploiement local et dossier de décision. Il montre
-une optimisation de notre propre implémentation. Il ne démontre ni marché
-inexistant, ni demande solvable, ni supériorité à la meilleure référence connue
-sur une relation équivalente. Les recherches et essais négatifs sont conservés.
+The program delivers a real proof library, CLI, API, web application, durable
+controller, local deployment and decision file. It shows an optimization of our
+own implementation. It demonstrates neither a nonexistent market, nor solvent
+demand, nor superiority over the best known reference on an equivalent
+relation. Research and negative trials are preserved.
 
-## 1. Ce qui n'était pas évident au départ
+## 1. What was not obvious at the start
 
-Le besoin de prouver une petite inégalité n'impose pas une zkVM généraliste.
-Il peut se représenter par deux engagements signés et une preuve de plages,
-**si les autorités acceptent un nouveau contrat d'émission**. Déplacer la
-vérification des signatures hors du circuit est une modification des hypothèses
-et divulgations ; ce n'est pas une accélération gratuite d'un credential Vega.
+The need to prove a small inequality does not require a general-purpose zkVM.
+It can be represented by two signed commitments and a range proof, **if the
+authorities accept a new issuance contract**. Moving signature verification
+outside the circuit is a change of assumptions and disclosures; it is not a
+free speedup of a Vega credential.
 
-Le temps cryptographique n'est pas le temps d'autorisation durable. Après
-optimisation, une vérification complète B a un p95 de 1,247 ms dans le banc
-Linux ; le parcours Windows avec IPC, deux transactions synchrones et cible
-SQLite atteint 13,014 ms au p95. Le stockage et la frontière opérationnelle
-empêchent de convertir le premier chiffre en promesse de service.
+Cryptographic time is not durable authorization time. After optimization, a
+complete B verification has a p95 of 1.247 ms on the Linux bench; the Windows
+path with IPC, two synchronous transactions and a SQLite target reaches
+13.014 ms at p95. Storage and the operational boundary prevent converting the
+first figure into a service promise.
 
-## 2. Propriété mathématique et optimisation
+## 2. Mathematical property and optimization
 
-Pour des engagements standard `A=aG+r_aH` et `C=cG+r_cH`, une RangeProof
-2×32 sur `A−G` et `C−A` démontre `1≤a≤2^32` et `0≤c−a<2^32`, sous les
-hypothèses et bornes de [FORMAL_STATEMENT](FORMAL_STATEMENT.md). Les signatures
-publiques lient les points aux autorités, unités et dossier. Les montants ne
-sont pas révélés au contrôleur, mais les présentations sont corrélables.
+For standard commitments `A=aG+r_aH` and `C=cG+r_cH`, a 2×32 RangeProof over
+`A−G` and `C−A` demonstrates `1≤a≤2^32` and `0≤c−a<2^32`, under the
+assumptions and bounds of [FORMAL_STATEMENT](FORMAL_STATEMENT.md). The public
+signatures bind the points to the authorities, units and case. The amounts are
+not revealed to the controller, but the presentations are correlatable.
 
-La préparation de générateurs publics fixes via `OnceLock` retire leur dérivation
-répétée du chemin chaud. Les paramètres, relation, signatures et transcripts
-restent identiques ; une preuve antérieure est toujours acceptée. B réutilise
-la preuve immuable tout en signant chaque challenge : cela apporte une autorisation
-fraîche par la clé du détenteur sur preuve historique, pas une connaissance fraîche du witness.
-Ces techniques sont connues ; aucune primitive nouvelle n'est revendiquée.
+Preparing fixed public generators through `OnceLock` removes their repeated
+derivation from the hot path. Parameters, relation, signatures and transcripts
+remain identical; an earlier proof is still accepted. B reuses the immutable
+proof while signing each challenge: this provides fresh authorization by the
+holder key over a historical proof, not fresh knowledge of the witness.
+These techniques are known; no new primitive is claimed.
 
-## 3. Preuves expérimentales
+## 3. Experimental evidence
 
-| Mesure | Observation |
+| Measurement | Observation |
 | --- | --- |
-| Horizon A, génération p95, avant → après | 7,770 → 6,546 ms |
-| Horizon B, vérification complète p95, avant → après | 2,266 → 1,247 ms |
-| Présentation B (dont signature), p95 après préparation | 0,065 ms ; pas une nouvelle preuve ZK |
-| Preuve de plage | 672 octets, hors enveloppe et signatures |
-| Baseline non-ZK, vérification p95 | 0,245 ms ; montants et ouvertures divulgués |
-| IPC + vérification + autorisation durable Windows | p95 13,014 ms ; p99 15,126 ms ; maximum 180,310 ms |
-| Corruptions algébriques canoniques re-signées | 500 refus avant + 500 après ; aucune acceptation observée |
-| Tests | 14 Rust historiques + 9 Rust Horizon ; 25 Node historiques + 18 Horizon |
+| Horizon A, generation p95, before → after | 7.770 → 6.546 ms |
+| Horizon B, complete verification p95, before → after | 2.266 → 1.247 ms |
+| Presentation B (including signature), p95 after preparation | 0.065 ms; not a new ZK proof |
+| Range proof | 672 bytes, excluding envelope and signatures |
+| Non-ZK baseline, verification p95 | 0.245 ms; amounts and openings disclosed |
+| IPC + verification + durable authorization, Windows | p95 13.014 ms; p99 15.126 ms; maximum 180.310 ms |
+| Re-signed canonical algebraic corruptions | 500 refusals before + 500 after; no acceptance observed |
+| Tests | 14 historical Rust + 9 Horizon Rust; 25 historical Node + 18 Horizon |
 
-Les deux campagnes crypto utilisent 500 mesures, 30 échauffements et cinq cas.
-La campagne durable utilise 500 mesures, 30 échauffements, une preuve préparée
-et 530 cibles SQLite indépendantes. Les IC p50/p95/p99 sont calculés sous
-hypothèse IID **non établie** ; les résultats restent ceux d'une machine.
-[Rapport structuré, bruts et empreintes](BENCHMARK_RESULTS.json),
-[méthode](BENCHMARK_METHODOLOGY.md), [journal](EXPERIMENT_LOG.md).
+Both crypto campaigns use 500 measurements, 30 warm-ups and five cases. The
+durable campaign uses 500 measurements, 30 warm-ups, one prepared proof and
+530 independent SQLite targets. The p50/p95/p99 CIs are computed under an IID
+assumption that is **not established**; the results remain those of one
+machine.
+[Structured report, raw data and fingerprints](BENCHMARK_RESULTS.json),
+[method](BENCHMARK_METHODOLOGY.md), [log](EXPERIMENT_LOG.md).
 
-Les attaques testées couvrent signatures/preuves, omission, substitution,
-downgrade de confidentialité, contexte/tenant, deux nonces concurrents,
-révocation, expiration, recul d'horloge, changement de politique, worker absent,
-sortie de processus après réservation et résultat ambigu. Les refus testés
-avant effet observent zéro mutation. La réconciliation d'un effet déjà produit
-ne redispatche pas. Cela ne mesure pas la probabilité cryptographique de soundness.
+The tested attacks cover signatures/proofs, omission, substitution,
+confidentiality downgrade, context/tenant, two concurrent nonces, revocation,
+expiration, clock rollback, policy change, missing worker, process exit after
+reservation and ambiguous result. The refusals tested before effect observe
+zero mutations. Reconciliation of an effect already produced does not
+redispatch. This does not measure the cryptographic soundness probability.
 
-Le déploiement Compose génère une preuve réelle via HTTP et enregistre une seule
-autorisation synthétique. Après redémarrage, rejeu et nouveau challenge restent
-refusés. Un conteneur neuf sans réseau, montage ni witness vérifie la fixture
-publique. La cible est un registre de démonstration, jamais un paiement.
+The Compose deployment generates a real proof over HTTP and records a single
+synthetic authorization. After a restart, replay and a new challenge remain
+refused. A fresh container without network, mount or witness verifies the
+public fixture. The target is a demonstration ledger, never a payment.
 
-## 4. Référence réellement dépassée
+## 4. Reference actually surpassed
 
-**Notre implémentation précédente**, à relation et format inchangés : réduction
-observée du p95 de 15,75 % pour A et de 44,97 % pour la vérification B.
-Le gain porte sur la réutilisation de paramètres publics. Il n'établit aucun
-record externe ni résultat général sur une autre machine.
+**Our previous implementation**, with unchanged relation and format: observed
+p95 reduction of 15.75% for A and 44.97% for B verification. The gain concerns
+the reuse of public parameters. It establishes no external record nor any
+general result on another machine.
 
-Les benches publics Vega SHA-256 SC/MC ont été exécutés sur le même environnement
-Linux. Le cas MC 2 Kio estime preuve 65,836 ms et vérification 19,885 ms, hors
-préparation. La relation complète de présentation credential correspondant aux
-92/23 ms publiés n'est pas fournie par ces benches. Elle n'a pas été reproduite.
-Comparer ces nombres à nos plages comme un classement serait trompeur.
-Voir [comparaison des références](COMPETITOR_COMPARISON.md).
+The Vega SHA-256 SC/MC public benches were executed in the same Linux
+environment. The MC 2 KiB case estimates proof 65.836 ms and verification
+19.885 ms, excluding preparation. The complete credential-presentation relation
+corresponding to the published 92/23 ms is not provided by these benches. It
+has not been reproduced. Comparing these numbers with our ranges as a ranking
+would be misleading. See [reference comparison](COMPETITOR_COMPARISON.md).
 
-## 5. Problème métier visé
+## 5. Targeted business problem
 
-Un assureur délégant pourrait vouloir contrôler qu'un montant admissible reste
-sous un plafond par dossier, attestés par deux rôles distincts, sans partager ces
-valeurs avec un contrôleur. Le démonstrateur enregistre une autorisation liée
-au dossier, à la politique et au challenge. Il ne contrôle pas un budget cumulé,
-des provisions ou la légitimité d'un paiement.
+A delegating insurer might want to check that an eligible amount stays under a
+per-case limit, attested by two distinct roles, without sharing these values
+with a controller. The demonstrator records an authorization bound to the case,
+the policy and the challenge. It does not control an aggregate budget,
+provisions or the legitimacy of a payment.
 
-Les processus de délégation et contrôles multiacteurs sont documentés ; les
-solutions DCA/FCP, attestations et preuves de prédicats sont des antériorités.
-**Aucun entretien, acheteur engagé, prix, gain opérationnel ou ROI n'a été
-vérifié**. La matrice de cinq domaines et les critères d'abandon sont dans
-[MARKET_DISCOVERY](MARKET_DISCOVERY.md), les antériorités dans
+Delegation processes and multi-actor controls are documented; DCA/FCP
+solutions, attestations and predicate proofs are prior art. **No interview,
+committed buyer, price, operational gain or ROI has been verified**. The
+five-domain matrix and the abandonment criteria are in
+[MARKET_DISCOVERY](MARKET_DISCOVERY.md), the prior art in
 [NOVELTY_AND_PRIOR_ART](NOVELTY_AND_PRIOR_ART.md).
 
-## 6. Pourquoi ne pas choisir plus simple
+## 6. Why not choose something simpler
 
-Il faut souvent choisir plus simple. La baseline signée divulguée est moins
-coûteuse. Un verdict signé suffit si un tiers accepté peut calculer la règle.
-La divulgation sélective suffit si le besoin se réduit à révéler des attributs.
+Choosing something simpler is often the right call. The signed disclosed
+baseline is less costly. A signed verdict suffices if an accepted third party
+can compute the rule. Selective disclosure suffices if the need reduces to
+revealing attributes.
 
-Le profil privé n'est justifié que si les deux valeurs doivent rester cachées
-au contrôleur, qu'aucun tiers accepté ne peut signer le verdict et que les
-autorités peuvent émettre les engagements adaptés. Si les sources refusent
-même de partager leurs witnesses avec le prover, ce design ne répond pas au
-besoin : une approche MPC ou un autre protocole doit être évalué.
+The private profile is justified only if both values must remain hidden from
+the controller, no accepted third party can sign the verdict and the
+authorities can issue the adapted commitments. If the sources refuse even to
+share their witnesses with the prover, this design does not meet the need: an
+MPC approach or another protocol must be evaluated.
 
-## 7. Garanties impossibles à revendiquer maintenant
+## 7. Guarantees impossible to claim now
 
-Pas de vérité garantie des faits signés, d'anonymat, de résistance post-quantique,
-de preuve fraîche de connaissance dans B, d'isolation contre l'administrateur,
-de confidentialité contre canaux auxiliaires, d'atomicité sur une API financière
-distante, de disponibilité en crise ou de durabilité testée sous panne matérielle.
-Pas de conformité automatique DORA/RGPD/AI Act ni d'audit cryptographique externe.
-Pas de performance GPU, coût énergétique/monétaire complet ou pic RSS total.
+No guaranteed truth of the signed facts, anonymity, post-quantum resistance,
+fresh proof of knowledge in B, isolation against the administrator,
+confidentiality against side channels, atomicity over a remote financial API,
+availability in a crisis or durability tested under hardware failure. No
+automatic DORA/GDPR/AI Act compliance nor external cryptographic audit. No GPU
+performance, complete energy/monetary cost or total RSS peak.
 
-La cible de 10 ms pour le parcours durable mesuré est **réfutée sur ce banc**.
-Les seuils crypto seuls sont satisfaits empiriquement sur une relation plus
-étroite. Ils ne satisfont pas le critère de victoire scientifique demandé.
-Le backend RISC Zero historique reste distinct du chemin MCP de production.
+The 10 ms target for the measured durable path is **refuted on this bench**.
+The crypto thresholds alone are satisfied empirically on a narrower relation.
+They do not satisfy the requested scientific victory criterion. The historical
+RISC Zero backend remains distinct from the production MCP path.
 
-## 8. Coût et chemin d'industrialisation
+## 8. Cost and industrialization path
 
-Le coût cryptographique local est petit par rapport aux travaux encore ouverts :
-émission qualifiée, intégration de deux autorités, politique contractuelle,
-gestion de clés/révocations, protocole de reprise avec la cible, IAM, audit,
-sauvegardes et qualification de confidentialité. Aucun budget fiable ne peut
-être déduit de ces microbenchmarks. [BUSINESS_CASE](BUSINESS_CASE.md) fournit
-le modèle de coût et ses données manquantes, sans montant de marché inventé.
+The local cryptographic cost is small compared with the work still open:
+qualified issuance, integration of two authorities, contractual policy,
+key/revocation management, recovery protocol with the target, IAM, audit,
+backups and confidentiality qualification. No reliable budget can be derived
+from these microbenchmarks. [BUSINESS_CASE](BUSINESS_CASE.md) provides the
+cost model and its missing data, without an invented market figure.
 
-Priorité : **H11 validation client**, **H13 provenance** et **H15 audit**, puis
-**H14 cible distante/reprise**, **H17 exploitation**, **H16 coût complet**.
-H12 traite séparément la comparaison Vega équivalente. Ne pas développer de
-connecteur financier ou nouvelle primitive avant ces validations.
+Priority: **H11 customer validation**, **H13 provenance** and **H15 audit**,
+then **H14 remote target/recovery**, **H17 operations**, **H16 complete cost**.
+H12 separately addresses the equivalent Vega comparison. Do not develop a
+financial connector or a new primitive before these validations.
 
-## Décision sur les critères d'acceptation
+## Decision on the acceptance criteria
 
-| Critère | État |
+| Criterion | State |
 | --- | --- |
-| Références Microsoft reproduites ou limites documentées | SHA-256 reproduit ; limite credential explicite |
-| Besoin précis avec sources et valeur économique | Processus sourcé, hypothèse précise ; valeur économique non validée |
-| Faiblesse réelle de l'état de l'art traitée | Faisabilité privée montrée ; supériorité/nécessité commerciale non établies |
-| Relation formalisée, preuve réelle, vérification indépendante | Établi dans le périmètre synthétique |
-| Tests adverses et alternative non-ZK | Exécutés ; couverture et limites publiées |
-| Performances reproductibles | Bruts, locks, commandes, source et IC conservés ; une machine |
-| Sandbox utilisable, documentation et CI | Livrés et testés localement ; aucune production |
-| Dossier technique/commercial | Livré, avec verdict négatif sur record et qualification produit |
+| Microsoft references reproduced or limits documented | SHA-256 reproduced; credential limit explicit |
+| Precise need with sources and economic value | Sourced process, precise hypothesis; economic value not validated |
+| Real weakness of the state of the art addressed | Private feasibility shown; superiority/commercial necessity not established |
+| Formalized relation, real proof, independent verification | Established within the synthetic scope |
+| Adversarial tests and non-ZK alternative | Executed; coverage and limits published |
+| Reproducible performance | Raw data, locks, commands, source and CIs retained; one machine |
+| Usable sandbox, documentation and CI | Delivered and tested locally; no production |
+| Technical/commercial file | Delivered, with negative verdict on record and product qualification |
 
-Le programme n'est donc **pas déclaré terminé avec succès au sens d'un produit
-validé ou d'une percée contre Vega**. Les expériences accessibles dans cette
-exécution aboutissent à un POC vérifiable ; les étapes bloquées par le manque
-de relation de référence complète, d'autorités réelles et de données économiques
-sont consignées dans les [tickets H11–H17](../../issues/horizon/NEXT_EXPERIMENTS.md).
+The program is therefore **not declared successfully completed in the sense of
+a validated product or a breakthrough against Vega**. The experiments
+accessible in this execution lead to a verifiable POC; the steps blocked by the
+lack of a complete reference relation, real authorities and economic data are
+recorded in the [H11–H17 tickets](../../issues/horizon/NEXT_EXPERIMENTS.md).

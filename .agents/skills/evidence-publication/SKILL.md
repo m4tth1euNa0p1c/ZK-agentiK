@@ -1,40 +1,40 @@
 ---
 name: evidence-publication
-description: Préparer une publication auditable de ZK-agentiK, vérifier les assertions et artefacts publics, les licences et la reproductibilité sans confondre préparation, publication et qualification de production.
+description: Prepare an auditable publication of ZK-agentiK, verify the public claims and artifacts, licenses and reproducibility without confusing preparation, publication and production qualification.
 ---
 
-# Préparer une publication fondée sur des preuves
+# Prepare an evidence-based publication
 
-Lire `docs/publication/RELEASE_CHECKLIST.md`, `docs/publication/CLAIMS.md`,
-`SECURITY.md` et `THIRD_PARTY_NOTICES.md`. Identifier le commit candidat exact.
-Préserver les changements de l'utilisateur, notamment les fichiers non suivis.
+Read `docs/publication/RELEASE_CHECKLIST.md`, `docs/publication/CLAIMS.md`,
+`SECURITY.md` and `THIRD_PARTY_NOTICES.md`. Identify the exact candidate commit.
+Preserve the user's changes, in particular untracked files.
 
-## Vérifier le contenu candidat
+## Verify the candidate content
 
-1. Inventorier les fichiers suivis et le diff ; ne pas limiter la recherche de
-   secrets au dernier diff. Distinguer fixtures publiques, clés privées générées,
-   données de tiers, journaux et captures. Ne pas afficher les secrets trouvés.
-2. Vérifier les commandes réellement disponibles dans `package.json` et les
-   manifests Cargo. Consigner les commandes exécutées, versions, codes de sortie
-   et limites. Ne pas réécrire un résultat historique comme un résultat courant.
-3. Associer toute revendication de sécurité ou performance à son entrée dans
-   `docs/publication/CLAIMS.md`. Une empreinte garantit l'identité des octets,
-   pas leur vérité, leur date, ni une revue externe.
-4. Vérifier les licences directes et transitives, les notices, les images et
-   données incluses. Le résumé des notices n'est ni un SBOM complet ni un avis
-   de liberté d'exploitation. Conserver les textes exigés dans la distribution.
-5. Contrôler les liens locaux, métadonnées de citation et instructions de reprise.
-   Signaler clairement le statut laboratoire, les adaptateurs non implémentés
-   et les frontières de confiance ouvertes.
+1. Inventory the tracked files and the diff; do not limit the search for
+   secrets to the latest diff. Distinguish public fixtures, generated private keys,
+   third-party data, logs and screenshots. Do not display the secrets found.
+2. Check the commands actually available in `package.json` and the Cargo
+   manifests. Record the executed commands, versions, exit codes
+   and limits. Do not rewrite a historical result as a current result.
+3. Associate every security or performance claim with its entry in
+   `docs/publication/CLAIMS.md`. A fingerprint guarantees the identity of the
+   bytes, not their truth, their date, nor an external review.
+4. Check direct and transitive licenses, notices, and included images and
+   data. The notices summary is neither a complete SBOM nor a freedom-to-operate
+   opinion. Keep the texts required in the distribution.
+5. Check local links, citation metadata and recovery instructions.
+   Clearly flag the laboratory status, the unimplemented adapters
+   and the open trust boundaries.
 
-## Résultat attendu
+## Expected result
 
-Produire une liste de contrôles avec trois états : vérifié, non vérifié,
-bloquant. Chaque état vérifié cite un artefact ou une commande et sa date.
-Préparer un candidat reviewable avant toute demande liée à une publication.
-Ne pas changer la visibilité du dépôt, publier de package ou créer une release
-sans que cette action soit comprise dans l'autorisation de la session.
-La simple préparation du candidat ne requiert pas une permission supplémentaire.
+Produce a checklist with three states: verified, unverified,
+blocking. Each verified state cites an artifact or a command and its date.
+Prepare a reviewable candidate before any publication-related request.
+Do not change the repository visibility, publish a package or create a release
+unless this action is included in the session's authorization.
+Merely preparing the candidate does not require an additional permission.
 
-Une revue contradictoire peut utiliser `.agents/roles/release-reviewer.md`.
-Ne pas transformer l'accord d'un agent en audit de sécurité ou avis juridique.
+An adversarial review can use `.agents/roles/release-reviewer.md`.
+Do not turn an agent's agreement into a security audit or a legal opinion.

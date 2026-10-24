@@ -1,40 +1,41 @@
-# 03 — Comparer les preuves réelles et la baseline signée
+# 03 — Compare real proofs and the signed baseline
 
-Jalon : M1. Priorité : P1. Dépendances : 01–02.
+Milestone: M1. Priority: P1. Dependencies: 01–02.
 
-## Avancement du 15 octobre 2026
+## Progress as of 15 October 2026
 
-Premier runner réel livré : `npm run lab:risc0 -- critical 3` et `denied 1`.
-Quatre preuves CPU `Succinct`, mesures et fixtures publiques conservées dans
-[le rapport](../docs/08-RISC0-LAB-RESULTS.md). Vérification reproductible sans
-génération : `npm run lab:risc0 -- verify`.
-Rejet cryptographique p95 6,95 ms et génération 154–163 s : objectifs initiaux
-de 5 ms et de challenge 30 s non atteints. Comparaisons CUDA/autre backend,
-verdict signé DSSE, pics mémoire isolés, charge et qualification client restent
-à effectuer. Cette issue n'est pas terminée.
+First real runner delivered: `npm run lab:risc0 -- critical 3` and `denied 1`.
+Four CPU `Succinct` proofs, measurements and public fixtures preserved in
+[the report](../docs/08-RISC0-LAB-RESULTS.md). Reproducible verification without
+generation: `npm run lab:risc0 -- verify`.
+Cryptographic rejection p95 6.95 ms and generation 154–163 s: initial targets
+of 5 ms and of a 30 s challenge not met. CUDA/other backend comparisons,
+DSSE-signed verdict, isolated memory peaks, load and customer qualification remain
+to be done. This issue is not finished.
 
 ## User story
 
-Comme acheteur technique, je peux décider si ZK apporte une propriété utile au
-coût et au délai acceptables de mon processus de promotion.
+As a technical buyer, I can decide whether ZK brings a useful property at an
+acceptable cost and delay for my promotion process.
 
-## Architecture technique
+## Technical architecture
 
-Même corpus pour politique native + verdict DSSE, divulgation sélective BBS
-si adaptée, et vrai backend ZK. Conserver paramètres cryptographiques, matériels,
-versions, warm/cold, preprocessing, cycles, RAM, confidentialité et réseau.
-Séparer preuve, vérification, rejets et mutation. Comparer une intégration
-Colofon/PreFlight si accessible, sans assimiler annonces et mesures.
+Same corpus for native policy + DSSE verdict, BBS selective disclosure
+if suitable, and real ZK backend. Record cryptographic parameters, hardware,
+versions, warm/cold, preprocessing, cycles, RAM, confidentiality and network.
+Separate proof, verification, rejections and mutation. Compare a
+Colofon/PreFlight integration if accessible, without conflating announcements
+and measurements.
 
-## Critères d'acceptation
+## Acceptance criteria
 
-- Résultats JSON/CSV reproductibles, p50/p95/max, tailles et coût d'exploitation.
-- Aucun nombre de simulation présenté comme benchmark ZK.
-- Au moins une exigence du client satisfaite par ZK et pas la baseline retenue.
-- Budget de latence convenu avec le pilote ; pas de 5 ms universel inventé.
+- Reproducible JSON/CSV results, p50/p95/max, sizes and operating cost.
+- No simulation figure presented as a ZK benchmark.
+- At least one customer requirement satisfied by ZK and not by the retained baseline.
+- Latency budget agreed with the pilot; no invented universal 5 ms.
 
-## Commandes de test
+## Test commands
 
-`npm run benchmark`, `npm run benchmark -- --enforce-5ms` pour le simulateur.
-Ajouter un runner séparé pour backends réels, une reproduction documentée et
-un rapport excluant explicitement les backends non exécutés.
+`npm run benchmark`, `npm run benchmark -- --enforce-5ms` for the simulator.
+Add a separate runner for real backends, a documented reproduction and
+a report explicitly excluding backends that were not executed.

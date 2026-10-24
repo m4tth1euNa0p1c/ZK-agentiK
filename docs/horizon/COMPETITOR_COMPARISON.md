@@ -1,69 +1,70 @@
-# Comparaison à périmètres déclarés
+# Comparison with declared scopes
 
-Date : 17 octobre 2026. Les mesures complètes et IC sont dans
-[BENCHMARK_RESULTS.json](BENCHMARK_RESULTS.json). Les liens scientifiques et
-limites cryptographiques sont développés dans [STATE_OF_THE_ART](STATE_OF_THE_ART.md).
+Date: October 17, 2026. The complete measurements and CIs are in
+[BENCHMARK_RESULTS.json](BENCHMARK_RESULTS.json). The scientific references and
+cryptographic limits are developed in [STATE_OF_THE_ART](STATE_OF_THE_ART.md).
 
-## Références réellement exécutées
+## References actually executed
 
-| Expérience | Preuve / présentation | Vérification | Taille | Ce que cela couvre |
+| Experiment | Proof / presentation | Verification | Size | What it covers |
 | --- | ---: | ---: | ---: | --- |
-| Vega MC SHA-256 1 Kio, 8 threads | 52,656 ms | 20,548 ms | 86 933 octets | Estimations centrales Criterion, preuve SHA amont |
-| Vega MC SHA-256 2 Kio, 8 threads | 65,836 ms | 19,885 ms | 96 583 octets | Préparation exclue de la colonne preuve |
-| Vega SC SHA-256 1 Kio, 8 threads | 93,260 ms | 28,214 ms | 85 948 octets | Relation SHA simple circuit |
-| Vega SC SHA-256 2 Kio, 8 threads | 231,090 ms | 74,444 ms | 94 572 octets | Même bench amont, taille différente |
-| Horizon A après optimisation, 1 thread | p95 6,546 ms | p95 1,228 ms | 672 octets | Relation de deux plages, signatures hors preuve |
-| Horizon B après préparation, 1 thread | p95 0,065 ms | p95 1,247 ms | 672 octets | Signature fraîche sur preuve historique, vérification complète |
-| Baseline divulgation signée | p95 0,160 ms | p95 0,245 ms | Pas de preuve ZK | Valeurs et ouvertures divulguées |
-| Horizon B + IPC + contrôleur durable Windows | Présentation exclue | p95 13,014 ms | Enveloppe JSON complète | Vérification et effet SQLite ; sans HTTP/réseau |
+| Vega MC SHA-256 1 KiB, 8 threads | 52.656 ms | 20.548 ms | 86,933 bytes | Criterion central estimates, upstream SHA proof |
+| Vega MC SHA-256 2 KiB, 8 threads | 65.836 ms | 19.885 ms | 96,583 bytes | Preparation excluded from the proof column |
+| Vega SC SHA-256 1 KiB, 8 threads | 93.260 ms | 28.214 ms | 85,948 bytes | Single-circuit SHA relation |
+| Vega SC SHA-256 2 KiB, 8 threads | 231.090 ms | 74.444 ms | 94,572 bytes | Same upstream bench, different size |
+| Horizon A after optimization, 1 thread | p95 6.546 ms | p95 1.228 ms | 672 bytes | Two-range relation, signatures outside the proof |
+| Horizon B after preparation, 1 thread | p95 0.065 ms | p95 1.247 ms | 672 bytes | Fresh signature over a historical proof, complete verification |
+| Signed-disclosure baseline | p95 0.160 ms | p95 0.245 ms | No ZK proof | Values and openings disclosed |
+| Horizon B + IPC + durable controller, Windows | Presentation excluded | p95 13.014 ms | Complete JSON envelope | Verification and SQLite effect; without HTTP/network |
 
-**Ces lignes ne constituent pas un classement global.** Les relations, divulgations,
-phases et environnements ne sont pas tous équivalents. Les tailles de preuve ne
-sont pas des tailles de message : les enveloppes et leurs quantiles sont publiés
-séparément. Vega et les fonctions cryptographiques Horizon ont tourné dans le
-même environnement Linux 8 CPU / 12 GiB ; le banc durable est Windows/Node.
+**These rows do not constitute an overall ranking.** The relations,
+disclosures, phases and environments are not all equivalent. Proof sizes are
+not message sizes: the envelopes and their quantiles are published separately.
+Vega and the Horizon cryptographic functions ran in the same Linux 8 CPU /
+12 GiB environment; the durable bench is Windows/Node.
 
-Le papier Vega annonce 92 ms / 23 ms / 108 kB pour son application de présentation
-de credentials, avec préparation séparée et une machine Azure particulière.
-Le dépôt public épinglé fournit des benches SHA-256, pas ce circuit complet.
-La reproduction de **ces chiffres applicatifs reste bloquée par la relation
-non fournie**, et non par un échec mathématique démontré de Vega.
-Sources : [papier, §8](https://www.microsoft.com/en-us/research/wp-content/uploads/2026/05/Vega_Low-Latency-Zero-Knowledge-Proofs-over-Existing-Credentials.pdf),
-[code épinglé](https://github.com/microsoft/vega-prover/tree/c0ee259053cd12eaf43ed71b5cde375452b3ee4d).
+The Vega paper announces 92 ms / 23 ms / 108 kB for its credential-presentation
+application, with separate preparation and a particular Azure machine. The
+pinned public repository provides SHA-256 benches, not that complete circuit.
+Reproduction of **these application figures remains blocked by the relation
+not being provided**, not by a demonstrated mathematical failure of Vega.
+Sources: [paper, §8](https://www.microsoft.com/en-us/research/wp-content/uploads/2026/05/Vega_Low-Latency-Zero-Knowledge-Proofs-over-Existing-Credentials.pdf),
+[pinned code](https://github.com/microsoft/vega-prover/tree/c0ee259053cd12eaf43ed71b5cde375452b3ee4d).
 
-Le benchmark RISC Zero historique a été conservé et ses receipts revérifiés.
-Sa relation DevSecOps et ses signatures dans le guest diffèrent de cette relation
-de plages. Aucun facteur d'accélération par rapport aux 154–163 secondes n'est
-scientifiquement justifié sans implémenter une relation strictement commune.
+The historical RISC Zero benchmark was preserved and its receipts re-verified.
+Its DevSecOps relation and its in-guest signatures differ from this range
+relation. No speedup factor relative to the 154–163 seconds is scientifically
+justified without implementing a strictly common relation.
 
-## Alternatives qui peuvent gagner
+## Alternatives that can win
 
-| Alternative | Quand la préférer | Ce qui manque pour ce profil exact |
+| Alternative | When to prefer it | What is missing for this exact profile |
 | --- | --- | --- |
-| Verdict signé / DSSE | Un tiers accepté peut évaluer les données | Confiance dans ce calcul et sa divulgation au tiers |
-| Divulgation signée + règle native | Le contrôleur peut connaître les deux valeurs | Aucune confidentialité de ces valeurs |
-| BBS / selective disclosure | Il suffit de révéler des attributs signés choisis | L'inégalité entre attributs cachés demande un mécanisme complémentaire |
-| AnonCreds / preuves de prédicats | Format et modèle d'émission compatibles | Comparer le même prédicat multiautorité, la liaison à l'action et les coûts d'intégration |
-| Vega / circuit credential | Credentials existants, signatures cachées et présentation privée | Comparaison de relation complète encore à effectuer |
-| RISC Zero / SP1 / zkVM | Politique complexe, réutilisation de code déterministe | Coût de VM et signatures dans la relation à mesurer sur une même tâche |
-| MPC | Les sources ne peuvent partager leurs witnesses même avec un prover | Coordination, disponibilité et protocole multipartite à qualifier |
-| TEE | Hypothèse de confiance matérielle acceptée et faible latence requise | Attestation, patching, rollback et canaux auxiliaires |
+| Signed verdict / DSSE | An accepted third party can evaluate the data | Trust in that computation and its disclosure to the third party |
+| Signed disclosure + native rule | The controller may know both values | No confidentiality of these values |
+| BBS / selective disclosure | Revealing chosen signed attributes is sufficient | The inequality between hidden attributes requires a complementary mechanism |
+| AnonCreds / predicate proofs | Compatible format and issuance model | Compare the same multi-authority predicate, the binding to the action and the integration costs |
+| Vega / credential circuit | Existing credentials, hidden signatures and private presentation | Complete relation comparison still to be performed |
+| RISC Zero / SP1 / zkVM | Complex policy, reuse of deterministic code | VM cost and in-relation signatures to measure on the same task |
+| MPC | Sources cannot share their witnesses even with a prover | Coordination, availability and multiparty protocol to qualify |
+| TEE | Accepted hardware trust assumption and low latency required | Attestation, patching, rollback and side channels |
 
-Les sources primaires de chaque famille sont dans les dossiers d'état de l'art
-et d'antériorité. Les solutions Lloyd's DCA/FCP et BIS Mandala empêchent de
-présenter contrôle délégué, prévalidation ou preuve de conformité comme un
-territoire sans concurrents. Le problème commercial reste à qualifier.
+The primary sources for each family are in the state-of-the-art and prior-art
+files. The Lloyd's DCA/FCP and BIS Mandala solutions prevent presenting
+delegated control, pre-validation or proof of compliance as territory without
+competitors. The commercial problem remains to be qualified.
 
-## Avantage mesuré et limite de nouveauté
+## Measured advantage and novelty limit
 
-La seule amélioration contrôlée à relation et format inchangés est la conservation
-des générateurs publics dans notre bibliothèque : p95 preuve A réduit de 15,75 %,
-p95 vérification B réduit de 44,97 % dans ces deux campagnes. La preuve publique
-antérieure est toujours vérifiée. La dérivation de points publics fixes est
-retirée du chemin chaud ; aucun verdict, witness ou source de hasard n'est caché.
-C'est une optimisation connue appliquée ici, **pas une invention cryptographique**.
+The only controlled improvement with unchanged relation and format is the
+retention of public generators in our library: A proof p95 reduced by 15.75%,
+B verification p95 reduced by 44.97% across these two campaigns. The earlier
+public proof is still verified. The derivation of fixed public points is
+removed from the hot path; no verdict, witness or source of randomness is
+hidden. This is a known optimization applied here, **not a cryptographic
+invention**.
 
-La baseline non-ZK est moins coûteuse. Elle gagne si la divulgation est permise.
-Le profil privé devient utile seulement si le contrôleur ne doit connaître ni
-montant ni plafond, et si les autorités acceptent les engagements signés adaptés.
-Cette contrainte n'a pas encore été validée auprès d'un acheteur.
+The non-ZK baseline is less costly. It wins if disclosure is permitted. The
+private profile becomes useful only if the controller must know neither amount
+nor limit, and if the authorities accept the adapted signed commitments. This
+constraint has not yet been validated with a buyer.

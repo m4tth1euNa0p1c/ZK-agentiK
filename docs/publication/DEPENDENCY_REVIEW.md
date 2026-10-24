@@ -1,150 +1,150 @@
-# Dépendances : correction Horizon et risques résiduels
+# Dependencies: Horizon fix and residual risks
 
-Revue du 17 octobre 2026, sur une copie de travail basée sur
-`8935cc9e42dee9b2ed32207483a6f7383e37ffc4`. **Le dépôt n'a pas un audit global
-sans alerte.** La correction minimale d'Horizon supprime ses deux alertes
-`unsound`. Son avertissement de maintenance et les alertes du laboratoire
-RISC Zero restent visibles. Cette revue prépare une publication de résultats
-expérimentaux ; elle ne qualifie aucun service en production.
+Review of October 17, 2026, on a working copy based on
+`8935cc9e42dee9b2ed32207483a6f7383e37ffc4`. **The repository does not have a
+global audit without alerts.** The minimal Horizon fix removes its two
+`unsound` alerts. Its maintenance warning and the RISC Zero laboratory alerts
+remain visible. This review prepares a publication of experimental results;
+it does not qualify any service for production.
 
-## Résultat reproductible
+## Reproducible result
 
-`cargo-audit 0.22.2`, base RustSec figée au commit
-`64f92cdc64401fab47baa10e2e11fe382aa57155` (1 334 avis), arbre de la base propre.
-Les scans du 17 octobre 2026 à 15:00 UTC utilisent `--no-fetch --no-yanked`,
-sans règle d'ignorance, sans filtre de gravité ni de cible. Ils ne contrôlent
-donc pas les versions retirées de crates.io, les vulnérabilités inconnues,
-les dépendances npm, les images système ou les exécutables précompilés.
+`cargo-audit 0.22.2`, RustSec database frozen at commit
+`64f92cdc64401fab47baa10e2e11fe382aa57155` (1,334 advisories), clean database tree.
+The scans of October 17, 2026 at 15:00 UTC use `--no-fetch --no-yanked`,
+with no ignore rule, no severity filter and no target filter. They therefore
+do not check versions yanked from crates.io, unknown vulnerabilities,
+npm dependencies, system images or precompiled executables.
 
-| Lockfile | Vulnérabilités avant → après | Alertes informatives avant → après | Code de sortie après |
+| Lockfile | Vulnerabilities before → after | Informational alerts before → after | Exit code after |
 | --- | ---: | --- | ---: |
 | `Cargo.lock` | 0 → 0 | 0 → 0 | 0 |
 | `labs/horizon/Cargo.lock` | 0 → 0 | 2 `unsound` + 1 `unmaintained` → 1 `unmaintained` | 0 |
 | `labs/risc0/Cargo.lock` | 2 → 2 | 3 `unmaintained` → 3 `unmaintained` | 1 |
 | `labs/risc0/methods/guest/Cargo.lock` | 1 → 1 | 2 `unmaintained` → 2 `unmaintained` | 1 |
 
-Les catégories restent celles de RustSec : `unsound` est ici une alerte
-informative, ce qui ne signifie pas un défaut bénin. Le scan Horizon avec
-`--deny unsound` passe également ; `unmaintained` reste signalé.
+The categories remain those of RustSec: `unsound` is here an informational
+alert, which does not mean a benign defect. The Horizon scan with
+`--deny unsound` also passes; `unmaintained` remains reported.
 
-Les [rapports avant/après](dependencies/), commandes, dates, codes de sortie
-et empreintes figurent dans [capture-provenance.json](dependencies/capture-provenance.json).
-`cargo-*.json` désigne les scans initiaux ; `cargo-*-after.json` les nouveaux
-scans. Les sorties `audit-*.stdout.txt` préservent le JSON de cargo-audit, y
-compris ses alertes. `allowed_exit_codes` décrit la collecte des diagnostics,
-pas une acceptation de sécurité. Les avis RustSec embarqués indiquent leur
-licence CC0-1.0. Seuls les chemins locaux ont été expurgés des sorties de test.
+The [before/after reports](dependencies/), commands, dates, exit codes
+and digests are recorded in [capture-provenance.json](dependencies/capture-provenance.json).
+`cargo-*.json` designates the initial scans; `cargo-*-after.json` the new
+scans. The `audit-*.stdout.txt` outputs preserve the cargo-audit JSON,
+including its alerts. `allowed_exit_codes` describes the collection of diagnostics,
+not a security acceptance. The embedded RustSec advisories state their
+CC0-1.0 license. Only local paths were redacted from the test outputs.
 
-## Correction minimale d'Horizon
+## Minimal Horizon fix
 
-- `anyhow = 1.0.100` → `=1.0.103` : correction du comportement indéfini lié à
-  `downcast_mut` sur certaines erreurs contextualisées.
+- `anyhow = 1.0.100` → `=1.0.103`: fix for the undefined behavior related to
+  `downcast_mut` on certain contextualized errors.
   [RUSTSEC-2026-0190](https://rustsec.org/advisories/RUSTSEC-2026-0190.html),
-  [signalement amont](https://github.com/dtolnay/anyhow/issues/451).
-- `rand = 0.8.5` → `=0.8.6` : correction de la réentrance de `ThreadRng` avec
-  un logger personnalisé dans les configurations concernées.
+  [upstream report](https://github.com/dtolnay/anyhow/issues/451).
+- `rand = 0.8.5` → `=0.8.6`: fix for the reentrancy of `ThreadRng` with
+  a custom logger in the affected configurations.
   [RUSTSEC-2026-0097](https://rustsec.org/advisories/RUSTSEC-2026-0097.html),
-  [correctif amont](https://github.com/rust-random/rand/pull/1763).
+  [upstream fix](https://github.com/rust-random/rand/pull/1763).
 
-Seuls ces deux numéros et leurs checksums changent dans le lockfile.
-Bulletproofs, les courbes, Ed25519, Merlin, le format des preuves et la relation
-prouvée sont inchangés. Le code Horizon utilise explicitement `OsRng` ; le
-graphe résolu n'active pas la feature `log` de rand. Aucune utilisation directe
-de `downcast_mut` n'a été trouvée dans le code Horizon. Ces observations
-limitent certains chemins d'exposition ; elles ne remplacent pas la mise à
-jour et ne démontrent pas l'absence de tout appel transitif.
+Only these two version numbers and their checksums change in the lockfile.
+Bulletproofs, the curves, Ed25519, Merlin, the proof format and the proven
+relation are unchanged. The Horizon code explicitly uses `OsRng`; the
+resolved graph does not enable rand's `log` feature. No direct use
+of `downcast_mut` was found in the Horizon code. These observations
+limit certain exposure paths; they do not replace the update and do not
+demonstrate the absence of any transitive call.
 
-Le manifeste et le lockfile antérieurs sont conservés ensemble dans
-[horizon-proof-before.toml](dependencies/horizon-proof-before.toml) et
-[horizon-before.lock](dependencies/horizon-before.lock). Pour reproduire les
-mesures historiques, utiliser le commit et la configuration du rapport
-historique dans une copie isolée, avec ses **deux** fichiers correspondants.
-Remettre uniquement l'ancien lockfile face au manifeste corrigé ne satisfait
-pas `--locked`. Les campagnes de performance historiques ne sont ni modifiées
-ni rejouées, et leurs chiffres ne sont pas attribués aux versions corrigées.
+The earlier manifest and lockfile are kept together in
+[horizon-proof-before.toml](dependencies/horizon-proof-before.toml) and
+[horizon-before.lock](dependencies/horizon-before.lock). To reproduce the
+historical measurements, use the commit and configuration of the historical
+report in an isolated copy, with its **two** corresponding files.
+Restoring only the old lockfile against the fixed manifest does not satisfy
+`--locked`. The historical performance campaigns are neither modified
+nor replayed, and their figures are not attributed to the fixed versions.
 
-Contrôles exécutés après correction :
+Checks executed after the fix:
 
-| Commande | Observation |
+| Command | Observation |
 | --- | --- |
-| `node scripts/cargo.mjs test --manifest-path labs/horizon/Cargo.toml --locked --all-targets` | 9 tests cryptographiques passent ; deux binaires sans tests passent |
-| `node scripts/cargo.mjs fmt --manifest-path labs/horizon/Cargo.toml --all -- --check` | code de sortie 0 |
-| `node scripts/cargo.mjs clippy --manifest-path labs/horizon/Cargo.toml --locked --all-targets -- -D warnings` | code de sortie 0 |
-| `npm run horizon:build` | binaire release et compilation TypeScript réussis |
-| `node scripts/horizon-fixture.mjs verify` | preuve publique historique vérifiée, aucune autorisation vivante prétendue |
-| `node scripts/horizon.mjs demo` | preuve Bulletproofs réelle, vérifieur indépendant, 1 effet autorisé et 0 effet non autorisé ; altération, rejeu et divulgation forcée refusés |
+| `node scripts/cargo.mjs test --manifest-path labs/horizon/Cargo.toml --locked --all-targets` | 9 cryptographic tests pass; two binaries without tests pass |
+| `node scripts/cargo.mjs fmt --manifest-path labs/horizon/Cargo.toml --all -- --check` | exit code 0 |
+| `node scripts/cargo.mjs clippy --manifest-path labs/horizon/Cargo.toml --locked --all-targets -- -D warnings` | exit code 0 |
+| `npm run horizon:build` | release binary and TypeScript compilation succeeded |
+| `node scripts/horizon-fixture.mjs verify` | historical public proof verified, no live authorization claimed |
+| `node scripts/horizon.mjs demo` | real Bulletproofs proof, independent verifier, 1 authorized effect and 0 unauthorized effects; tampering, replay and forced disclosure refused |
 
-Les sorties des deux dernières commandes sont conservées. Les quatre premières
-ont été observées au terminal ; aucune sortie complète rétroactive n'est
-fabriquée. Ces tests ne constituent ni un audit cryptographique indépendant,
-ni une mesure de performance, ni une qualification de production.
+The outputs of the last two commands are preserved. The first four
+were observed at the terminal; no complete retroactive output is
+fabricated. These tests constitute neither an independent cryptographic audit,
+nor a performance measurement, nor a production qualification.
 
-## Analyse des alertes conservées
+## Analysis of the retained alerts
 
-**Horizon — `clear_on_drop 0.2.5`.** Bulletproofs 5.0.0 dépend de cette crate
-non maintenue ; le code de range proof l'utilise effectivement pour nettoyer
-des données, ce n'est pas seulement un outil de développement. L'avis ne
-fournit pas de version corrigée. Ajouter une dépendance `zeroize` inutilisée
-ne supprimerait pas ce chemin. Une migration demande une version amont
-maintenue ou un changement relu de l'amont, sans primitive cryptographique
-maison. [RUSTSEC-2026-0283](https://rustsec.org/advisories/RUSTSEC-2026-0283.html),
-[changement amont](https://github.com/cesarb/clear_on_drop/commit/5916d6260acbad8a34290dba137f39963f13f467).
+**Horizon — `clear_on_drop 0.2.5`.** Bulletproofs 5.0.0 depends on this
+unmaintained crate; the range proof code actually uses it to clear
+data, it is not merely a development tool. The advisory does not
+provide a fixed version. Adding an unused `zeroize` dependency
+would not remove this path. A migration requires a maintained upstream
+version or a reviewed upstream change, with no home-made cryptographic
+primitive. [RUSTSEC-2026-0283](https://rustsec.org/advisories/RUSTSEC-2026-0283.html),
+[upstream change](https://github.com/cesarb/clear_on_drop/commit/5916d6260acbad8a34290dba137f39963f13f467).
 
-**RISC Zero — `tracing-subscriber 0.2.25`.** Le correctif de l'injection de
-séquences ANSI est en `>=0.3.20`, hors de la contrainte `0.2` d'ark-relations
-0.5.1. Dans les graphes actuels host Linux et guest RISC Zero, cette dépendance
-est activée par `risc0-zkvm/std` → `risc0-groth16` → arkworks →
-`ark-relations/std`. Les features résolues de `tracing-subscriber` sont vides ;
-son module `fmt`, visé par le correctif, est sous `cfg(feature = "fmt")`.
-L'exposition à **ce chemin de formatage** n'est donc pas établie dans ces
-configurations, bien que le package signalé reste présent. Une autre
-unification de features peut changer cette conclusion. Ce constat ne couvre
-pas les dépendances propres du `r0vm` précompilé utilisé hors workspace.
+**RISC Zero — `tracing-subscriber 0.2.25`.** The fix for the ANSI
+sequence injection is in `>=0.3.20`, outside the `0.2` constraint of ark-relations
+0.5.1. In the current Linux host and RISC Zero guest graphs, this dependency
+is enabled by `risc0-zkvm/std` → `risc0-groth16` → arkworks →
+`ark-relations/std`. The resolved features of `tracing-subscriber` are empty;
+its `fmt` module, targeted by the fix, is under `cfg(feature = "fmt")`.
+Exposure to **this formatting path** is therefore not established in these
+configurations, although the reported package remains present. A different
+feature unification may change this conclusion. This finding does not cover
+the own dependencies of the precompiled `r0vm` used outside the workspace.
 [RUSTSEC-2025-0055](https://rustsec.org/advisories/RUSTSEC-2025-0055.html),
-[correctif amont](https://github.com/tokio-rs/tracing/pull/3368).
+[upstream fix](https://github.com/tokio-rs/tracing/pull/3368).
 
-**RISC Zero host — `rsa 0.9.10`.** L'attaque Marvin concerne des opérations
-RSA privées observables par leur durée ; aucune version corrigée n'est
-indiquée dans la base figée. La dépendance arrive par `rzup 0.5.2`, lui-même
-utilisé par `risc0-build` et le client RISC Zero. Dans ce graphe, les features
-de `rzup` sont vides : sa méthode de signature est sous `publish`, absent,
-et le chemin d'installation inspecté vérifie des signatures avec une clé
-publique officielle. Aucune API RSA privée exposée à distance n'a été
-identifiée dans le laboratoire. C'est une analyse limitée du graphe et des
-points d'appel, **pas** une preuve générale de non-exploitabilité ni une
-raison de masquer l'avis. [RUSTSEC-2023-0071](https://rustsec.org/advisories/RUSTSEC-2023-0071.html),
-[suivi amont](https://github.com/RustCrypto/RSA/issues/626).
+**RISC Zero host — `rsa 0.9.10`.** The Marvin attack concerns private RSA
+operations observable through their duration; no fixed version is
+indicated in the frozen database. The dependency arrives through `rzup 0.5.2`, itself
+used by `risc0-build` and the RISC Zero client. In this graph, the features
+of `rzup` are empty: its signing method is under `publish`, which is absent,
+and the inspected installation path verifies signatures with an official
+public key. No private RSA API exposed remotely was
+identified in the laboratory. This is a limited analysis of the graph and
+call sites, **not** a general proof of non-exploitability nor a
+reason to hide the advisory. [RUSTSEC-2023-0071](https://rustsec.org/advisories/RUSTSEC-2023-0071.html),
+[upstream tracking](https://github.com/RustCrypto/RSA/issues/626).
 
-**Maintenance RISC Zero.** `bincode 1.3.3` (host), `derivative 2.2.0` et
-`paste 1.0.15` (host et guest) sont signalés comme non maintenus. Cela ne
-démontre pas à soi seul une exploitation, mais laisse un risque de suivi
-et de migration. [Bincode](https://rustsec.org/advisories/RUSTSEC-2025-0141.html),
+**RISC Zero maintenance.** `bincode 1.3.3` (host), `derivative 2.2.0` and
+`paste 1.0.15` (host and guest) are reported as unmaintained. This does not
+by itself demonstrate an exploitation, but leaves a tracking and
+migration risk. [Bincode](https://rustsec.org/advisories/RUSTSEC-2025-0141.html),
 [derivative](https://rustsec.org/advisories/RUSTSEC-2024-0388.html),
 [paste](https://rustsec.org/advisories/RUSTSEC-2024-0436.html).
 
-Les graphes capturés sont accompagnés d'un
-[relevé des sources examinées](dependencies/reachability-evidence.json)
-(versions, chemins relatifs de crate, lignes et SHA-256). Il ne s'agit pas
-d'une analyse complète des flux de données ou des binaires produits.
+The captured graphs are accompanied by a
+[record of the examined sources](dependencies/reachability-evidence.json)
+(versions, relative crate paths, lines and SHA-256). This is not
+a complete analysis of data flows or of the produced binaries.
 
-## Décision et travaux requis
+## Decision and required work
 
-Les locks et le guest RISC Zero historiques restent inchangés afin de garder
-leurs identités et preuves reproductibles. Ce gel documentaire n'autorise
-pas l'usage avec des données sensibles ou l'ouverture d'un service de preuve.
-Le périmètre retenu demeure un laboratoire local avec fixtures synthétiques,
-sans secrets de production ni endpoint RSA privé. Une sortie de ce périmètre
-exige une nouvelle décision de sécurité explicite.
+The historical locks and RISC Zero guest remain unchanged in order to keep
+their identities and proofs reproducible. This documentary freeze does not
+authorize use with sensitive data or the opening of a proving service.
+The retained scope remains a local laboratory with synthetic fixtures,
+without production secrets or private RSA endpoint. Leaving this scope
+requires a new explicit security decision.
 
-| Suivi | Action attendue | Critères de clôture |
+| Tracking | Expected action | Closure criteria |
 | --- | --- | --- |
-| DEP-01 — nettoyage mémoire Horizon | Évaluer une version maintenue de Bulletproofs ou une migration amont relue supprimant `clear_on_drop` | Avis supprimé du graphe réel ; mêmes relations et tests adverses ; preuve historique toujours vérifiée ; examen du nettoyage du witness |
-| DEP-02 — logging RISC Zero | Construire un profil candidat séparé avec dépendances arkworks/RISC Zero compatibles avec `tracing-subscriber >=0.3.20` | Scans host/guest sans cet avis ; features contrôlées ; tests de logs hostiles ; nouvel ELF identifié et nouvelle receipt vérifiée indépendamment ; archives antérieures préservées |
-| DEP-03 — RSA outillage | Suivre le correctif amont ou une chaîne d'installation maintenue évitant cette implémentation vulnérable | Absence de l'avis ou correctif amont démontré ; signatures de distribution toujours vérifiées ; aucun contournement ni implémentation RSA maison |
-| DEP-04 — maintenance et périmètre | Évaluer les remplacements transitifs de bincode/derivative/paste et inventorier séparément le prover externe et les images | Graphe et formats revus, preuves de compatibilité ; scan du binaire/profil effectivement distribué, sans extrapoler depuis le seul workspace |
+| DEP-01 — Horizon memory clearing | Evaluate a maintained Bulletproofs version or a reviewed upstream migration removing `clear_on_drop` | Advisory removed from the real graph; same relations and adversarial tests; historical proof still verified; review of witness clearing |
+| DEP-02 — RISC Zero logging | Build a separate candidate profile with arkworks/RISC Zero dependencies compatible with `tracing-subscriber >=0.3.20` | Host/guest scans without this advisory; controlled features; hostile log tests; new identified ELF and new independently verified receipt; earlier archives preserved |
+| DEP-03 — RSA tooling | Track the upstream fix or a maintained installation chain avoiding this vulnerable implementation | Absence of the advisory or demonstrated upstream fix; distribution signatures still verified; no workaround or home-made RSA implementation |
+| DEP-04 — maintenance and scope | Evaluate transitive replacements for bincode/derivative/paste and separately inventory the external prover and images | Reviewed graph and formats, compatibility evidence; scan of the actually distributed binary/profile, without extrapolating from the workspace alone |
 
-Reproduction du scan après installation locale de cargo-audit et de la base
-au commit indiqué (adapter le chemin de l'exécutable selon le système) :
+Reproduction of the scan after local installation of cargo-audit and the database
+at the indicated commit (adapt the executable path to the system):
 
 ```powershell
 .tools/cargo-audit/bin/cargo-audit.exe audit --json --no-fetch --no-yanked --db .tools/rustsec-advisory-db --file labs/horizon/Cargo.lock
@@ -153,6 +153,6 @@ au commit indiqué (adapter le chemin de l'exécutable selon le système) :
 .tools/cargo-audit/bin/cargo-audit.exe audit --json --no-fetch --no-yanked --db .tools/rustsec-advisory-db --file labs/risc0/methods/guest/Cargo.lock
 ```
 
-Les deux dernières commandes doivent actuellement sortir avec le code 1.
-Changer de date de base ou de dépendances exige de publier un nouveau résultat,
-sans remplacer les rapports conservés ici.
+The last two commands must currently exit with code 1.
+Changing the database date or the dependencies requires publishing a new result,
+without replacing the reports preserved here.

@@ -1,46 +1,46 @@
 ---
 name: scientific-whitepaper
-description: Rédiger ou réviser le whitepaper de ZK-agentiK à partir de relations formelles, preuves expérimentales et sources primaires, en distinguant protocole, implémentation et hypothèses.
+description: Write or revise the ZK-agentiK whitepaper from formal relations, experimental evidence and primary sources, distinguishing protocol, implementation and assumptions.
 ---
 
-# Article scientifique vérifiable
+# Verifiable scientific article
 
-Lire `AGENTS.md`, `docs/horizon/FINAL_VERDICT.md`,
-`docs/horizon/BENCHMARK_RESULTS.json` et `docs/publication/CLAIMS.md`.
-Consulter le manuscrit dans `docs/whitepaper/` avant de créer un document concurrent.
+Read `AGENTS.md`, `docs/horizon/FINAL_VERDICT.md`,
+`docs/horizon/BENCHMARK_RESULTS.json` and `docs/publication/CLAIMS.md`.
+Consult the manuscript in `docs/whitepaper/` before creating a competing document.
 
-## Procédure
+## Procedure
 
-1. Écrire la relation prouvée, les bornes entières, le transcript et les hypothèses
-   de confiance avant le résumé. Vérifier ces éléments contre le code verrouillé.
-2. Associer chaque affirmation à une source primaire datée ou à un artefact local
-   avec commande, révision et périmètre. Marquer explicitement les inférences.
-3. Distinguer preuve de connaissance, signature d'autorité, vérité des faits et
-   autorisation d'un effet. Pour le profil B, décrire la preuve immuable réutilisée
-   et la signature fraîche du détenteur ; ne pas annoncer une preuve fraîche.
-4. Décrire les fuites : engagements et identifiants corrélables, résultat de
-   prédicat, métadonnées, taille et timing. Le prover Horizon connaît les deux
-   ouvertures ; il ne s'agit pas d'un calcul multipartite.
-5. Comparer à un verdict signé et à une divulgation des valeurs avant de comparer
-   des systèmes ZK. Comparer uniquement des relations et périmètres équivalents.
-6. Conserver les échecs et les inconnues : H11, H13, H14, H15 et H17 ne sont pas
-   clos par la rédaction. Une revue d'agents n'est pas un audit indépendant.
+1. Write the proven relation, the integer bounds, the transcript and the trust
+   assumptions before the abstract. Check these elements against the locked code.
+2. Associate every statement with a dated primary source or a local artifact
+   with command, revision and scope. Mark inferences explicitly.
+3. Distinguish proof of knowledge, authority signature, truth of the facts and
+   authorization of an effect. For profile B, describe the reused immutable proof
+   and the holder's fresh signature; do not announce a fresh proof.
+4. Describe the leakage: correlatable commitments and identifiers, predicate
+   result, metadata, size and timing. The Horizon prover knows both
+   openings; this is not a multi-party computation.
+5. Compare against a signed verdict and a disclosure of the values before
+   comparing ZK systems. Compare only equivalent relations and scopes.
+6. Keep the failures and the unknowns: H11, H13, H14, H15 and H17 are not
+   closed by the writing. An agent review is not an independent audit.
 
-## Mesures
+## Measurements
 
-Publier séparément préparation, génération, vérification cryptographique,
-présentation réutilisée et chemin durable. Donner machine, échantillons,
-échauffements, versions, tailles complètes et erreurs. Un p95 local n'est pas un
-SLA ; un intervalle conditionné à IID ne démontre pas cette hypothèse.
-Ne pas convertir un microbenchmark Vega SHA-256 en résultat credential mDL.
-Ne jamais annoncer une supériorité universelle, une nouveauté absolue ou une
-sécurité post-quantique du profil Bulletproofs/Ed25519.
+Publish separately preparation, generation, cryptographic verification,
+reused presentation and durable path. Give machine, samples,
+warm-ups, versions, complete sizes and errors. A local p95 is not an
+SLA; an interval conditioned on IID does not demonstrate that assumption.
+Do not convert a Vega SHA-256 microbenchmark into an mDL credential result.
+Never announce universal superiority, absolute novelty or
+post-quantum security of the Bulletproofs/Ed25519 profile.
 
-## Sortie et contradiction
+## Output and contradiction
 
-Livrer le diff du manuscrit, la table d'assertions modifiée, les commandes de
-reproduction et les limitations restantes. Utiliser le contrat
-`.agents/roles/claim-challenger.md` pour une revue distincte quand une revue par
-agent est demandée. Sinon effectuer une passe de contradiction explicite sans
-prétendre avoir obtenu une seconde revue. Écarter ou qualifier toute assertion
-sans support ; ne pas fabriquer une expérience pour combler une lacune.
+Deliver the manuscript diff, the modified claims table, the reproduction
+commands and the remaining limitations. Use the
+`.agents/roles/claim-challenger.md` contract for a separate review when an
+agent review is requested. Otherwise perform an explicit contradiction pass
+without claiming to have obtained a second review. Discard or qualify any
+unsupported claim; do not fabricate an experiment to fill a gap.

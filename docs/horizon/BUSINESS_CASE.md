@@ -1,77 +1,76 @@
-# HORIZON — dossier économique conditionnel
+# HORIZON — conditional business case
 
-État : **17 octobre 2026**. **Aucun prospect, financement client, engagement
-d'achat ou gain économique n'est acquis.** La décision actuelle finance
-uniquement du temps de laboratoire dans le dépôt ; elle ne démontre pas
-l'existence d'un marché. Le scénario retenu et les alternatives sont documentés
-dans [la découverte métier](MARKET_DISCOVERY.md) et
-[les antériorités](NOVELTY_AND_PRIOR_ART.md).
+Status: **October 17, 2026**. **No prospect, customer funding, purchase
+commitment or economic gain has been secured.** The current decision funds
+only laboratory time in the repository; it does not demonstrate the existence
+of a market. The selected scenario and the alternatives are documented in
+[the market discovery](MARKET_DISCOVERY.md) and
+[the prior art](NOVELTY_AND_PRIOR_ART.md).
 
-## 1. Travail proposé au client hypothétique
+## 1. Work proposed to the hypothetical customer
 
-Un destinataire d'autorisation de sinistre pourrait vérifier qu'un montant
-admissible attesté ne dépasse pas un plafond de délégation attesté, sans
-recevoir ces deux montants. Il lui faudrait accepter les autorités,
-le format d'émission, la relation calculée et les contrôles d'actualité.
-L'essai actuel enregistre uniquement `record_claim_authorization` sur une
-cible synthétique. Il ne se connecte pas à un rail de paiement.
+A recipient of a claim authorization could verify that an attested eligible
+amount does not exceed an attested delegation limit, without receiving either
+amount. It would have to accept the authorities, the issuance format, the
+computed relation and the currency checks. The current trial records only
+`record_claim_authorization` on a synthetic target. It does not connect to a
+payment rail.
 
-Le problème commercial n'est pas « avoir besoin de ZK ». Il serait un dossier
-réel où la décision est bloquée ou coûteuse parce que le destinataire exige
-un calcul vérifiable et ne peut recevoir les valeurs, tandis qu'une autre
-partie autorisée peut produire la preuve. Ce dossier n'a pas été observé.
-Si toutes les parties peuvent recevoir les pièces, ou acceptent le verdict
-d'un signataire de confiance, la baseline simple peut gagner.
+The commercial problem is not "needing ZK". It would be a real case where the
+decision is blocked or costly because the recipient requires a verifiable
+computation and cannot receive the values, while another authorized party can
+produce the proof. This case has not been observed. If all parties can receive
+the documents, or accept the verdict of a trusted signer, the simple baseline
+may win.
 
-## 2. Éléments économiques réellement consultés
+## 2. Economic elements actually consulted
 
-Le communiqué conjoint LMA/LIMOSS/Vitesse du **24 novembre 2025** annonce un
-renouvellement d'au moins trois ans du service FCP. Il indique que tous les
-managing agents disposent d'un accès et que plus de 700 binders sont alors
-actifs. Il évoque 2,3 milliards de dollars immobilisés en loss funds et un
-potentiel de réduction allant jusqu'à 80 %. Ce sont des chiffres et objectifs
-des opérateurs, pas une évaluation indépendante ni des gains attribuables
-à HORIZON. [Communiqué, pages 1–2](https://limoss.london/content/uploads/2025/11/FCP-Contract-Renewal-Press-Release-24-Nov-2025.pdf).
+The joint LMA/LIMOSS/Vitesse press release of **November 24, 2025** announces
+a renewal of at least three years of the FCP service. It states that all
+managing agents have access and that more than 700 binders are then active.
+It mentions 2.3 billion dollars tied up in loss funds and a reduction potential
+of up to 80%. These are the operators' figures and objectives, not an
+independent assessment nor gains attributable to HORIZON.
+[Press release, pages 1–2](https://limoss.london/content/uploads/2025/11/FCP-Contract-Renewal-Press-Release-24-Nov-2025.pdf).
 
-La conséquence utile est l'existence d'une infrastructure et d'acteurs déjà
-organisés : l'entrée commerciale devrait montrer une valeur marginale sur un
-contrôle manquant. Le stock de loss funds n'est ni notre marché adressable,
-ni une économie récupérable par une preuve de bornes. Un volume de sinistres
-ou de paiements ne devient pas automatiquement un revenu logiciel.
+The useful consequence is the existence of an infrastructure and of actors who
+are already organized: the commercial entry would have to show marginal value
+on a missing control. The stock of loss funds is neither our addressable market
+nor a saving recoverable through a bounds proof. A volume of claims or payments
+does not automatically become software revenue.
 
-Les [reporting standards Lloyd's](https://www.lloyds.com/market-resources/delegated-authorities/market-knowledge/reporting-standards)
-définissent des données de reporting pour coverholders et gestionnaires
-délégués. Ils montrent un effort de standardisation existant, pas l'existence
-de signatures cryptographiques exploitables ni un droit de soustraire les
-pièces au contrôle. La documentation [DDM](https://limoss.london/ddm) présente
-normalisation, validation et contrôle d'accès : leur réutilisation doit être
-évaluée avant de proposer une infrastructure concurrente.
+The [Lloyd's reporting standards](https://www.lloyds.com/market-resources/delegated-authorities/market-knowledge/reporting-standards)
+define reporting data for coverholders and delegated claims administrators.
+They show an existing standardization effort, not the existence of usable
+cryptographic signatures nor a right to withhold the documents from control.
+The [DDM](https://limoss.london/ddm) documentation presents normalization,
+validation and access control: their reuse must be evaluated before proposing
+a competing infrastructure.
 
-Le coût de revue par dossier, le taux d'erreur, la fréquence des conflits de
-confidentialité, la valeur du délai et le budget disponible sont **inconnus**.
-Aucun chiffre de retour sur investissement, de taille de marché ou de tarif
-n'est extrapolé. Les assertions d'économie non récupérées dans leur document
-primaire ne sont pas retenues.
+The review cost per case, the error rate, the frequency of confidentiality
+conflicts, the value of delay and the available budget are **unknown**. No
+figure for return on investment, market size or pricing is extrapolated.
+Savings assertions not retrieved from their primary document are not retained.
 
-## 3. Qui déciderait, qui paierait, qui supporterait le coût
+## 3. Who would decide, who would pay, who would bear the cost
 
-| Partie hypothétique | Rôle à confirmer | Coût ou objection à instruire |
+| Hypothetical party | Role to confirm | Cost or objection to investigate |
 |---|---|---|
-| Managing agent / assureur délégant | Propriétaire du contrôle et possible sponsor | Acceptation des autorités, audit des règles, budget et responsabilité |
-| Gestionnaire délégué de sinistres | Prépare la demande et peut détenir le witness | Changement de workflow, détention des secrets, coût de génération |
-| Expert ou source du montant admissible | Émet une attestation métier | Format signé supplémentaire, correction et révocation, responsabilité |
-| Opérateur d'admission / paiement | Vérifie et réserve l'opération | Disponibilité, reprise, intégration à la cible, support des refus |
-| Audit, sécurité et juridique | Évaluent les pièces et les droits | Preuves à conserver, accès en litige, fuite par requêtes et gestion des clés |
+| Managing agent / delegating insurer | Owner of the control and possible sponsor | Acceptance of the authorities, audit of the rules, budget and liability |
+| Delegated claims handler | Prepares the request and may hold the witness | Workflow change, custody of secrets, generation cost |
+| Expert or source of the eligible amount | Issues a business attestation | Additional signed format, correction and revocation, liability |
+| Admission / payment operator | Verifies and reserves the operation | Availability, recovery, integration with the target, support for refusals |
+| Audit, security and legal | Evaluate the documents and the rights | Evidence to retain, access in litigation, leakage through queries and key management |
 
-Ces rôles ne sont pas des personnes contactées. Le payeur logiciel n'est pas
-forcément celui qui produit les attestations. Une offre qui économise une
-minute chez le destinataire mais impose un coût supérieur aux émetteurs peut
-échouer même si la preuve est rapide.
+These roles are not people who were contacted. The software payer is not
+necessarily the one who produces the attestations. An offer that saves one
+minute at the recipient but imposes a higher cost on the issuers can fail even
+if the proof is fast.
 
-## 4. Modèle de valeur sans chiffres inventés
+## 4. Value model without invented figures
 
-Calculer d'abord le coût incrémental face à la meilleure alternative admise,
-sur le même périmètre, puis mesurer :
+First compute the incremental cost against the best admitted alternative, on
+the same scope, then measure:
 
 ```text
 gain_annuel_observable =
@@ -83,82 +82,81 @@ gain_annuel_observable =
   - cout_annuel_exploitation_audit_et_reconciliation
 ```
 
-Toutes ces entrées sont actuellement inconnues. Le terme de pertes évitées
-reste nul dans une projection prudente tant qu'un lien causal documenté ne
-permet pas de l'estimer. Les frais de contrôle existants qui demeurent après
-intégration ne sont pas comptés comme économies. Une preuve mathématiquement
-valide ne supprime ni les contestations du sinistre ni les travaux d'audit.
+All these inputs are currently unknown. The avoided-losses term remains zero in
+a prudent projection as long as a documented causal link does not allow it to
+be estimated. Existing control costs that remain after integration are not
+counted as savings. A mathematically valid proof removes neither disputes over
+the claim nor audit work.
 
-Les coûts de génération doivent inclure préparation, collecte, émission,
-réseau et tentatives rejetées pour une comparaison de service. Les
-microbenchmarks peuvent isoler ces étapes, à condition d'en publier les
-frontières. Un percentile à chaud sur une seule preuve ne mesure pas un SLA
-de bout en bout ; trois générations ne qualifient pas la capacité de crise.
-[Limites effectivement constatées sur le banc antérieur](../08-RISC0-LAB-RESULTS.md).
+Generation costs must include preparation, collection, issuance, network and
+rejected attempts for a service comparison. Microbenchmarks can isolate these
+steps, provided their boundaries are published. A warm percentile over a single
+proof does not measure an end-to-end SLA; three generations do not qualify
+crisis capacity.
+[Limits actually observed on the earlier bench](../08-RISC0-LAB-RESULTS.md).
 
-## 5. Expérience permettant de réfuter la proposition
+## 5. Experiment allowing the proposal to be refuted
 
-Le laboratoire doit comparer des solutions qui rendent réellement le service
-accepté, sans dégrader silencieusement la confidentialité :
+The laboratory must compare solutions that actually deliver the accepted
+service, without silently degrading confidentiality:
 
-| Variante | Mesure utile | Question commerciale qui reste ouverte |
+| Variant | Useful measurement | Commercial question that remains open |
 |---|---|---|
-| Ouvertures publiques et attestations signées | Temps de contrôle, taille, données effectivement reçues | Le destinataire peut-il légalement et contractuellement recevoir ces valeurs ? |
-| Verdict signé de type DSSE | Temps et coût d'une attestation liée à l'action | Une autorité est-elle acceptée pour calculer le verdict ? |
-| Ranges spécialisés sur engagements signés | Coût de preuve/vérification, émission adaptée, tests négatifs | Le bénéfice de non-divulgation justifie-t-il le changement d'émission ? |
-| Preuve de faits immuables réutilisée + autorisation fraîche | Amortissement et comportement lors des révocations | Les faits restent-ils valides assez longtemps pour être réutilisés ? |
+| Public openings and signed attestations | Control time, size, data actually received | Can the recipient legally and contractually receive these values? |
+| DSSE-style signed verdict | Time and cost of an attestation bound to the action | Is an authority accepted to compute the verdict? |
+| Specialized ranges over signed commitments | Proof/verification cost, adapted issuance, negative tests | Does the non-disclosure benefit justify the issuance change? |
+| Reused proof of immutable facts + fresh authorization | Amortization and behavior during revocations | Do the facts remain valid long enough to be reused? |
 
-Les credentials BBS/AnonCreds/Dock, MPC et TEE sont des solutions de comparaison
-documentaires à qualifier si le besoin le justifie. Leur lecture n'est pas
-une expérience exécutée ; leur performance n'est pas inventée dans ce dossier.
-La sélection d'une variante relève d'une politique du destinataire fixée
-avant la demande, jamais d'un choix opportuniste de l'agent en cas d'échec.
+BBS/AnonCreds/Dock credentials, MPC and TEE are documentary comparison
+solutions to qualify if the need justifies it. Reading about them is not an
+executed experiment; their performance is not invented in this case file.
+Selecting a variant is a matter of the recipient's policy fixed before the
+request, never an opportunistic choice by the agent in case of failure.
 
-Les essais synthétiques peuvent réfuter une liaison, une borne, une mesure
-de coût ou la résistance à une panne. Ils ne mesurent ni volonté d'achat,
-ni réduction des revues humaines, ni disponibilité juridique des données.
-Le [journal du laboratoire](EXPERIMENT_LOG.md) doit conserver les résultats,
-y compris les échecs, sans transformer une accélération locale en gain client.
+Synthetic trials can refute a binding, a bound, a cost measurement or
+resistance to a failure. They measure neither willingness to buy, nor
+reduction of human reviews, nor legal availability of the data. The
+[laboratory log](EXPERIMENT_LOG.md) must keep the results, including failures,
+without turning a local speedup into a customer gain.
 
-## 6. Crise et confidentialité : conditions concrètes
+## 6. Crisis and confidentiality: concrete conditions
 
-En charge inhabituelle ou lors d'une révocation d'autorité, une demande doit
-rester bloquée si la preuve complète, l'actualité de la confiance ou l'état
-de l'opération ne peuvent être vérifiés. L'absence de réponse après dispatch
-ne permet pas un second dispatch. Ces exigences portent sur l'admission et
-la persistance, pas sur une propriété exclusive à ZK.
+Under unusual load or during an authority revocation, a request must remain
+blocked if the complete proof, the currency of trust or the state of the
+operation cannot be verified. The absence of a response after dispatch does not
+allow a second dispatch. These requirements concern admission and persistence,
+not a property exclusive to ZK.
 
-La disponibilité des fonds, la solvabilité, la reprise d'un rail de paiement
-et la continuité de l'expertise ne sont pas couvertes par la preuve proposée.
-Une voie d'exception humaine éventuelle serait une politique séparée avec
-sa propre autorité, jamais un fallback silencieux après preuve invalide.
-Le laboratoire ne constitue aucune homologation d'un tel processus.
+Availability of funds, solvency, recovery of a payment rail and continuity of
+the expert assessment are not covered by the proposed proof. A possible human
+exception path would be a separate policy with its own authority, never a
+silent fallback after an invalid proof. The laboratory constitutes no
+certification of such a process.
 
-Les valeurs privées ne doivent pas apparaître dans logs, rapports d'erreur ou
-artefacts remis au vérifieur. Les engagements publics, identités d'autorités,
-relation d'ordre, bornes du profil et réponses successives divulguent encore
-de l'information.
-Il faut définir qui peut interroger, combien de fois et pour quel usage.
-L'accès du prover aux valeurs reste explicite ; une interdiction de réunion
-du witness impose une autre architecture.
+Private values must not appear in logs, error reports or artifacts handed to
+the verifier. Public commitments, authority identities, order relation, profile
+bounds and successive responses still disclose information.
+Who may query, how many times and for what purpose must be defined. The
+prover's access to the values remains explicit; a prohibition on assembling the
+witness requires a different architecture.
 
-## 7. Portes de décision et abandon
+## 7. Decision gates and abandonment
 
-| Porte | Preuve requise | État actuel |
+| Gate | Required evidence | Current state |
 |---|---|---|
-| Contrôle métier | Propriétaire identifié, règle et portée écrites | Règle synthétique ; aucun propriétaire client |
-| Confidentialité nécessaire | Champs interdits au destinataire et fondement concret | Hypothèse non confirmée |
-| Sources utilisables | Deux autorités acceptant de signer les engagements et leurs métadonnées | Fixtures seulement |
-| Baseline insuffisante | DSSE, ouverture, credentials ou service existant évalués par le décideur | Comparaisons à réaliser/qualifier |
-| Sécurité et coût technique | Tests négatifs, reprise et mesures représentatives | Essais de laboratoire exécutés ; pas de qualification production |
-| Valeur économique | Coût actuel observé, coût complet cible, sponsor et budget | Inconnus ; aucun financement prospect |
+| Business control | Identified owner, written rule and scope | Synthetic rule; no customer owner |
+| Confidentiality required | Fields forbidden to the recipient and concrete basis | Unconfirmed hypothesis |
+| Usable sources | Two authorities agreeing to sign the commitments and their metadata | Fixtures only |
+| Insufficient baseline | DSSE, opening, credentials or existing service evaluated by the decision-maker | Comparisons to perform/qualify |
+| Security and technical cost | Negative tests, recovery and representative measurements | Laboratory trials executed; no production qualification |
+| Economic value | Observed current cost, complete target cost, sponsor and budget | Unknown; no prospect funding |
 
-Abandonner ou réorienter le produit si une des trois premières portes est
-refusée, si une alternative acceptée satisfait le contrôle à moindre coût,
-ou si la valeur mesurée ne couvre pas l'intégration et l'exploitation.
-Conserver éventuellement les résultats comme contribution technique ouverte.
+Abandon or redirect the product if one of the first three gates is refused, if
+an accepted alternative satisfies the control at lower cost, or if the measured
+value does not cover integration and operations. Possibly keep the results as
+an open technical contribution.
 
-**Conclusion du comité : GO recherche bornée, NO-GO lancement commercial.**
-Le prochain fait décisif pour le marché serait un contrôle client documenté
-et un besoin de non-divulgation démontré. Une preuve plus rapide, à elle seule,
-ne fournit ni ce besoin ni un acheteur.
+**Committee conclusion: GO for bounded research, NO-GO for commercial launch.**
+The next decisive fact for the market would be a documented customer control
+and a demonstrated non-disclosure need. A faster proof, on its own, provides
+neither that need nor a buyer.

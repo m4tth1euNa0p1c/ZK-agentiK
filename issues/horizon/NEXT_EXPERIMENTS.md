@@ -1,70 +1,73 @@
-# Tickets de décision après l'expérience initiale
+# Decision tickets after the initial experiment
 
-## H11 — Validation du besoin, P0, bloquant produit
+## H11 — Need validation, P0, product blocker
 
-**Hypothèse** : deux organisations veulent contrôler une même règle sur des
-montants qu'elles refusent de partager avec le contrôleur, et acceptent une
-émission adaptée. Acheteur potentiel : assureur délégant, contrôle des sinistres.
-Collecter avec autorisation des entretiens et mesures de dossiers anonymisés :
-volume, temps de contrôle, coût des erreurs, coût d'intégration de deux sources.
-**Acceptation** : sponsor identifié, contrainte de non-divulgation documentée,
-alternative signée/divulgation sélective évaluée et budget expérimental explicite.
-**Abandon du profil privé pour ce cas** : adaptation impossible, ou alternative
-acceptée (partage des valeurs / verdict signé) satisfaisant le même contrôle
-à moindre coût complet. Un partage permis ou un verdict signé accepté réfute
-la nécessité cryptographique alléguée, sans établir seul le bilan économique.
-Pas d'outreach automatique. Livrable : modèle chiffré sourcé, sans données client.
+**Hypothesis**: two organizations want to control the same rule on
+amounts they refuse to share with the controller, and accept an
+adapted issuance. Potential buyer: delegating insurer, claims control.
+Collect, with authorization, interviews and measurements from anonymized case
+files: volume, control time, cost of errors, cost of integrating two sources.
+**Acceptance**: sponsor identified, non-disclosure constraint documented,
+signed/selective-disclosure alternative evaluated and explicit experimental budget.
+**Abandonment of the private profile for this case**: adaptation impossible, or
+an accepted alternative (sharing of the values / signed verdict) satisfying the
+same control at a lower complete cost. A permitted sharing or an accepted signed
+verdict refutes the alleged cryptographic necessity, without establishing the
+economic balance on its own.
+No automatic outreach. Deliverable: sourced quantified model, without customer data.
 
-**Préparation livrée** : [protocole de revue et fiche de résultat](../../docs/horizon/REVIEW_PROTOCOL.md).
-Le dossier confronte explicitement le profil au verdict signé d'un tiers accepté,
-à la réunion des witnesses chez le prover et aux coûts imposés aux émetteurs.
-**H11 reste ouvert** : aucun entretien exécuté, sponsor engagé ou budget validé.
-La disponibilité du dossier et les tests techniques ne satisfont pas ce ticket.
+**Preparation delivered**: [review protocol and result sheet](../../docs/horizon/REVIEW_PROTOCOL.md).
+The dossier explicitly confronts the profile with the signed verdict of an accepted
+third party, with the joining of the witnesses at the prover and with the costs
+imposed on issuers.
+**H11 remains open**: no interview executed, sponsor committed or budget validated.
+The availability of the dossier and the technical tests do not satisfy this ticket.
 
-## H12 — Relation Vega identique, P1 recherche
+## H12 — Identical Vega relation, P1 research
 
-Obtenir ou reconstruire avec spécification autorisée le circuit credential mDL,
-signature, parsing et preuve de possession exacts du papier. Aujourd'hui les
-benches amont SHA-256 ne suffisent pas. Reproduire mêmes entrées, sécurité, CPU,
-prétraitement, mémoire et tailles avant ratio. `node scripts/horizon-vega.mjs`
-reproduit uniquement la référence SHA-256 publiée. Aucun record en attendant.
+Obtain or rebuild, with an authorized specification, the exact mDL credential
+circuit, signature, parsing and proof of possession of the paper. Today the
+upstream SHA-256 benches are not enough. Reproduce the same inputs, security, CPU,
+preprocessing, memory and sizes before any ratio. `node scripts/horizon-vega.mjs`
+reproduces only the published SHA-256 reference. No record in the meantime.
 
-## H13 — Émission et provenance qualifiées, P0 sécurité
+## H13 — Qualified issuance and provenance, P0 security
 
-Deux autorités calculent l'engagement depuis leur fait validé, signent le schéma
-exact et publient révocation/version. Protocole de remise des ouvertures, KMS,
-droits d'accès et minimisation. Évaluer MPC si aucun acteur ne peut connaître
-les deux witnesses. Tests : source substituée, rôle erroné, dossier différent,
-valeur hors domaine, révocation pendant dispatch. Toutes mutations refusées.
+Two authorities compute the commitment from their validated fact, sign the exact
+schema and publish revocation/version. Protocol for handing over the openings, KMS,
+access rights and minimization. Evaluate MPC if no actor may know
+both witnesses. Tests: substituted source, wrong role, different case file,
+out-of-domain value, revocation during dispatch. All mutations refused.
 
-## H14 — Reprise sur cible distante, P0 intégration
+## H14 — Recovery on a remote target, P0 integration
 
-Adaptateur sandbox distant avec idempotency key, ETag/version, endpoint de statut,
-perte de réponse et crash à chaque transition. Base durable du contrôleur séparée
-de la cible. Accepter au plus un effet malgré deux processus et reprise. Sans
-contrat cible adéquat : conserver UNKNOWN et interdire le retry automatique.
-Tests initiaux : `npm run test:horizon`, extension obligatoire avant production.
+Remote sandbox adapter with idempotency key, ETag/version, status endpoint,
+response loss and crash at every transition. Controller's durable database
+separated from the target. Accept at most one effect despite two processes and
+recovery. Without an adequate target contract: keep UNKNOWN and forbid automatic
+retry. Initial tests: `npm run test:horizon`, mandatory extension before production.
 
-## H15 — Qualification cryptographique et confidentialité, P0 sécurité
+## H15 — Cryptographic and confidentiality qualification, P0 security
 
-Audit externe des domaines, génération d'engagements, relation, parsing, sources
-de hasard et canaux auxiliaires. Valider fuite de métadonnées/corrélation avec
-les intéressés. Prouver les limites d'Ed25519/Ristretto face au quantique sans
-étiquette post-quantique. No-Go si besoin d'anonymat incompatible avec ce profil.
-Tests : `cargo test --locked --manifest-path labs/horizon/Cargo.toml`.
+External audit of domains, commitment generation, relation, parsing, randomness
+sources and side channels. Validate metadata leakage/correlation with
+the stakeholders. Prove the limits of Ed25519/Ristretto against quantum attacks,
+without a post-quantum label. No-Go if an anonymity need is incompatible with this
+profile. Tests: `cargo test --locked --manifest-path labs/horizon/Cargo.toml`.
 
-## H16 — Coût complet et charge, P1 performance
+## H16 — Complete cost and load, P1 performance
 
-Répéter campagnes indépendantes sur machines isolées, température/énergie,
-RSS par processus, échecs et débit à concurrence variable. Mesurer froid/chaud,
-réseau, stockage et source réelle. Évaluer pré-génération de paramètres publics
-sans cache d'autorisation et mesurer avant/après avec mêmes relations. Aucun
-gain annoncé avant validation. `npm run horizon:benchmark` produit les bruts.
+Repeat independent campaigns on isolated machines, temperature/energy,
+RSS per process, failures and throughput at variable concurrency. Measure cold/warm,
+network, storage and real source. Evaluate pre-generation of public parameters
+without an authorization cache and measure before/after with the same relations.
+No gain announced before validation. `npm run horizon:benchmark` produces the raw data.
 
-## H17 — Exploitation et conformité, P0 avant production
+## H17 — Operations and compliance, P0 before production
 
-IAM/mTLS et rôles opérateur séparés, KMS, journal ancré externe, sauvegarde/restauration,
-monitoring, limites multi-tenant, rétention et revue DORA/RGPD applicables.
-Docker Compose est une démonstration locale ; il ne satisfait pas ces critères.
-Critère : dossier d'exploitation et revues indépendantes, aucune approbation
-implicite sur la base de la seule preuve ZK.
+IAM/mTLS and separate operator roles, KMS, externally anchored log,
+backup/restoration, monitoring, multi-tenant limits, retention and applicable
+DORA/GDPR review.
+Docker Compose is a local demonstration; it does not satisfy these criteria.
+Criterion: operations dossier and independent reviews, no implicit
+approval on the basis of the ZK proof alone.

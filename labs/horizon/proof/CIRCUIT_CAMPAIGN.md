@@ -1,10 +1,10 @@
-# Campagne synthétique séparant prover et vérifieur
+# Synthetic campaign separating prover and verifier
 
-Le binaire `circuit_campaign` exerce la vraie bibliothèque Horizon et
-Bulletproofs 5.0.0. Il ne crée aucune autorisation métier, aucun effet financier
-et aucun store. Les attentes, clés publiques, politique et temps de chaque
-requête sont des entrées du **banc synthétique**, pas des paramètres à accepter
-d'un client dans un service d'autorisation.
+The `circuit_campaign` binary exercises the real Horizon library and
+Bulletproofs 5.0.0. It creates no business authorization, no financial effect
+and no store. The expectations, public keys, policy and time of each
+request are inputs of the **synthetic testbed**, not parameters to be accepted
+from a client in an authorization service.
 
 ```sh
 cargo build --manifest-path labs/horizon/Cargo.toml --locked --release --bin circuit_campaign
@@ -12,67 +12,67 @@ labs/horizon/target/release/circuit_campaign generate --vectors vectors.json --o
 labs/horizon/target/release/circuit_campaign verify --requests new-prover-directory/verification-requests.ndjson --output new-verifier-results.json
 ```
 
-Sous Windows, ajouter `.exe` au binaire. `node scripts/cargo.mjs` peut remplacer
-`cargo` lorsque rustup n'est pas dans le PATH. Les deux commandes sont des
-processus distincts ; `generate` n'appelle pas le vérifieur. Le second processus
-n'a besoin que du NDJSON public. Il n'est pas, à lui seul, une isolation réseau,
-un conteneur indépendant ou un audit externe.
+On Windows, append `.exe` to the binary. `node scripts/cargo.mjs` can replace
+`cargo` when rustup is not in the PATH. The two commands are separate
+processes; `generate` does not call the verifier. The second process
+needs only the public NDJSON. It is not, by itself, network isolation,
+an independent container or an external audit.
 
-## Entrées et sorties
+## Inputs and outputs
 
-`--vectors` reçoit un tableau JSON de 1 à 10 000 objets stricts :
+`--vectors` receives a JSON array of 1 to 10,000 strict objects:
 
 ```json
 [{"id":"boundary-1","category":"valid-boundary","amount":"4294967296","cap":"8589934591"}]
 ```
 
-`id` est unique. `id` et `category` respectent `[a-z0-9-]{1,64}`, comme les
-vecteurs JavaScript et l'oracle. Les montants sont des chaînes décimales canoniques
-`u64` : `0` est admis comme entrée négative de campagne ; signes, espaces,
-zéros initiaux, flottants et dépassements sont refusés. Aucun verdict attendu
-n'est accepté dans ces vecteurs. Limite du fichier : 4 Mio.
+`id` is unique. `id` and `category` match `[a-z0-9-]{1,64}`, like the
+JavaScript vectors and the oracle. The amounts are canonical `u64` decimal
+strings: `0` is admitted as a negative campaign input; signs, spaces,
+leading zeros, floats and overflows are refused. No expected verdict
+is accepted in these vectors. File limit: 4 MiB.
 
-Le répertoire de sortie doit être neuf, avec parent existant. Il contient :
+The output directory must be new, with an existing parent. It contains:
 
-- `prover-results.json`, schéma `horizon-circuit-prover-v1`, `status:complete`,
-  hashes des vecteurs et requêtes, compteurs et tableau `cases`.
-- `verification-requests.ndjson`, une requête publique par ligne, exactement
+- `prover-results.json`, schema `horizon-circuit-prover-v1`, `status:complete`,
+  hashes of the vectors and requests, counters and `cases` array.
+- `verification-requests.ndjson`, one public request per line, exactly
   `{id,test,expected_accept,request:{presentation,expected,trust,policy,now_ms}}`.
 
-Chaque cas du rapport contient `id`, `category`, `amount`, `cap`,
-`native_accept`, `native_a_accept`, `native_b_accept`, les éventuels
-`native_a_error`/`native_b_error`, `request_count`, et
-`generation:{a_ns,b_ns,direct_a_ns?,direct_b_ns?}`. `native_accept` est la
-conjonction des deux observations ; un corrélateur doit aussi examiner
-**chaque** observation A/B. Les erreurs natives attendues, dans cet ordre,
-sont `AMOUNT_RANGE`, `CAP_BELOW_AMOUNT`, `DIFFERENCE_RANGE`.
+Each case in the report contains `id`, `category`, `amount`, `cap`,
+`native_accept`, `native_a_accept`, `native_b_accept`, the optional
+`native_a_error`/`native_b_error`, `request_count`, and
+`generation:{a_ns,b_ns,direct_a_ns?,direct_b_ns?}`. `native_accept` is the
+conjunction of the two observations; a correlator must also examine
+**each** A/B observation. The expected native errors, in this order,
+are `AMOUNT_RANGE`, `CAP_BELOW_AMOUNT`, `DIFFERENCE_RANGE`.
 
-Les nombres source sont volontairement publics et synthétiques pour permettre
-la comparaison BigInt/Octave/MATLAB/Rust. Cela n'est pas une expérience de
-confidentialité contre un vérifieur ignorant ces nombres. Les ouvertures
-aléatoires, clés privées et objets witness ne sont jamais sérialisés dans
-ces sorties. Chaque `Fixture::with_values` génère de nouvelles clés et
-ouvertures avec `OsRng`, et chaque nouvelle preuve utilise cet aléa sécurisé.
-Le temps logique fixe `1800000000000` sert seulement aux tests d'intervalles.
+The source numbers are deliberately public and synthetic to allow the
+BigInt/Octave/MATLAB/Rust comparison. This is not a confidentiality
+experiment against a verifier unaware of these numbers. The random
+openings, private keys and witness objects are never serialized in
+these outputs. Each `Fixture::with_values` generates new keys and
+openings with `OsRng`, and each new proof uses this secure randomness.
+The fixed logical time `1800000000000` serves only for the interval tests.
 
-`verify` produit le schéma `horizon-circuit-verifier-v1`, `status:complete`,
-hash du NDJSON lu, compteurs et `cases:[{id,test,accepted,error?,duration_ns}]`.
-Il ne consulte **jamais** `expected_accept` pour décider ; seule la vraie
-fonction `horizon_proof::verify` détermine acceptation et erreur, avec refus
-explicite des payloads `Disclosure`. Le corrélateur externe doit comparer
-les identifiants, familles, codes, hashes et nombres de lignes, pas seulement
-le compteur des succès. Un rejet cryptographique normal donne `accepted:false`
-et un code de sortie processus 0 ; entrée malformée ou défaut d'exécution
-donne un code non nul et ne constitue pas une campagne terminée.
+`verify` produces the schema `horizon-circuit-verifier-v1`, `status:complete`,
+hash of the NDJSON read, counters and `cases:[{id,test,accepted,error?,duration_ns}]`.
+It **never** consults `expected_accept` to decide; only the real
+`horizon_proof::verify` function determines acceptance and error, with explicit
+refusal of `Disclosure` payloads. The external correlator must compare
+the identifiers, families, codes, hashes and line counts, not only
+the success counter. A normal cryptographic rejection yields `accepted:false`
+and a process exit code of 0; malformed input or an execution fault
+yields a non-zero code and does not constitute a completed campaign.
 
-## Familles exactes
+## Exact families
 
-Pour chaque couple arithmétiquement valide, 16 requêtes sont produites :
+For each arithmetically valid pair, 16 requests are produced:
 
-| `test` | Résultat attendu / code |
+| `test` | Expected result / code |
 | --- | --- |
-| `a_valid` | accepté |
-| `b_valid` | accepté |
+| `a_valid` | accepted |
+| `b_valid` | accepted |
 | `b_scalar_corruption` | `INVALID_RANGE_PROOF` |
 | `a_challenge_transplant` | `INVALID_RANGE_PROOF` |
 | `b_authority_key_substitution` | `INVALID_SIGNATURE` |
@@ -88,65 +88,65 @@ Pour chaque couple arithmétiquement valide, 16 requêtes sont produites :
 | `b_trust_epoch` | `TRUST_EPOCH_MISMATCH` |
 | `b_evidence_join` | `EVIDENCE_JOIN` |
 
-La corruption B incrémente le scalaire canonique `t_x` du format Bulletproofs 5
-et vérifie que `RangeProof::from_bytes` le décode encore. Le détenteur signe
-ensuite la présentation altérée. La transplantation A conserve la preuve,
-change le nonce dans la présentation **et** le challenge attendu, puis signe
-avec le vrai détenteur. Ces refus doivent atteindre `INVALID_RANGE_PROOF`,
-pas simplement échouer au parsing ou à la signature. Les autres mutations
-exercent des frontières distinctes ; une entrée inchangée sert de contrôle.
+The B corruption increments the canonical scalar `t_x` of the Bulletproofs 5 format
+and checks that `RangeProof::from_bytes` still decodes it. The holder then
+signs the altered presentation. The A transplant keeps the proof,
+changes the nonce in the presentation **and** in the expected challenge, then signs
+with the real holder. These refusals must reach `INVALID_RANGE_PROOF`,
+not merely fail at parsing or at the signature. The other mutations
+exercise distinct boundaries; an unchanged input serves as a control.
 
-Pour chaque couple invalide, deux requêtes sont produites :
-`a_direct_bypass` et `b_direct_bypass`, toutes deux attendues avec
-`INVALID_RANGE_PROOF`. Après avoir relevé les refus natifs A/B, le programme
-appelle directement `RangeProof::prove_multiple_with_rng`, avec les mêmes
-domaines de transcript et attestations, sans appeler le contrôle natif.
-Les valeurs candidates sont `a.wrapping_sub(1)` et `c.wrapping_sub(a)` en
-`u64`, et les masques sont `r_a` et `r_c-r_a` en scalaires.
+For each invalid pair, two requests are produced:
+`a_direct_bypass` and `b_direct_bypass`, both expected with
+`INVALID_RANGE_PROOF`. After recording the native A/B refusals, the program
+directly calls `RangeProof::prove_multiple_with_rng`, with the same
+transcript domains and attestations, without calling the native check.
+The candidate values are `a.wrapping_sub(1)` and `c.wrapping_sub(a)` as
+`u64`, and the blindings are `r_a` and `r_c-r_a` as scalars.
 
-Ce wrapping est une stratégie d'attaque déterminée, pas une transformation
-correcte des entiers signés ni une recherche exhaustive de tous les provers
-malveillants. Le vérifieur dérive toujours `A-G` et `C-A` des engagements
-originaux signés. Lorsque la soustraction déborde, les engagements candidats
-peuvent donc différer de ceux attendus ; le rejet teste cette liaison aussi.
-Chaque candidat porte une signature du détenteur valide. Les tests internes
-incluent des candidats directs **valides** A/B pour contrôler la parité des
-encodages et des domaines avec la bibliothèque.
+This wrapping is a determined attack strategy, not a correct
+transformation of signed integers nor an exhaustive search over all
+malicious provers. The verifier always derives `A-G` and `C-A` from the
+original signed commitments. When the subtraction overflows, the candidate
+commitments may therefore differ from the expected ones; the rejection tests this binding too.
+Each candidate carries a valid holder signature. The internal tests
+include **valid** direct A/B candidates to check the parity of
+encodings and domains with the library.
 
-Une campagne de 4 096 cas produit 8 192 preuves/candidats initiaux, soit deux
-par cas. Les présentations corrompues dérivées ne sont pas comptées comme de
-nouvelles générations de preuve. Les familles sont choisies par une relation
-entière locale indépendante du résultat natif ; le corrélateur doit comparer
-cette classification aux calculs des autres runtimes.
+A campaign of 4,096 cases produces 8,192 initial proofs/candidates, that is, two
+per case. The derived corrupted presentations are not counted as
+new proof generations. The families are chosen by a local integer
+relation independent of the native result; the correlator must compare
+this classification against the computations of the other runtimes.
 
-## Bornes, conservation et mesures
+## Bounds, preservation and measurements
 
-Les fichiers sont créés avec `create_new` ; aucun résultat existant n'est
-remplacé. Les chemins contenant `..` ou un lien symbolique observé sont refusés.
-Cela suppose un filesystem local de confiance : ces vérifications ne prouvent
-pas une résistance aux courses d'un administrateur modifiant les répertoires.
-Une erreur laisse les sorties partielles sur place. Un rapport absent, vide,
-incomplet ou sans `status:complete` ne doit pas être présenté comme réussi.
+Files are created with `create_new`; no existing result is
+replaced. Paths containing `..` or an observed symbolic link are refused.
+This assumes a trusted local filesystem: these checks do not prove
+resistance to races by an administrator modifying the directories.
+An error leaves partial outputs in place. A report that is absent, empty,
+incomplete or without `status:complete` must not be presented as successful.
 
-Le NDJSON est lu en flux : 64 Kio maximum par ligne (fin de ligne comprise),
-1 Gio par fichier et 200 000 requêtes. Le couple `(id,test)` doit être unique.
-Les rapports synthétiques sont gardés en mémoire sous ces bornes. Les durées
-sont des nanosecondes entières limitées à `2^53-1` pour une lecture JSON exacte.
-Elles ne fournissent ni échauffement, ni répétitions IID, ni p95/p99 fiable,
-ni SLA. L'émission des fixtures, le parsing, les sorties et l'IPC sont exclus.
-`b_ns` comprend préparation et signature de présentation ; les phases directes
-incluent la construction des générateurs, contrairement aux générateurs fixes
-mis en cache par la bibliothèque native. Le premier appel natif peut initialiser
-ces générateurs. Ces phases ne doivent pas être comparées comme des profils
-de coût équivalents.
+The NDJSON is read as a stream: 64 KiB maximum per line (line ending included),
+1 GiB per file and 200,000 requests. The `(id,test)` pair must be unique.
+The synthetic reports are kept in memory under these bounds. Durations
+are integer nanoseconds limited to `2^53-1` for exact JSON reading.
+They provide neither warm-up, nor IID repetitions, nor reliable p95/p99,
+nor SLA. Fixture emission, parsing, outputs and IPC are excluded.
+`b_ns` includes preparation and presentation signing; the direct phases
+include generator construction, unlike the fixed generators
+cached by the native library. The first native call may initialize
+these generators. These phases must not be compared as equivalent cost
+profiles.
 
 ```sh
 cargo test --manifest-path labs/horizon/Cargo.toml --locked --bin circuit_campaign
 cargo clippy --manifest-path labs/horizon/Cargo.toml --locked --bin circuit_campaign -- -D warnings
 ```
 
-Les tests internes couvrent les frontières réelles, les erreurs précises,
-les attaques résignées, l'indépendance du verdict face à `expected_accept`,
-les entrées malformées, les doublons et le refus de remplacer les sorties.
-Ils ne prouvent pas la soundness cryptographique, la vérité d'un émetteur,
-la non-corrélation, la sécurité post-quantique ou l'atomicité d'une API distante.
+The internal tests cover the real boundaries, the precise errors,
+the re-signed attacks, the independence of the verdict from `expected_accept`,
+malformed inputs, duplicates and the refusal to replace outputs.
+They do not prove cryptographic soundness, the truth of an issuer,
+non-correlation, post-quantum security or the atomicity of a remote API.

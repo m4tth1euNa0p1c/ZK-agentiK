@@ -1,4 +1,4 @@
 interface:
-  display_name: "Whitepaper scientifique"
-  short_description: "Relier les assertions aux preuves reproductibles"
-  default_prompt: "Utilise $scientific-whitepaper pour réviser le manuscrit de ZK-agentiK, contrôler ses sources et expliciter ses limites."
+  display_name: "Scientific whitepaper"
+  short_description: "Link the claims to reproducible evidence"
+  default_prompt: "Use $scientific-whitepaper to revise the ZK-agentiK manuscript, check its sources and make its limitations explicit."

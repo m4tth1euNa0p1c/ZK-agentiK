@@ -1,29 +1,29 @@
-# 09 — Dossier d'audit privé et vérification hors ligne
+# 09 — Private audit dossier and offline verification
 
-Jalon : M3. Priorité : P1. Dépendances : 05, 07, 08.
+Milestone: M3. Priority: P1. Dependencies: 05, 07, 08.
 
 ## User story
 
-Comme auditeur client, je peux réexaminer une admission lorsque le fournisseur
-est indisponible, avec un minimum de divulgation et un accès gouverné aux pièces.
+As a customer auditor, I can re-examine an admission when the supplier
+is unavailable, with minimal disclosure and governed access to the evidence.
 
-## Architecture technique
+## Technical architecture
 
-Journal append-only avec checkpoints indépendants, chiffrement et rétention
-configurable. Séparer preuve d'autorisation, réservation, tentative, réponse API
-et observation du résultat. Conserver originaux et provenance sous accès limité.
-Bundle exporté : preuve, programme/vkey, politique, trust bundle daté et journal.
-La vérification historique n'atteste pas une absence actuelle de révocation.
+Append-only log with independent checkpoints, encryption and configurable
+retention. Separate authorization proof, reservation, attempt, API response
+and observation of the result. Keep originals and provenance under limited access.
+Exported bundle: proof, program/vkey, policy, dated trust bundle and log.
+Historical verification does not attest to a current absence of revocation.
 
-## Critères d'acceptation
+## Acceptance criteria
 
-- Aucune donnée privée du witness dans l'export de routine.
-- Altération, omission détectable par checkpoints et versions obsolètes testées.
-- Matrice DORA/AI Act revue pour le client : aucun certificat global ni promesse
-  de remplacer les droits légaux d'audit par un reçu.
-- Changement normal et future récupération d'urgence ont des politiques distinctes.
+- No private witness data in the routine export.
+- Tampering, omission detectable through checkpoints and obsolete versions tested.
+- DORA/AI Act matrix reviewed for the customer: no global certificate or promise
+  to replace legal audit rights with a receipt.
+- Normal change and future emergency recovery have distinct policies.
 
-## Commandes de test
+## Test commands
 
-`cargo test --workspace --locked`, `npm test` ; ajouter export/import hors réseau,
-perte de source, restauration, révocation et vérification de non-divulgation.
+`cargo test --workspace --locked`, `npm test`; add offline export/import,
+source loss, restoration, revocation and non-disclosure verification.

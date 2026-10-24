@@ -1,34 +1,34 @@
-# 01 — Implémenter le premier backend ZK réel
+# 01 — Implement the first real ZK backend
 
-Jalon : M1. Priorité : P0. Dépendances : contrat 02 et attestations 07.
+Milestone: M1. Priority: P0. Dependencies: contract 02 and attestations 07.
 
-Avancement : `labs/risc0/host` implémente `Risc0LabBackend` et le trait
-`ZkVmBackend`, avec guest et vérifieur indépendants. Le banc est historique et
-utilise une autorité de fixture publique ; l'intégration MCP, les sources
-réelles et la qualification du profil de confidentialité restent ouvertes.
+Progress: `labs/risc0/host` implements `Risc0LabBackend` and the `ZkVmBackend`
+trait, with independent guest and verifier. The bench is historical and
+uses a public fixture authority; MCP integration, real sources and
+qualification of the confidentiality profile remain open.
 
 ## User story
 
-Comme opérateur client, je vérifie une preuve de politique sans faire confiance
-au calculateur ni recevoir ses faits privés.
+As a customer operator, I verify a policy proof without trusting the
+computing party or receiving its private facts.
 
-## Architecture technique
+## Technical architecture
 
-Conserver `ZkVmBackend`, implémenter SP1 ou RISC Zero avec versions et toolchain
-épinglées. Choisir le type de preuve et son mode ZK explicitement. Registre
-ELF digest → image/vkey native approuvée. Comparer le journal complet de 02.
-Le stub Magnetar reste indisponible jusqu'à un SDK officiel vérifié.
+Keep `ZkVmBackend`, implement SP1 or RISC Zero with pinned versions and
+toolchain. Choose the proof type and its ZK mode explicitly. Registry
+ELF digest → approved native image/vkey. Compare the complete journal of 02.
+The Magnetar stub remains unavailable until a verified official SDK exists.
 
-## Critères d'acceptation
+## Acceptance criteria
 
-- Preuve réelle locale sur une fixture signée ; witness absent de l'export.
-- Mauvais journal/image/signature refusés ; aucune simulation en fallback.
-- Même cœur et sorties canoniques entre natif et backend réel.
-- Versions, licence, hypothèses, RAM et confidentialité documentées.
+- Real local proof on a signed fixture; witness absent from the export.
+- Wrong journal/image/signature refused; no simulation as fallback.
+- Same core and canonical outputs between native and real backend.
+- Versions, license, assumptions, RAM and confidentiality documented.
 
-## Commandes de test
+## Test commands
 
-`cargo test --locked -p zkvm-bridge` et `npm test` restent obligatoires.
-Créer une suite opt-in `backend_conformance` et son feature de backend ;
-documenter sa commande exacte avec toolchain installée. Le test actuel du
-stub ne doit jamais être compté comme réussite cryptographique.
+`cargo test --locked -p zkvm-bridge` and `npm test` remain mandatory.
+Create an opt-in `backend_conformance` suite and its backend feature;
+document its exact command with the toolchain installed. The current stub
+test must never be counted as a cryptographic success.

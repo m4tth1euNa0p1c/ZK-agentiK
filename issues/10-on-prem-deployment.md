@@ -1,30 +1,30 @@
-# 10 — Conditionner et qualifier le déploiement on-premise
+# 10 — Package and qualify on-premise deployment
 
-Jalon : M3. Priorité : P2. Dépendances : 01–09 et décision de pilote.
+Milestone: M3. Priority: P2. Dependencies: 01–09 and pilot decision.
 
 ## User story
 
-Comme exploitant, je déploie un pilote isolé, reproductible et observable sans
-sortie des données privées vers un service externe imposé.
+As a platform operator, I deploy an isolated, reproducible and observable pilot
+without private data leaving to an imposed external service.
 
-## Architecture technique
+## Technical architecture
 
-Images multi-stage épinglées par digest, non-root, filesystem en lecture seule,
-quota CPU/RAM, secrets montés, séparation prover/verifier/credentials, SBOM
-et signatures d'images. Configurer datastore durable, rotation de clés, backup
-et reprise avec anti-rollback. Désactiver toute simulation en mode production.
-La procédure de récupération d'urgence reste une action séparée à mandat borné.
+Multi-stage images pinned by digest, non-root, read-only filesystem,
+CPU/RAM quota, mounted secrets, prover/verifier/credentials separation, SBOM
+and image signatures. Configure durable datastore, key rotation, backup
+and recovery with anti-rollback. Disable any simulation in production mode.
+The emergency recovery procedure remains a separate action with a bounded mandate.
 
-## Critères d'acceptation
+## Acceptance criteria
 
-- Déploiement reproductible avec artefacts vérifiés et politique d'egress explicite.
-- Aucun credential dans image/logs ; agent sans voie alternative de mutation.
-- Procédure de restauration ne réactive pas une opération consommée.
-- Test source/prover/store indisponible, migration et réconciliation UNKNOWN.
-- Revue humaine de la frontière de confiance avant une quelconque production.
+- Reproducible deployment with verified artifacts and explicit egress policy.
+- No credential in image/logs; agent without an alternative mutation path.
+- Restoration procedure does not reactivate a consumed operation.
+- Test unavailable source/prover/store, migration and UNKNOWN reconciliation.
+- Human review of the trust boundary before any production.
 
-## Commandes de test
+## Test commands
 
-Ajouter `docker compose ... config` et une suite smoke/chaos sandbox une fois
-les images créées. Avant cela : `npm test`, `cargo test --workspace --locked`.
-Ne pas afficher une commande Docker hypothétique comme déploiement existant.
+Add `docker compose ... config` and a sandbox smoke/chaos suite once
+the images exist. Before that: `npm test`, `cargo test --workspace --locked`.
+Do not display a hypothetical Docker command as an existing deployment.

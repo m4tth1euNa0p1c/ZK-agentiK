@@ -1,17 +1,17 @@
-# horizon-proof — laboratoire, sans effet de paiement
+# horizon-proof — laboratory, no payment effect
 
-Cette crate compose Bulletproofs 5.0.0, des engagements Pedersen Ristretto,
-Ed25519 et Merlin. Elle ne contient ni nouvelle primitive, ni mode simulant une
-preuve réussie. Les deux autorités de fixture signent des engagements qu'elles
-construisent à partir de leurs valeurs de test. `init` produit des secrets de
-laboratoire : sa sortie appartient au processus prover, jamais au vérifieur.
+This crate composes Bulletproofs 5.0.0, Ristretto Pedersen commitments,
+Ed25519 and Merlin. It contains neither a new primitive, nor a mode simulating a
+successful proof. The two fixture authorities sign commitments that they
+build from their test values. `init` produces laboratory
+secrets: its output belongs to the prover process, never to the verifier.
 
-La relation exacte est `1 <= amount <= 2^32` et
-`0 <= cap - amount < 2^32`. Les métadonnées et engagements restent publics et
-corrélables. Le vérifieur apprend les valeurs en mode `disclosure` uniquement.
-Voir [le design](../../../docs/horizon/CRYPTOGRAPHIC_DESIGN.md).
+The exact relation is `1 <= amount <= 2^32` and
+`0 <= cap - amount < 2^32`. The metadata and commitments remain public and
+correlatable. The verifier learns the values in `disclosure` mode only.
+See [the design](../../../docs/horizon/CRYPTOGRAPHIC_DESIGN.md).
 
-Depuis la racine :
+From the root:
 
 ```sh
 cargo test --manifest-path labs/horizon/Cargo.toml --locked -p horizon-proof
@@ -19,54 +19,54 @@ cargo build --manifest-path labs/horizon/Cargo.toml --locked --release -p horizo
 labs/horizon/target/release/horizon-proof-worker
 ```
 
-Le worker lit une requête JSON par ligne, au plus 64 KiB. Il répond uniquement
-`{"ok":true,"result":...}` ou `{"ok":false,"error":"..."}` sur stdout. Il
-n'infère pas l'heure : le contrôleur de confiance fournit `now_ms`.
+The worker reads one JSON request per line, at most 64 KiB. It replies only
+`{"ok":true,"result":...}` or `{"ok":false,"error":"..."}` on stdout. It
+does not infer the time: the trusted controller provides `now_ms`.
 
-| `op` | Autres champs | Résultat |
+| `op` | Other fields | Result |
 |---|---|---|
-| `init` | `now_ms` | `Fixture` avec registre, attestations, witness privé, clé privée détenteur, challenge et politique exemples |
-| `select` | `policy` | `challenge_bound`, `reusable` ou `disclosure` |
-| `prepare` | `evidence`, `witness` | `ReusableProof`, coût initial à mesurer séparément |
-| `present` | `evidence`, `prepared`, `holder_secret_hex`, `challenge` | Présentation B, signature fraîche et preuve inchangée |
-| `prove` | `evidence`, `witness`, `holder_secret_hex`, `challenge` | Présentation A ou publique ; B doit utiliser `prepare` puis `present` |
-| `verify` | `presentation`, `expected`, `trust`, `policy`, `now_ms` | `Verified`, sans witness |
+| `init` | `now_ms` | `Fixture` with registry, attestations, private witness, holder private key, example challenge and policy |
+| `select` | `policy` | `challenge_bound`, `reusable` or `disclosure` |
+| `prepare` | `evidence`, `witness` | `ReusableProof`, initial cost to be measured separately |
+| `present` | `evidence`, `prepared`, `holder_secret_hex`, `challenge` | Presentation B, fresh signature and unchanged proof |
+| `prove` | `evidence`, `witness`, `holder_secret_hex`, `challenge` | Presentation A or public; B must use `prepare` then `present` |
+| `verify` | `presentation`, `expected`, `trust`, `policy`, `now_ms` | `Verified`, without witness |
 
-Les types Rust de `src/lib.rs` définissent les champs JSON exacts et rejettent
-les champs inconnus. Les encodages cryptographiques sont hexadécimaux minuscules,
-de taille exacte. Les signatures utilisent le JSON des structures typées dans
-l'ordre déclaré, préfixé par un domaine et un octet nul ; ce codec n'est pas un
-format JSON canonique générique et n'autorise pas les maps ou les flottants.
+The Rust types in `src/lib.rs` define the exact JSON fields and reject
+unknown fields. Cryptographic encodings are lowercase hexadecimal,
+of exact size. Signatures use the JSON of the typed structures in
+declared order, prefixed by a domain and a null byte; this codec is not a
+generic canonical JSON format and does not allow maps or floats.
 
-`verify` exige toutes les signatures et re-vérifie toute la preuve à chaque
-appel, y compris B. Il compare le challenge complet à `expected` et le registre
-à l'époque attendue. Son `expires_at_ms` est le minimum des échéances du
-challenge et des deux attestations.
-`not_before_ms` est le maximum de leurs trois dates de début ; le contrôleur
-recontrôle aussi cette borne après une attente pour détecter un recul d'horloge.
+`verify` requires all signatures and re-verifies the whole proof on each
+call, including B. It compares the full challenge to `expected` and the registry
+to the expected epoch. Its `expires_at_ms` is the minimum of the deadlines of the
+challenge and of the two attestations.
+`not_before_ms` is the maximum of their three start dates; the controller
+also rechecks this bound after a wait to detect a clock rollback.
 
-Le contrôleur doit fournir une politique, un registre et un challenge attendus
-indépendants de l'agent, tenir une horloge fiable, vérifier les révocations,
-réserver durablement nonce/opération, recontrôler les échéances après les
-attentes et imposer les préconditions avant mutation. Cette crate stateless ne
-promet ni anti-rejeu, ni atomicité multiservice, ni plafond cumulé consommable.
+The controller must provide an expected policy, registry and challenge
+independent of the agent, keep a reliable clock, check revocations,
+durably reserve nonce/operation, recheck deadlines after
+waits and enforce the preconditions before mutation. This stateless crate
+promises neither anti-replay, nor multi-service atomicity, nor a consumable cumulative cap.
 
-Les tests attaquent la relation, les signatures et la liaison au contexte. Ils
-ne remplacent pas un audit cryptographique indépendant. Aucun secret réel ne
-doit être confié à cette expérience.
+The tests attack the relation, the signatures and the binding to the context. They
+do not replace an independent cryptographic audit. No real secret
+must be entrusted to this experiment.
 
-Le benchmark séparé produit des durées brutes en nanosecondes, les tailles de
-preuve et d'enveloppe, avec cinq cas synthétiques, 30 passages d'échauffement
-par défaut, et l'ordre A/B alterné :
+The separate benchmark produces raw durations in nanoseconds, the proof
+and envelope sizes, with five synthetic cases, 30 warm-up passes
+by default, and alternating A/B order:
 
 ```sh
 cargo run --manifest-path labs/horizon/Cargo.toml --locked --release --bin horizon-benchmark -- --samples 500 --warmup 30 --output horizon-samples.json
 ```
 
-B réutilise exactement la preuve préparée de son cas ; `verify_b_full` effectue
-la vérification complète sans cache de preuve ou de verdict. Les générateurs
-publics fixes sont préparés une fois par processus via `OnceLock`, sans witness,
-RNG ni état d'autorisation partagé. `parameters_standalone` est une mesure
-diagnostique de leur construction, à ne pas ajouter aux temps chauds. Les warmups ne figurent pas dans les
-échantillons retenus. L'indépendance statistique des observations n'est pas
-établie et aucun ratio de vitesse face à une autre relation Vega n'est produit.
+B reuses exactly the prepared proof of its case; `verify_b_full` performs
+the full verification without any proof or verdict cache. The fixed public
+generators are prepared once per process via `OnceLock`, without witness,
+RNG or shared authorization state. `parameters_standalone` is a diagnostic
+measurement of their construction, not to be added to the warm times. Warm-ups do not appear in the
+retained samples. The statistical independence of the observations is not
+established and no speed ratio against another Vega relation is produced.
