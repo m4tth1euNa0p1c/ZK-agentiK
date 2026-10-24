@@ -296,6 +296,13 @@ Vote maintained: **GO laboratory on this bounded relation; NO-GO production
 and market**. The passed adversarial tests reduce the known defects of the
 prototype; they do not demonstrate the absence of any vulnerability.
 
+Update of 25 October 2026 (SEC-1): the eliminatory cases of section 5
+concerning foreign profiles, prover-chosen commitment layouts, transcript
+modes and labels, misconfigured registries/policies and malformed proofs now
+have a dedicated regression suite with a mutation check and target counters;
+see [VERIFIER_BINDING_TESTS_2026-10-25.md](VERIFIER_BINDING_TESTS_2026-10-25.md).
+The vote above is unchanged: these are agent-written tests, not an audit.
+
 ## Final review of deployment and results
 
 The challenger re-read the secretless relay: fixed destinations and routes,

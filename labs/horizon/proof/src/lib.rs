@@ -702,3 +702,6 @@ impl Fixture {
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(test)]
+mod binding_tests;

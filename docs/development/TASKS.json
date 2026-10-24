@@ -1,11 +1,11 @@
 {
   "schema": "zk-agentic-research-backlog/1",
-  "updated_on": "2026-10-24",
+  "updated_on": "2026-10-25",
   "baseline_main": "1ff00fc8663bd88e0ba6ff7f571ddef62d16fc7f",
   "tasks": [
     {
       "id": "SEC-1",
-      "status": "ready",
+      "status": "blocked",
       "priority": "P0",
       "title": "Adversarial verifier statement/transcript binding regression tests",
       "acceptance": "Cross-profile, malformed proof, altered commitment layout and wrong trusted-verifier parameters rejected; negative cases count zero target effects; document exact tested code.",
@@ -13,7 +13,8 @@
         "labs/horizon/proof",
         "tests/horizon",
         "packages/proofkit-sdk"
-      ]
+      ],
+      "delivered": "2026-10-25: local regression suite (labs/horizon/proof/src/binding_tests.rs, tests/horizon/binding.test.ts, packages/proofkit-sdk/test/tool.test.ts) with mutation check; see docs/horizon/VERIFIER_BINDING_TESTS_2026-10-25.md. Remaining: independent confirmation under H15; no further local work ready."
     },
     {
       "id": "H14",

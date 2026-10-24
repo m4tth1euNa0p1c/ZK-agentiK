@@ -157,3 +157,27 @@ volume. Reference of the failure retained:
 Useful POC and local optimization demonstrated. No external record, no customer
 qualification, no production compliance or security established.
 [Verdict](FINAL_VERDICT.md) and [next experiments](../../issues/horizon/NEXT_EXPERIMENTS.md).
+
+## SEC-1 — Verifier binding regression suite (25 October 2026)
+
+Six Rust unit tests (`labs/horizon/proof/src/binding_tests.rs`), three
+integration tests over the release worker, SQLite controller and SDK tool
+(`tests/horizon/binding.test.ts`) and one Proofkit SDK test were added.
+They refuse foreign profiles, agent-selected registry/policy/key/backend
+fields, cross-mode and relabeled transcripts, prover-chosen commitment
+layouts and generators, 64-bit/single/four-commitment proofs (by length),
+misconfigured registries and policies, malformed proofs, and verifier output
+departing from the expected statement, each with its exact code and a target
+counter at zero. Four deliberate mutations of `lib.rs` (transcript ignoring
+the challenge, unshifted commitments, profile check removed, proof length
+relaxed) were each caught; the file was restored.
+
+Executed: Horizon `cargo test --locked` 15 lib + 4 campaign tests, fmt and
+clippy exit 0; `binding.test.ts` 3/3; `tool.test.ts` 10/10;
+`npm run typecheck` exit 0; `npm run agent:check:full` PASS with its eleven
+fixed steps at exit 0 (`test:horizon` 34/34, `test:proofkit` 22/22; local
+report `.tools/agent-sessions/2026-10-24T23-10-56-335Z-39140.json` after the review fixes, see the table in
+[VERIFIER_BINDING_TESTS_2026-10-25.md](VERIFIER_BINDING_TESTS_2026-10-25.md)).
+Observation: signed bytes follow Rust declaration order while worker JSON
+output sorts keys; refused attempts do not consume the nonce. This is a
+local regression suite, not an external audit (H15 open).
