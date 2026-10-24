@@ -49,15 +49,30 @@ error-free TeX output is not enough to qualify the rendering.
 
 ## Delivered validation
 
-- Eight-page PDF compiled; no warning or `Overfull` overrun in
-  the final pass. The eight PNGs were inspected: text, tables, equations,
-  bibliographic links and pagination legible, no overflow observed.
-- Octave 7.3.0: arithmetic checks and finite model passed; no
+- **24 October 2026, English rebuild.** The LaTeX sources had been translated
+  to English on 17 October while the committed PDFs were still the French
+  builds. Both PDFs were rebuilt in the pinned image (image id and package
+  versions recorded in `validation.json`): eight and five pages, no warning,
+  error or `Overfull` box in the final passes. All thirteen Poppler PNG pages
+  were inspected: English text, tables, equations, the boxed protocol diagram,
+  bibliographic links and pagination legible, no overflow or residual French
+  observed. The only source change beyond the translation is in the two
+  `.bib` files: braces protect proper nouns (RangeProof, API, EdDSA, SQLite,
+  GNU Octave, JSON) from BibTeX lowercasing and two MathWorks entries without
+  a publication year print `n.d.`. No statement, number, date or citation
+  target changed. The GitHub Actions `math` profile rebuilt the same sources
+  on Linux without diagnostics; hashes are not compared across machines
+  because pdfTeX embeds the build timestamp.
+- **17 October 2026, French build (historical).** Eight-page PDF compiled;
+  no warning or `Overfull` overrun in the final pass; the eight PNGs were
+  inspected. Octave 7.3.0: arithmetic checks and finite model passed; no
   MATLAB execution claimed. See the dated reports under `math/results/`.
-- The PDF skill helper was found and executed before writing; the rendering was
-  actually produced with Poppler. `validation.json` ties the finding to a
-  specific PDF. This finding is a visual review by an agent; no independent
-  human review has been confirmed and no attestation is claimed.
+  The PDF skill helper was found and executed before writing; the rendering
+  was produced with Poppler. The sealed manifests under `evidence/manifests/`
+  reference that French PDF and are valid at their own `source.commit`.
+- `validation.json` ties the current finding to specific PDFs and sources.
+  Each finding is a visual review by an agent; no independent human review
+  has been confirmed and no attestation is claimed.
 
 ## Sources and consultation scope
 
