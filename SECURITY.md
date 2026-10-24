@@ -9,7 +9,7 @@ the [publication claims](docs/publication/CLAIMS.md).
 
 ## Private reporting
 
-Use [Report a vulnerability](https://github.com/m4tth1euNa0p1c/ZK-agentic/security/advisories/new)
+Use [Report a vulnerability](https://github.com/m4tth1euNa0p1c/ZP3ntiProof/security/advisories/new)
 for private GitHub reporting. Its activation was verified through the GitHub API
 on 17 October 2026. If this feature is subsequently unavailable, use a private
 channel already established with the maintainer. Otherwise, a public issue may

@@ -19,7 +19,7 @@ assert.ok(args.length === 0 || (args.length === 2 && args[0] === '--out-dir' && 
   'Usage: npm run release:check [-- --out-dir <directory>]');
 const outDir = args.length ? resolve(args[1]) : undefined;
 const expectedName = '@m4tth1euna0p1c/proofkit-sdk';
-const repository = 'https://github.com/m4tth1euNa0p1c/ZK-agentic';
+const repository = 'https://github.com/m4tth1euNa0p1c/ZP3ntiProof';
 assert.equal(manifest.name, expectedName);
 assert.match(manifest.version, /^\d+\.\d+\.\d+-alpha\.\d+$/);
 assert.equal(rootManifest.version, manifest.version);

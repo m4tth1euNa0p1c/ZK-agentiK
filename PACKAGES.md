@@ -1,6 +1,6 @@
 # Packages and versions
 
-The public repository is [m4tth1euNa0p1c/ZK-agentic](https://github.com/m4tth1euNa0p1c/ZK-agentic).
+The public repository is [m4tth1euNa0p1c/ZP3ntiProof](https://github.com/m4tth1euNa0p1c/ZP3ntiProof).
 The repository and standalone SDK prerelease is **0.1.0-alpha.1**. The Git tag
 `v0.1.0-alpha.1` identifies the sources; `main` may subsequently change.
 
@@ -20,7 +20,7 @@ No version under the former name had been published by this repository.
 ## Install the public archive
 
 Node **24.11 or later** is required. Download the `.tgz` file and `SHA256SUMS`
-from the [release](https://github.com/m4tth1euNa0p1c/ZK-agentic/releases/tag/v0.1.0-alpha.1),
+from the [release](https://github.com/m4tth1euNa0p1c/ZP3ntiProof/releases/tag/v0.1.0-alpha.1),
 then compare its SHA-256 before installation.
 In PowerShell: `Get-FileHash <archive.tgz> -Algorithm SHA256`;
 on Linux: `sha256sum <archive.tgz>`.

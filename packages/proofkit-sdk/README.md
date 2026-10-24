@@ -2,7 +2,7 @@
 
 `@m4tth1euna0p1c/proofkit-sdk` **0.1.0-alpha.1** provides `defineVerifiedTool` to expose a tool
 over HTTP, MCP or another transport, with the same verification-then-authorization
-path. It is consumed by the [Horizon profile](https://github.com/m4tth1euNa0p1c/ZK-agentic/blob/v0.1.0-alpha.1/packages/horizon-demo/src/tool.ts)
+path. It is consumed by the [Horizon profile](https://github.com/m4tth1euNa0p1c/ZP3ntiProof/blob/v0.1.0-alpha.1/packages/horizon-demo/src/tool.ts)
 and its real-proof demonstration. This laboratory prerelease is not qualified
 for sensitive use; its API may change without compatibility.
 The SDK distributes ESM JavaScript and TypeScript declarations, without a proof
@@ -12,13 +12,13 @@ engine or native binary. It depends on Zod 4.6.7, installed separately by npm.
 
 Node.js **24.11 or later** is required. The commands below use the exact version;
 they assume it is available in
-[release v0.1.0-alpha.1](https://github.com/m4tth1euNa0p1c/ZK-agentic/releases/tag/v0.1.0-alpha.1).
+[release v0.1.0-alpha.1](https://github.com/m4tth1euNa0p1c/ZP3ntiProof/releases/tag/v0.1.0-alpha.1).
 The tag and release must have been published; this README does not prove their availability.
 
 The tarball attached to the public release installs without a GitHub account or token:
 
 ```sh
-npm install https://github.com/m4tth1euNa0p1c/ZK-agentic/releases/download/v0.1.0-alpha.1/m4tth1euna0p1c-proofkit-sdk-0.1.0-alpha.1.tgz
+npm install https://github.com/m4tth1euNa0p1c/ZP3ntiProof/releases/download/v0.1.0-alpha.1/m4tth1euna0p1c-proofkit-sdk-0.1.0-alpha.1.tgz
 ```
 
 The same version may be distributed through **GitHub Packages**. This registry
@@ -65,7 +65,7 @@ const result = await tool.execute({ nonce: challenge.nonce, presentation });
 ```
 
 This snippet illustrates the contract; its adapters must be supplied. The full
-compiled example is in the [Horizon profile](https://github.com/m4tth1euNa0p1c/ZK-agentic/blob/v0.1.0-alpha.1/packages/horizon-demo/src/tool.ts).
+compiled example is in the [Horizon profile](https://github.com/m4tth1euNa0p1c/ZP3ntiProof/blob/v0.1.0-alpha.1/packages/horizon-demo/src/tool.ts).
 The following commands run from a repository checkout at tag
 `v0.1.0-alpha.1`, not from the installed package:
 
@@ -102,7 +102,7 @@ An `evidenceKind` descriptor is not a certification.
 ## Add a business tool
 
 1. Establish the control owner, units, bounds, accepted sources, public/private
-   data and signed alternative. Use the [H11 protocol](https://github.com/m4tth1euNa0p1c/ZK-agentic/blob/v0.1.0-alpha.1/docs/horizon/REVIEW_PROTOCOL.md).
+   data and signed alternative. Use the [H11 protocol](https://github.com/m4tth1euNa0p1c/ZP3ntiProof/blob/v0.1.0-alpha.1/docs/horizon/REVIEW_PROTOCOL.md).
 2. Define an explicit relation and a distinct profile identifier. A policy
    change cannot be a mere text edit around the existing proof: the verifier
    must check the new relation.
@@ -131,11 +131,11 @@ or signing secret. The `tests/horizon/mcp.test.ts` tests connect an official
 MCP client, generate a real proof in a separate worker and count effects for
 tampering, acceptance and replay.
 The Horizon presentation does not reuse the historical simulator's `_meta.zkp`
-schema. See the [architecture](https://github.com/m4tth1euNa0p1c/ZK-agentic/blob/v0.1.0-alpha.1/docs/horizon/ARCHITECTURE.md).
+schema. See the [architecture](https://github.com/m4tth1euNa0p1c/ZP3ntiProof/blob/v0.1.0-alpha.1/docs/horizon/ARCHITECTURE.md).
 
 To record results and run available profiles, use
-[Proofkit CLI](https://github.com/m4tth1euNa0p1c/ZK-agentic/blob/v0.1.0-alpha.1/tools/proofkit/README.md). For secrets, IAM and multi-instance guarantees,
-the [cloud foundations](https://github.com/m4tth1euNa0p1c/ZK-agentic/blob/v0.1.0-alpha.1/docs/publication/CLOUD_COMPARISON.md)
+[Proofkit CLI](https://github.com/m4tth1euNa0p1c/ZP3ntiProof/blob/v0.1.0-alpha.1/tools/proofkit/README.md). For secrets, IAM and multi-instance guarantees,
+the [cloud foundations](https://github.com/m4tth1euNa0p1c/ZP3ntiProof/blob/v0.1.0-alpha.1/docs/publication/CLOUD_COMPARISON.md)
 describe outstanding decisions; they do not change the local example's guarantees.
 
 ## Distribution and license
@@ -145,8 +145,8 @@ the project's MIT license. It contains no monorepo sources/tests, circuit, proof
 runtime data, bundled dependency or source map. Zod is a separate MIT dependency
 whose license npm installs with the package; the SDK does not incorporate its
 code. See also the
-[repository notices](https://github.com/m4tth1euNa0p1c/ZK-agentic/blob/v0.1.0-alpha.1/THIRD_PARTY_NOTICES.md)
-and [security policy](https://github.com/m4tth1euNa0p1c/ZK-agentic/blob/v0.1.0-alpha.1/SECURITY.md).
+[repository notices](https://github.com/m4tth1euNa0p1c/ZP3ntiProof/blob/v0.1.0-alpha.1/THIRD_PARTY_NOTICES.md)
+and [security policy](https://github.com/m4tth1euNa0p1c/ZP3ntiProof/blob/v0.1.0-alpha.1/SECURITY.md).
 
 `npm run release:check` compiles the SDK, checks the exact packaged file list,
 installs the tarball in a temporary consumer outside the monorepo, then verifies

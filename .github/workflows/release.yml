@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   prepare:
-    if: github.repository == 'm4tth1euNa0p1c/ZK-agentic' && github.ref == 'refs/heads/main'
+    if: github.repository == 'm4tth1euNa0p1c/ZP3ntiProof' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     permissions:

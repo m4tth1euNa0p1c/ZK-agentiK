@@ -6,11 +6,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/m4tth1euNa0p1c/ZK-agentic.git",
+    "url": "https://github.com/m4tth1euNa0p1c/ZP3ntiProof.git",
     "directory": "packages/proofkit-sdk"
   },
-  "homepage": "https://github.com/m4tth1euNa0p1c/ZK-agentic/tree/v0.1.0-alpha.1/packages/proofkit-sdk#readme",
-  "bugs": { "url": "https://github.com/m4tth1euNa0p1c/ZK-agentic/issues" },
+  "homepage": "https://github.com/m4tth1euNa0p1c/ZP3ntiProof/tree/v0.1.0-alpha.1/packages/proofkit-sdk#readme",
+  "bugs": { "url": "https://github.com/m4tth1euNa0p1c/ZP3ntiProof/issues" },
   "engines": { "node": ">=24.11" },
   "publishConfig": { "registry": "https://npm.pkg.github.com", "tag": "alpha" },
   "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },

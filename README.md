@@ -1,8 +1,8 @@
 # ZK-agentiK · Horizon & Proofkit
 
-[![Quality](https://github.com/m4tth1euNa0p1c/ZK-agentic/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/m4tth1euNa0p1c/ZK-agentic/actions/workflows/ci.yml)
-[![Publication evidence](https://github.com/m4tth1euNa0p1c/ZK-agentic/actions/workflows/evidence.yml/badge.svg?branch=main)](https://github.com/m4tth1euNa0p1c/ZK-agentic/actions/workflows/evidence.yml)
-[![Prerelease](https://img.shields.io/badge/version-0.1.0--alpha.1-orange)](https://github.com/m4tth1euNa0p1c/ZK-agentic/releases/tag/v0.1.0-alpha.1)
+[![Quality](https://github.com/m4tth1euNa0p1c/ZP3ntiProof/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/m4tth1euNa0p1c/ZP3ntiProof/actions/workflows/ci.yml)
+[![Publication evidence](https://github.com/m4tth1euNa0p1c/ZP3ntiProof/actions/workflows/evidence.yml/badge.svg?branch=main)](https://github.com/m4tth1euNa0p1c/ZP3ntiProof/actions/workflows/evidence.yml)
+[![Prerelease](https://img.shields.io/badge/version-0.1.0--alpha.1-orange)](https://github.com/m4tth1euNa0p1c/ZP3ntiProof/releases/tag/v0.1.0-alpha.1)
 [![MIT License](https://img.shields.io/badge/licence-MIT-blue)](LICENSE)
 
 A laboratory for building tools whose actions require independent verification,
@@ -21,7 +21,7 @@ qualification, commercial demand and post-quantum security have not been establi
 [Publication dossier](docs/publication/README.md) ·
 [Research and history](docs/README.md)
 
-[Releases and downloads](https://github.com/m4tth1euNa0p1c/ZK-agentic/releases) ·
+[Releases and downloads](https://github.com/m4tth1euNa0p1c/ZP3ntiProof/releases) ·
 [Changelog](CHANGELOG.md) · [Packages and installation](PACKAGES.md) ·
 [Contributing](CONTRIBUTING.md)
 
@@ -37,7 +37,7 @@ numbers do not indicate publication on crates.io or npm.
 
 The [Proofkit SDK](packages/proofkit-sdk/README.md) is distributed as
 `@m4tth1euna0p1c/proofkit-sdk`, with ESM JavaScript, TypeScript declarations and
-the MIT license. The [release](https://github.com/m4tth1euNa0p1c/ZK-agentic/releases/tag/v0.1.0-alpha.1)
+the MIT license. The [release](https://github.com/m4tth1euNa0p1c/ZP3ntiProof/releases/tag/v0.1.0-alpha.1)
 bundles its installable archive, SHA-256 hashes and the existing manuscript.
 The GitHub Packages channel uses the npm tag `alpha`; access requirements and
 components retained as source are detailed in [PACKAGES.md](PACKAGES.md).
