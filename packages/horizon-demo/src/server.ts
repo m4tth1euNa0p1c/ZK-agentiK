@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
 import { AuthorizationStore } from './store.js';
 import { ProofWorker } from './worker.js';
+import { RemoteTarget } from './target.js';
 import { Challenge, PrivateConfig, PublicConfig, selectMethod } from './types.js';
 import { createClaimTool } from './tool.js';
 
@@ -28,6 +29,8 @@ export interface ServerOptions {
   binary?: string; origin: string; clock?: () => number;
   /** Optional 32-byte hexadecimal operator secret; operator routes fail closed without it. */
   operatorToken?: string;
+  /** Optional H14 remote sandbox target URL (verifier only). Without it the store records locally. */
+  targetUrl?: string;
 }
 
 /** Two separate processes/configurations. Only the verifier process can mutate its SQLite target. */
@@ -36,10 +39,11 @@ export function createHorizonServer(options: ServerOptions) {
   const parsed: unknown = JSON.parse(readFileSync(options.configPath, 'utf8'));
   const privateConfig = options.role === 'prover' ? PrivateConfig.parse(parsed) : undefined;
   const publicConfig = options.role === 'verifier' ? PublicConfig.parse(parsed) : undefined;
+  const target = publicConfig && options.targetUrl ? new RemoteTarget(options.targetUrl) : undefined;
   const store = publicConfig ? new AuthorizationStore(options.databasePath ?? 'horizon.sqlite', publicConfig, clock) : undefined;
   const worker = new ProofWorker(options.binary);
   let tool: ReturnType<typeof createClaimTool> | undefined;
-  try { tool = store && publicConfig ? createClaimTool(store, worker, publicConfig, clock) : undefined; }
+  try { tool = store && publicConfig ? createClaimTool(store, worker, publicConfig, clock, target) : undefined; }
   catch (error) { worker.close(); store?.close(); throw error; }
   let prepared: unknown;
   let preparation: Promise<unknown> | undefined;
@@ -113,7 +117,7 @@ export function createHorizonServer(options: ServerOptions) {
       if (request.url === '/api/rotate-policy') { z.strictObject({}).parse(input); store.rotatePolicy(); return send(response, 200, { rotated: true }); }
       if (request.url === '/api/reconcile') {
         const { operation_id } = z.strictObject({ operation_id: z.string().regex(/^[0-9a-f]{64}$/) }).parse(input);
-        return send(response, 200, { status: store.reconcile(operation_id) });
+        return send(response, 200, { status: target ? await store.reconcileWith(target, operation_id) : store.reconcile(operation_id) });
       }
       send(response, 404, { error: 'NOT_FOUND' });
     } catch { if (!response.headersSent) send(response, 400, { error: 'REQUEST_REJECTED',
@@ -129,7 +133,8 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const configPath = process.argv[3]; if (!configPath) throw new Error('CONFIG_REQUIRED');
   const app = createHorizonServer({ role, configPath,
     databasePath: process.env['HORIZON_DB'] ?? '.tools/horizon/demo/authorization.sqlite',
-    origin: process.env['HORIZON_ORIGIN'] ?? 'http://127.0.0.1:38080' });
+    origin: process.env['HORIZON_ORIGIN'] ?? 'http://127.0.0.1:38080',
+    ...(process.env['HORIZON_TARGET_URL'] ? { targetUrl: process.env['HORIZON_TARGET_URL'] } : {}) });
   const port = Number(process.env['PORT'] ?? (role === 'prover' ? 38081 : 38080));
   app.server.listen(port, process.env['HORIZON_BIND'] ?? '127.0.0.1', () => process.stdout.write(`Horizon ${role} sandbox on port ${port}\n`));
   for (const signal of ['SIGTERM', 'SIGINT'] as const) process.once(signal, () => { void app.close().then(() => process.exit(0)); });

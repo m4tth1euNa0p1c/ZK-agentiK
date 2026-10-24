@@ -181,3 +181,28 @@ report `.tools/agent-sessions/2026-10-24T23-10-56-335Z-39140.json` after the rev
 Observation: signed bytes follow Rust declaration order while worker JSON
 output sorts keys; refused attempts do not consume the nonce. This is a
 local regression suite, not an external audit (H15 open).
+
+## H14 — Remote sandbox target and two-controller reconciliation (25 October 2026)
+
+A separate durable HTTP target (`packages/horizon-demo/src/target.ts`) with
+idempotency key, `If-Match` version precondition, status route and fence was
+added, with a one-attempt client and a controller dispatch/reconciliation path
+(`store.ts` `dispatch`, `reconcileWith`). Thirteen scenarios in
+`tests/horizon/remote-target.test.ts` count the target's records and received
+mutation attempts: two controllers on separate databases (1 record, 2
+attempts), lost acknowledgement (UNKNOWN then COMPLETED, 1/1), controller
+crash after reservation (fenced, late write refused, 0/1), stale version
+(REJECTED, no retry), unreachable target (nothing consumed before reservation;
+UNKNOWN then fenced REJECTED, 0/0), target crash before commit (0/1), two
+distinct operations on one object (precondition serializes), HTTP path with
+operator reconciliation (1/1), target input validation, plus after an
+independent agent review: controller crash after acknowledgement (reconciled
+COMPLETED), deadline reached before dispatch (no attempt), deadline enforced by
+the target clock (410 expired), reconciliation addressed to another target
+(TARGET_MISMATCH), reconciliation racing the in-flight attempt. Four mutations
+(ambiguity settled as COMPLETED, non-fencing fence, ignored precondition,
+hidden retry) were each caught. `npm run test:horizon` 47/47, typecheck and
+build exit 0; `npm run agent:check:full` PASS twice (final report
+`.tools/agent-sessions/2026-10-24T23-37-19-731Z-42240.json`). Details and limits:
+[REMOTE_TARGET_2026-10-25.md](REMOTE_TARGET_2026-10-25.md). Laboratory
+contract only: no remote API, no authentication on the target (H17), no audit.

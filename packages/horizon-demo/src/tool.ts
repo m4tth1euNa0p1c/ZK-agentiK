@@ -3,10 +3,12 @@ import { z } from 'zod';
 import { defineVerifiedTool } from '@m4tth1euna0p1c/proofkit-sdk';
 import type { AuthorizationStore } from './store.js';
 import type { ProofWorker } from './worker.js';
+import type { RemoteTarget } from './target.js';
 import { Challenge, Verified, type PublicConfig } from './types.js';
 
-/** Reference adapter: real cryptography; the only target is the store's synthetic SQLite action. */
-export function createClaimTool(store: AuthorizationStore, worker: ProofWorker, config: PublicConfig, clock = Date.now) {
+/** Reference adapter: real cryptography; the target is the store's synthetic SQLite action, or the
+ * separate H14 sandbox target when one is configured (the controller then never records locally). */
+export function createClaimTool(store: AuthorizationStore, worker: ProofWorker, config: PublicConfig, clock = Date.now, target?: RemoteTarget) {
   return defineVerifiedTool({
     name: 'record_claim_authorization', profile: 'horizon-range-v1',
     evidenceKind: config.policy.require_private ? 'zk' : 'signed-attestation', environment: 'sandbox',
@@ -24,7 +26,7 @@ export function createClaimTool(store: AuthorizationStore, worker: ProofWorker, 
           policy: { ...config.policy, policy_epoch: state.policy_epoch }, now_ms: clock() });
       },
       // Store rechecks time/epochs and consumes nonce + business operation under its own transaction.
-      authorize: (expected, verified) => store.authorize(expected, verified),
+      authorize: (expected, verified) => target ? store.dispatch(expected, verified, target) : store.authorize(expected, verified),
     },
   });
 }

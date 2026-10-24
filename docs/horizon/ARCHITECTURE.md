@@ -63,14 +63,27 @@ audience, action and case; changing the nonce or policy does not recreate an act
 ```text
 absent -> RESERVED -> COMPLETED
                   -> REJECTED
-                  -> UNKNOWN -> reconciliation -> COMPLETED or UNKNOWN
+                  -> UNKNOWN -> reconciliation -> COMPLETED, REJECTED or UNKNOWN
 ```
 
-A shutdown after reservation never releases the operation. Reconciliation reads
-the local target without redispatching. The ambiguity test forces `UNKNOWN`
-after a known effect at the synthetic target. No inference applies to a remote
-banking API: that target would need an idempotency key, an exact precondition
-and a status API, with a recovery protocol accepted by its operator.
+A shutdown after reservation never releases the operation. With the local
+target, reconciliation reads the local effects table without redispatching and
+`UNKNOWN` stays `UNKNOWN` when no effect is found. The ambiguity test forces
+`UNKNOWN` after a known effect at the synthetic target.
+
+Since 25 October 2026 (H14) the verifier can dispatch to a **separate durable
+sandbox target** process ([details](REMOTE_TARGET_2026-10-25.md)): the object
+version is read before reservation and stored with it, the deadline is
+rechecked after reservation with no await before the single mutation attempt,
+the attempt carries the authorization deadline (refused by the target clock
+after it), and every transport ambiguity stays `UNKNOWN`. The reservation
+records which target it was dispatched to; reconciliation addresses that target
+only and never rewrites a terminal state. Reconciliation *fences* the operation
+at the target: an existing record with our bundle hash is
+`COMPLETED`, a fence or another writer's record is `REJECTED`, an unreachable
+target leaves `UNKNOWN`. No path redispatches. This sandbox contract
+(idempotency key, exact precondition, status route, fence) is what a remote
+banking API would have to offer; none is assumed to.
 
 Events are chained with SHA-256. This detects tampering when a trusted earlier
 head is available; an administrator can rewrite the entire chain. No external
