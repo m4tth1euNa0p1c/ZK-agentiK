@@ -1,82 +1,82 @@
-# Vérifications mathématiques Horizon
+# Horizon mathematical checks
 
-Le dossier ci-dessous conserve le premier profil historique. Le
-[nouveau banc corrélé](../docs/experiments/circuit/RESULTS_2026-10-17.md) ajoute
-un oracle distinct, des preuves Rust nombreuses et une exécution **MATLAB
-R2026b réellement effectuée** dans GitHub Actions, en plus d'Octave.
+The directory below preserves the first historical profile. The
+[new correlated testbed](../docs/experiments/circuit/RESULTS_2026-10-17.md) adds
+a distinct oracle, numerous Rust proofs and a **MATLAB R2026b execution
+actually performed** in GitHub Actions, in addition to Octave.
 
-Ce dossier contrôle des identités et des hypothèses de la relation existante. Il
-ne réimplémente aucune primitive cryptographique. Une réussite numérique ne
-prouve ni la sécurité de Bulletproofs, ni la vérité des faits signés, ni le code
-TypeScript, ni la durabilité d'un disque. Voir le [whitepaper](../docs/whitepaper/whitepaper.pdf).
+This directory checks identities and assumptions of the existing relation. It
+reimplements no cryptographic primitive. A numerical success proves
+neither the security of Bulletproofs, nor the truth of the signed facts, nor the
+TypeScript code, nor the durability of a disk. See the [whitepaper](../docs/whitepaper/whitepaper.pdf).
 
-## Exécution isolée
+## Isolated execution
 
-Depuis la racine du dépôt, Docker disponible :
+From the repository root, with Docker available:
 
 ```sh
 node math/run.mjs --build
 ```
 
-`--build` autorise explicitement la construction locale de l'image fixe si elle
-est absente. Sans ce flag, son absence est une erreur. Aucun catalogue externe
-ne choisit image, commande, volume ou exécutable. Les outils sont installés
-uniquement dans cette image ; aucun logiciel payant ou paquet global n'est requis.
-La base Debian est épinglée par digest. Les paquets apt ne sont pas sur un
-snapshot : le rapport conserve les versions et l'identifiant de l'image réellement
-utilisée, sans promettre de reconstruction bit à bit.
+`--build` explicitly authorizes the local build of the fixed image if it
+is absent. Without this flag, its absence is an error. No external catalog
+chooses the image, command, volume or executable. The tools are installed
+only in this image; no paid software or global package is required.
+The Debian base is pinned by digest. The apt packages are not on a
+snapshot: the report retains the versions and the identifier of the image actually
+used, without promising bit-for-bit reconstruction.
 
-Chaque exécution crée `results/octave-<UTC>-<UUID>/` avec `run.json`, `octave.log`
-et un résultat daté. Les sources sont montées en lecture seule et la sortie
-dans ce nouveau répertoire. Le conteneur d'exécution n'a pas de réseau et est
-limité à 2 CPU / 2 GiB. Les rapports sont écrits avec création exclusive ; ils
-ne sont pas des fichiers système immuables contre un administrateur. La date
-est auto-déclarée, les SHA-256 ne sont ni une signature, ni un horodatage TSA,
-ni une preuve du sens des résultats. Un échec conserve un rapport et renvoie
-un code non nul.
+Each run creates `results/octave-<UTC>-<UUID>/` with `run.json`, `octave.log`
+and a dated result. The sources are mounted read-only and the output
+goes into this new directory. The execution container has no network and is
+limited to 2 CPU / 2 GiB. Reports are written with exclusive creation; they
+are not system files immutable against an administrator. The date
+is self-declared; the SHA-256 hashes are neither a signature, nor a TSA timestamp,
+nor a proof of the meaning of the results. A failure retains a report and returns
+a non-zero code.
 
-Le script distingue explicitement `GNU Octave` de `MATLAB`. Pour un environnement
-MATLAB possédant `jsonencode`, la syntaxe prévue est :
+The script explicitly distinguishes `GNU Octave` from `MATLAB`. For a MATLAB
+environment with `jsonencode`, the intended syntax is:
 
 ```matlab
 run('math/run_checks.m')
 ```
 
-**MATLAB n'a pas été exécuté dans cette livraison.** L'exécution directe conserve
-des JSON datés dans `math/results/` ; `latest.json` n'est qu'un index. Le runner
-Node est préférable pour enregistrer automatiquement versions et empreintes.
+**MATLAB was not executed in this delivery.** Direct execution retains
+dated JSON files in `math/results/`; `latest.json` is only an index. The Node
+runner is preferable for automatically recording versions and hashes.
 
-## Couverture et précision
+## Coverage and precision
 
-- 24 510 paires, bits 1 à 6, valeurs négatives et hors plage incluses ; 5 460
-  paires acceptées. Équivalence entre plages de `a-1, c-a` et bornes entières.
-- Dix frontières du profil 32 bits, dont `2^32`, `2^33-1` et `uint64` maximum.
-  Les valeurs JSON sont des chaînes décimales pour préserver leur exactitude.
-- L'ordre de Ristretto est reconstruit par addition de chiffres décimaux ; il
-  n'est jamais converti en `double` ou `uint64`. L'arithmétique métier utilise
-  `int64`/`uint64`, avec garde avant soustraction non signée.
-- 20 états atteignables et 160 transitions d'un modèle fini, une clé métier et
-  deux nonces. Réservation persistante, expiration/révocation, arrêt, effet ambigu
-  et réconciliation sont explorés. Ce modèle n'est pas le code TypeScript.
-- Contre-exemples : nonce seul, cumul, franchise, exposant/devise, alias modulo
-  et relation de générateurs connue. Les exemples scalaires ne sont pas un test
-  du logarithme discret.
+- 24,510 pairs, bits 1 to 6, negative and out-of-range values included; 5,460
+  pairs accepted. Equivalence between ranges of `a-1, c-a` and integer bounds.
+- Ten boundaries of the 32-bit profile, including `2^32`, `2^33-1` and maximum `uint64`.
+  JSON values are decimal strings to preserve their exactness.
+- The Ristretto order is reconstructed by adding decimal digits; it
+  is never converted to `double` or `uint64`. Business arithmetic uses
+  `int64`/`uint64`, with a guard before unsigned subtraction.
+- 20 reachable states and 160 transitions of a finite model, one business key and
+  two nonces. Persistent reservation, expiration/revocation, shutdown, ambiguous effect
+  and reconciliation are explored. This model is not the TypeScript code.
+- Counterexamples: nonce alone, accumulation, deductible, exponent/currency, modulo alias
+  and known generator relation. The scalar examples are not a test
+  of the discrete logarithm.
 
-## Traçabilité
+## Traceability
 
-Les constantes et domaines d'entrée sont dans `horizon_checks.m`, dont le runner
-enregistre l'empreinte, ainsi que celles de `run_checks.m`, `run.mjs` et du
-Dockerfile. Le résultat et le log ont aussi leur empreinte. `record_environment.py`
-est un outil complémentaire pour l'exécution directe et le PDF ; le runner Node
-est autonome et ne l'appelle pas.
+The constants and input domains are in `horizon_checks.m`, whose hash the runner
+records, along with those of `run_checks.m`, `run.mjs` and the
+Dockerfile. The result and the log also have their hash. `record_environment.py`
+is a complementary tool for direct execution and the PDF; the Node runner
+is autonomous and does not call it.
 
-Les archives de la première construction et les essais directs antérieurs au
-runner sont conservés localement et exclus de la publication par `.gitignore` :
-certains contiennent des chemins de l'hôte. Ils ne sont donc pas présents dans
-un checkout neuf. Le résultat publié sélectionné est
-`results/octave-2026-10-17T14-48-23.751Z-0f44a541-9089-42a3-9676-47d943cfaed5/` ;
-les chemins de commande y utilisent `<MATH>` et `<OUTPUT>`. Toute nouvelle
-exécution est locale par défaut ; publier exige une revue puis une exception
-explicite dans `.gitignore` et l'ajout des artefacts au catalogue.
-Seul un rapport `run.json` avec `status=pass` établit la réussite
-de son exécution isolée ; ni ce statut ni un hash ne certifient la cryptographie.
+The archives of the first build and the direct trials prior to the
+runner are kept locally and excluded from publication by `.gitignore`:
+some contain host paths. They are therefore not present in
+a fresh checkout. The selected published result is
+`results/octave-2026-10-17T14-48-23.751Z-0f44a541-9089-42a3-9676-47d943cfaed5/`;
+the command paths there use `<MATH>` and `<OUTPUT>`. Any new
+run is local by default; publishing requires a review, then an explicit
+exception in `.gitignore` and the addition of the artifacts to the catalog.
+Only a `run.json` report with `status=pass` establishes the success
+of its isolated execution; neither this status nor a hash certifies the cryptography.

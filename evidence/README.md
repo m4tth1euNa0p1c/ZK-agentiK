@@ -1,21 +1,21 @@
-# Registre d'éléments probants
+# Evidence register
 
-`catalog.json` associe chaque assertion à une relation, un statut, ses limites,
-ses sources primaires et des artefacts publics. Lire les limites avant les chiffres.
+`catalog.json` associates each assertion with a relation, a status, its limits,
+its primary sources and public artifacts. Read the limits before the figures.
 
-Les manifests SHA-256 créés par [Proofkit](../tools/proofkit/README.md) vérifient
-ces octets seulement. Une empreinte n'est ni une preuve ZK, ni une preuve de date,
-ni une revue scientifique. Les dates locales restent explicitement non attestées.
+The SHA-256 manifests created by [Proofkit](../tools/proofkit/README.md) verify
+those bytes only. A hash is neither a ZK proof, nor a proof of date, nor a
+scientific review. Local dates remain explicitly unattested.
 
-Les données privées, logs non relus, caches et configurations locales sont exclus.
-Le catalogue conserve les résultats négatifs et les hypothèses non démontrées.
-Les benchmarks historiques restent à leur place et ne sont pas recalculés sous
-un nouveau nom pour masquer une régression.
+Private data, unreviewed logs, caches and local configurations are excluded.
+The catalog retains negative results and undemonstrated hypotheses.
+Historical benchmarks stay where they are and are not recomputed under
+a new name to hide a regression.
 
-La publication ajoute un manifeste daté, produit dans un checkout propre. Pour
-vérifier une version ancienne après évolution du catalogue, prendre un checkout
-du commit `source.commit` indiqué et y copier le manifeste à vérifier. Exécuter
-le vérifieur depuis un environnement de confiance. Le commit déclaré est une
-référence de reproduction, sans signature attestant l'identité du déclarant.
-Conserver les anciens manifestes ; un nouveau catalogue demande un nouveau
-manifeste, pas la réécriture d'un résultat antérieur.
+Publication adds a dated manifest, produced in a clean checkout. To
+verify an old version after the catalog has evolved, take a checkout
+of the stated `source.commit` and copy the manifest to verify into it. Run
+the verifier from a trusted environment. The declared commit is a
+reproduction reference, without a signature attesting the declarant's identity.
+Keep the old manifests; a new catalog requires a new manifest, not the
+rewriting of an earlier result.

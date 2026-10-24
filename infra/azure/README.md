@@ -1,20 +1,20 @@
-# Fondation Azure expérimentale
+# Experimental Azure foundation
 
-`main.bicep` décrit un VNet, deux sous-réseaux, deux NSG avec refus explicite
-entrant/sortant et deux identités managées **sans attribution RBAC**. Il ne crée
-ni application, clé, secret, base, compte de stockage, GPU, endpoint public, NAT
-ou abonnement. Le groupe de ressources cible doit déjà exister.
+`main.bicep` describes a VNet, two subnets, two NSGs with explicit inbound/outbound
+denial and two managed identities **without RBAC assignment**. It creates
+no application, key, secret, database, storage account, GPU, public endpoint, NAT
+or subscription. The target resource group must already exist.
 
-Ces sous-réseaux ne constituent pas un environnement Container Apps : délégation,
-dimensionnement, DNS, règles de plan de contrôle et accès privés restent à
-concevoir selon le runtime retenu. Les exceptions de trafic de plateforme et les
-politiques héritées demandent une vérification dans le tenant. Aucun test réseau
-Azure n'a été exécuté ; « refus explicite » décrit le fichier, pas une isolation
-observée d'un service déployé.
+These subnets do not constitute a Container Apps environment: delegation,
+sizing, DNS, control-plane rules and private access remain to be
+designed according to the chosen runtime. Platform traffic exceptions and
+inherited policies require verification in the tenant. No Azure network test
+has been run; "explicit denial" describes the file, not an observed
+isolation of a deployed service.
 
-## Validation locale
+## Local validation
 
-Avec Bicep 0.48.1 installé, sans connexion Azure ni création de ressource :
+With Bicep 0.48.1 installed, without an Azure connection or resource creation:
 
 ```powershell
 $compiled = Join-Path $env:TEMP 'proofkit-azure-template.json'
@@ -22,20 +22,20 @@ bicep build infra/azure/main.bicep --outfile $compiled
 bicep lint infra/azure/main.bicep
 ```
 
-Le compilateur utilise ses types embarqués ; aucune référence à un module
-distant n'est présente. Le résultat compilé n'est pas un déploiement validé par
-Azure. La compilation ne vérifie ni quota, région, conflit CIDR, droits, prix ou
-contraintes d'organisation. Voir [le journal local](../../docs/publication/VALIDATION.md).
+The compiler uses its embedded types; no reference to a remote module
+is present. The compiled result is not a deployment validated by
+Azure. Compilation checks neither quota, region, CIDR conflict, rights, price nor
+organizational constraints. See [the local log](../../docs/publication/VALIDATION.md).
 
-## Étapes avant une expérimentation cloud
+## Steps before a cloud experiment
 
-Choisir région, tenant, runtime et limites de dépense. Préparer une identité de
-déploiement fédérée avec émetteur/audience/subject restrictifs ; les identités
-runtime restent séparées. Écrire les règles minimales et tester les refus depuis
-le prover et le contrôleur. Le contrôle de mutation ne doit jamais être attribué
-au prover. Ces étapes ne sont pas implémentées dans ce squelette.
+Choose region, tenant, runtime and spending limits. Prepare a federated
+deployment identity with restrictive issuer/audience/subject; runtime
+identities remain separate. Write the minimal rules and test denials from
+the prover and the controller. Mutation control must never be assigned
+to the prover. These steps are not implemented in this skeleton.
 
-Le profil Horizon Ed25519 n'est pas interchangeable avec les courbes listées
-par Azure Key Vault. Aucun adaptateur de signature cloud n'est fourni. Lire
-[la comparaison et les sources](../../docs/publication/CLOUD_COMPARISON.md)
-avant de choisir un algorithme ou d'ajouter une application.
+The Horizon Ed25519 profile is not interchangeable with the curves listed
+by Azure Key Vault. No cloud signing adapter is provided. Read
+[the comparison and sources](../../docs/publication/CLOUD_COMPARISON.md)
+before choosing an algorithm or adding an application.
