@@ -46,6 +46,12 @@ response loss and crash at every transition. Controller's durable database
 separated from the target. Accept at most one effect despite two processes and
 recovery. Without an adequate target contract: keep UNKNOWN and forbid automatic
 retry. Initial tests: `npm run test:horizon`, mandatory extension before production.
+**Delivered 25 October 2026 (laboratory)**: separate durable sandbox target with
+idempotency key, version precondition, status route and fence; controller
+dispatch/reconciliation; nine counted scenarios, see
+[docs/horizon/REMOTE_TARGET_2026-10-25.md](../../docs/horizon/REMOTE_TARGET_2026-10-25.md).
+**Still open**: a real target contract accepted by its operator, authentication
+of the target (H17), a true two-process crash trial on the remote path.
 
 ## H15 — Cryptographic and confidentiality qualification, P0 security
 

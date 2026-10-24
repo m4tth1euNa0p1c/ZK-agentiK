@@ -18,14 +18,15 @@
     },
     {
       "id": "H14",
-      "status": "ready",
+      "status": "blocked",
       "priority": "P0",
       "title": "Remote sandbox target plus durable two-controller reconciliation",
       "acceptance": "Separated controllers and target; lost ACK, concurrent operations, crash, stale version and UNKNOWN tested; at most one target effect and no blind retry.",
       "paths": [
         "packages/horizon-demo",
         "tests/horizon"
-      ]
+      ],
+      "delivered": "2026-10-25: separate durable sandbox target (idempotency key, If-Match version, status, fence), controller dispatch/reconcileWith, nine counted scenarios with mutation check; see docs/horizon/REMOTE_TARGET_2026-10-25.md. Remaining: real operator-accepted target contract and target authentication (H17); no further local work ready."
     },
     {
       "id": "H13",

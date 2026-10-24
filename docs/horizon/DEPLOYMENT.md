@@ -121,3 +121,20 @@ is included in this demonstrator.
 Do not open these ports to a corporate network. The application has no
 financial connector and uses no customer data. Limits and qualification work
 are in [THREAT_MODEL](THREAT_MODEL.md) and the [tickets](../../issues/horizon/NEXT_EXPERIMENTS.md).
+
+## Optional remote sandbox target (H14, 25 October 2026)
+
+The verifier records locally by default. To exercise the separated-target
+path, start the sandbox target process and point the verifier at it:
+
+```sh
+PORT=38082 HORIZON_TARGET_DB=.tools/horizon/demo/target.sqlite node packages/horizon-demo/dist/target.js
+HORIZON_TARGET_URL=http://127.0.0.1:38082 node packages/horizon-demo/dist/server.js verifier .tools/horizon/demo/public.json
+```
+
+The target has no authentication and binds to loopback; it is a laboratory
+stand-in for a remote API with an idempotency key, an exact version
+precondition, a status route and a fence. `/api/reconcile` (operator token
+required) fences the operation at the target and never redispatches. The
+Compose deployment is unchanged and keeps the local target. See
+[REMOTE_TARGET_2026-10-25.md](REMOTE_TARGET_2026-10-25.md).
